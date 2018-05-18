@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27428.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ManageCoursesUi", "src\ManageCoursesUi.csproj", "{A40200FB-F9A1-474B-8135-7692D507AC81}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{48DEB6E0-5728-49D8-B180-1BA0D512CDFC}"
+	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
+		Readme.md = Readme.md
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A40200FB-F9A1-474B-8135-7692D507AC81}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A40200FB-F9A1-474B-8135-7692D507AC81}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A40200FB-F9A1-474B-8135-7692D507AC81}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A40200FB-F9A1-474B-8135-7692D507AC81}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {0B139EB5-F226-45FB-8959-3C289BEF5AD9}
+	EndGlobalSection
+EndGlobal
