@@ -56,7 +56,7 @@ namespace ManageCoursesUi
                 
                 options.SaveTokens = false;
                 options.CallbackPath = new PathString(Configuration["auth:oidc:callbackPath"]);
-                
+                options.SignedOutCallbackPath = new PathString(Configuration["auth:oidc:signedOutCallbackPath"]);
                 options.SecurityTokenValidator = new JwtSecurityTokenHandler
                 {
                     InboundClaimTypeMap = new Dictionary<string, string>()
