@@ -2,13 +2,13 @@
 {
     public class OrgClaim
     {
-        public string id { get; set; }
-        public string name { get; set; }
-        public Category category { get; set; }
+        public string Id { get; set; }
+        public string Name { get; set; }
+        public Category Category { get; set; }
 
         public override string ToString()
         {
-            return $"OrgClaim {id} {name} {category}";
+            return $"OrgClaim {Id} {Name} {Category}";
         }
     }
 }
