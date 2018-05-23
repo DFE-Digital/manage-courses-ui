@@ -28,8 +28,11 @@ namespace ManageCoursesUi.Controllers
             if (orgs.Count == 1)
             {
                 var json = orgs.Single().Value;
-                var org = JsonConvert.DeserializeObject<OrgClaim>(json);
-                model.Org = org;
+                if (json != "{}")
+                {
+                    var org = JsonConvert.DeserializeObject<OrgClaim>(json);
+                    model.Org = org;
+                }
             }
             return View(model);
         }
