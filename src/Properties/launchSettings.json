@@ -12,7 +12,6 @@
       "commandName": "IISExpress",
       "launchBrowser": true,
       "environmentVariables": {
-        "DFE_SIGNIN_CLIENT_SECRET": "your-secret-here", // don't check the real secret in! This is just a spike, todo: better storage / override
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
