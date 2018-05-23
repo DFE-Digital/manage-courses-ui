@@ -21,13 +21,20 @@
     </tbody>
 </table>
 <h3>Organisation</h3>
+@if (Model.Org != null)
+{
 <dl>
     <dt>id</dt>
     <dd>@Model.Org.id</dd>
     <dt>name</dt>
     <dd>@Model.Org.name</dd>
     <dt>category id</dt>
-    <dd>@Model.Org.category.id</dd>
+    <dd>@Model.Org.category?.id</dd>
     <dt>category name</dt>
-    <dd>@Model.Org.category.name</dd>
+    <dd>@Model.Org.category?.name</dd>
 </dl>
+}
+else
+{
+    <p>None</p>
+}
