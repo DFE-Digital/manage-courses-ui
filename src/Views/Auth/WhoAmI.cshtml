@@ -1,8 +1,8 @@
-﻿@model System.Security.Claims.ClaimsPrincipal
+﻿@model ManageCoursesUi.Controllers.WhoAmIViewModel
 
 <h2>Who Am I?</h2>
 
-<h3>Claims</h3>
+<h3>Raw Claims</h3>
 <table>
     <thead>
         <tr>
@@ -11,7 +11,7 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var claim in Model.Claims)
+        @foreach (var claim in Model.RawClaims)
         {
             <tr>
                 <td>@claim.Type</td>
@@ -20,3 +20,21 @@
         }
     </tbody>
 </table>
+<h3>Organisation</h3>
+@if (Model.Org != null)
+{
+<dl>
+    <dt>id</dt>
+    <dd>@Model.Org.Id</dd>
+    <dt>name</dt>
+    <dd>@Model.Org.Name</dd>
+    <dt>category id</dt>
+    <dd>@Model.Org.Category?.Id</dd>
+    <dt>category name</dt>
+    <dd>@Model.Org.Category?.Name</dd>
+</dl>
+}
+else
+{
+    <p>None</p>
+}

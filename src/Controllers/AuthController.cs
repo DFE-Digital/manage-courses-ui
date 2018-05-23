@@ -1,9 +1,14 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Security.Claims;
+using System.Threading.Tasks;
+using ManageCoursesUi.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
-using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 namespace ManageCoursesUi.Controllers
 {
@@ -12,7 +17,24 @@ namespace ManageCoursesUi.Controllers
         [Authorize]
         public ActionResult WhoAmI()
         {
-            return View(User as ClaimsPrincipal);
+            var claims = User.Claims.ToList();
+            var model = new WhoAmIViewModel { RawClaims = claims };
+            const string organisationClaimType = "organisation";
+            var orgs = claims.Where(c => c.Type == organisationClaimType).ToList();
+            if (orgs.Count > 1)
+            {
+                throw new NotSupportedException("multiple " + organisationClaimType + " claims found");
+            }
+            if (orgs.Count == 1)
+            {
+                var json = orgs.Single().Value;
+                if (json != "{}")
+                {
+                    var org = JsonConvert.DeserializeObject<OrgClaim>(json);
+                    model.Org = org;
+                }
+            }
+            return View(model);
         }
 
         public async Task Login(string returnUrl = "/")
@@ -26,5 +48,11 @@ namespace ManageCoursesUi.Controllers
             await HttpContext.SignOutAsync("oidc");
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
         }
+    }
+
+    public class WhoAmIViewModel
+    {
+        public IEnumerable<Claim> RawClaims { get; set; }
+        public OrgClaim Org { get; set; }
     }
 }
