@@ -53,6 +53,7 @@ namespace ManageCoursesUi
                 options.Scope.Add("openid");
                 options.Scope.Add("email");
                 options.Scope.Add("profile");
+                options.Scope.Add("organisation");
                 
                 options.SaveTokens = true;
                 options.CallbackPath = new PathString(Configuration["auth:oidc:callbackPath"]);
