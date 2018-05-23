@@ -18,7 +18,7 @@ It can also worked on Visual Studio Code but a reverse proxy from https back to 
 * Consider ngrok (needs change in external auth)
 * Consider reverse proxy from https to http ie nginx handles https and forward it to http localhost
 
-The domain project follows https://semver.org/ version numbering.
+It should be [12 factor](https://12factor.net/), notably config from environment variables.
 
 ## Auth workflow
 
@@ -32,6 +32,8 @@ The domain project follows https://semver.org/ version numbering.
 The external will only chat via https
 
 ## setup
+
+* Add `DFE_SIGNIN_CLIENT_SECRET` to your environment variables and log-out/in. Get this from the DfE single sign-in project.
 
 ### iisexpress (windows)
 In this file
