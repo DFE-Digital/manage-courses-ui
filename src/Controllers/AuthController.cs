@@ -40,7 +40,7 @@ namespace ManageCoursesUi.Controllers
 
         public async Task Login(string returnUrl = "/")
         {
-            await HttpContext.ChallengeAsync("oidc", new AuthenticationProperties() { RedirectUri = returnUrl });
+            await HttpContext.ChallengeAsync(new AuthenticationProperties() { RedirectUri = returnUrl });
         }
 
         [Authorize]
