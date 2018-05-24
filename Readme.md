@@ -2,10 +2,14 @@
 
 ## About
 
-This repo provides a dotnet core solution containing:
+This repo provides a dotnet core solution containing the main client for managing courses.
 
-* The main client for managing courses.
-* Must be run with SSL/TLS! The DfE Sign-in will not allow non-https redirect urls
+
+## Setup
+
+* Add `DFE_SIGNIN_CLIENT_SECRET` to your environment variables and log-out/in.
+  Get this from the DfE single sign-in project by emailing [DfE.SIGNIN@education.gov.uk](mailto:DfE.SIGNIN@education.gov.uk)
+* Must be run with SSL/TLS. The DfE Sign-in service will not allow non-https redirect urls
 
 ## Coding
 
@@ -22,20 +26,16 @@ It should be [12 factor](https://12factor.net/), notably config from environment
 
 ## Auth workflow
 
-
 1. localhost hits login button
 2. opens up url to external auth
 3. user logins in on external auth
 4. user is then redirected back to localhost  (redirect url provided from localhost in step 2)
 5. localost then extract the user details
 
-The external will only chat via https
+### IIS Express (Windows-only)
 
-## setup
+You may need the following if you have port-clash problems. To be revised as we learn more...
 
-* Add `DFE_SIGNIN_CLIENT_SECRET` to your environment variables and log-out/in. Get this from the DfE single sign-in project.
-
-### iisexpress (windows)
 In this file
 .\manage-courses-ui\.vs\config\applicationhost.config
 
@@ -52,10 +52,9 @@ Check that the bindings for https settings are for port 44364 (you may need to r
       </site>
 ```
 
-### Appseting
+### Sign-in service links
 
+* https://signin-test-sup-as.azurewebsites.net/users
 
-https://signin-test-sup-as.azurewebsites.net/users
-The data here is always 15 mins out of date as its on an event stream
-(its more realtime in prod envs.) (edited)
-https://signin-test-sup-as.azurewebsites.net/users/80BA7FAF-D6E1-47B4-9EDD-4539F53C8B9E/audit
+* https://signin-test-sup-as.azurewebsites.net/users/80BA7FAF-D6E1-47B4-9EDD-4539F53C8B9E/audit - The data
+  here is always 15 mins out of date as its on an event stream (its more realtime in prod envs.)
