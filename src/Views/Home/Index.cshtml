@@ -1,12 +1,17 @@
-﻿<h2>Sample .NET 4.6 OIDC Client</h2>
+﻿@{
+    string name = null;
+    if (User.Identity.IsAuthenticated)
+    {
+        var nameClaim = User.Claims.FirstOrDefault(c => c.Type == "given_name");
+        name = nameClaim?.Value;
+    }
+}
+<h2>Hello @(name??"Stranger")</h2>
 
 <ul class="nav navbar-nav navbar-left">
-    <li>
-        <a href="@Url.Action("WhoAmI", "Auth")">Locked link </a>
-    </li>
-
     @if (User.Identity.IsAuthenticated)
     {
+        <li><a href="@Url.Action("WhoAmI", "Auth")">Your Profile</a></li>
         <li><a asp-controller="Auth" asp-action="Logout">Logout</a></li>
     }
     else
@@ -14,3 +19,4 @@
         <li><a asp-controller="Auth" asp-action="Login">Login</a></li>
     }
 </ul>
+<div class="clearfix"></div>
