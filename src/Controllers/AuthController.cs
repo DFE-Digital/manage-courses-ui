@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using ManageCoursesUi.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -45,7 +46,7 @@ namespace ManageCoursesUi.Controllers
         [Authorize]
         public async Task Logout()
         {
-            await HttpContext.SignOutAsync("oidc");
+            await HttpContext.SignOutAsync(OpenIdConnectDefaults.AuthenticationScheme);
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
         }
     }
