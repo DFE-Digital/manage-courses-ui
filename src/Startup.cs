@@ -33,9 +33,9 @@ namespace ManageCoursesUi
                 options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
             })
             .AddCookie()
-            .AddOpenIdConnect("oidc", options =>
+            .AddOpenIdConnect(options =>
             {
-                options.SignInScheme = "Cookies";
+                options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
                 options.MetadataAddress = Configuration["auth:oidc:metadataAddress"];
 
                 options.ClientId = Configuration["auth:oidc:clientId"];
