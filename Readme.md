@@ -1,5 +1,7 @@
 # Manage Courses UI project
 
+[<img src="https://api.travis-ci.org/DFE-Digital/manage-courses-ui.svg?branch=master">](https://api.travis-ci.org/DFE-Digital/manage-courses-ui.svg?branch=master)
+
 ## About
 
 This repo provides a dotnet core solution containing the main client for managing courses.
