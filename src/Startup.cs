@@ -9,8 +9,7 @@ using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using System.Collections.Generic;
-using System.Threading.Tasks;
-using System;
+
 namespace ManageCoursesUi
 {
     public class Startup
@@ -54,7 +53,7 @@ namespace ManageCoursesUi
                 options.Scope.Add("email");
                 options.Scope.Add("profile");
                 options.Scope.Add("organisation");
-                
+
                 options.SaveTokens = true;
                 options.CallbackPath = new PathString(Configuration["auth:oidc:callbackPath"]);
                 options.SignedOutCallbackPath = new PathString(Configuration["auth:oidc:signedOutCallbackPath"]);
@@ -77,6 +76,8 @@ namespace ManageCoursesUi
             {
                 app.UseExceptionHandler("/Home/Error");
             }
+
+            app.UseStatusCodePagesWithReExecute("/Home/Error");
 
             app.UseStaticFiles();
 

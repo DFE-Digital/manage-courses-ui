@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ManageCoursesUi.Controllers
 {
@@ -6,6 +7,12 @@ namespace ManageCoursesUi.Controllers
     {
         // GET: Home
         public ActionResult Index()
+        {
+            return View();
+        }
+
+        [AllowAnonymous]
+        public IActionResult Error()
         {
             return View();
         }
