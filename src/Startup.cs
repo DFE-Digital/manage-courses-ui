@@ -61,6 +61,7 @@ namespace ManageCoursesUi
                 {
                     InboundClaimTypeMap = new Dictionary<string, string>()
                 };
+                options.DisableTelemetry = true;
             });
         }
 
