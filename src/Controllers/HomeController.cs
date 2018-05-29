@@ -1,25 +1,22 @@
 ﻿using ManageCoursesUi.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
 
 namespace ManageCoursesUi.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly IConfiguration _configuration;
+        private readonly ManageCoursesConfig _config;
 
-        public HomeController(IConfiguration configuration)
+        public HomeController(ManageCoursesConfig config)
         {
-            _configuration = configuration;
+            _config = config;
         }
+
         // GET: Home
         public ActionResult Index()
         {
-            var model = new HomeViewModel
-            {
-                RegistrationUrl = _configuration["register:registrationCallbackPath"],
-            };
+            var model = new HomeViewModel { RegistrationUrl = _config.RegisterCallbackPath };
             return View(model);
         }
 
