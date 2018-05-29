@@ -49,6 +49,18 @@ namespace ManageCoursesUi.Controllers
             await HttpContext.SignOutAsync(OpenIdConnectDefaults.AuthenticationScheme);
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
         }
+
+        /// <summary>
+        /// Users returning from registration on DfE Sign-in will arrive here.
+        /// This url has to be registered with DfE Sign-in to be allowed,
+        /// so don't change it without getting the new path registered with DfE Sign-in.
+        /// </summary>
+        /// <returns></returns>
+        [Route("register/complete")]
+        public ActionResult RegistrationComplete()
+        {
+            return RedirectToAction("WhoAmI");
+        }
     }
 
     public class WhoAmIViewModel
