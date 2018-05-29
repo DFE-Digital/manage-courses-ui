@@ -15,13 +15,6 @@ namespace ManageCoursesUi.Controllers
 {
     public class AuthController : Controller
     {
-        /// <summary>
-        /// Users returning from registration on DfE Sign-in will arrive here.
-        /// This url has to be registered with DfE Sign-in to be allowed,
-        /// so don't change it without getting the new path registered with DfE Sign-in.
-        /// </summary>
-        public const string RegistrationCompleteCallbackPath = "register/complete";
-
         [Authorize]
         public ActionResult WhoAmI()
         {
@@ -57,7 +50,10 @@ namespace ManageCoursesUi.Controllers
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
         }
 
-        [Route(RegistrationCompleteCallbackPath)]
+        /// <summary>
+        /// Endpoint for registration callback.
+        /// Route is configured from config in <see cref="Startup.Configure"/>
+        /// </summary>
         public ActionResult RegistrationComplete()
         {
             return RedirectToAction("WhoAmI");

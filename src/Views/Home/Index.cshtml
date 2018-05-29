@@ -1,4 +1,4 @@
-﻿@using ManageCoursesUi.Controllers
+﻿@model HomeViewModel
 @{
     string name = null;
     if (User.Identity.IsAuthenticated)
@@ -6,6 +6,7 @@
         var nameClaim = User.Claims.FirstOrDefault(c => c.Type == "given_name");
         name = nameClaim?.Value;
     }
+    var registerUrl = "https://signin-test-pfl-as.azurewebsites.net/register?client_id=bats&redirect_uri=https://localhost:44364/" + Model.RegistrationUrl;
 }
 <h2>Hello @(name??"Stranger")</h2>
 
@@ -18,7 +19,7 @@
     else
     {
         <li><a asp-controller="Auth" asp-action="Login">Login</a></li>
-        <li><a href="https://signin-test-pfl-as.azurewebsites.net/register?client_id=bats&redirect_uri=https://localhost:44364/@AuthController.RegistrationCompleteCallbackPath">Register</a></li>
+        <li><a href="@registerUrl">Register</a></li>
     }
 </ul>
 <div class="clearfix"></div>

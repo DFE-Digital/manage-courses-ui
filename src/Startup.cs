@@ -92,6 +92,9 @@ namespace ManageCoursesUi
                 routes.MapRoute(
                     name: "default2",
                     template: "{controller}/{action}/{id?}");
+                routes.MapRoute("registrationCallback",
+                    Configuration["register:registrationCallbackPath"],
+                    new {controller = "Auth", action = "RegistrationComplete" });
             });
         }
     }
