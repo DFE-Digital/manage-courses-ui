@@ -49,6 +49,15 @@ namespace ManageCoursesUi.Controllers
             await HttpContext.SignOutAsync(OpenIdConnectDefaults.AuthenticationScheme);
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
         }
+
+        /// <summary>
+        /// Endpoint for registration callback.
+        /// Route is configured from config in <see cref="Startup.Configure"/>
+        /// </summary>
+        public ActionResult RegistrationComplete()
+        {
+            return RedirectToAction("WhoAmI");
+        }
     }
 
     public class WhoAmIViewModel
