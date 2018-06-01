@@ -1,4 +1,4 @@
-﻿@model HomeViewModel
+﻿@inject ManageCoursesConfig config
 @{
     string name = null;
     if (User.Identity.IsAuthenticated)
@@ -6,9 +6,11 @@
         var nameClaim = User.Claims.FirstOrDefault(c => c.Type == "given_name");
         name = nameClaim?.Value;
     }
-    var registerUrl = "https://signin-test-pfl-as.azurewebsites.net/register?client_id=bats&redirect_uri=https://localhost:44364/" + Model.RegistrationUrl;
+    var registerUrl = config.ExternalRegistrationUrl;
+
 }
-<h2>Hello @(name??"Stranger")</h2>
+
+<h2>Hello @(name ?? "Stranger")</h2>
 
 <ul class="nav navbar-nav navbar-left">
     @if (User.Identity.IsAuthenticated)
