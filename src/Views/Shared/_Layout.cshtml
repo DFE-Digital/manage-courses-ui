@@ -32,12 +32,7 @@
 }
 
 @section bodyEnd {
-    <environment include="Development">
-        <link rel="stylesheet" href="~/css/site.css" />
-    </environment>
-    <environment exclude="Development">
-        <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
-    </environment>
+        <link rel="stylesheet" href="~/css/site.ss" asp-append-version="true" />
         <script src="~/javascripts/govuk/details.polyfill.js"></script>
         <script src="~/javascripts/govuk/selection-buttons.js"></script>
         <script src="~/javascripts/govuk/show-hide-content.js"></script>
