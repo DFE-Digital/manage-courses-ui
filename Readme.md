@@ -26,6 +26,10 @@ It can also worked on Visual Studio Code but a reverse proxy from https back to 
 
 It should be [12 factor](https://12factor.net/), notably config from environment variables.
 
+### Build dependencies
+
+* Nodejs https://nodejs.org/ for the asset pipeline - worked with version 8.11.2 LTS
+
 ## Auth workflow
 
 1. localhost hits login button
