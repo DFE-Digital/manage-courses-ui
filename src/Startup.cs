@@ -67,7 +67,7 @@ namespace ManageCoursesUi
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ManageCoursesConfig config)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IServiceProvider serviceProvider)
         {
             if (env.IsDevelopment())
             {
@@ -84,6 +84,8 @@ namespace ManageCoursesUi
             app.UseStaticFiles();
 
             app.UseAuthentication();
+
+            var config = serviceProvider.GetService<ManageCoursesConfig>();
 
             app.UseMvc(routes =>
             {
