@@ -30,6 +30,14 @@ It should be [12 factor](https://12factor.net/), notably config from environment
 
 * Nodejs https://nodejs.org/ for the asset pipeline - worked with version 8.11.2 LTS
 
+#### Asset pipeline
+
+* See https://docs.microsoft.com/en-us/aspnet/core/client-side/using-grunt?view=aspnetcore-2.1 for how grunt is used.
+* To get visual studio to download the node dependencies open the package.json file and save it. Take a look at the output window (select "Bower/npm" in the output dropdown).
+* Once you've done that you can right-click gruntfile.js in solution explorer and open "Task Runner Explorer" to see that it's been understood.
+* Run a build and it should generate all the files needed under folder wwwroot.
+
+
 ## Auth workflow
 
 1. localhost hits login button
