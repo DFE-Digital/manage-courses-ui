@@ -39,7 +39,7 @@ namespace ManageCoursesUi
 
                 options.ClientId = Configuration["auth:oidc:clientId"];
                 const string envKeyClientSecret = "DFE_SIGNIN_CLIENT_SECRET";
-                var clientSecret = Environment.GetEnvironmentVariable(envKeyClientSecret);
+                var clientSecret = Configuration[envKeyClientSecret];
                 if (string.IsNullOrWhiteSpace(clientSecret))
                 {
                     throw new Exception("Missing environment variable " + envKeyClientSecret + " - get this from the DfE Sign-in team.");
