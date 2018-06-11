@@ -16,6 +16,11 @@
 
   <ItemGroup>
     <Folder Include="wwwroot\" />
+    <Content Remove="wwwroot\.gitkeep" />
   </ItemGroup>
 
+  <Target Name="Grunt" BeforeTargets="AfterBuild">
+    <Exec Command="npm install" />
+    <Exec Command="npm run generate" />
+  </Target>
 </Project>
