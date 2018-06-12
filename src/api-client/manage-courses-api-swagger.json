@@ -29,7 +29,10 @@
             "x-nullable": true,
             "description": "The exported data",
             "schema": {
-              "type": "file"
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Course"
+              }
             }
           }
         }
@@ -60,18 +63,6 @@
     }
   },
   "definitions": {
-    "Payload": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "courses": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/Course"
-          }
-        }
-      }
-    },
     "Course": {
       "type": "object",
       "additionalProperties": false,
@@ -84,6 +75,18 @@
         },
         "title": {
           "type": "string"
+        }
+      }
+    },
+    "Payload": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "courses": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Course"
+          }
         }
       }
     }
