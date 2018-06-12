@@ -19,7 +19,7 @@
     <Content Remove="wwwroot\.gitkeep" />
   </ItemGroup>
 
-  <Target Name="Grunt" Condition="'$(CONFIG)'=='Release'" BeforeTargets="AfterBuild">
+  <Target Name="Grunt" Condition="'$(Configuration)'=='Release'" BeforeTargets="AfterBuild">
     <Exec Command="npm install" />
     <Exec Command="npm run generate" />
   </Target>
