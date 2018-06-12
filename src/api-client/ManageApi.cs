@@ -1,18 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace GovUk.Education.ManageCourses.ApiClient
 {
     public class ManageApi
     {
-        public void SendToManageCoursesApi(List<Course> courses)
+        public async Task<IEnumerable<Course>> GetCourses()
         {
-            Console.WriteLine("Posting to api...");
             var client = new ManageCoursesApiClient();
-            var payload = new Payload { Courses = new ObservableCollection<Course>(courses) };
-            client.ImportAsync(payload).Wait();
-            Console.WriteLine("Done.");
+            var response = await client.ExportAsync();
+            // todo: return actual course list
+            return new List<Course>()
+            {
+                new Course {Title = "todo-course-title"},
+            };
         }
     }
 }

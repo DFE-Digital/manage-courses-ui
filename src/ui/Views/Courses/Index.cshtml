@@ -1,11 +1,13 @@
-﻿@model object
+﻿@model IEnumerable<GovUk.Education.ManageCourses.ApiClient.Course>
 
 @{
-    ViewBag.Title = "title";
     Layout = "_Layout";
 }
 
 <h2>Courses</h2>
 <ul>
-    <li>todo</li>
+    @foreach (var course in Model)
+    {
+        <li>@course.Title</li>
+    }
 </ul>
