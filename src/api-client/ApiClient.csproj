@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Library</OutputType>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <RootNamespace>GovUk.Education.ManageCourses.ApiClient</RootNamespace>
+    <ApplicationIcon />
+    <StartupObject />
+  </PropertyGroup>
+
+  <Target Name="NSwag" BeforeTargets="Compile">
+    <Copy SourceFiles="@(Reference)" DestinationFolder="$(OutDir)References" />
+    <Exec Command="$(NSwagExe_Core20) swagger2csclient /input:manage-courses-api-swagger.json /classname:ManageCoursesApiClient /namespace:GovUk.Education.ManageCourses.ApiClient /output:Generated\ManageCoursesApiClient.cs" />
+    <RemoveDir Directories="$(OutDir)References" />
+  </Target>
+
+  <ItemGroup>
+    <PackageReference Include="DotNetCore.NPOI" Version="1.0.2" />
+    <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
+    <PackageReference Include="NSwag.MSBuild" Version="11.17.13" />
+  </ItemGroup>
+
+</Project>

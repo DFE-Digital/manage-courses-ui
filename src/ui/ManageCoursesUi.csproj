@@ -19,6 +19,10 @@
     <Content Remove="wwwroot\.gitkeep" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\api-client\ApiClient.csproj" />
+  </ItemGroup>
+
   <Target Name="Grunt" Condition="'$(Configuration)'=='Release'" BeforeTargets="AfterBuild">
     <Exec Command="npm install" />
     <Exec Command="npm run generate" />

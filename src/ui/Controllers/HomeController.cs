@@ -8,7 +8,7 @@ namespace ManageCoursesUi.Controllers
         // GET: Home
         public ActionResult Index()
         {
-            return View();
+            return RedirectToAction("Index", "Courses");
         }
 
         [AllowAnonymous]
