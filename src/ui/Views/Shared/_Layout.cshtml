@@ -1,10 +1,19 @@
-﻿@{
+﻿@inject ManageCoursesConfig config
+@{
     Layout = "~/Views/Shared/_Layout_base.cshtml";
-    ViewData["serviceName"] = "Manage courses";
+    ViewData["serviceName"] = "Publish teacher training courses";
 
     ViewBag.Title = (String.IsNullOrEmpty(ViewBag.Title) ? "" : ViewBag.Title + " - ")
         + ViewData["serviceName"] + " - GOV.UK";
     ViewData["headerClass"] = "with-proposition";
+
+    string name = null;
+    if (User.Identity.IsAuthenticated)
+    {
+        var nameClaim = User.Claims.FirstOrDefault(c => c.Type == "given_name");
+        name = nameClaim?.Value;
+    }
+    var registerUrl = config.ExternalRegistrationUrl;
 }
 
 @section head {
@@ -21,45 +30,56 @@
 @section propositionHeader {
     <div class="header-proposition">
         <div class="content">
-            @*<a href="#proposition-links" class="js-header-toggle menu">Menu</a>*@
+            <a href="#proposition-links" class="js-header-toggle menu">Menu</a>
             <nav id="proposition-menu">
                 <a href="~/" id="proposition-name" role="link">@ViewData["serviceName"]</a>
-                @* <ul id="proposition-links">
-                    </ul>*@
+
+
+                <ul id="proposition-links">
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <li><a href="/schools">Schools</a></li>
+                        <li><a href="/organisation">Organisation</a></li>
+                        <li><a asp-controller="Auth" asp-action="Logout">Sign out</a></li>
+                    }
+                    else
+                    {
+                        <li><a asp-controller="Auth" asp-action="Login">Login</a></li>
+                        <li><a href="@registerUrl">Register</a></li>
+                    }
+                </ul>
+                
             </nav>
         </div>
     </div>
 }
 
 @section bodyEnd {
-        <link rel="stylesheet" href="~/css/site.ss" asp-append-version="true" />
-        <script src="~/javascripts/govuk/details.polyfill.js"></script>
-        <script src="~/javascripts/govuk/selection-buttons.js"></script>
-        <script src="~/javascripts/govuk/show-hide-content.js"></script>
+    <link rel="stylesheet" href="~/css/site.ss" asp-append-version="true" />
+    <script src="~/javascripts/govuk/details.polyfill.js"></script>
+    <script src="~/javascripts/govuk/selection-buttons.js"></script>
+    <script src="~/javascripts/govuk/show-hide-content.js"></script>
 }
 
 @section footerSupportLinks {
     <h2 class="visuallyhidden">Support links</h2>
     @*<ul>
-        <li><a href="mailto:becomingateacher@digital.education.gov.uk?subject=Search%20beta%20feedback">Give feedback</a></li>
-        <li><a href="/cookies">Cookies</a></li>
-        <li><a href="/privacy-policy">Privacy Policy</a></li>
-        <li><a href="/terms-conditions">Terms and conditions</a></li>
-    </ul>*@
+            <li><a href="mailto:becomingateacher@digital.education.gov.uk?subject=Search%20beta%20feedback">Give feedback</a></li>
+            <li><a href="/cookies">Cookies</a></li>
+            <li><a href="/privacy-policy">Privacy Policy</a></li>
+            <li><a href="/terms-conditions">Terms and conditions</a></li>
+        </ul>*@
 }
 
 <main role="main">
     <div class="phase-banner-wrapper">
-        @* PRIVATE_BETA_HACK *@
-        @*<div class="private-beta-warning font-xsmall">
-            You can <a href="https://www.ucas.com/ucas/teacher-training/ucas-teacher-training-search-training-programmes">find teacher training in other subjects</a> on the UCAS website.
-        </div>
-        <div class="phase-banner">
-            <p>
-                <strong class="phase-tag">BETA</strong>
-                <span>This is a new service – your <a href="mailto:becomingateacher@digital.education.gov.uk?subject=Search%20beta%20feedback">feedback</a> will help us to improve it.</span>
-            </p>
-        </div>*@
+
+            <div class="phase-banner">
+                <p>
+                    <strong class="phase-tag">BETA</strong>
+                    <span>This is a new service – your <a href="mailto:becomingateacher@digital.education.gov.uk?subject=Publish%20teacher%20training%20courses%20feedback">feedback</a> will help us to improve it.</span>
+                </p>
+            </div>
     </div>
 
     <div id="content">
