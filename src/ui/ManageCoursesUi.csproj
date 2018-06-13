@@ -3,6 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
     <UserSecretsId>manage-courses-ui-config</UserSecretsId>
+    <RootNamespace>GovUk.Education.ManageCourses.Ui</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>

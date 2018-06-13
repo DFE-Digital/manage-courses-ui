@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using GovUk.Education.ManageCourses.ApiClient;
+using GovUk.Education.ManageCourses.ApiClient.Generated;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Builder;
@@ -12,7 +13,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 
-namespace ManageCoursesUi
+namespace GovUk.Education.ManageCourses.Ui
 {
     public class Startup
     {

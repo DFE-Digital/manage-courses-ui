@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using GovUk.Education.ManageCourses.ApiClient;
-using ManageCoursesUi.ViewModels;
+using GovUk.Education.ManageCourses.Ui.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace ManageCoursesUi.Controllers
+namespace GovUk.Education.ManageCourses.Ui.Controllers
 {
     [Authorize]
     [Route("courses")]

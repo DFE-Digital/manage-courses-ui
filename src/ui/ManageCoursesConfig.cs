@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 
-namespace ManageCoursesUi
+namespace GovUk.Education.ManageCourses.Ui
 {
     public class ManageCoursesConfig
     {

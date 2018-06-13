@@ -1,4 +1,4 @@
-﻿namespace ManageCoursesUi.Claims
+﻿namespace GovUk.Education.ManageCourses.Ui.Claims
 {
     public class OrgClaim
     {
