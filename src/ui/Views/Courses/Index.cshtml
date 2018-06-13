@@ -18,9 +18,10 @@
 <ul>
     @foreach (var course in Model)
     {
-        <div class="heading-medium remove-top-margin">
-            <a href="#">@course.Title</a>
-        </div>
-        
+        <li>
+            <div class="heading-medium remove-top-margin">
+                <a href="@Url.Action("details", "courses", 1)">@course.Title</a>
+            </div>
+        </li>
     }
 </ul>
