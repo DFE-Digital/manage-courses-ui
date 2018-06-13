@@ -4,10 +4,23 @@
     Layout = "_Layout";
 }
 
-<h2>Courses</h2>
+<h1 class="heading-xlarge">
+    @*<span class="heading-secondary"></span>*@
+    Courses
+</h1>
+
+<div class="grid-row add-double-bottom-margin">
+    <div class="column-two-thirds">
+        <p class="lede">Multiple UCAS courses for the same subject are combined into a single subject page. For example, courses with and without a salary.</p>
+    </div>
+</div>
+
 <ul>
     @foreach (var course in Model)
     {
-        <li>@course.Title</li>
+        <div class="heading-medium remove-top-margin">
+            <a href="#">@course.Title</a>
+        </div>
+        
     }
 </ul>
