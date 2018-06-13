@@ -4,9 +4,11 @@ using GovUk.Education.ManageCourses.ApiClient;
 using ManageCoursesUi.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+
 namespace ManageCoursesUi.Controllers
 {
     [Authorize]
+    [Route("courses")]
     public class CoursesController : Controller
     {
         private readonly ManageApi _manageApi;
@@ -22,6 +24,7 @@ namespace ManageCoursesUi.Controllers
             return View(courses);
         }
 
+        [Route("/course/{ucasCode}")]
         public async Task<IActionResult> Details(string ucasCode)
         {
             var course = await _manageApi.GetCourse(ucasCode);
