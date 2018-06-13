@@ -66,14 +66,21 @@
     "Course": {
       "type": "object",
       "additionalProperties": false,
+      "required": [
+        "id"
+      ],
       "properties": {
-        "ucasInstitutionCode": {
-          "type": "string"
-        },
-        "ucasCourseCode": {
-          "type": "string"
+        "id": {
+          "type": "integer",
+          "format": "int32"
         },
         "title": {
+          "type": "string"
+        },
+        "ucasCode": {
+          "type": "string"
+        },
+        "type": {
           "type": "string"
         }
       }
