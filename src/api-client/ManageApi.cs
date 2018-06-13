@@ -24,7 +24,8 @@ namespace GovUk.Education.ManageCourses.ApiClient
         {
             // todo: expand api to allow fetching single course
             var courses = await _apiClient.ExportAsync();
-            return courses.Single(c => c.UcasCode == ucasCode);
+            // todo: don't use first once we have course-folding in place
+            return courses.First(c => c.UcasCode == ucasCode);
         }
     }
 }
