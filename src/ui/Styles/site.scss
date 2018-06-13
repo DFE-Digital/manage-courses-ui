@@ -1,1 +1,29 @@
 ﻿@import "govuk-elements";
+
+.phase-banner-wrapper
+{
+    max-width: 960px;
+    margin: 0 15px;
+    margin: 0 30px;
+    margin: 0 auto;
+    padding: 0 15px 10px;
+    outline: none;
+}
+
+@media screen and (min-width: 641px)
+{
+    .phase-banner-wrapper
+    {
+        margin: 0 30px;
+        padding: 0 0 10px;
+    }
+}
+
+@media screen and (min-width: 1020px)
+{
+    .phase-banner-wrapper
+    {
+        margin: 0 auto;
+        width: 960px;
+    }
+}
