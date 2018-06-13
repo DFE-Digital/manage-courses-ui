@@ -19,11 +19,11 @@ namespace GovUk.Education.ManageCourses.ApiClient
             return courses;
         }
 
-        public async Task<Course> GetCourse(int id)
+        public async Task<Course> GetCourse(string ucasCode)
         {
             // todo: expand api to allow fetching single course
             var courses = await _apiClient.ExportAsync();
-            return courses.Single(c => c.Id == id);
+            return courses.Single(c => c.UcasCode == ucasCode);
         }
     }
 }

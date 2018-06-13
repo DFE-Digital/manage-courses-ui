@@ -22,9 +22,9 @@ namespace ManageCoursesUi.Controllers
             return View(courses);
         }
 
-        public async Task<IActionResult> Details(int id)
+        public async Task<IActionResult> Details(string ucasCode)
         {
-            var course = await _manageApi.GetCourse(id);
+            var course = await _manageApi.GetCourse(ucasCode);
             var courseDetails = new CourseDetailsViewModel
             {
                 CourseTitle = course.Title,
