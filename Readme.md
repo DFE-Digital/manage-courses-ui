@@ -72,3 +72,23 @@ Check that the bindings for https settings are for port 44364 (you may need to r
 
 * https://signin-test-sup-as.azurewebsites.net/users/80BA7FAF-D6E1-47B4-9EDD-4539F53C8B9E/audit - The data
   here is always 15 mins out of date as its on an event stream (its more realtime in prod envs.)
+
+### Additional Msbuild Target
+
+The default value of `InputSwaggerJson` is `manage-courses-api-swagger.json`.
+The default value of `OutputSwaggerGeneration` is `Generated\ManageCoursesApiClient.cs`
+
+```bash
+msbuild
+```
+
+```bash
+msbuild /p:InputSwaggerJson={url to json| file path to json}
+```
+
+For development or previewing
+The default value is `Generated\ManageCoursesApiClient.cs`
+```bash
+cd src\api-client
+msbuild /t:NSwag /p:OutputSwaggerGeneration={file path}
+```
