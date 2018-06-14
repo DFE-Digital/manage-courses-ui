@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 
-namespace ManageCoursesUi
+namespace GovUk.Education.ManageCourses.Ui
 {
     public class ManageCoursesConfig
     {
@@ -24,6 +24,6 @@ namespace ManageCoursesUi
 
         public string RegisterBaseUrl => _configuration["url:register"];
 
-        public string ExternalRegistrationUrl => $"{this.RegisterBaseUrl}?client_id={this.ClientId}&redirect_uri={this.SiteBaseUrl}/{this.RegisterCallbackPath}";
+        public string ExternalRegistrationUrl => $"{RegisterBaseUrl}?client_id={ClientId}&redirect_uri={SiteBaseUrl}/{RegisterCallbackPath}";
     }
 }

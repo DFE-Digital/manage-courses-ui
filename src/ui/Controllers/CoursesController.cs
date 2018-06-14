@@ -1,33 +1,46 @@
-﻿using System.Linq;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using GovUk.Education.ManageCourses.ApiClient;
+using GovUk.Education.ManageCourses.Ui.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-using ManageCoursesUi.ViewModels;
-namespace ManageCoursesUi.Controllers
+namespace GovUk.Education.ManageCourses.Ui.Controllers
 {
     [Authorize]
+    [Route("courses")]
     public class CoursesController : Controller
     {
-        private readonly ManageApi manageApi;
-        public CoursesController()
+        private readonly ManageApi _manageApi;
+
+        public CoursesController(ManageApi manageApi)
         {
-            manageApi = new ManageApi();
+            _manageApi = manageApi;
         }
+
         public async Task<IActionResult> Index()
         {
-            var courses = await manageApi.GetCourses();
+            var courses = await _manageApi.GetCourses();
             return View(courses);
         }
 
-        public async Task<IActionResult> Details(int id)
+        [Route("/course/{ucasCode}")]
+        public async Task<IActionResult> Details(string ucasCode)
         {
+            var course = await _manageApi.GetCourse(ucasCode);
             var courseDetails = new CourseDetailsViewModel
             {
-                CourseTitle = "Biology",
-                Subjects = new List<SubjectViewModel> { new SubjectViewModel { Subject = "Biology", Type = "	QTS, 1 year full time with salary", Code = "32Q7" } },
+                CourseTitle = course.Title,
+                Subjects = new List<SubjectViewModel>
+                {
+                    new SubjectViewModel
+                    {
+                        Subject = "Biology(todo)", // todo - real subject
+                        Type = course.Type,
+                        Code = course.UcasCode
+                    }
+                },
+                // todo: more details:
                 AboutCourse = new AboutCourseViewModel(),
                 AboutOrganisation = new AboutOrganisationViewModel(),
                 CourseRequirements = new CourseRequirementsViewModel(),

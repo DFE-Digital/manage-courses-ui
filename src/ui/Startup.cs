@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
-using System.Net.Http;
+using GovUk.Education.ManageCourses.ApiClient;
+using GovUk.Education.ManageCourses.ApiClient.Generated;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Builder;
@@ -12,7 +13,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 
-namespace ManageCoursesUi
+namespace GovUk.Education.ManageCourses.Ui
 {
     public class Startup
     {
@@ -73,7 +74,9 @@ namespace ManageCoursesUi
                 options.DisableTelemetry = true;
             });
             services.AddSingleton<ManageCoursesConfig, ManageCoursesConfig>();
-        }
+            services.AddSingleton<ManageApi, ManageApi>();
+            services.AddSingleton<ManageCoursesApiClient, ManageCoursesApiClient>();
+            }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, IServiceProvider serviceProvider)

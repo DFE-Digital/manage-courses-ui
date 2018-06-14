@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace ManageCoursesUi.Controllers
+namespace GovUk.Education.ManageCourses.Ui.Controllers
 {
     public class HomeController : Controller
     {

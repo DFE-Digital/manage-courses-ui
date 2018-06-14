@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
-namespace ManageCoursesUi.ViewModels
+namespace GovUk.Education.ManageCourses.Ui.ViewModels
 {
     public class ErrorViewModel
     {
