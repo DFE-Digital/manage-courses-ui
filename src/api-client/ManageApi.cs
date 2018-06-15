@@ -9,9 +9,9 @@ namespace GovUk.Education.ManageCourses.ApiClient
     {
         private readonly ManageCoursesApiClient _apiClient;
 
-        public ManageApi(ManageCoursesApiClient apiClient)
+        public ManageApi()
         {
-            _apiClient = apiClient;
+            _apiClient = new ManageCoursesApiClient();
         }
 
         public async Task<IEnumerable<Course>> GetCourses()
