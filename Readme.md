@@ -9,8 +9,9 @@ This repo provides a dotnet core solution containing the main client for managin
 
 ## Setup
 
-* Add `DFE_SIGNIN_CLIENT_SECRET` to your environment variables and log-out/in.
-  Get this from the DfE single sign-in project by emailing [DfE.SIGNIN@education.gov.uk](mailto:DfE.SIGNIN@education.gov.uk)
+* Add `DFE_SIGNIN_CLIENT_SECRET` to your user secrets for the ManageCoursesUI project (right-click the project in VS, "Manage user secrets".
+  Ask the team for the current client secret, or get it from the DfE single sign-in project by emailing [DfE.SIGNIN@education.gov.uk](mailto:DfE.SIGNIN@education.gov.uk)
+* Run `npm install` in `src\ui\` to get the asset pipeline dependencies (grunt) before opening visual studio.
 * Must be run with SSL/TLS. The DfE Sign-in service will not allow non-https redirect urls
 
 ## Coding
