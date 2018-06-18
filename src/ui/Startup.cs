@@ -76,7 +76,6 @@ namespace GovUk.Education.ManageCourses.Ui
             });
             services.AddSingleton<ManageCoursesConfig, ManageCoursesConfig>();
             services.AddSingleton<ManageApi, ManageApi>();
-            services.AddSingleton<ManageCoursesApiClient, ManageCoursesApiClient>();
             }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
