@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using GovUk.Education.ManageCourses.ApiClient.Generated;
@@ -16,8 +17,16 @@ namespace GovUk.Education.ManageCourses.ApiClient
 
         public async Task<IEnumerable<Course>> GetCourses()
         {
-            var courses = await _apiClient.ExportAsync();
-            return courses;
+            try
+            {
+
+                var courses = await _apiClient.ExportAsync();
+                return courses;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Failed to get course data from " + _apiClient.BaseUrl, ex);
+            }
         }
 
         public async Task<Course> GetCourse(string ucasCode)
