@@ -16,10 +16,5 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
         {
             return View();
         }
-
-        public IActionResult debug()
-        {
-            return View(Request);
-        }
     }
 }
