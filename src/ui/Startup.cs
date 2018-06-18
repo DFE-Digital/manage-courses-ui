@@ -98,10 +98,15 @@ namespace GovUk.Education.ManageCourses.Ui
 
             // https://docs.microsoft.com/en-gb/aspnet/core/host-and-deploy/linux-nginx?view=aspnetcore-2.1&tabs=aspnetcore2x
             // Prod uses edge-terminated TLS, so we need to tell openid connect the right scheme
-            app.UseForwardedHeaders(new ForwardedHeadersOptions
+            var forwardedHeadersOptions = new ForwardedHeadersOptions
             {
-                ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
-            });
+                ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto,
+            };
+            // trust everything so that the edge-terminated TLS proxy on openshift are accepted
+            forwardedHeadersOptions.KnownProxies.Clear();
+            forwardedHeadersOptions.KnownNetworks.Clear();
+
+            app.UseForwardedHeaders(forwardedHeadersOptions);
 
             app.UseAuthentication();
 
