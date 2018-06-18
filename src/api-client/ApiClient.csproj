@@ -18,9 +18,11 @@
     <PropertyGroup>
       <classname>ManageCoursesApiClient</classname>
       <namespace>$(RootNamespace)</namespace>
+      <clientBaseClass>$(namespace).ManageCoursesApiClientBase</clientBaseClass>
+      <configurationClass>$(namespace).IManageCoursesApiClientConfiguration</configurationClass>
     </PropertyGroup>
 
-    <Exec Command="$(NSwagExe_Core20) swagger2csclient /input:$(InputSwaggerJson) /output:$(OutputSwaggerGeneration) /classname:$(classname) /namespace:$(namespace)" />
+    <Exec Command="$(NSwagExe_Core20) swagger2csclient /input:$(InputSwaggerJson) /output:$(OutputSwaggerGeneration) /classname:$(classname) /namespace:$(namespace) /clientBaseClass:$(clientBaseClass) /configurationClass:$(configurationClass)" />
     <RemoveDir Directories="$(OutDir)References" />
   </Target>
 

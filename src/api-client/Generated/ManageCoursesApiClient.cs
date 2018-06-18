@@ -9,12 +9,12 @@ namespace GovUk.Education.ManageCourses.ApiClient
     #pragma warning disable // Disable all warnings
 
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "11.17.13.0 (NJsonSchema v9.10.50.0 (Newtonsoft.Json v9.0.0.0))")]
-    public partial class ManageCoursesApiClient 
+    public partial class ManageCoursesApiClient : GovUk.Education.ManageCourses.ApiClient.ManageCoursesApiClientBase
     {
         private string _baseUrl = "http://localhost:6001";
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
     
-        public ManageCoursesApiClient()
+        public ManageCoursesApiClient(GovUk.Education.ManageCourses.ApiClient.IManageCoursesApiClientConfiguration configuration) : base(configuration)
         {
             _settings = new System.Lazy<Newtonsoft.Json.JsonSerializerSettings>(() => 
             {

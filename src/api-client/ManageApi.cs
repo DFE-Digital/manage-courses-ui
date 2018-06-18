@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using GovUk.Education.ManageCourses.ApiClient;
-using Microsoft.Extensions.Configuration;
 
 namespace GovUk.Education.ManageCourses.ApiClient
 {
@@ -11,18 +9,9 @@ namespace GovUk.Education.ManageCourses.ApiClient
     {
         private readonly ManageCoursesApiClient _apiClient;
 
-        public ManageApi(IConfiguration configuration)
+        public ManageApi(ManageCoursesApiClient apiClient)
         {
-            const string key = "ApiConnection:Url";
-            var baseUrl = configuration[key];
-            if (string.IsNullOrWhiteSpace(baseUrl))
-            {
-                throw new Exception("Missing configuration for " + key);
-            }
-            _apiClient = new ManageCoursesApiClient
-            {
-                BaseUrl = baseUrl
-            };
+            _apiClient = apiClient;
         }
 
         public async Task<IEnumerable<Course>> GetCourses()

@@ -73,9 +73,21 @@ namespace GovUk.Education.ManageCourses.Ui
                 };
                 options.DisableTelemetry = true;
             });
+
+            services.AddSingleton<IManageCoursesApiClientConfiguration, ManageCoursesApiClientConfiguration>();
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddSingleton<ManageCoursesConfig, ManageCoursesConfig>();
             services.AddSingleton<ManageApi, ManageApi>();
-            }
+            services.AddSingleton(serviceProvider =>
+            {
+                var manageCoursesApiClientConfiguration = serviceProvider.GetService<IManageCoursesApiClientConfiguration>();
+                var manageCoursesApiClient = new ManageCoursesApiClient(manageCoursesApiClientConfiguration);
+                var config = serviceProvider.GetService<ManageCoursesConfig>();
+                manageCoursesApiClient.BaseUrl = config.ApiUrl;
+                return manageCoursesApiClient;
+            });
+        }
+
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, IServiceProvider serviceProvider)
