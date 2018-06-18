@@ -4,7 +4,7 @@
 // </auto-generated>
 //----------------------
 
-namespace GovUk.Education.ManageCourses.ApiClient.Generated
+namespace GovUk.Education.ManageCourses.ApiClient
 {
     #pragma warning disable // Disable all warnings
 

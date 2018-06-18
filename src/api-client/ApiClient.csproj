@@ -17,7 +17,7 @@
 
     <PropertyGroup>
       <classname>ManageCoursesApiClient</classname>
-      <namespace>$(RootNamespace).Generated</namespace>
+      <namespace>$(RootNamespace)</namespace>
     </PropertyGroup>
 
     <Exec Command="$(NSwagExe_Core20) swagger2csclient /input:$(InputSwaggerJson) /output:$(OutputSwaggerGeneration) /classname:$(classname) /namespace:$(namespace)" />
