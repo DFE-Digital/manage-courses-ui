@@ -31,7 +31,7 @@ namespace GovUk.Education.ManageCourses.Ui
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
-            const string envKeyApiConnection = "ApiConnection:Uri";            
+            const string envKeyApiConnection = "ApiConnection:Uri";
             var apiUri = Configuration[envKeyApiConnection];
             _logger.LogInformation("Using API base URL: " + apiUri);
             //services.AddScoped<IManageCoursesApi>(provider => new IManageCoursesApi(new HttpClient(), apiUri));
