@@ -38,11 +38,13 @@ namespace GovUk.Education.ManageCourses.Ui
 
             services.AddAuthentication(options =>
             {
+                options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
                 options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
                 options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
-            })
-            .AddCookie()
-            .AddOpenIdConnect(options =>
+            }).AddCookie(options => {
+                options.SlidingExpiration = true;
+                options.ExpireTimeSpan = TimeSpan.FromHours(1);
+            }).AddOpenIdConnect(options =>
             {
                 options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
                 options.MetadataAddress = Configuration["auth:oidc:metadataAddress"];
@@ -57,7 +59,7 @@ namespace GovUk.Education.ManageCourses.Ui
                 options.ClientSecret = clientSecret;
                 options.ResponseType = OpenIdConnectResponseType.Code;
 
-                options.UseTokenLifetime = false;
+                options.UseTokenLifetime = true;
                 options.Scope.Clear();
                 options.Scope.Add("openid");
                 options.Scope.Add("email");
@@ -69,7 +71,15 @@ namespace GovUk.Education.ManageCourses.Ui
                 options.SignedOutCallbackPath = new PathString(Configuration["auth:oidc:signedOutCallbackPath"]);
                 options.SecurityTokenValidator = new JwtSecurityTokenHandler
                 {
-                    InboundClaimTypeMap = new Dictionary<string, string>()
+                    InboundClaimTypeMap = new Dictionary<string, string>(),
+                    TokenLifetimeInMinutes = 20,
+                    SetDefaultTimesOnTokenCreation = true,
+                };
+                options.ProtocolValidator = new OpenIdConnectProtocolValidator
+                {
+                    RequireSub = true,
+                    RequireStateValidation = false,
+                    NonceLifetime = TimeSpan.FromMinutes(15)
                 };
                 options.DisableTelemetry = true;
             });
@@ -121,7 +131,7 @@ namespace GovUk.Education.ManageCourses.Ui
             app.UseAuthentication();
 
             var config = serviceProvider.GetService<ManageCoursesConfig>();
-
+            
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
