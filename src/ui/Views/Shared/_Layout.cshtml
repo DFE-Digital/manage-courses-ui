@@ -39,8 +39,6 @@
                 <ul id="proposition-links">
                     @if (User.Identity.IsAuthenticated)
                     {
-                        <li><a href="/schools">Schools</a></li>
-                        <li><a href="/organisation">Organisation</a></li>
                         <li><a asp-controller="Auth" asp-action="Logout">Sign out</a></li>
                     }
                     else
