@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Dynamic;
 
 namespace GovUk.Education.ManageCourses.ApiClient
 {
@@ -18,7 +19,6 @@ namespace GovUk.Education.ManageCourses.ApiClient
         {
             try
             {
-
                 var courses = await _apiClient.ExportAsync();
                 return courses;
             }
@@ -26,6 +26,19 @@ namespace GovUk.Education.ManageCourses.ApiClient
             {
                 throw new Exception("Failed to get course data from " + _apiClient.BaseUrl, ex);
             }
+        }
+
+        public async Task<dynamic> GetOrganisationCoursesTotal()
+        {
+            // todo: await _apiClient.GetOrganisationCoursesTotal()
+            var courses = await _apiClient.ExportAsync();
+            dynamic organisationCoursesTotal = new ExpandoObject();
+
+            organisationCoursesTotal.OrganisationName = "ToDo: OrganisationName";
+            organisationCoursesTotal.TotalCount = courses.Count();
+
+
+            return organisationCoursesTotal;
         }
 
         public async Task<Course> GetCourse(string ucasCode)

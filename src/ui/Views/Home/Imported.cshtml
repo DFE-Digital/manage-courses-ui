@@ -1,0 +1,27 @@
+﻿@model ImportedCoursesViewModel
+@{
+    Layout = "_Layout";
+
+}
+
+<div class="grid-row">
+    <div class="column-two-thirds">
+      <h1 class="heading-xlarge">
+        We’ve imported your training courses from UCAS
+      </h1>
+
+      <p>We found @Model.TotalCount courses belonging to @Model.OrganisationName.</p>
+
+      <p>You need to:</p>
+      <ul class="list list-bullet">
+        <li>check the data we’ve imported is correct</li>
+        <li>begin prepairing your course information</li>
+      </ul>
+
+      <p class="add-double-bottom-margin">To add courses or change factual course information you’ll need to continue to use UCAS web-link. Your changes on UCAS will be automatically imported here and we’ll let you know when they’re ready.</p>
+
+      <div class="form-group">
+        <a href="/courses" class="button">Continue</a>
+      </div>
+    </div>
+  </div>

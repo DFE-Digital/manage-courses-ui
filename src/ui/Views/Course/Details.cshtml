@@ -1,0 +1,55 @@
+﻿@model CourseDetailsViewModel
+
+@{
+    Layout = "_Layout";
+}
+<h1 class="heading-xlarge">
+    @Model.CourseTitle
+</h1>
+
+<p>
+    <a href="/preview/biology">Preview course</a>
+</p>
+
+<div class="grid-row">
+    <div class="column-two-thirds">
+        <div class="course-parts course-parts--large">
+            <ul class="course-parts-items">
+                <li class="course-parts-item">
+                    <h3 class="course-part-task">
+                        Details from UCAS
+                    </h3>
+
+                    <div style="clear: left; padding-top: 20px" class="add-top-margin">
+                        <p>Course information that we’ve received from UCAS based on your submissions to them. If you want to change these you’ll need to use UCAS web-link.</p>
+                        <p>Multiple UCAS courses for the same subject are combined into a single subject page with different course options.</p>
+                    </div>
+
+                    <table class="ucas-info-table">
+                        <thead>
+                            <tr>
+                                <th>Subject</th>
+                                <th>Type</th>
+                                <th>Code</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            @foreach(var subject in Model.Subjects) {
+                                <tr>
+                                    <td>@subject.Subject</td>
+                                    <td>@subject.Type</td>
+                                    <td>@subject.Code</td>
+                                
+                                    <td><a href="/course/biology/from-ucas#32Q7">View</a></td>
+                                </tr>
+                                }
+
+                        </tbody>
+                    </table>
+
+                </li>
+            </ul>
+    </div>
+</div>

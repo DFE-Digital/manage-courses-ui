@@ -42,8 +42,7 @@ namespace GovUk.Education.ManageCourses.Ui
                 options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
                 options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
             }).AddCookie(options => {
-                options.SlidingExpiration = true;
-                options.ExpireTimeSpan = TimeSpan.FromHours(1);
+                options.ExpireTimeSpan = TimeSpan.FromHours(20);
             }).AddOpenIdConnect(options =>
             {
                 options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
@@ -56,15 +55,17 @@ namespace GovUk.Education.ManageCourses.Ui
                 {
                     throw new Exception("Missing environment variable " + envKeyClientSecret + " - get this from the DfE Sign-in team.");
                 }
+                
                 options.ClientSecret = clientSecret;
                 options.ResponseType = OpenIdConnectResponseType.Code;
-
+                options.GetClaimsFromUserInfoEndpoint = true;
                 options.UseTokenLifetime = true;
                 options.Scope.Clear();
                 options.Scope.Add("openid");
                 options.Scope.Add("email");
                 options.Scope.Add("profile");
                 options.Scope.Add("organisation");
+                options.Scope.Add("offline_access");
 
                 options.SaveTokens = true;
                 options.CallbackPath = new PathString(Configuration["auth:oidc:callbackPath"]);

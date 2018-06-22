@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Linq;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using GovUk.Education.ManageCourses.ApiClient;
 using GovUk.Education.ManageCourses.Ui.ViewModels;
@@ -21,33 +22,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
         public async Task<IActionResult> Index()
         {
             var courses = await _manageApi.GetCourses();
-            return View(courses);
-        }
-
-        [Route("/course/{ucasCode}")]
-        public async Task<IActionResult> Details(string ucasCode)
-        {
-            var course = await _manageApi.GetCourse(ucasCode);
-            var courseDetails = new CourseDetailsViewModel
-            {
-                CourseTitle = course.Title,
-                Subjects = new List<SubjectViewModel>
-                {
-                    new SubjectViewModel
-                    {
-                        Subject = "Biology(todo)", // todo - real subject
-                        Type = course.Type,
-                        Code = course.UcasCode
-                    }
-                },
-                // todo: more details:
-                AboutCourse = new AboutCourseViewModel(),
-                AboutOrganisation = new AboutOrganisationViewModel(),
-                CourseRequirements = new CourseRequirementsViewModel(),
-                Salary = new SalaryViewModel()
-            };
-
-            return View(courseDetails);
+            return View(courses.OrderBy(x => x.Title));
         }
     }
 }
