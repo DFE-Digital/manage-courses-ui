@@ -41,11 +41,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
                         Code = course.UcasCode
                     }
                 },
-                // todo: more details:
-                AboutCourse = new AboutCourseViewModel(),
-                AboutOrganisation = new AboutOrganisationViewModel(),
-                CourseRequirements = new CourseRequirementsViewModel(),
-                Salary = new SalaryViewModel()
+
             };
 
             return View(courseDetails);
