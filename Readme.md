@@ -84,12 +84,12 @@ msbuild
 ```
 
 ```bash
-msbuild /p:InputSwaggerJson={url to json| file path to json}
+dotnet msbuild /t:compile /p:InputSwaggerJson={url to json| file path to json}
 ```
 
 For development or previewing
 The default value is `Generated\ManageCoursesApiClient.cs`
 ```bash
 cd src\api-client
-msbuild /t:NSwag /p:OutputSwaggerGeneration={file path}
+dotnet msbuild /t:compile  /t:NSwag /p:OutputSwaggerGeneration={file path}
 ```
