@@ -18,6 +18,16 @@
     {
         <li><a href="@Url.Action("WhoAmI", "Auth")">Your Profile</a></li>
         <li><a asp-controller="Auth" asp-action="Logout">Logout</a></li>
+
+        <li>
+            <a href="@Url.Action("Imported", "Home")">Imported</a>
+        </li>
+        <li>
+            <a href="@Url.Action("Index", "Courses")">Courses listing</a>
+
+        </li>
+
+
     }
     else
     {

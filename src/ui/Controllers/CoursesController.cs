@@ -24,27 +24,5 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             var courses = await _manageApi.GetCourses();
             return View(courses.OrderBy(x => x.Title));
         }
-
-        [Route("/course/{ucasCode}")]
-        public async Task<IActionResult> Details(string ucasCode)
-        {
-            var course = await _manageApi.GetCourse(ucasCode);
-            var courseDetails = new CourseDetailsViewModel
-            {
-                CourseTitle = course.Title,
-                Subjects = new List<SubjectViewModel>
-                {
-                    new SubjectViewModel
-                    {
-                        Subject = "Biology(todo)", // todo - real subject
-                        Type = course.Type,
-                        Code = course.UcasCode
-                    }
-                },
-
-            };
-
-            return View(courseDetails);
-        }
     }
 }
