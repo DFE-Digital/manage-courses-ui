@@ -5,6 +5,6 @@ namespace GovUk.Education.ManageCourses.Ui.ViewModels
     public class ImportedCoursesViewModel
     {
         public int TotalCount { get; set; }
-        public string TrainingProviderName { get; set; }
+        public string OrganisationName { get; set; }
     }
 }
