@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Linq;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using GovUk.Education.ManageCourses.ApiClient;
 using GovUk.Education.ManageCourses.Ui.ViewModels;
@@ -21,7 +22,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
         public async Task<IActionResult> Index()
         {
             var courses = await _manageApi.GetCourses();
-            return View(courses);
+            return View(courses.OrderBy(x => x.Title));
         }
 
         [Route("/course/{ucasCode}")]
