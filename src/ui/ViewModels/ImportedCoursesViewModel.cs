@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace GovUk.Education.ManageCourses.Ui.ViewModels
+﻿namespace GovUk.Education.ManageCourses.Ui.ViewModels
 {
     public class ImportedCoursesViewModel
     {
