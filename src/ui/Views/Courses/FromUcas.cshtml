@@ -1,0 +1,84 @@
+﻿@model FromUcasViewModel
+
+@{
+    Layout = "_Layout";
+}
+
+<div class="breadcrumbs">
+    <ol>
+        <li><a href="/courses">@Model.OrganisationName</a></li>
+        <li><a href="/course/@Model.SubjectId">@Model.SubjectName</a></li>
+    </ol>
+</div>
+
+<h1 class="heading-xlarge">
+    Details from UCAS
+</h1>
+
+<div class="grid-row">
+    <div class="column-two-thirds">
+        <p class="lede">
+            Course information that we’ve received from UCAS based on your submissions to them. If you want to change it you’ll need to use UCAS web-link.
+        </p>
+
+        <p>Multiple UCAS courses for the same subject are combined into a single subject page with different study options. For example, courses with and without a salary.</p>
+    </div>
+</div>
+
+<ul>
+    @foreach (var course in Model.Courses)
+    {
+    <h2 class="heading-large" id="@course.ProgrammeCode">
+        @course.Name
+        <span class="heading-secondary">@course.Options</span>
+    </h2>
+
+    <dl class="aligned">
+        <dt>Name:</dt>
+        <dd>@course.Name</dd>
+        <dt>Training provider code:</dt>
+        <dd>@course.ProviderCode</dd>
+        <dt>Training programme code:</dt>
+        <dd>@course.ProgrammeCode</dd>
+        <dt>Accredited provider:</dt>
+        <dd>@course.Accrediting</dd>
+        <dt>Route:</dt>
+        <dd>@course.Route</dd>
+        <dt>Subjects:</dt>
+        <dd>@course.Subjects</dd>
+        <dt>Age range:</dt>
+        <dd>@course.AgeRange</dd>
+        <dt>Qualification:</dt>
+        <dd>@course.Qualifications</dd>
+        <dt>Regions:</dt>
+        <dd>@course.Regions</dd>
+    </dl>
+
+    <h3 class="heading-medium">Training locations</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Location name</th>
+                <th>Address</th>
+                <th>Code</th>
+                <th>Full time vacancies</th>
+                <th>Part time vacancies</th>
+                <th>Applications accepted from</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var school in course.schools)
+            {
+            <tr>
+                <td>@school.Name</td>
+                <td>@school.Address</td>
+                <td>@school.Code</td>
+                <td>Vacancies</td>
+                <td>Not applicable</td>
+                <td>26 Oct 2018</td>
+            </tr>
+            }
+        </tbody>
+    </table>
+    }
+</ul>
