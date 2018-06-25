@@ -7,7 +7,7 @@ using GovUk.Education.ManageCourses.Ui.ViewModels;
 
 namespace GovUk.Education.ManageCourses.Ui.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : CommonAttributesControllerBase
     {
         private readonly ManageApi _manageApi;
 
