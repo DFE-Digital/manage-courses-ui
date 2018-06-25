@@ -34,7 +34,7 @@ namespace GovUk.Education.ManageCourses.ApiClient
             var courses = await _apiClient.ExportAsync();
             dynamic organisationCoursesTotal = new ExpandoObject();
 
-            organisationCoursesTotal.OrganisationName = "ToDo: OrganisationName";
+            organisationCoursesTotal.OrganisationName = courses.First().OrganisationName;
             organisationCoursesTotal.TotalCount = courses.Count();
 
 

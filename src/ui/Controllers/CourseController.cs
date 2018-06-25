@@ -25,7 +25,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             var course = await _manageApi.GetCourse(ucasCode);
 
             var viewModel = new FromUcasViewModel {
-                OrganisationName = "TODO: org name",
+                OrganisationName = course.OrganisationName,
                 CourseTitle = course.Title,
                 UcasCode = course.UcasCode,
                 Courses = new List<CourseVariantViewModel>()
@@ -50,6 +50,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             );
             var courseDetails = new CourseDetailsViewModel
             {
+                OrganisationName = course.OrganisationName,
                 CourseTitle = course.Title,
                 Subjects = subjects,
                 UcasCode = course.UcasCode
