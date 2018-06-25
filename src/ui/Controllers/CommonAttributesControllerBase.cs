@@ -1,5 +1,5 @@
-using GovUk.Education.ManageCourses.UI.ActionFilters;
-using GovUk.Education.ManageCourses.UI.Services;
+using GovUk.Education.ManageCourses.Ui.ActionFilters;
+using GovUk.Education.ManageCourses.Ui.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
