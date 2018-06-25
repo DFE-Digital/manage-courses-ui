@@ -19,10 +19,10 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             _manageApi = manageApi;
         }
 
-        [Route("{ucasCode}/from-ucas")]
-        public async Task<IActionResult> Variants(string ucasCode)
+        [Route("{courseTitle}/from-ucas")]
+        public async Task<IActionResult> Variants(string courseTitle)
         {
-            var course = await _manageApi.GetCourse(ucasCode);
+            var course = await _manageApi.GetCourse(courseTitle);
 
             var viewModel = new FromUcasViewModel {
                 OrganisationName = course.OrganisationName,
@@ -34,10 +34,10 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             return View(viewModel);
         }
 
-        [Route("{ucasCode}")]
-        public async Task<IActionResult> Details(string ucasCode)
+        [Route("{courseTitle}")]
+        public async Task<IActionResult> Details(string courseTitle)
         {
-            var course = await _manageApi.GetCourse(ucasCode);
+            var course = await _manageApi.GetCourse(courseTitle);
             var subjects = course.Variants.Select(x =>
             
                 new SubjectViewModel

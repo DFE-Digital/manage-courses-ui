@@ -41,12 +41,13 @@ namespace GovUk.Education.ManageCourses.ApiClient
             return organisationCoursesTotal;
         }
 
-        public async Task<Course> GetCourse(string ucasCode)
+        public async Task<Course> GetCourse(string courseTitle)
         {
             // todo: expand api to allow fetching single course
             var courses = await _apiClient.ExportAsync();
             // todo: don't use first once we have course-folding in place
-            return courses.First(c => c.UcasCode == ucasCode);
+            //return courses.First(c => c.UcasCode == ucasCode);
+            return courses.First(c => c.Title.Equals(courseTitle, StringComparison.InvariantCultureIgnoreCase));
         }
     }
 }
