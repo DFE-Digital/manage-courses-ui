@@ -10,7 +10,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
 {
     [Authorize]
     [Route("courses")]
-    public class CoursesController : Controller
+    public class CoursesController : CommonAttributesControllerBase
     {
         private readonly ManageApi _manageApi;
 

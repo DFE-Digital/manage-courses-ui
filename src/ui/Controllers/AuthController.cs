@@ -13,7 +13,7 @@ using Newtonsoft.Json;
 
 namespace GovUk.Education.ManageCourses.Ui.Controllers
 {
-    public class AuthController : Controller
+    public class AuthController : CommonAttributesControllerBase
     {
         [Authorize]
         public ActionResult WhoAmI()
