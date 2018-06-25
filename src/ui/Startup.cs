@@ -64,7 +64,7 @@ namespace GovUk.Education.ManageCourses.Ui
                 options.Scope.Add("openid");
                 options.Scope.Add("email");
                 options.Scope.Add("profile");
-                options.Scope.Add("organisation");
+                
                 options.Scope.Add("offline_access");
 
                 options.SaveTokens = true;
