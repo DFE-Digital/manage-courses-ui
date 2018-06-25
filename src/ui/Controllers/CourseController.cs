@@ -38,7 +38,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
                     new SubjectViewModel
                     {
                         Subject = "Biology(todo)", // todo - real subject
-                        Type = course.Type,
+                        //Type = course.Type,
                         Code = course.UcasCode
                     }
                 },

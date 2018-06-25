@@ -66,21 +66,68 @@
     "Course": {
       "type": "object",
       "additionalProperties": false,
-      "required": [
-        "id"
-      ],
       "properties": {
-        "id": {
-          "type": "integer",
-          "format": "int32"
-        },
         "title": {
           "type": "string"
         },
         "ucasCode": {
           "type": "string"
         },
-        "type": {
+        "organisationName": {
+          "type": "string"
+        },
+        "variants": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Variant"
+          }
+        }
+      }
+    },
+    "Variant": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "providerCode": {
+          "type": "string"
+        },
+        "providerName": {
+          "type": "string"
+        },
+        "courseCode": {
+          "type": "string"
+        },
+        "profpostFlags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "programTypes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "studyModes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "address1": {
+          "type": "string"
+        },
+        "address2": {
+          "type": "string"
+        },
+        "address3": {
+          "type": "string"
+        },
+        "address4": {
+          "type": "string"
+        },
+        "postcode": {
           "type": "string"
         }
       }
@@ -92,8 +139,472 @@
         "courses": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/Course"
+            "$ref": "#/definitions/UcasCourse"
           }
+        },
+        "institutions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/UcasInstitution"
+          }
+        },
+        "subjects": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/UcasSubject"
+          }
+        },
+        "courseSubjects": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/UcasCourseSubject"
+          }
+        },
+        "campuses": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/UcasCampus"
+          }
+        },
+        "courseNotes": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/UcasCourseNote"
+          }
+        },
+        "noteTexts": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/UcasNoteText"
+          }
+        },
+        "organisations": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/McOrganisation"
+          }
+        },
+        "organisationInstitutions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/McOrganisationInstitution"
+          }
+        },
+        "organisationUsers": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/McOrganisationUser"
+          }
+        },
+        "users": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/McUser"
+          }
+        },
+        "mappers": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ProviderMapper"
+          }
+        }
+      }
+    },
+    "UcasCourse": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id"
+      ],
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "instCode": {
+          "type": "string"
+        },
+        "crseCode": {
+          "type": "string"
+        },
+        "crseTitle": {
+          "type": "string"
+        },
+        "studymode": {
+          "type": "string"
+        },
+        "age": {
+          "type": "string"
+        },
+        "campusCode": {
+          "type": "string"
+        },
+        "profpostFlag": {
+          "type": "string"
+        },
+        "programType": {
+          "type": "string"
+        },
+        "accreditingProvider": {
+          "type": "string"
+        },
+        "crseOpenDate": {
+          "type": "string"
+        }
+      }
+    },
+    "UcasInstitution": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id"
+      ],
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "instCode": {
+          "type": "string"
+        },
+        "instName": {
+          "type": "string"
+        },
+        "instBig": {
+          "type": "string"
+        },
+        "instFull": {
+          "type": "string"
+        },
+        "instType": {
+          "type": "string"
+        },
+        "addr1": {
+          "type": "string"
+        },
+        "addr2": {
+          "type": "string"
+        },
+        "addr3": {
+          "type": "string"
+        },
+        "addr4": {
+          "type": "string"
+        },
+        "postcode": {
+          "type": "string"
+        },
+        "contactName": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string"
+        },
+        "yearCode": {
+          "type": "string"
+        },
+        "scitt": {
+          "type": "string"
+        },
+        "accreditingProvider": {
+          "type": "string"
+        },
+        "schemeMember": {
+          "type": "string"
+        },
+        "mcOrganisationInstitutions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/McOrganisationInstitution"
+          }
+        }
+      }
+    },
+    "McOrganisationInstitution": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id"
+      ],
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "orgId": {
+          "type": "string"
+        },
+        "institutionCode": {
+          "type": "string"
+        },
+        "mcOrganisation": {
+          "$ref": "#/definitions/McOrganisation"
+        },
+        "ucasInstitution": {
+          "$ref": "#/definitions/UcasInstitution"
+        }
+      }
+    },
+    "McOrganisation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id"
+      ],
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "orgId": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "mcOrganisationUsers": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/McOrganisationUser"
+          }
+        },
+        "mcOrganisationInstitutions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/McOrganisationInstitution"
+          }
+        }
+      }
+    },
+    "McOrganisationUser": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id"
+      ],
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "orgId": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "mcUser": {
+          "$ref": "#/definitions/McUser"
+        },
+        "mcOrganisation": {
+          "$ref": "#/definitions/McOrganisation"
+        }
+      }
+    },
+    "McUser": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id"
+      ],
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "firstName": {
+          "type": "string"
+        },
+        "lastName": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "mcOrganisationUsers": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/McOrganisationUser"
+          }
+        }
+      }
+    },
+    "UcasSubject": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id"
+      ],
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "subjectCode": {
+          "type": "string"
+        },
+        "subjectDescription": {
+          "type": "string"
+        },
+        "titleMatch": {
+          "type": "string"
+        }
+      }
+    },
+    "UcasCourseSubject": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id"
+      ],
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "instCode": {
+          "type": "string"
+        },
+        "crseCode": {
+          "type": "string"
+        },
+        "subjectCode": {
+          "type": "string"
+        },
+        "yearCode": {
+          "type": "string"
+        }
+      }
+    },
+    "UcasCampus": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id"
+      ],
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "instCode": {
+          "type": "string"
+        },
+        "campusCode": {
+          "type": "string"
+        },
+        "campusName": {
+          "type": "string"
+        },
+        "addr1": {
+          "type": "string"
+        },
+        "addr2": {
+          "type": "string"
+        },
+        "addr3": {
+          "type": "string"
+        },
+        "addr4": {
+          "type": "string"
+        },
+        "postcode": {
+          "type": "string"
+        },
+        "telNo": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "regionCode": {
+          "type": "string"
+        }
+      }
+    },
+    "UcasCourseNote": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id"
+      ],
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "instCode": {
+          "type": "string"
+        },
+        "crseCode": {
+          "type": "string"
+        },
+        "noteNo": {
+          "type": "string"
+        },
+        "noteType": {
+          "type": "string"
+        },
+        "yearCode": {
+          "type": "string"
+        }
+      }
+    },
+    "UcasNoteText": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id"
+      ],
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "instCode": {
+          "type": "string"
+        },
+        "noteNo": {
+          "type": "string"
+        },
+        "noteType": {
+          "type": "string"
+        },
+        "lineText": {
+          "type": "string"
+        },
+        "yearCode": {
+          "type": "string"
+        }
+      }
+    },
+    "ProviderMapper": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "urn"
+      ],
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "orgId": {
+          "type": "string"
+        },
+        "ucasCode": {
+          "type": "string"
+        },
+        "urn": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "type": {
+          "type": "string"
+        },
+        "institutionName": {
+          "type": "string"
         }
       }
     }
