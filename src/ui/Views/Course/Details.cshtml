@@ -38,11 +38,11 @@
 
                             @foreach(var subject in Model.Subjects) {
                                 <tr>
-                                    <td>@subject.Subject</td>
+                                    <td>@subject.Name</td>
                                     <td>@subject.Type</td>
-                                    <td>@subject.Code</td>
+                                    <td>@subject.ProgrammeCode</td>
                                 
-                                    <td><a href="/course/biology/from-ucas#32Q7">View</a></td>
+                                    <td><a href="@Url.Action("variants", "course", new {Model.UcasCode})#@subject.ProgrammeCode">View</a></td>
                                 </tr>
                                 }
 
