@@ -22,12 +22,11 @@
         "tags": [
           "Data"
         ],
-        "summary": "Exports the data.",
         "operationId": "Data_Export",
         "responses": {
           "200": {
             "x-nullable": true,
-            "description": "The exported data",
+            "description": "",
             "schema": {
               "type": "array",
               "items": {
@@ -41,7 +40,6 @@
         "tags": [
           "Data"
         ],
-        "summary": "Imports the data.",
         "operationId": "Data_Import",
         "parameters": [
           {
@@ -128,6 +126,36 @@
           "type": "string"
         },
         "postcode": {
+          "type": "string"
+        },
+        "campuses": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Campus"
+          }
+        }
+      }
+    },
+    "Campus": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "address1": {
+          "type": "string"
+        },
+        "address2": {
+          "type": "string"
+        },
+        "address3": {
+          "type": "string"
+        },
+        "address4": {
+          "type": "string"
+        },
+        "postCode": {
           "type": "string"
         }
       }

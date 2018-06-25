@@ -5,8 +5,8 @@ namespace GovUk.Education.ManageCourses.Ui.ViewModels
     public class FromUcasViewModel
     {
         public string OrganisationName { get; set; }
-        public string SubjectName { get; set; }
-        public string SubjectId { get; set; }
+        public string CourseTitle { get; set; }
+        public string UcasCode { get; set; }
         public IList<CourseVariantViewModel> Courses { get; set; }
     }
 

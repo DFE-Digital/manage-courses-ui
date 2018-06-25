@@ -11,7 +11,7 @@ namespace GovUk.Education.ManageCourses.ApiClient
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "11.17.13.0 (NJsonSchema v9.10.50.0 (Newtonsoft.Json v9.0.0.0))")]
     public partial class ManageCoursesApiClient : GovUk.Education.ManageCourses.ApiClient.ManageCoursesApiClientBase
     {
-        private string _baseUrl = "http://localhost:6001";
+        private string _baseUrl = "http://manage-courses-api-bat-development.e4ff.pro-eu-west-1.openshiftapps.com";
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
     
         public ManageCoursesApiClient(GovUk.Education.ManageCourses.ApiClient.IManageCoursesApiClientConfiguration configuration) : base(configuration)
@@ -37,16 +37,12 @@ namespace GovUk.Education.ManageCourses.ApiClient
         partial void PrepareRequest(System.Net.Http.HttpClient client, System.Net.Http.HttpRequestMessage request, System.Text.StringBuilder urlBuilder);
         partial void ProcessResponse(System.Net.Http.HttpClient client, System.Net.Http.HttpResponseMessage response);
     
-        /// <summary>Exports the data.</summary>
-        /// <returns>The exported data</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<Course>> ExportAsync()
         {
             return ExportAsync(System.Threading.CancellationToken.None);
         }
     
-        /// <summary>Exports the data.</summary>
-        /// <returns>The exported data</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         public async System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<Course>> ExportAsync(System.Threading.CancellationToken cancellationToken)
@@ -117,14 +113,12 @@ namespace GovUk.Education.ManageCourses.ApiClient
             }
         }
     
-        /// <summary>Imports the data.</summary>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task ImportAsync(Payload payload)
         {
             return ImportAsync(payload, System.Threading.CancellationToken.None);
         }
     
-        /// <summary>Imports the data.</summary>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         public async System.Threading.Tasks.Task ImportAsync(Payload payload, System.Threading.CancellationToken cancellationToken)
@@ -319,6 +313,7 @@ namespace GovUk.Education.ManageCourses.ApiClient
         private string _address3;
         private string _address4;
         private string _postcode;
+        private System.Collections.ObjectModel.ObservableCollection<Campus> _campuses;
     
         [Newtonsoft.Json.JsonProperty("providerCode", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string ProviderCode
@@ -474,6 +469,20 @@ namespace GovUk.Education.ManageCourses.ApiClient
             }
         }
     
+        [Newtonsoft.Json.JsonProperty("campuses", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.ObjectModel.ObservableCollection<Campus> Campuses
+        {
+            get { return _campuses; }
+            set 
+            {
+                if (_campuses != value)
+                {
+                    _campuses = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
         public string ToJson() 
         {
             return Newtonsoft.Json.JsonConvert.SerializeObject(this);
@@ -482,6 +491,121 @@ namespace GovUk.Education.ManageCourses.ApiClient
         public static Variant FromJson(string data)
         {
             return Newtonsoft.Json.JsonConvert.DeserializeObject<Variant>(data);
+        }
+    
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected virtual void RaisePropertyChanged([System.Runtime.CompilerServices.CallerMemberName] string propertyName = null)
+        {
+            var handler = PropertyChanged;
+            if (handler != null) 
+                handler(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.10.50.0 (Newtonsoft.Json v9.0.0.0)")]
+    public partial class Campus : System.ComponentModel.INotifyPropertyChanged
+    {
+        private string _name;
+        private string _address1;
+        private string _address2;
+        private string _address3;
+        private string _address4;
+        private string _postCode;
+    
+        [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Name
+        {
+            get { return _name; }
+            set 
+            {
+                if (_name != value)
+                {
+                    _name = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        [Newtonsoft.Json.JsonProperty("address1", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Address1
+        {
+            get { return _address1; }
+            set 
+            {
+                if (_address1 != value)
+                {
+                    _address1 = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        [Newtonsoft.Json.JsonProperty("address2", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Address2
+        {
+            get { return _address2; }
+            set 
+            {
+                if (_address2 != value)
+                {
+                    _address2 = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        [Newtonsoft.Json.JsonProperty("address3", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Address3
+        {
+            get { return _address3; }
+            set 
+            {
+                if (_address3 != value)
+                {
+                    _address3 = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        [Newtonsoft.Json.JsonProperty("address4", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Address4
+        {
+            get { return _address4; }
+            set 
+            {
+                if (_address4 != value)
+                {
+                    _address4 = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        [Newtonsoft.Json.JsonProperty("postCode", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string PostCode
+        {
+            get { return _postCode; }
+            set 
+            {
+                if (_postCode != value)
+                {
+                    _postCode = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+        
+        public static Campus FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<Campus>(data);
         }
     
         public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
