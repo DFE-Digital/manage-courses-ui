@@ -26,7 +26,6 @@ $course-parts-indent: 35px;
 }
 
 .course-parts-item {
-    border-bottom: 1px solid $border-colour;
     padding-top: $gutter;
     padding-bottom: $gutter;
     @extend %contain-floats;
