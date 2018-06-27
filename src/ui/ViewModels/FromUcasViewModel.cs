@@ -7,7 +7,7 @@ namespace GovUk.Education.ManageCourses.Ui.ViewModels
         public string OrganisationName { get; set; }
         public string CourseTitle { get; set; }
         public string UcasCode { get; set; }
-        public IList<CourseVariantViewModel> Courses { get; set; }
+        public IEnumerable<CourseVariantViewModel> Courses { get; set; }
     }
 
     public class CourseVariantViewModel
@@ -22,7 +22,7 @@ namespace GovUk.Education.ManageCourses.Ui.ViewModels
         public string AgeRange { get; set; }
         public string Qualifications { get; set; }
         public string Regions { get; set; }
-        public IList<SchoolViewModel> Schools { get; set; }
+        public IEnumerable<SchoolViewModel> Schools { get; set; }
 
     }
 
