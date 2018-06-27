@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Course>
+﻿@model OrganisationCourses
 
 @{
     Layout = "_Layout";
@@ -15,13 +15,22 @@
     </div>
 </div>
 
-<ul>
-    @foreach (var course in Model)
+
+    @foreach (var providerCourse in Model.ProviderCourses)
     {
-        <li>
-            <div class="heading-medium remove-top-margin">
-                <a href="@Url.Action("details", "course", new {CourseTitle = course.Title})">@course.Title</a>
-            </div>
-        </li>
+
+        <h3 class="heading-medium">
+
+            @providerCourse.AccreditingProviderName
+        </h3>
+
+        <ul class="list listing-example">
+            @foreach (var course in providerCourse.CourseDetails)
+            {
+            <li>
+                <a href="@Url.Action("details", "course", new {AccreditingProviderId = providerCourse.AccreditingProviderId, CourseTitle = course.CourseTitle})">@course.CourseTitle</a>
+            </li>
+            }
+        </ul>
     }
-</ul>
+        
