@@ -44,7 +44,7 @@ namespace GovUk.Education.ManageCourses.Ui
                 options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
                 options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
             }).AddCookie(options => {
-                options.ExpireTimeSpan = TimeSpan.FromHours(20);
+                options.ExpireTimeSpan = TimeSpan.FromMinutes(20);
             }).AddOpenIdConnect(options =>
             {
                 options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;

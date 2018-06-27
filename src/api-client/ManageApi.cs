@@ -15,7 +15,7 @@ namespace GovUk.Education.ManageCourses.ApiClient
             _apiClient = apiClient;
         }
 
-        public async Task<IEnumerable<Course>> GetCourses()
+        public async Task<OrganisationCourses> GetCourses()
         {
             try
             {
@@ -33,21 +33,23 @@ namespace GovUk.Education.ManageCourses.ApiClient
             // todo: await _apiClient.GetOrganisationCoursesTotal()
             var courses = await _apiClient.ExportAsync();
             dynamic organisationCoursesTotal = new ExpandoObject();
+            
+            organisationCoursesTotal.OrganisationName = courses.OrganisationName;
 
-            organisationCoursesTotal.OrganisationName = courses.First().OrganisationName;
-            organisationCoursesTotal.TotalCount = courses.Count();
-
+            organisationCoursesTotal.TotalCount = courses.ProviderCourses.SelectMany( x =>x .CourseDetails).Count();
 
             return organisationCoursesTotal;
         }
 
-        public async Task<Course> GetCourse(string courseTitle)
+        public async Task<CourseDetail> GetCourse(string accreditingProviderId, string courseTitle)
         {
             // todo: expand api to allow fetching single course
             var courses = await _apiClient.ExportAsync();
             // todo: don't use first once we have course-folding in place
             //return courses.First(c => c.UcasCode == ucasCode);
-            return courses.First(c => c.Title.Equals(courseTitle, StringComparison.InvariantCultureIgnoreCase));
+            return courses.ProviderCourses
+                .First(c => c.AccreditingProviderId.Equals(accreditingProviderId, StringComparison.InvariantCultureIgnoreCase))
+                .CourseDetails.First(x => x.CourseTitle.Equals(courseTitle, StringComparison.InvariantCultureIgnoreCase));
         }
     }
 }

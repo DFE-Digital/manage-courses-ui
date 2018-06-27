@@ -6,7 +6,7 @@
     "description": "An API for managing course data",
     "version": "v1"
   },
-  "host": "localhost:6001",
+  "host": "manage-courses-api-bat-development.e4ff.pro-eu-west-1.openshiftapps.com",
   "schemes": [
     "http"
   ],
@@ -28,10 +28,7 @@
             "x-nullable": true,
             "description": "",
             "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/Course"
-              }
+              "$ref": "#/definitions/OrganisationCourses"
             }
           }
         }
@@ -61,71 +58,98 @@
     }
   },
   "definitions": {
-    "Course": {
+    "OrganisationCourses": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
-        "title": {
-          "type": "string"
-        },
-        "ucasCode": {
-          "type": "string"
-        },
         "organisationName": {
+          "type": "string"
+        },
+        "organisationId": {
+          "type": "string"
+        },
+        "providerCourses": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ProviderCourse"
+          }
+        }
+      }
+    },
+    "ProviderCourse": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "accreditingProviderName": {
+          "type": "string"
+        },
+        "accreditingProviderId": {
+          "type": "string"
+        },
+        "courseDetails": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/CourseDetail"
+          }
+        }
+      }
+    },
+    "CourseDetail": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "courseTitle": {
+          "type": "string"
+        },
+        "route": {
+          "type": "string"
+        },
+        "subjects": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "ageRange": {
+          "type": "string"
+        },
+        "qualification": {
           "type": "string"
         },
         "variants": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/Variant"
+            "$ref": "#/definitions/CourseVariant"
           }
         }
       }
     },
-    "Variant": {
+    "CourseVariant": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
-        "providerCode": {
-          "type": "string"
-        },
-        "providerName": {
-          "type": "string"
-        },
         "courseCode": {
           "type": "string"
         },
-        "profpostFlags": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        },
-        "programTypes": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        },
-        "studyModes": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        },
-        "address1": {
+        "ucasCode": {
           "type": "string"
         },
-        "address2": {
+        "name": {
           "type": "string"
         },
-        "address3": {
+        "trainingProviderCode": {
           "type": "string"
         },
-        "address4": {
+        "trainingProgramCode": {
           "type": "string"
         },
-        "postcode": {
+        "profPostFlag": {
+          "type": "string"
+        },
+        "programType": {
+          "type": "string"
+        },
+        "studyMode": {
           "type": "string"
         },
         "campuses": {
@@ -143,6 +167,9 @@
         "name": {
           "type": "string"
         },
+        "code": {
+          "type": "string"
+        },
         "address1": {
           "type": "string"
         },
@@ -156,6 +183,9 @@
           "type": "string"
         },
         "postCode": {
+          "type": "string"
+        },
+        "courseOpenDate": {
           "type": "string"
         }
       }
