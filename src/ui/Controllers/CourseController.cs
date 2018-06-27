@@ -34,12 +34,13 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
                 {
                     Name = courseDetail.CourseTitle,
                     Accrediting = providerCourse.AccreditingProviderName,
-                    ProviderCode = x.TrainingProviderCode,
+                    ProviderCode = providerCourse.AccreditingProviderId,
                     ProgrammeCode = x.CourseCode,
                     AgeRange = courseDetail.AgeRange,
+                    Qualifications = x.ProfPostFlag,
+                    Route = x.ProgramType,
+                    // Subjects = "ToDo"
                     Schools = x.Campuses.Select(campus => {
-
-
                         var addressLines = new List<string>() { campus.Address1, campus.Address2, campus.Address3, campus.Address4, campus.PostCode };
                         var address = addressLines.Where(line => !String.IsNullOrEmpty(line)).Aggregate((current, next) => current + ", " + next);
                         return new SchoolViewModel
@@ -52,6 +53,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
                     })
                 }
             );
+
             var viewModel = new FromUcasViewModel
             {
                 OrganisationName = course.OrganisationName,
@@ -90,7 +92,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
                 OrganisationName = course.OrganisationName,
                 CourseTitle = courseDetail.CourseTitle,
                 Subjects = subjects,
-                UcasCode = providerCourse.AccreditingProviderId,
+                UcasCode = providerCourse.AccreditingProviderId
             };
 
             return View(courseDetails);
