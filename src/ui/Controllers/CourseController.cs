@@ -29,12 +29,35 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
                 .First(c => c.AccreditingProviderId.Equals(accreditingProviderId, StringComparison.InvariantCultureIgnoreCase));
 
             var courseDetail = providerCourse.CourseDetails.First(x => x.CourseTitle.Equals(courseTitle, StringComparison.InvariantCultureIgnoreCase));
-            
-            var viewModel = new FromUcasViewModel {
+            var courseVariants = courseDetail.Variants.Select(x =>
+                new CourseVariantViewModel
+                {
+                    Name = courseDetail.CourseTitle,
+                    Accrediting = providerCourse.AccreditingProviderName,
+                    ProviderCode = x.TrainingProviderCode,
+                    ProgrammeCode = x.CourseCode,
+                    AgeRange = courseDetail.AgeRange,
+                    Schools = x.Campuses.Select(campus => {
+
+
+                        var addressLines = new List<string>() { campus.Address1, campus.Address2, campus.Address3, campus.Address4, campus.PostCode };
+                        var address = addressLines.Where(line => !String.IsNullOrEmpty(line)).Aggregate((current, next) => current + ", " + next);
+                        return new SchoolViewModel
+                        {
+                            ApplicationsAcceptedFrom = campus.CourseOpenDate,
+                            Code = campus.Code,
+                            LocationName = campus.Name,
+                            Address = address
+                        };
+                    })
+                }
+            );
+            var viewModel = new FromUcasViewModel
+            {
                 OrganisationName = course.OrganisationName,
                 CourseTitle = courseDetail.CourseTitle,
                 UcasCode = providerCourse.AccreditingProviderId,
-                Courses = new List<CourseVariantViewModel>()
+                Courses = courseVariants
             };
 
             return View(viewModel);
