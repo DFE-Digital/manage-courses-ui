@@ -33,12 +33,14 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
                 new CourseVariantViewModel
                 {
                     Name = courseDetail.CourseTitle,
-                    Accrediting = providerCourse.AccreditingProviderName,
+                    Accredited = course.OrganisationName, //course.UcaseCode
                     ProviderCode = providerCourse.AccreditingProviderId,
                     ProgrammeCode = x.CourseCode,
                     AgeRange = courseDetail.AgeRange,
                     Qualifications = x.ProfPostFlag,
                     Route = x.ProgramType,
+                    StudyMode = x.StudyMode,
+                    //Subjects = courseDetail.Subjects.Aggregate((current, next) => current + ", " + next),
                     // Subjects = "ToDo"
                     Schools = x.Campuses.Select(campus => {
                         var addressLines = new List<string>() { campus.Address1, campus.Address2, campus.Address3, campus.Address4, campus.PostCode };
@@ -58,7 +60,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             {
                 OrganisationName = course.OrganisationName,
                 CourseTitle = courseDetail.CourseTitle,
-                UcasCode = providerCourse.AccreditingProviderId,
+                AccreditingProviderId = providerCourse.AccreditingProviderId,
                 Courses = courseVariants
             };
 
