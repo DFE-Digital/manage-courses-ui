@@ -6,6 +6,7 @@ using GovUk.Education.ManageCourses.ApiClient;
 using GovUk.Education.ManageCourses.Ui.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using GovUk.Education.ManageCourses.Ui.Helpers;
 
 namespace GovUk.Education.ManageCourses.Ui.Controllers
 {
@@ -32,13 +33,16 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             var variant = courseDetail.Variants.FirstOrDefault(v => v.UcasCode == ucasCode);
             if (variant == null) return null;
 
+
             var courseVariant =
                 new CourseVariantViewModel
                 {
                     Name = courseDetail.CourseTitle,
-                    Accredited = course.OrganisationName, //course.UcaseCode
+                    Type = variant.GetCourseVariantType(),
+                    Accrediting = providerCourse.AccreditingProviderName,
                     ProviderCode = providerCourse.AccreditingProviderId,
                     ProgrammeCode = variant.CourseCode,
+                    UcasCode = course.UcasCode,
                     AgeRange = courseDetail.AgeRange,
                     Qualifications = variant.ProfPostFlag,
                     Route = variant.ProgramType,
@@ -93,7 +97,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
                 new SubjectViewModel
                 {
                     Name = courseDetail.CourseTitle,
-                    Type = $"{x.ProfPostFlag}, {x.ProgramType}, {x.StudyMode}",
+                    Type = x.GetCourseVariantType(),
                     ProviderCode = x.TrainingProviderCode,
                     ProgrammeCode = x.CourseCode
                 }
