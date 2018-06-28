@@ -11,7 +11,7 @@ namespace GovUk.Education.ManageCourses.ApiClient
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "11.17.13.0 (NJsonSchema v9.10.50.0 (Newtonsoft.Json v9.0.0.0))")]
     public partial class ManageCoursesApiClient : GovUk.Education.ManageCourses.ApiClient.ManageCoursesApiClientBase
     {
-        private string _baseUrl = "http://manage-courses-api-bat-development.e4ff.pro-eu-west-1.openshiftapps.com";
+        private string _baseUrl = "http://localhost:6001";
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
     
         public ManageCoursesApiClient(GovUk.Education.ManageCourses.ApiClient.IManageCoursesApiClientConfiguration configuration) : base(configuration)
@@ -37,12 +37,16 @@ namespace GovUk.Education.ManageCourses.ApiClient
         partial void PrepareRequest(System.Net.Http.HttpClient client, System.Net.Http.HttpRequestMessage request, System.Text.StringBuilder urlBuilder);
         partial void ProcessResponse(System.Net.Http.HttpClient client, System.Net.Http.HttpResponseMessage response);
     
+        /// <summary>Exports the data.</summary>
+        /// <returns>The exported data</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task<OrganisationCourses> ExportAsync()
         {
             return ExportAsync(System.Threading.CancellationToken.None);
         }
     
+        /// <summary>Exports the data.</summary>
+        /// <returns>The exported data</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         public async System.Threading.Tasks.Task<OrganisationCourses> ExportAsync(System.Threading.CancellationToken cancellationToken)
@@ -113,12 +117,14 @@ namespace GovUk.Education.ManageCourses.ApiClient
             }
         }
     
+        /// <summary>Imports the data.</summary>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task ImportAsync(Payload payload)
         {
             return ImportAsync(payload, System.Threading.CancellationToken.None);
         }
     
+        /// <summary>Imports the data.</summary>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         public async System.Threading.Tasks.Task ImportAsync(Payload payload, System.Threading.CancellationToken cancellationToken)
@@ -219,6 +225,7 @@ namespace GovUk.Education.ManageCourses.ApiClient
     {
         private string _organisationName;
         private string _organisationId;
+        private string _ucasCode;
         private System.Collections.ObjectModel.ObservableCollection<ProviderCourse> _providerCourses;
     
         [Newtonsoft.Json.JsonProperty("organisationName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -244,6 +251,20 @@ namespace GovUk.Education.ManageCourses.ApiClient
                 if (_organisationId != value)
                 {
                     _organisationId = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        [Newtonsoft.Json.JsonProperty("ucasCode", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string UcasCode
+        {
+            get { return _ucasCode; }
+            set 
+            {
+                if (_ucasCode != value)
+                {
+                    _ucasCode = value; 
                     RaisePropertyChanged();
                 }
             }
@@ -481,6 +502,7 @@ namespace GovUk.Education.ManageCourses.ApiClient
         private string _programType;
         private string _studyMode;
         private System.Collections.ObjectModel.ObservableCollection<Campus> _campuses;
+        private System.Collections.ObjectModel.ObservableCollection<string> _subjects;
     
         [Newtonsoft.Json.JsonProperty("courseCode", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string CourseCode
@@ -603,6 +625,20 @@ namespace GovUk.Education.ManageCourses.ApiClient
                 if (_campuses != value)
                 {
                     _campuses = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        [Newtonsoft.Json.JsonProperty("subjects", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.ObjectModel.ObservableCollection<string> Subjects
+        {
+            get { return _subjects; }
+            set 
+            {
+                if (_subjects != value)
+                {
+                    _subjects = value; 
                     RaisePropertyChanged();
                 }
             }

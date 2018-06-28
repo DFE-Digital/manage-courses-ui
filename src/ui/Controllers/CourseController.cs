@@ -20,8 +20,8 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             _manageApi = manageApi;
         }
 
-        [Route("{accreditingProviderId}/{courseTitle}/from-ucas")]
-        public async Task<IActionResult> Variants(string accreditingProviderId, string courseTitle)
+        [Route("{accreditingProviderId}/{courseTitle}/{ucasCode}")]
+        public async Task<IActionResult> Variants(string accreditingProviderId, string courseTitle, string ucasCode)
         {
             var course = await _manageApi.GetCourses();
 
@@ -29,22 +29,33 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
                 .First(c => c.AccreditingProviderId.Equals(accreditingProviderId, StringComparison.InvariantCultureIgnoreCase));
 
             var courseDetail = providerCourse.CourseDetails.First(x => x.CourseTitle.Equals(courseTitle, StringComparison.InvariantCultureIgnoreCase));
-            var courseVariants = courseDetail.Variants.Select(x =>
+            var variant = courseDetail.Variants.FirstOrDefault(v => v.UcasCode == ucasCode);
+            if (variant == null) return null;
+
+            var courseVariant =
                 new CourseVariantViewModel
                 {
                     Name = courseDetail.CourseTitle,
                     Accredited = course.OrganisationName, //course.UcaseCode
                     ProviderCode = providerCourse.AccreditingProviderId,
-                    ProgrammeCode = x.CourseCode,
+                    ProgrammeCode = variant.CourseCode,
                     AgeRange = courseDetail.AgeRange,
-                    Qualifications = x.ProfPostFlag,
-                    Route = x.ProgramType,
-                    StudyMode = x.StudyMode,
-                    //Subjects = courseDetail.Subjects.Aggregate((current, next) => current + ", " + next),
-                    // Subjects = "ToDo"
-                    Schools = x.Campuses.Select(campus => {
-                        var addressLines = new List<string>() { campus.Address1, campus.Address2, campus.Address3, campus.Address4, campus.PostCode };
-                        var address = addressLines.Where(line => !String.IsNullOrEmpty(line)).Aggregate((current, next) => current + ", " + next);
+                    Qualifications = variant.ProfPostFlag,
+                    Route = variant.ProgramType,
+                    StudyMode = variant.StudyMode,
+                    Subjects = variant.Subjects.Aggregate((current, next) => current + ", " + next),
+                    Schools = variant.Campuses.Select(campus =>
+                    {
+                        var addressLines = new List<string>()
+                        {
+                            campus.Address1,
+                            campus.Address2,
+                            campus.Address3,
+                            campus.Address4,
+                            campus.PostCode
+                        };
+                        var address = addressLines.Where(line => !String.IsNullOrEmpty(line))
+                            .Aggregate((current, next) => current + ", " + next);
                         return new SchoolViewModel
                         {
                             ApplicationsAcceptedFrom = campus.CourseOpenDate,
@@ -53,15 +64,14 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
                             Address = address
                         };
                     })
-                }
-            );
+                };
 
-            var viewModel = new FromUcasViewModel
+            var viewModel = new FromUcasViewModel//TODO change view model to show on course variant
             {
                 OrganisationName = course.OrganisationName,
                 CourseTitle = courseDetail.CourseTitle,
                 AccreditingProviderId = providerCourse.AccreditingProviderId,
-                Courses = courseVariants
+                Course = courseVariant
             };
 
             return View(viewModel);

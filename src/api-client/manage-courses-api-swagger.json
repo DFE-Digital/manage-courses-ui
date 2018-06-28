@@ -6,7 +6,7 @@
     "description": "An API for managing course data",
     "version": "v1"
   },
-  "host": "manage-courses-api-bat-development.e4ff.pro-eu-west-1.openshiftapps.com",
+  "host": "localhost:6001",
   "schemes": [
     "http"
   ],
@@ -22,11 +22,12 @@
         "tags": [
           "Data"
         ],
+        "summary": "Exports the data.",
         "operationId": "Data_Export",
         "responses": {
           "200": {
             "x-nullable": true,
-            "description": "",
+            "description": "The exported data",
             "schema": {
               "$ref": "#/definitions/OrganisationCourses"
             }
@@ -37,6 +38,7 @@
         "tags": [
           "Data"
         ],
+        "summary": "Imports the data.",
         "operationId": "Data_Import",
         "parameters": [
           {
@@ -66,6 +68,9 @@
           "type": "string"
         },
         "organisationId": {
+          "type": "string"
+        },
+        "ucasCode": {
           "type": "string"
         },
         "providerCourses": {
@@ -156,6 +161,12 @@
           "type": "array",
           "items": {
             "$ref": "#/definitions/Campus"
+          }
+        },
+        "subjects": {
+          "type": "array",
+          "items": {
+            "type": "string"
           }
         }
       }
