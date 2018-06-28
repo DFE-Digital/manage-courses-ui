@@ -15,9 +15,10 @@ namespace GovUk.Education.ManageCourses.Ui.ViewModels
     {
         public string Name { get; set; }
         public string ProgrammeCode { get; set; }
-        public string Options { get; set; }
+        public string Type { get; set; }
+        public string UcasCode { get; set; }
         public string ProviderCode { get; set; }
-        public string Accredited { get; set; }
+        public string Accrediting { get; set; }
         public string Route { get; set; }
         public string Subjects { get; set; }
         public string AgeRange { get; set; }

@@ -19,30 +19,38 @@
     </div>
 </div>
 
-<ul>
-    <h1 class="heading-xlarge">
-        <span class="heading-secondary">@Model.Course.Name</span>
-        PGCE with QTS full time (@Model.Course.ProgrammeCode)
-    </h1>
+<div class="grid-row">
+    <div class="column-two-thirds">
+        <h1 class="heading-xlarge">
+            <span class="heading-secondary">@Model.Course.Name</span>
+            @Model.Course.Type (@Model.Course.ProgrammeCode)
+        </h1>
+
+        <p class="lede">
+            Information imported from UCAS for course @Model.Course.ProgrammeCode.
+        </p>
+    </div>
+</div>
+
         <dl class="aligned">
             <dt>Name:</dt>
             <dd>@Model.Course.Name</dd>
             <dt>Training provider code:</dt>
-            <dd>@Model.Course.ProviderCode</dd>
+            <dd>@Model.Course.UcasCode</dd>
             <dt>Training programme code:</dt>
             <dd>@Model.Course.ProgrammeCode</dd>
             <dt>Accrediting provider:</dt>
-            <dd>@Model.Course.Accredited</dd>
+            <dd>@Model.Course.Accrediting</dd>
             <dt>Route:</dt>
-            <dd>@Model.Course.Route</dd>
+            <dd>@Model.Course.GetRoute()</dd>
             <dt>Subjects:</dt>
             <dd>@Model.Course.Subjects</dd>
             <dt>Mode of study:</dt>
-            <dd>@Model.Course.StudyMode</dd>
+            <dd>@Model.Course.GetStudyMode()</dd>
             <dt>Age range:</dt>
-            <dd>@Model.Course.AgeRange</dd>
+            <dd>@Model.Course.GetAgeRange()</dd>
             <dt>Qualification:</dt>
-            <dd>@Model.Course.Qualifications</dd>
+            <dd>@Model.Course.GetQualification()</dd>
             @*<dt>Regions:</dt>
                 <dd>@course.Regions</dd>*@
         </dl>
@@ -73,4 +81,3 @@
                 }
             </tbody>
         </table>
-</ul>
