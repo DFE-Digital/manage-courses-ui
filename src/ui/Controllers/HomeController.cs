@@ -19,7 +19,8 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
         // GET: Home
         public ActionResult Index()
         {
-            return View();
+
+            return this.RedirectToAction("imported");
         }
 
         [Authorize]
