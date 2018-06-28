@@ -4,13 +4,7 @@
     Layout = "_Layout";
 }
 
-<div class="breadcrumbs">
-    <ol>
-        <li><a href="/courses">@Model.OrganisationName</a></li>
-        <li><a href="/course/@Model.UcasCode">@Model.CourseTitle</a></li>
-    </ol>
-</div>
-
+<a class="link-back" href="@Url.Action("details","course", new {Model.CourseTitle, Model.AccreditingProviderId })">Back</a>
 <h1 class="heading-xlarge">
     Details from UCAS
 </h1>
@@ -28,57 +22,59 @@
 <ul>
     @foreach (var course in Model.Courses)
     {
-    <h2 class="heading-large" id="@course.ProgrammeCode">
-        @course.Name
-        <span class="heading-secondary">@course.Options</span>
-    </h2>
 
-    <dl class="aligned">
-        <dt>Name:</dt>
-        <dd>@course.Name</dd>
-        <dt>Training provider code:</dt>
-        <dd>@course.ProviderCode</dd>
-        <dt>Training programme code:</dt>
-        <dd>@course.ProgrammeCode</dd>
-        <dt>Accredited provider:</dt>
-        <dd>@course.Accrediting</dd>
-        <dt>Route:</dt>
-        <dd>@course.Route</dd>
-        <dt>Subjects:</dt>
-        <dd>@course.Subjects</dd>
-        <dt>Age range:</dt>
-        <dd>@course.AgeRange</dd>
-        <dt>Qualification:</dt>
-        <dd>@course.Qualifications</dd>
-        <dt>Regions:</dt>
-        <dd>@course.Regions</dd>
-    </dl>
+    <h1 class="heading-xlarge">
+        <span class="heading-secondary">@course.Name</span>
+        PGCE with QTS full time (@course.ProgrammeCode)
+    </h1>
+        <dl class="aligned">
+            <dt>Name:</dt>
+            <dd>@course.Name</dd>
+            <dt>Training provider code:</dt>
+            <dd>@course.ProviderCode</dd>
+            <dt>Training programme code:</dt>
+            <dd>@course.ProgrammeCode</dd>
+            <dt>Accredited provider:</dt>
+            <dd>@course.Accredited</dd>
+            <dt>Route:</dt>
+            <dd>@course.Route</dd>
+            <dt>Subjects:</dt>
+            <dd>@course.Subjects</dd>
+            <dt>Mode of study:</dt>
+            <dd>@course.StudyMode</dd>
+            <dt>Age range:</dt>
+            <dd>@course.AgeRange</dd>
+            <dt>Qualification:</dt>
+            <dd>@course.Qualifications</dd>
+            @*<dt>Regions:</dt>
+                <dd>@course.Regions</dd>*@
+        </dl>
 
-    <h3 class="heading-medium">Training locations</h3>
-    <table>
-        <thead>
-            <tr>
-                <th>Location name</th>
-                <th>Address</th>
-                <th>Code</th>
-                <th>Full time vacancies</th>
-                <th>Part time vacancies</th>
-                <th>Applications accepted from</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var school in course.Schools)
-            {
-            <tr>
-                <td>@school.LocationName</td>
-                <td>@school.Address</td>
-                <td>@school.Code</td>
-                <td>Vacancies</td>
-                <td>Not applicable</td>
-                <td>26 Oct 2018</td>
-            </tr>
-            }
-        </tbody>
-    </table>
+        <h3 class="heading-medium">Training locations</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Location name</th>
+                    <th>Address</th>
+                    <th>Code</th>
+                    @*<th>Full time vacancies</th>
+                        <th>Part time vacancies</th>*@
+                    <th>Applications accepted from</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var school in course.Schools)
+                {
+                    <tr>
+                        <td>@school.LocationName</td>
+                        <td>@school.Address</td>
+                        <td>@school.Code</td>
+                        @*<td>Vacancies</td>
+                            <td>Not applicable</td>*@
+                        <td>@school.ApplicationsAcceptedFrom</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
     }
 </ul>
