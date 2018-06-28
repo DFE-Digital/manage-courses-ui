@@ -20,32 +20,29 @@
 </div>
 
 <ul>
-    @foreach (var course in Model.Courses)
-    {
-
     <h1 class="heading-xlarge">
-        <span class="heading-secondary">@course.Name</span>
-        PGCE with QTS full time (@course.ProgrammeCode)
+        <span class="heading-secondary">@Model.Course.Name</span>
+        PGCE with QTS full time (@Model.Course.ProgrammeCode)
     </h1>
         <dl class="aligned">
             <dt>Name:</dt>
-            <dd>@course.Name</dd>
+            <dd>@Model.Course.Name</dd>
             <dt>Training provider code:</dt>
-            <dd>@course.ProviderCode</dd>
+            <dd>@Model.Course.ProviderCode</dd>
             <dt>Training programme code:</dt>
-            <dd>@course.ProgrammeCode</dd>
+            <dd>@Model.Course.ProgrammeCode</dd>
             <dt>Accredited provider:</dt>
-            <dd>@course.Accredited</dd>
+            <dd>@Model.Course.Accredited</dd>
             <dt>Route:</dt>
-            <dd>@course.Route</dd>
+            <dd>@Model.Course.Route</dd>
             <dt>Subjects:</dt>
-            <dd>@course.Subjects</dd>
+            <dd>@Model.Course.Subjects</dd>
             <dt>Mode of study:</dt>
-            <dd>@course.StudyMode</dd>
+            <dd>@Model.Course.StudyMode</dd>
             <dt>Age range:</dt>
-            <dd>@course.AgeRange</dd>
+            <dd>@Model.Course.AgeRange</dd>
             <dt>Qualification:</dt>
-            <dd>@course.Qualifications</dd>
+            <dd>@Model.Course.Qualifications</dd>
             @*<dt>Regions:</dt>
                 <dd>@course.Regions</dd>*@
         </dl>
@@ -63,7 +60,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var school in course.Schools)
+                @foreach (var school in Model.Course.Schools)
                 {
                     <tr>
                         <td>@school.LocationName</td>
@@ -76,5 +73,4 @@
                 }
             </tbody>
         </table>
-    }
 </ul>

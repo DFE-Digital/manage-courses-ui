@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace GovUk.Education.ManageCourses.Ui.ViewModels
 {
@@ -7,7 +8,7 @@ namespace GovUk.Education.ManageCourses.Ui.ViewModels
         public string OrganisationName { get; set; }
         public string CourseTitle { get; set; }
         public string AccreditingProviderId { get; set; }
-        public IEnumerable<CourseVariantViewModel> Courses { get; set; }
+        public CourseVariantViewModel Course { get; set; }
     }
 
     public class CourseVariantViewModel
@@ -34,6 +35,18 @@ namespace GovUk.Education.ManageCourses.Ui.ViewModels
         public string Code { get; set; }
         public string FullTimeVacancies { get; set; }
         public string PartTimeVacancies { get; set; }
-        public string ApplicationsAcceptedFrom { get; set; }
+
+        private string _applicationsAcceptedFrom;
+        public string ApplicationsAcceptedFrom
+        {
+            get => FormatDate(_applicationsAcceptedFrom);
+            set => _applicationsAcceptedFrom = value;
+        }
+
+        private static string FormatDate(string dateToFormat)
+        {
+            return DateTime.TryParse(dateToFormat, out var date) ? date.ToString("dd MMM yyyy") : dateToFormat;
+        }
     }
 }
+

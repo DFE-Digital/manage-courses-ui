@@ -45,10 +45,9 @@
                                     <td>@subject.Type</td>
                                     <td>@subject.ProgrammeCode</td>
                                 
-                                    <td><a href="@Url.Action("variants", "course", new {Model.UcasCode})#@subject.ProgrammeCode">View</a></td>
+                                    <td><a href="@Url.Action("variants", "course", new {accreditingProviderId = Model.UcasCode, courseTitle = Model.CourseTitle, ucasCode=subject.ProgrammeCode})">View</a></td>
                                 </tr>
                                 }
-
                         </tbody>
                     </table>
 
