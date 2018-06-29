@@ -36,7 +36,7 @@
 
 @foreach (var providerCourse in Model.Courses.ProviderCourses)
 {
-    if (!string.IsNullOrWhiteSpace(providerCourse.AccreditingProviderName))
+    if (!string.IsNullOrWhiteSpace(providerCourse.AccreditingProviderId))
     {
         <h3 class="heading-medium">
             <span class="heading-secondary">Accrediting provider</span>
