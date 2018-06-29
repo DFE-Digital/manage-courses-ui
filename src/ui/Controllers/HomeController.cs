@@ -20,7 +20,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
         public ActionResult Index()
         {
 
-            return this.RedirectToAction("imported");
+            return this.RedirectToAction("Index", "Courses");
         }
 
         [Authorize]

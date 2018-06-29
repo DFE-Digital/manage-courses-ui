@@ -22,7 +22,13 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
         public async Task<IActionResult> Index()
         {
             var courses = await _manageApi.GetCourses();
-            return View(courses);
+            var data = await _manageApi.GetOrganisationCoursesTotal();
+            var model = new CourseListViewModel
+            {
+                Courses = courses,
+                TotalCount = data.TotalCount
+            };
+            return View(model);
         }
     }
 }
