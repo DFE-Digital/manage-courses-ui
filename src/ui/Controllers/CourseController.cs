@@ -45,8 +45,8 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
                     ProgrammeCode = variant.CourseCode,
                     UcasCode = course.UcasCode,
                     AgeRange = courseDetail.AgeRange,
-                    Qualifications = variant.ProgramType,
-                    Route = variant.ProfPostFlag,
+                    Route = variant.ProgramType,
+                    Qualifications= variant.ProfPostFlag,
                     StudyMode = variant.StudyMode,
                     Subjects = subjects,
                     Schools = variant.Campuses.Select(campus =>
