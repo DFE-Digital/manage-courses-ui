@@ -3,80 +3,67 @@
 @{
     Layout = "_Layout";
 }
-<div class="grid-row">
-    <h1 class="heading-xlarge">
-        @Model.Courses.OrganisationName
-    </h1>
-</div>
-<div class="grid-row">
-    <h2 class="heading-large">
-        Request access for someone
-    </h2>
-</div>
 
 <div class="grid-row add-double-bottom-margin">
     <div class="column-two-thirds">
-        <p class="body-text">
+        <h1 class="heading-xlarge">
+            @Model.Courses.OrganisationName
+        </h1>
+
+        <h2 class="heading-large">
+            Request access for someone
+        </h2>
+
+        <p>
             You can <a href="https://goo.gl/forms/knDj4JYC06iiZDn72">request a DfE Sign-in account</a> for others who manage your courses.
         </p>
-    </div>
-</div>
 
-<div class="grid-row">
-    <h2 class="heading-large">
-        Check your courses
-    </h2>
-</div>
+        <h2 class="heading-large">
+            Check your courses
+        </h2>
 
-<div class="grid-row add-double-bottom-margin">
-    <div class="column-two-thirds">
-        <p class="body-text">
+        <p>
             We found @Model.TotalCount courses belonging to @Model.Courses.OrganisationName.
         </p>
-        <p class="body-text">
-            Check that your course information is correct. If there are any mistakes, you should contact<a href=""> Become a Teacher</a> to let us know.
+        <p>
+            Check that your course information is correct. If there are any problems, you should contact <a href="mailto:becomingateacher@digital.education.gov.uk?subject=Publish%20teacher%20training%20courses%20problem">Become a Teacher</a> to let us know.
         </p>
-        <p class="body-text">
+        <p>
             To make any changes, for now you’ll still need to use UCAS web-link. Changes on UCAS will normally show here within one working day.
         </p>
     </div>
 </div>
 
-
 @foreach (var providerCourse in Model.Courses.ProviderCourses)
 {
 
     <h3 class="heading-medium">
-        <p class="lede">Accrediting provider</p>
+        <span class="heading-secondary">Accrediting provider</span>
         @providerCourse.AccreditingProviderName
     </h3>
 
-    <ul class="list listing-example">
-        <table class="ucas-info-table">
-            <thead>
-                <tr>
-                    <th>Subject</th>
-                    <th>UCAS code</th>
-                    <th>Type</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var course in providerCourse.CourseDetails)
+    <table class="ucas-info-table">
+        <thead>
+            <tr>
+                <th class="subject-col">Subject</th>
+                <th class="code-col">UCAS code</th>
+                <th class="type-col">Type</th>
+                <th class="link-col"></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var course in providerCourse.CourseDetails)
+            {
+                foreach (var variant in course.Variants)
                 {
-                    foreach (var variant in course.Variants)
-                    {
-                        <tr>
-                            <td>@course.CourseTitle</td>
-                            <td>@variant.UcasCode</td>
-                            <td>@variant.GetCourseVariantType()</td>
-
-                            <td><a href="@Url.Action("details", "course", new {AccreditingProviderId = providerCourse.AccreditingProviderId, CourseTitle = course.CourseTitle})">View Course</a></td>
-                        </tr>
-                    }
+                    <tr>
+                        <td>@course.CourseTitle</td>
+                        <td>@variant.UcasCode</td>
+                        <td>@variant.GetCourseVariantType()</td>
+                        <td class="ucas-view-link"><a href="@Url.Action("details", "course", new {AccreditingProviderId = providerCourse.AccreditingProviderId, CourseTitle = course.CourseTitle})">View course</a></td>
+                    </tr>
                 }
-            </tbody>
-        </table>
-    </ul>
+            }
+        </tbody>
+    </table>
 }
-

@@ -226,3 +226,22 @@ dl.aligned dd {
     white-space: pre-wrap;
 }
 
+.heading-medium .heading-secondary {
+    color: $grey-1;
+    font-weight: normal;
+    display: block;
+}
+
+.ucas-info-table  {
+    .subject-col {
+        width: 30%;
+    }
+
+    .code-col {
+        width: 20%;
+    }
+
+    .ucas-view-link {
+        text-align: right;
+    }
+}
