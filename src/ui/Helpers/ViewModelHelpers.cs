@@ -19,15 +19,13 @@ namespace GovUk.Education.ManageCourses.Ui.Helpers
             return result;
         }
 
-
-
-        public static string GetQualification(this CourseVariantViewModel viewModel)
+        public static string GetRoute(this CourseVariantViewModel viewModel)
         {
             var result = "";
 
-            var qualifications = viewModel.Qualifications.ToLowerInvariant();
+            var route = viewModel.Route.ToLowerInvariant();
 
-            switch (qualifications)
+            switch (route)
             {
                 case "he":
                     {
@@ -100,13 +98,13 @@ namespace GovUk.Education.ManageCourses.Ui.Helpers
             return result;
         }
 
-        public static string GetRoute(this CourseVariantViewModel viewModel)
+        public static string GetQualification(this CourseVariantViewModel viewModel)
         {
             var result = "";
 
-            var route = viewModel.Route.ToLowerInvariant();
+            var qualifications = viewModel.Qualifications.ToLowerInvariant();
 
-            switch (route)
+            switch (qualifications)
             {
                 case "pf":
                     {
