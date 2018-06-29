@@ -36,11 +36,13 @@
 
 @foreach (var providerCourse in Model.Courses.ProviderCourses)
 {
-
-    <h3 class="heading-medium">
-        <span class="heading-secondary">Accrediting provider</span>
-        @providerCourse.AccreditingProviderName
-    </h3>
+    if (!string.IsNullOrWhiteSpace(providerCourse.AccreditingProviderName))
+    {
+        <h3 class="heading-medium">
+            <span class="heading-secondary">Accrediting provider</span>
+            @providerCourse.AccreditingProviderName
+        </h3>
+    }
 
     <table class="ucas-info-table">
         <thead>
