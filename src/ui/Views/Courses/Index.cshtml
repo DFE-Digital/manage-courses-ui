@@ -26,7 +26,7 @@
             We found @Model.TotalCount courses belonging to @Model.Courses.OrganisationName.
         </p>
         <p>
-            Check that your course information is correct. If there are any problems, you should contact <a href="mailto:becomingateacher@digital.education.gov.uk?subject=Publish%20teacher%20training%20courses%20problem">Become a Teacher</a> to let us know.
+            Check that your course information is correct. If there are any problems, you should <a href="mailto:becomingateacher@digital.education.gov.uk?subject=Publish%20teacher%20training%20courses%20problem">contact the Becoming a Teacher team</a> to let us know.
         </p>
         <p>
             To make any changes, for now you’ll still need to use UCAS web-link. Changes on UCAS will normally show here within one working day.
@@ -58,12 +58,14 @@
             {
                 foreach (var variant in course.Variants)
                 {
-                    <tr>
-                        <td>@course.CourseTitle</td>
-                        <td>@variant.UcasCode</td>
-                        <td>@variant.GetCourseVariantType()</td>
-                        <td class="ucas-view-link"><a href="@Url.Action("details", "course", new {AccreditingProviderId = providerCourse.AccreditingProviderId, CourseTitle = course.CourseTitle})">View course</a></td>
-                    </tr>
+            <tr>
+                <td>@course.CourseTitle</td>
+                <td>@variant.UcasCode</td>
+                <td>@variant.GetCourseVariantType()</td>
+                <td class="ucas-view-link">
+                    <a href="@Url.Action("variants", "course", new { accreditingProviderId = providerCourse.AccreditingProviderId, courseTitle = course.CourseTitle, ucasCode = variant.UcasCode })">View course</a>
+                </td>
+            </tr>
                 }
             }
         </tbody>
