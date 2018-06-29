@@ -2,7 +2,8 @@
 
 @{
     Layout = "_Layout";
-    var link = "mailto:becomingateacher@digital.education.gov.uk?subject=Problem%20with%20ucas%20data%20" + Model.Course.ProgrammeCode;
+
+    var link = "mailto:becomingateacher@digital.education.gov.uk?subject=Problem%20with%20course%20" + Model.Course.ProgrammeCode;
 }
 
 <a class="link-back" href="@Url.Action("index","courses")">Back</a>
