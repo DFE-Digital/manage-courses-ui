@@ -33,6 +33,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             var variant = courseDetail.Variants.FirstOrDefault(v => v.UcasCode == ucasCode);
             if (variant == null) return null;
 
+            var subjects = variant.Subjects.Count() > 0 ? variant.Subjects.Aggregate((current, next) => current + ", " + next) : "";
 
             var courseVariant =
                 new CourseVariantViewModel
@@ -47,19 +48,22 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
                     Qualifications = variant.ProgramType,
                     Route = variant.ProfPostFlag,
                     StudyMode = variant.StudyMode,
-                    Subjects = variant.Subjects.Aggregate((current, next) => current + ", " + next),
+                    Subjects = subjects,
                     Schools = variant.Campuses.Select(campus =>
                     {
-                        var addressLines = new List<string>()
+                        var addressLines = (new List<string>()
                         {
                             campus.Address1,
                             campus.Address2,
                             campus.Address3,
                             campus.Address4,
                             campus.PostCode
-                        };
-                        var address = addressLines.Where(line => !String.IsNullOrEmpty(line))
-                            .Aggregate((current, next) => current + ", " + next);
+                        })
+                        .Where(line => !String.IsNullOrEmpty(line));
+
+                        var address = addressLines.Count() > 0 ? addressLines.Where(line => !String.IsNullOrEmpty(line))
+                            .Aggregate((current, next) => current + ", " + next) : "";
+
                         return new SchoolViewModel
                         {
                             ApplicationsAcceptedFrom = campus.CourseOpenDate,
