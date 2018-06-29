@@ -3,34 +3,80 @@
 @{
     Layout = "_Layout";
 }
-
-<h1 class="heading-xlarge">
-    <span class="heading-secondary">@Model.OrganisationName</span>
-    Courses by accrediting provider
-</h1>
+<div class="grid-row">
+    <h1 class="heading-xlarge">
+        @Model.OrganisationName
+    </h1>
+</div>
+<div class="grid-row">
+    <h2 class="heading-large">
+        Request access for someone
+    </h2>
+</div>
 
 <div class="grid-row add-double-bottom-margin">
-    <div class="column-two-thirds">
-        <p class="lede">Multiple UCAS courses for the same subject are combined into a single subject page. For example, courses with and without a salary.</p>
+    <div class="column-full">
+        <p class="body-text">
+            You can <a href="">request a DfE Sign-in account</a> for others who manage your courses.
+        </p>
+    </div>
+</div>
+
+<div class="grid-row">
+    <h2 class="heading-large">
+        Check your courses
+    </h2>
+</div>
+
+<div class="grid-row add-double-bottom-margin">
+    <div class="column-full">
+        <p class="body-text">
+            We found 49 courses belonging to Catholic Teaching Alliance (South East London).
+        </p>
+        <p class="body-text">
+            Check that your course information is correct. If there are any mistakes, you should contact<a href=""> Become a Teacher</a> to let us know.
+        </p>
+        <p class="body-text">
+            To make any changes, for now you’ll still need to use UCAS web-link. Changes on UCAS will normally show here within one working day.
+        </p>
     </div>
 </div>
 
 
-    @foreach (var providerCourse in Model.ProviderCourses)
-    {
+@foreach (var providerCourse in Model.ProviderCourses)
+{
 
-        <h3 class="heading-medium">
+    <h3 class="heading-medium">
+        <p class="lede">Accrediting provider</p>
+        @providerCourse.AccreditingProviderName
+    </h3>
 
-            @providerCourse.AccreditingProviderName
-        </h3>
+    <ul class="list listing-example">
+        <table class="ucas-info-table">
+            <thead>
+                <tr>
+                    <th>Subject</th>
+                    <th>UCAS code</th>
+                    <th>Type</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var course in providerCourse.CourseDetails)
+                {
+                    foreach (var variant in course.Variants)
+                    {
+                        <tr>
+                            <td>@course.CourseTitle</td>
+                            <td>@variant.UcasCode</td>
+                            <td>@variant.ProfPostFlag</td>
 
-        <ul class="list listing-example">
-            @foreach (var course in providerCourse.CourseDetails)
-            {
-            <li>
-                <a href="@Url.Action("details", "course", new {AccreditingProviderId = providerCourse.AccreditingProviderId, CourseTitle = course.CourseTitle})">@course.CourseTitle</a>
-            </li>
-            }
-        </ul>
-    }
-        
+                            <td><a href="@Url.Action("details", "course", new {AccreditingProviderId = providerCourse.AccreditingProviderId, CourseTitle = course.CourseTitle})">View Course</a></td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </ul>
+}
+
