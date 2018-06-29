@@ -21,13 +21,15 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             _manageApi = manageApi;
         }
 
-        [Route("{accreditingProviderId}/{courseTitle}/{ucasCode}")]
+        [Route("{accreditingProviderId=self}/{courseTitle}/{ucasCode}")]
         public async Task<IActionResult> Variants(string accreditingProviderId, string courseTitle, string ucasCode)
         {
             var course = await _manageApi.GetCourses();
 
-            var providerCourse = course.ProviderCourses
-                .First(c => c.AccreditingProviderId.Equals(accreditingProviderId, StringComparison.InvariantCultureIgnoreCase));
+            var providerCourse = "self".Equals(accreditingProviderId, StringComparison.InvariantCultureIgnoreCase)
+                ? course.ProviderCourses.First(c => String.IsNullOrEmpty(c.AccreditingProviderId))
+                : course.ProviderCourses
+                    .First(c => c.AccreditingProviderId.Equals(accreditingProviderId, StringComparison.InvariantCultureIgnoreCase));
 
             var courseDetail = providerCourse.CourseDetails.First(x => x.CourseTitle.Equals(courseTitle, StringComparison.InvariantCultureIgnoreCase));
             var variant = courseDetail.Variants.FirstOrDefault(v => v.UcasCode == ucasCode);
