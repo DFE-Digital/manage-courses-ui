@@ -1,11 +1,11 @@
-﻿@model OrganisationCourses
+﻿@model CourseListViewModel
 
 @{
     Layout = "_Layout";
 }
 <div class="grid-row">
     <h1 class="heading-xlarge">
-        @Model.OrganisationName
+        @Model.Courses.OrganisationName
     </h1>
 </div>
 <div class="grid-row">
@@ -15,7 +15,7 @@
 </div>
 
 <div class="grid-row add-double-bottom-margin">
-    <div class="column-full">
+    <div class="column-two-thirds">
         <p class="body-text">
             You can <a href="https://goo.gl/forms/knDj4JYC06iiZDn72">request a DfE Sign-in account</a> for others who manage your courses.
         </p>
@@ -29,9 +29,9 @@
 </div>
 
 <div class="grid-row add-double-bottom-margin">
-    <div class="column-full">
+    <div class="column-two-thirds">
         <p class="body-text">
-            We found 49 courses belonging to Catholic Teaching Alliance (South East London).
+            We found @Model.TotalCount courses belonging to @Model.Courses.OrganisationName.
         </p>
         <p class="body-text">
             Check that your course information is correct. If there are any mistakes, you should contact<a href=""> Become a Teacher</a> to let us know.
@@ -43,7 +43,7 @@
 </div>
 
 
-@foreach (var providerCourse in Model.ProviderCourses)
+@foreach (var providerCourse in Model.Courses.ProviderCourses)
 {
 
     <h3 class="heading-medium">
@@ -69,7 +69,7 @@
                         <tr>
                             <td>@course.CourseTitle</td>
                             <td>@variant.UcasCode</td>
-                            <td>@variant.ProfPostFlag</td>
+                            <td>@variant.GetCourseVariantType()</td>
 
                             <td><a href="@Url.Action("details", "course", new {AccreditingProviderId = providerCourse.AccreditingProviderId, CourseTitle = course.CourseTitle})">View Course</a></td>
                         </tr>
