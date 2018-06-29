@@ -2,9 +2,10 @@
 
 @{
     Layout = "_Layout";
+    var link = "mailto:becomingateacher@digital.education.gov.uk?subject=Problem%20with%20ucas%20data%20" + Model.Course.ProgrammeCode;
 }
 
-<a class="link-back" href="@Url.Action("details","course", new {Model.CourseTitle, Model.AccreditingProviderId })">Back</a>
+<a class="link-back" href="@Url.Action("index","courses")">Back</a>
 <h1 class="heading-xlarge">
     <span class="heading-secondary">@Model.Course.Name</span>
     @Model.Course.Type (@Model.Course.ProgrammeCode)
@@ -42,7 +43,7 @@
 </dl>
 
 <h3 class="heading-medium">Training locations</h3>
-<table>
+<table class="add-double-bottom-margin">
     <thead>
         <tr>
             <th>Location name</th>
@@ -67,3 +68,8 @@
         }
     </tbody>
 </table>
+
+
+<p>
+    <a href="@link">Contact Becoming a Teacher Team to report a problem</a>
+</p>
