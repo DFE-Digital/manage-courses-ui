@@ -38,7 +38,7 @@ You may also set the following optional ones:
 * **auth__oidc__metadataAddress** (optional) - the .well-known config URL of your oauth server, if you don't want to use the default sandbox one
 * **auth__oidc__clientId** (optional) - the Client ID to be used with your oauth server, if you don't want to use the default one (`bats`)
 
-Example of how to set these and run the UI in Powershell 
+Example of how to set these and run the UI in Powershell (in folder `src/ui`) 
 ```powershell
 $env:DFE_SIGNIN_CLIENT_SECRET="<secret-goes-here>" ; $env:ASPNET_ENVIRONMENT="Development" ; $env:ApiConnection__url="https://manage-courses-api-bat-development.e4ff.pro-eu-west-1.openshiftapps.com" ; dotnet run
 ```
