@@ -148,6 +148,12 @@ namespace GovUk.Education.ManageCourses.Ui
                 routes.MapRoute("registrationCallback",
                     config.RegisterCallbackPath,
                     new { controller = "Auth", action = "RegistrationComplete" });
+                routes.MapRoute("cookies", "cookies",
+                    defaults: new { controller = "Legal", action = "Cookies" });
+                routes.MapRoute("privacy", "privacy-policy",
+                    defaults: new { controller = "Legal", action = "Privacy" });
+                routes.MapRoute("tandc", "terms-conditions",
+                    defaults: new { controller = "Legal", action = "TandC" });
             });
         }
     }
