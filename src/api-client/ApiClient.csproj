@@ -1,6 +1,9 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk" DefaultTargets="Clean;NSwag;Build">
 
   <PropertyGroup>
+    <CompileDependsOn>
+		  NSwag
+    </CompileDependsOn>
     <OutputType>Library</OutputType>
     <TargetFramework>netcoreapp2.0</TargetFramework>
     <RootNamespace>GovUk.Education.ManageCourses.ApiClient</RootNamespace>
@@ -22,7 +25,7 @@
       <configurationClass>$(namespace).IManageCoursesApiClientConfiguration</configurationClass>
     </PropertyGroup>
 
-    <Exec Command="$(NSwagExe_Core20) swagger2csclient /input:$(InputSwaggerJson) /output:$(OutputSwaggerGeneration) /classname:$(classname) /namespace:$(namespace) /clientBaseClass:$(clientBaseClass) /configurationClass:$(configurationClass)" />
+    <Exec Command="$(NSwagExe_Core20) swagger2csclient /input:$(InputSwaggerJson) /output:$(OutputSwaggerGeneration) /classname:$(classname) /namespace:$(namespace) /clientBaseClass:$(clientBaseClass) /configurationClass:$(configurationClass) /OperationGenerationMode:SingleClientFromOperationId " />
     <RemoveDir Directories="$(OutDir)References" />
   </Target>
 

@@ -64,7 +64,7 @@ It can also worked on Visual Studio Code but a reverse proxy from https back to 
 * Consider ngrok (needs change in external auth)
 * Consider reverse proxy from https to http ie nginx handles https and forward it to http localhost
 
-#### Asset pipeline
+### Asset pipeline
 
 * See https://docs.microsoft.com/en-us/aspnet/core/client-side/using-grunt?view=aspnetcore-2.1 for how grunt is used.
 * To get visual studio to download the node dependencies open the package.json file and save it. Take a look at the output window (select "Bower/npm" in the output dropdown).
@@ -99,7 +99,7 @@ Check that the bindings for https settings are for port 44364 (you may need to r
 2. opens up url to external auth
 3. user logins in on external auth
 4. user is then redirected back to localhost  (redirect url provided from localhost in step 2)
-5. localost then extract the user details
+5. localhost then extract the user details
 
 ## Sign-in service links
 
