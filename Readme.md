@@ -27,6 +27,8 @@ npm install
 npm run-script generate
 ```
 
+Go to `https://localhost:44364` in your browser
+
 ## Run
 
 ### App settings variables
