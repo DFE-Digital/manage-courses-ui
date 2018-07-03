@@ -29,15 +29,28 @@ npm run-script generate
 
 ## Run
 
-You will need to set the app settings:
-* **ApiConnection:url** - the location of your [manage-courses-api](https://github.com/DFE-Digital/manage-courses-api) deployment. You can use a local one or perhaps [the one in the Dev Environment](https://manage-courses-ui-bat-development.e4ff.pro-eu-west-1.openshiftapps.com) if you are lazy 
-* **DFE_SIGNIN_CLIENT_SECRET** - the client secret of your oath server 
-* **ASPNET_ENVIRONMENT** - set to `Development`
+### App settings variables
+You will need to set the app settings (prefered to be store as `user-secrets`):
+
+* **ApiConnection:url** - the location of your [manage-courses-api](https://github.com/DFE-Digital/manage-courses-api) deployment. You can use a local one or perhaps [the one in the Dev Environment](https://manage-courses-ui-bat-development.e4ff.pro-eu-west-1.openshiftapps.com) if you are lazy
+* **DFE_SIGNIN_CLIENT_SECRET** - the client secret of your oath server
+* **auth:oidc:metadataAddress** - the .well-known config URL of your oauth server, if you don't want to use the default sandbox one
 
 You may also set the following optional ones:
-* **auth__oidc__metadataAddress** (optional) - the .well-known config URL of your oauth server, if you don't want to use the default sandbox one
-* **auth__oidc__clientId** (optional) - the Client ID to be used with your oauth server, if you don't want to use the default one (`bats`)
-* **PORT** (optional) - the port to run locally if you don't want to use the standard `44364`
+
+* **auth:oidc:clientId** (optional) - the Client ID to be used with your oauth server, if you don't want to use the default one (`bats`)
+
+
+### System Environment variables
+
+* **ASPNET_ENVIRONMENT** - set to `Development`
+* **MANAGE_COURSES_API_Development_PORT** (optional) - the port to run locally on `Development` valid port number betweeen `49152 - 65535` otherwise it will use the default port `44364` if port is unset or port is invalid/out of bounds
+
+
+#### Notes
+
+* ensure the overriden or default port used (**MANAGE_COURSES_API_Development_PORT**), is available for use.
+* app settings can also be defined as System Enviroment Variables or as `user-secrets`
 
 The best way to set and store them is [user-secrets](https://docs.microsoft.com/en-us/aspnet/core/security/app-secrets?view=aspnetcore-2.1), e.g.
 ```powershell
@@ -47,31 +60,25 @@ dotnet user-secrets set ApiConnection:url https://manage-courses-ui-bat-developm
 dotnet user-secrets set DFE_SIGNIN_CLIENT_SECRET <the client secret>
 ```
 
-And then just launch the UI (in folder `src/ui`) 
+And then just launch the UI (in folder `src/ui`)
 ```powershell
 dotnet run
 ```
 
 Once you're up and running, navigate to https://localhost:44364. Your browser will alert you that the certificate has no trusted root, but navigate to the page anyway.
 
-# Build and run in Visual Studio with msbuild (Legacy only - it's better to use dotnet core) 
+
+# Build and run in Visual Studio with msbuild (Legacy only - it's better to use dotnet core)
 
 ## Setup
 
-* Add `DFE_SIGNIN_CLIENT_SECRET` to your user secrets for the ManageCoursesUI project (right-click the project in VS, "Manage user secrets".  
+* Add `DFE_SIGNIN_CLIENT_SECRET` to your user secrets for the ManageCoursesUI project (right-click the project in VS, "Manage user secrets".
 * Run `npm install` in `src\ui\` to get the asset pipeline dependencies (grunt) before opening visual studio.
 * Must be run with SSL/TLS. The DfE Sign-in service will not allow non-https redirect urls
 
 ## Coding
 
-If you work with Visual Studio, this repo can be worked on in Visual Studio 2017 only.
-
-* This uses external site for auth.
-* Using vs2017 & iisexpress to  allow for external auth to communicate back via localhost using https.
-
-It can also worked on Visual Studio Code but a reverse proxy from https back to http is required for the external auth.
-* Consider ngrok (needs change in external auth)
-* Consider reverse proxy from https to http ie nginx handles https and forward it to http localhost
+This repo can be worked on both Visual Studio 2017 [see IIS Express (Windows-only](###iis-Express-(windows-only)) & Visual Studio Code.
 
 ### Asset pipeline
 
