@@ -29,18 +29,27 @@ npm run-script generate
 
 ## Run
 
-You will need to set the following environment variables:
-* **ApiConnection__url** - the location of your [manage-courses-api](https://github.com/DFE-Digital/manage-courses-api) deployment. You can use a local one or perhaps [the one in the Dev Environment](https://manage-courses-ui-bat-development.e4ff.pro-eu-west-1.openshiftapps.com) if you are lazy 
+You will need to set the app settings:
+* **ApiConnection:url** - the location of your [manage-courses-api](https://github.com/DFE-Digital/manage-courses-api) deployment. You can use a local one or perhaps [the one in the Dev Environment](https://manage-courses-ui-bat-development.e4ff.pro-eu-west-1.openshiftapps.com) if you are lazy 
 * **DFE_SIGNIN_CLIENT_SECRET** - the client secret of your oath server 
 * **ASPNET_ENVIRONMENT** - set to `Development`
 
 You may also set the following optional ones:
 * **auth__oidc__metadataAddress** (optional) - the .well-known config URL of your oauth server, if you don't want to use the default sandbox one
 * **auth__oidc__clientId** (optional) - the Client ID to be used with your oauth server, if you don't want to use the default one (`bats`)
+* **PORT** (optional) - the port to run locally if you don't want to use the standard `44364`
 
-Example of how to set these and run the UI in Powershell (in folder `src/ui`) 
+The best way to set and store them is [user-secrets](https://docs.microsoft.com/en-us/aspnet/core/security/app-secrets?view=aspnetcore-2.1), e.g.
 ```powershell
-$env:DFE_SIGNIN_CLIENT_SECRET="<secret-goes-here>" ; $env:ASPNET_ENVIRONMENT="Development" ; $env:ApiConnection__url="https://manage-courses-api-bat-development.e4ff.pro-eu-west-1.openshiftapps.com" ; dotnet run
+cd src\ui
+dotnet user-secrets set ASPNET_ENVIRONMENT Development
+dotnet user-secrets set ApiConnection:url https://manage-courses-ui-bat-development.e4ff.pro-eu-west-1.openshiftapps.com
+dotnet user-secrets set DFE_SIGNIN_CLIENT_SECRET <the client secret>
+```
+
+And then just launch the UI (in folder `src/ui`) 
+```powershell
+dotnet run
 ```
 
 Once you're up and running, navigate to https://localhost:44364. Your browser will alert you that the certificate has no trusted root, but navigate to the page anyway.
