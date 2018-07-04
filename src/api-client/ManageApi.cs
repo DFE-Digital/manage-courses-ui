@@ -19,7 +19,7 @@ namespace GovUk.Education.ManageCourses.ApiClient
         {
             try
             {
-                var courses = await _apiClient.ExportAsync();
+                var courses = await _apiClient.Data_ExportAsync();
                 return courses;
             }
             catch (Exception ex)
@@ -31,7 +31,7 @@ namespace GovUk.Education.ManageCourses.ApiClient
         public async Task<dynamic> GetOrganisationCoursesTotal()
         {
             // todo: await _apiClient.GetOrganisationCoursesTotal()
-            var courses = await _apiClient.ExportAsync();
+            var courses = await _apiClient.Data_ExportAsync();
             dynamic organisationCoursesTotal = new ExpandoObject();
             
             organisationCoursesTotal.OrganisationName = courses.OrganisationName;
@@ -44,7 +44,7 @@ namespace GovUk.Education.ManageCourses.ApiClient
         public async Task<CourseDetail> GetCourse(string accreditingProviderId, string courseTitle)
         {
             // todo: expand api to allow fetching single course
-            var courses = await _apiClient.ExportAsync();
+            var courses = await _apiClient.Data_ExportAsync();
             // todo: don't use first once we have course-folding in place
             //return courses.First(c => c.UcasCode == ucasCode);
             return courses.ProviderCourses
