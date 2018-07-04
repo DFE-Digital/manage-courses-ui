@@ -3,42 +3,43 @@
 // Spacing to the left of the task list
 $course-parts-indent: 35px;
 
-// .course-parts {
-//   margin-top: $gutter;
-//   @include media(tablet) {
-//     margin-top: ($gutter * 1.5);
-//   }
-// }
+.course-parts {
+  margin-top: govuk-spacing(2);
+
+  @include govuk-media-query($from: tablet) {
+    margin-top: (govuk-spacing(2) * 1.5);
+  }
+}
 
 .course-parts-section {
     display: table;
-    @include bold-36;
+    @include govuk-font($size: 19);
     margin-bottom: 15px;
-    padding-bottom: ($gutter / 6);
+    padding-bottom: (govuk-spacing(2) / 6);
 }
 
 .course-parts-items {
-    margin-bottom: $gutter;
+    margin-bottom: govuk-spacing(2);
 
-    @include media(tablet) {
-        margin-bottom: ($gutter * 2);
+    @include govuk-media-query($from: tablet) {
+        margin-bottom: (govuk-spacing(2) * 2);
     }
 }
 
 .course-parts-item {
-    padding-top: $gutter;
-    padding-bottom: $gutter;
-    @extend %contain-floats;
+    padding-top: govuk-spacing(2);
+    padding-bottom: govuk-spacing(2);
+    @include govuk-clearfix;
 }
 
 .course-parts-item:first-child {
-    border-top: 1px solid $border-colour;
+    border-top: 1px solid $govuk-input-border-colour;
 }
 
 .course-part-task {
-    width: $two-thirds;
+    @include govuk-grid-column(two-thirds);
     float: left;
-    @include bold-24;
+    @include govuk-font($size: 24);
     margin: 0;
 }
 
@@ -51,7 +52,7 @@ $course-parts-indent: 35px;
 .course-part-tasks {
     margin-top: 60px;
 
-    @include media(desktop) {
+    @include govuk-media-query($from: desktop) {
         display: table;
         width: 100%;
     }
@@ -59,21 +60,21 @@ $course-parts-indent: 35px;
     > * {
         position: relative;
 
-        @include media(desktop) {
+        @include govuk-media-query($from: desktop) {
             display: table-row;
         }
 
         > * {
             display: block;
 
-            @include media(desktop) {
+            @include govuk-media-query($from: desktop) {
                 display: table-cell;
                 padding: em(12, 19) em(20, 19) em(9, 19) 0; // copied from Elements' td padding
                 margin: 0;
             }
         }
 
-        @include media(desktop) {
+        @include govuk-media-query($from: desktop) {
             &:first-child > * {
                 padding-top: 0;
             }
@@ -101,7 +102,7 @@ $course-parts-indent: 35px;
         margin-bottom: 10px;
 
         &--empty {
-            color: $grey-1;
+            color: govuk-colour("grey-1");
         }
     }
 }

@@ -1,16 +1,21 @@
-﻿$path: "/images/";
+$govuk-images-path: "/images/";
+$govuk-fonts-path: "/fonts/";
 
-@import "govuk-elements";
+$govuk-global-styles: true;
+
+@import "node_modules/govuk-frontend/all";
+
+@import "components/cookie-banner";
 
 $success-colour: $button-colour;
 
 @import "patterns/course-parts";
 @import "patterns/success-summary";
 
-#proposition-links {
-    color: $white;
-    font-weight: bold;
-  }
+// https://github.com/alphagov/govuk-frontend/issues/828
+.govuk-header {
+    font-size: 0;
+}
 
 // Add a red border to .form-control-group if validation fails
 .input-validation-error {
@@ -30,21 +35,13 @@ $success-colour: $button-colour;
     margin: 0 auto;
     padding: 0 15px 10px;
     outline: none;
-}
 
-@media screen and (min-width: 641px)
-{
-    .phase-banner-wrapper
-    {
+    @include govuk-media-query($from: tablet) {
         margin: 0 30px;
-        padding: 0 0 10px;
+        padding: 0 10px;
     }
-}
 
-@media screen and (min-width: 1020px)
-{
-    .phase-banner-wrapper
-    {
+    @include govuk-media-query($from: desktop) {
         margin: 0 auto;
         width: 960px;
     }
@@ -60,16 +57,16 @@ $success-colour: $button-colour;
     margin-bottom: 0;
 }
 
-.add-bottom-margin {
-    margin-bottom: $gutter / 2;
-}
+// .add-bottom-margin {
+//     margin-bottom:  govuk-spacing(2) / 2;
+// }
 
 .add-double-bottom-margin {
-    margin-bottom: $gutter;
+    margin-bottom:  govuk-spacing(2);
 }
 
 .add-top-margin {
-    margin-top: $gutter / 2;
+    margin-top:  govuk-spacing(2) / 2;
 }
 
 .add-margin-for-label {
@@ -85,7 +82,7 @@ $success-colour: $button-colour;
 }
 
 .results-item {
-    margin-bottom: $gutter;
+    margin-bottom:  govuk-spacing(2);
 }
 
 .metadata dt,
@@ -103,13 +100,13 @@ $success-colour: $button-colour;
 }
 
 .filter-category {
-    background-color: $grey-3;
+    background-color: govuk-color("grey-3");
     padding: 12px;
     margin-bottom: 10px;
 }
 
 .filters {
-    background-color: $white;
+    background-color: govuk-colour("white");
     padding: 10px;
 }
 
@@ -123,9 +120,9 @@ $success-colour: $button-colour;
 
 .tabs {
     padding-left: 0;
-    border-bottom: 1px solid $border-colour;
+    border-bottom: 1px solid $govuk-input-border-colour;
     font-size: 19px;
-    margin-bottom: $gutter;
+    margin-bottom:  govuk-spacing(2);
 
     li {
         margin-bottom: -1px;
@@ -138,13 +135,13 @@ $success-colour: $button-colour;
     }
 
     .active a {
-        border: 1px solid $border-colour;
-        border-bottom-color: #fff;
+        border: 1px solid $govuk-input-border-colour;
+        border-bottom-color: govuk-colour("white");
         text-decoration: none;
 
         &:link,
         &:visited {
-            color: $text-colour;
+            color: govuk-color("black");
         }
     }
 }
@@ -184,7 +181,7 @@ dl.aligned dd {
 
 .tabs {
     padding-left: 0;
-    border-bottom: 1px solid $border-colour;
+    border-bottom: 1px solid $govuk-input-border-colour;
     font-size: 19px;
 
     li {
@@ -198,13 +195,13 @@ dl.aligned dd {
     }
 
     .active a {
-        border: 1px solid $border-colour;
-        border-bottom-color: #fff;
+        border: 1px solid $govuk-input-border-colour;
+        border-bottom-color: govuk-colour("white");
         text-decoration: none;
 
         &:link,
         &:visited {
-            color: $text-colour;
+            color: govuk-color("black");
         }
     }
 }
@@ -225,7 +222,7 @@ dl.aligned dd {
 .fake-email {
     margin-left: 15px;
     margin-top: 20px;
-    border: 5px solid $border-colour;
+    border: 5px solid $govuk-input-border-colour;
     padding: 60px;
 }
 
@@ -238,8 +235,8 @@ dl.aligned dd {
 }
 
 .missing-section {
-    border: 5px solid $border-colour;
-    padding: $gutter / 2;
+    border: 5px solid $govuk-input-border-colour;
+    padding: govuk-spacing(2);
 }
 
 .preview-pre {
@@ -247,7 +244,7 @@ dl.aligned dd {
 }
 
 .heading-medium .heading-secondary {
-    color: $grey-1;
+    color: govuk-colour("grey-1");
     font-weight: normal;
     display: block;
 }

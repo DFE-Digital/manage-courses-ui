@@ -5,19 +5,17 @@
   "engines": {
     "node": ">=8.11.2"
   },
-  "dependencies": {
-    "govuk_frontend_toolkit": "^7.2.0",
-    "govuk-elements-sass": "^3.1.2",
-    "govuk_template_jinja": "^0.24.0"
-  },
-  "devDependencies": {
-    "grunt": "^1.0.3",
-    "grunt-cli": "^1.2.0",
-    "grunt-contrib-copy": "^1.0.0",
-    "grunt-sass": "^3.0.0",
-    "node-sass": "^4.9.0"
-  },
   "scripts": {
-    "generate": "grunt"
+    "generate": "gulp generate-assets",
+    "clean": "gulp clean"
+  },
+  "dependencies": {
+    "govuk-frontend": "^1.0.0",
+    "gulp": "^4.0.0",
+    "gulp-clean": "^0.4.0",
+    "gulp-copy": "^1.1.0",
+    "gulp-sass": "^4.0.1",
+    "gulp-sourcemaps": "^2.6.4",
+    "require-dir": "^1.0.0"
   }
 }

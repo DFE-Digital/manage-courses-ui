@@ -6,7 +6,6 @@
 
     ViewBag.Title = (String.IsNullOrEmpty(ViewBag.Title) ? "" : ViewBag.Title + " - ")
         + ViewData["serviceName"] + " - GOV.UK";
-    ViewData["headerClass"] = "with-proposition";
 
     var name = "";
     if (User.Identity.IsAuthenticated)
@@ -26,62 +25,55 @@
     {
         <!-- Global site tag (gtag.js) - Google Analytics -->
         <script async src="https://www.googletagmanager.com/gtag/js?id=UA-112932657-2"></script>
-        <script src="~/javascripts/analytics-config.js"></script>
+        <script src="~/scripts/analytics-config.js"></script>
     }
 }
 
-@section propositionHeader {
-    <div class="header-proposition">
-        <div class="content">
-            <a href="#proposition-links" class="js-header-toggle menu">Menu</a>
-            <nav id="proposition-menu">
-                <a href="/" id="proposition-name" role="link">@ViewData["serviceName"]</a>
-
-                <ul id="proposition-links">
-                    @if (User.Identity.IsAuthenticated)
-                    {
-                    <li><a asp-controller="Auth" asp-action="Logout">Sign out</a> (<a href="@profileUrl">@name</a>) </li>
-                    }
-                    else
-                    {
-                        <li><a asp-controller="Auth" asp-action="Login">Login</a></li>
-                        <li><a href="@registerUrl">Register</a></li>
-                    }
-                </ul>
-
-            </nav>
-        </div>
+@section insideHeader {
+    <div class="govuk-header__content">
+        <a href="/" class="govuk-header__link govuk-header__link--service-name" role="link">@ViewData["serviceName"]</a>
+        <button role="button" class="govuk-header__menu-button js-header-toggle" aria-controls="navigation" aria-label="Show or hide Top Level Navigation">Menu</button>
+        <nav>
+            <ul id="navigation" class="govuk-header__navigation " aria-label="Top Level Navigation">
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <li class="govuk-header__navigation-item">
+                        <a class="govuk-header__link" asp-controller="Auth" asp-action="Logout">Sign out (<a href="@profileUrl">@name</a>)</a>
+                    </li>
+                }
+                else
+                {
+                    <li class="govuk-header__navigation-item">
+                        <a class="govuk-header__link" asp-controller="Auth" asp-action="Login">Login</a>
+                    </li>
+                    <li class="govuk-header__navigation-item">
+                        <a href="@registerUrl" class="govuk-header__link">Register</a>
+                    </li>
+                }
+            </ul>
+        </nav>
     </div>
-}
-
-@section bodyEnd {
-    <script src="~/javascripts/govuk/details.polyfill.js"></script>
-    <script src="~/javascripts/govuk/selection-buttons.js"></script>
-    <script src="~/javascripts/govuk/show-hide-content.js"></script>
 }
 
 @section footerSupportLinks {
-    <h2 class="visuallyhidden">Support links</h2>
-    <ul>
-        <li><a href="mailto:becomingateacher@digital.education.gov.uk?subject=Publish%20teacher%20training%20courses%20feedback">Give feedback</a></li>
-        <li><a href="/cookies">Cookies</a></li>
-        <li><a href="/privacy-policy">Privacy Policy</a></li>
-        <li><a href="/terms-conditions">Terms and conditions</a></li>
+    <h2 class="govuk-visually-hidden">Support links</h2>
+    <ul class="govuk-footer__inline-list">
+        <li class="govuk-footer__inline-list-item"><a href="mailto:becomingateacher@digital.education.gov.uk?subject=Publish%20teacher%20training%20courses%20feedback">Give feedback</a></li>
+        <li class="govuk-footer__inline-list-item"><a href="/cookies">Cookies</a></li>
+        <li class="govuk-footer__inline-list-item"><a href="/privacy-policy">Privacy Policy</a></li>
+        <li class="govuk-footer__inline-list-item"><a href="/terms-conditions">Terms and conditions</a></li>
     </ul>
 }
 
-<main role="main">
-    <div class="phase-banner-wrapper">
-
-            <div class="phase-banner">
-                <p>
-                    <strong class="phase-tag">BETA</strong>
-                    <span>This is a new service – your <a href="mailto:becomingateacher@digital.education.gov.uk?subject=Publish%20teacher%20training%20courses%20feedback">feedback</a> will help us to improve it.</span>
-                </p>
-            </div>
+<div class="govuk-width-container">
+    <div class="govuk-phase-banner">
+        <p class="govuk-phase-banner__content">
+            <strong class="govuk-tag govuk-phase-banner__content__tag ">BETA</strong>
+            <span class="govuk-phase-banner__text">This is a new service – your <a href="mailto:becomingateacher@digital.education.gov.uk?subject=Publish%20teacher%20training%20courses%20feedback">feedback</a> will help us to improve it.</span>
+        </p>
     </div>
+</div>
 
-    <div id="content">
-        @RenderBody()
-    </div>
+<main role="main" class="govuk-main-wrapper app-main-class" id="main-content">
+    @RenderBody()
 </main>
