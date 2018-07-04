@@ -33,11 +33,7 @@ namespace GovUk.Education.ManageCourses.Ui
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
-            const string envKeyApiConnection = "ApiConnection:Uri";
-            var apiUri = Configuration[envKeyApiConnection];
-            _logger.LogInformation("Using API base URL: " + apiUri);
-            //services.AddScoped<IManageCoursesApi>(provider => new IManageCoursesApi(new HttpClient(), apiUri));
-
+            
             services.AddAuthentication(options =>
             {
                 options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
@@ -88,7 +84,7 @@ namespace GovUk.Education.ManageCourses.Ui
             });
 
             services.AddSingleton<IManageCoursesApiClientConfiguration, ManageCoursesApiClientConfiguration>();
-            services.AddScoped<AnalyticsPolicy>(provider => AnalyticsPolicy.FromEnv());
+            services.AddScoped(provider => AnalyticsPolicy.FromEnv());
             services.AddScoped<AnalyticsAttribute>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddSingleton<ManageCoursesConfig, ManageCoursesConfig>();
@@ -118,7 +114,7 @@ namespace GovUk.Education.ManageCourses.Ui
             }
 
             app.UseStatusCodePagesWithReExecute("/Home/Error");
-
+            
             app.UseStaticFiles();
 
             // https://docs.microsoft.com/en-gb/aspnet/core/host-and-deploy/linux-nginx?view=aspnetcore-2.1&tabs=aspnetcore2x
@@ -136,7 +132,9 @@ namespace GovUk.Education.ManageCourses.Ui
             app.UseAuthentication();
 
             var config = serviceProvider.GetService<ManageCoursesConfig>();
-            
+
+            _logger.LogInformation("Using API base URL: {0}", config.ApiUrl);
+
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
