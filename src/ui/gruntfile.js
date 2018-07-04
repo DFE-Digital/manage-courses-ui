@@ -2,6 +2,8 @@
 module.exports = function (grunt) {
     'use strict';
 
+    var sass = require('node-sass');
+
     // Project configuration.
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
@@ -9,6 +11,7 @@ module.exports = function (grunt) {
         // Sass
         sass: {
             options: {
+                implementation: sass,
                 sourceMap: true,
                 outputStyle: 'compressed',
                   includePaths: [
