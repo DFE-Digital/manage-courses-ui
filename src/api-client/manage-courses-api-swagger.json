@@ -6,7 +6,7 @@
     "description": "An API for managing course data",
     "version": "v1"
   },
-  "host": "localhost:6001",
+  "host": "localhost:60699",
   "schemes": [
     "http"
   ],
@@ -17,6 +17,34 @@
     "application/json"
   ],
   "paths": {
+    "/api/AccessRequest": {
+      "post": {
+        "tags": [
+          "AccessRequest"
+        ],
+        "operationId": "AccessRequest_Index",
+        "parameters": [
+          {
+            "type": "object",
+            "name": "request",
+            "in": "formData",
+            "x-schema": {
+              "$ref": "#/definitions/AccessRequest"
+            },
+            "x-nullable": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": true,
+            "description": "",
+            "schema": {
+              "type": "file"
+            }
+          }
+        }
+      }
+    },
     "/api/Data": {
       "get": {
         "tags": [
@@ -60,6 +88,27 @@
     }
   },
   "definitions": {
+    "AccessRequest": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "firstName": {
+          "type": "string"
+        },
+        "lastName": {
+          "type": "string"
+        },
+        "emailAddress": {
+          "type": "string"
+        },
+        "organisation": {
+          "type": "string"
+        },
+        "reason": {
+          "type": "string"
+        }
+      }
+    },
     "OrganisationCourses": {
       "type": "object",
       "additionalProperties": false,
