@@ -85,6 +85,54 @@
           }
         }
       }
+    },
+    "/api/Data/{organisationId}": {
+      "get": {
+        "tags": [
+          "Data"
+        ],
+        "summary": "Exports the data.",
+        "operationId": "Data_ExportByOrganisation",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "organisationId",
+            "in": "path",
+            "required": true,
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": true,
+            "description": "The exported data",
+            "schema": {
+              "$ref": "#/definitions/OrganisationCourses"
+            }
+          }
+        }
+      }
+    },
+    "/api/Organisations": {
+      "get": {
+        "tags": [
+          "Organisations"
+        ],
+        "summary": "Exports the data.",
+        "operationId": "Organisations_Get",
+        "responses": {
+          "200": {
+            "x-nullable": true,
+            "description": "The exported data",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/UserOrganisation"
+              }
+            }
+          }
+        }
+      }
     }
   },
   "definitions": {
@@ -723,6 +771,28 @@
         },
         "institutionName": {
           "type": "string"
+        }
+      }
+    },
+    "UserOrganisation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "totalCourses"
+      ],
+      "properties": {
+        "organisationName": {
+          "type": "string"
+        },
+        "organisationId": {
+          "type": "string"
+        },
+        "ucasCode": {
+          "type": "string"
+        },
+        "totalCourses": {
+          "type": "integer",
+          "format": "int32"
         }
       }
     }

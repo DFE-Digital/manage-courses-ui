@@ -1,0 +1,19 @@
+﻿@model OrganisationListViewModel
+
+@{
+    Layout = "_Layout";
+}
+
+<div class="grid-row add-double-bottom-margin">
+    <div class="column-two-thirds">
+        <h1 class="heading-xlarge">
+            Organisations
+        </h1>
+    </div>
+</div>
+@foreach (var organisation in Model.Oganisations)
+{
+<h3 class="heading-medium">
+    <span><a href="@Url.Action("Index", "courses", new { organisationId = organisation.OrganisationId, organisationCount = Model.Oganisations.Count() })">@organisation.OrganisationName</a><br/>@organisation.TotalCourses courses</span>
+</h3>
+}

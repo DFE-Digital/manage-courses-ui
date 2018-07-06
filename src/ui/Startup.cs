@@ -14,6 +14,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
+using SmartBreadcrumbs;
 
 namespace GovUk.Education.ManageCourses.Ui
 {
@@ -32,9 +33,22 @@ namespace GovUk.Education.ManageCourses.Ui
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+<<<<<<< HEAD
             services.AddMvc(options =>
                 options.Filters.Add(typeof(McExceptionFilter))
             );
+=======
+            services.AddMvc();
+
+            //services.UseBreadcrumbs(GetType().Assembly);
+            //services.UseBreadcrumbs(GetType().Assembly, options =>
+            //{
+            //    TagName = "nav";
+            //    OlClasses = "breadcrumb";
+            //    LiClasses = "breadcrumb-item";
+            //    ActiveLiClasses = "breadcrumb-item active";
+            //});
+>>>>>>> new_views_and_processing_for_multiple_organisations
 
             services.AddAuthentication(options =>
             {

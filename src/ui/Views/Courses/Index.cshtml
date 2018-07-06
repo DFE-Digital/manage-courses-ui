@@ -3,10 +3,13 @@
 @{
     Layout = "_Layout";
 }
+@if (Model.OrganisationCount > 1)
+{
+    <a class="link-back" href="@Url.Action("index","Organisations")">Organisations</a>
+}
 
 <div class="grid-row add-double-bottom-margin">
     @Html.Partial("~/Views/Courses/Shared/RequestAccessSuccess.cshtml")
-
     <div class="column-two-thirds">
         <h1 class="heading-xlarge">
             @Model.Courses.OrganisationName
@@ -71,7 +74,7 @@
                 <td>@variant.UcasCode</td>
                 <td>@variant.GetCourseVariantType()</td>
                 <td class="ucas-view-link">
-                    <a href="@Url.Action("variants", "course", new { accreditingProviderId = providerCourse.AccreditingProviderId, courseTitle = course.CourseTitle, ucasCode = variant.UcasCode })">View course</a>
+                    <a href="@Url.Action("variants", "course", new { accreditingProviderId = providerCourse.AccreditingProviderId, courseTitle = course.CourseTitle, ucasCode = variant.UcasCode, organisationId = Model.Courses.OrganisationId, organisationCount = Model.OrganisationCount })">View course</a>
                 </td>
             </tr>
                 }

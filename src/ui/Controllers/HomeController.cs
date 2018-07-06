@@ -1,9 +1,11 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 using GovUk.Education.ManageCourses.ApiClient;
 using GovUk.Education.ManageCourses.Ui.ViewModels;
+using SmartBreadcrumbs;
 
 namespace GovUk.Education.ManageCourses.Ui.Controllers
 {
@@ -17,10 +19,23 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
         }
 
         // GET: Home
+        [Authorize]
+        //[DefaultBreadcrumb("Home")]
         public ActionResult Index()
         {
+            var orgs = _manageApi.GetOrganisations().Result.ToList();
 
-            return this.RedirectToAction("Index", "Courses");
+            if (orgs.Count() == 1)
+            {
+                return this.RedirectToAction("Index", "Courses", new {organisationId = orgs[0].OrganisationId, organisationCount = 1 });
+            }
+
+            if (orgs.Count() > 1)
+            {
+                return this.RedirectToAction("Index", "Organisations");
+            }
+
+            return null;
         }
 
         [Authorize]

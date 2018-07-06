@@ -6,10 +6,8 @@ using GovUk.Education.ManageCourses.ApiClient;
 
 namespace GovUk.Education.ManageCourses.Ui.ViewModels
 {
-    public class CourseListViewModel
+    public class OrganisationListViewModel
     {
-        public OrganisationCourses Courses { get; set; }
-        public int TotalCount { get; set; }
-        public int OrganisationCount { get; set; }
+        public IEnumerable<UserOrganisation> Oganisations { get; set; }
     }
 }

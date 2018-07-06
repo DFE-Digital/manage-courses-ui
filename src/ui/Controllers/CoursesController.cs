@@ -5,6 +5,7 @@ using GovUk.Education.ManageCourses.ApiClient;
 using GovUk.Education.ManageCourses.Ui.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SmartBreadcrumbs;
 
 namespace GovUk.Education.ManageCourses.Ui.Controllers
 {
@@ -19,16 +20,20 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             _manageApi = manageApi;
         }
 
-        public async Task<IActionResult> Index()
+        [Route("{organisationId}")]
+        //[Breadcrumb("Courses", FromAction = "Organisations.Index")]
+        public async Task<IActionResult> Index(string organisationId, int organisationCount)
         {
-            var courses = await _manageApi.GetCourses();
-            var data = await _manageApi.GetOrganisationCoursesTotal();
+            var courses = await _manageApi.GetCoursesByOrganisation(organisationId);
+
+            var data = await _manageApi.GetOrganisationCoursesTotal(organisationId);
             var model = new CourseListViewModel
             {
                 Courses = courses,
-                TotalCount = data.TotalCount
+                TotalCount = data.TotalCount,
+                OrganisationCount = organisationCount
             };
-            return View(model);
+            return View("Index", model);
         }
     }
 }

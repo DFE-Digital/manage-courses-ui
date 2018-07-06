@@ -6,7 +6,15 @@
     var link = "mailto:becomingateacher@digital.education.gov.uk?subject=Problem%20with%20course%20" + Model.Course.ProgrammeCode;
 }
 
-<a class="link-back" href="@Url.Action("index","courses")">Back</a>
+<div class="link-back">
+    @if (Model.OrganisationCount > 1)
+    {
+
+        <a href="@Url.Action("index","Organisations")">Organisations</a>
+    }
+    <a href="@Url.Action("index","courses", new {organisationId= Model.OrganisationId, organisationCount = Model.OrganisationCount})">Courses</a>
+</div>    
+
 <h1 class="heading-xlarge">
     <span class="heading-secondary">@Model.Course.Name</span>
     @Model.Course.Type (@Model.Course.ProgrammeCode)

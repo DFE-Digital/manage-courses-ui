@@ -7,6 +7,7 @@ using GovUk.Education.ManageCourses.Ui.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using GovUk.Education.ManageCourses.Ui.Helpers;
+using SmartBreadcrumbs;
 
 namespace GovUk.Education.ManageCourses.Ui.Controllers
 {
@@ -20,11 +21,11 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
         {
             _manageApi = manageApi;
         }
-
         [Route("{accreditingProviderId=self}/{courseTitle}/{ucasCode}")]
-        public async Task<IActionResult> Variants(string accreditingProviderId, string courseTitle, string ucasCode)
+        //[Breadcrumb("Course", FromAction = "Courses.Index")]
+        public async Task<IActionResult> Variants(string accreditingProviderId, string courseTitle, string ucasCode, string organisationId, int organisationCount)
         {
-            var course = await _manageApi.GetCourses();
+            var course = await _manageApi.GetCoursesByOrganisation(organisationId);
 
             var providerCourse = "self".Equals(accreditingProviderId, StringComparison.InvariantCultureIgnoreCase)
                 ? course.ProviderCourses.First(c => String.IsNullOrEmpty(c.AccreditingProviderId))
@@ -79,6 +80,8 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             var viewModel = new FromUcasViewModel//TODO change view model to show on course variant
             {
                 OrganisationName = course.OrganisationName,
+                OrganisationId = course.OrganisationId,
+                OrganisationCount = organisationCount,
                 CourseTitle = courseDetail.CourseTitle,
                 AccreditingProviderId = providerCourse.AccreditingProviderId,
                 Course = courseVariant
