@@ -51,5 +51,10 @@ namespace GovUk.Education.ManageCourses.ApiClient
                 .First(c => c.AccreditingProviderId.Equals(accreditingProviderId, StringComparison.InvariantCultureIgnoreCase))
                 .CourseDetails.First(x => x.CourseTitle.Equals(courseTitle, StringComparison.InvariantCultureIgnoreCase));
         }
+
+        public async Task LogAccessRequest(AccessRequest accessRequest) 
+        {
+            await _apiClient.AccessRequest_IndexAsync(accessRequest);
+        } 
     }
 }

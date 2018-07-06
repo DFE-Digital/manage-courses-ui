@@ -152,6 +152,10 @@ namespace GovUk.Education.ManageCourses.Ui
                     defaults: new { controller = "Legal", action = "Privacy" });
                 routes.MapRoute("tandc", "terms-conditions",
                     defaults: new { controller = "Legal", action = "TandC" });
+                routes.MapRoute(
+                    "index", 
+                    "request-access",
+                    defaults: new { controller = "RequestAccess", action = "Index"});
             });
         }
     }
