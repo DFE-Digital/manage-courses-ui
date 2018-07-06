@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using GovUk.Education.ManageCourses.Ui.Claims;
@@ -53,6 +54,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
         [Authorize]
         public ViewResult Unauthorized()
         {
+            Response.StatusCode = (int)HttpStatusCode.Unauthorized;
             return View();
         }
 
