@@ -11,7 +11,7 @@ namespace GovUk.Education.ManageCourses.ApiClient
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "11.17.13.0 (NJsonSchema v9.10.50.0 (Newtonsoft.Json v9.0.0.0))")]
     public partial class ManageCoursesApiClient : GovUk.Education.ManageCourses.ApiClient.ManageCoursesApiClientBase
     {
-        private string _baseUrl = "http://localhost:60699";
+        private string _baseUrl = "http://localhost:6001";
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
     
         public ManageCoursesApiClient(GovUk.Education.ManageCourses.ApiClient.IManageCoursesApiClientConfiguration configuration) : base(configuration)
@@ -55,12 +55,8 @@ namespace GovUk.Education.ManageCourses.ApiClient
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
-                    var boundary_ = System.Guid.NewGuid().ToString();
-                    var content_ = new System.Net.Http.MultipartFormDataContent(boundary_);
-                    content_.Headers.Remove("Content-Type");
-                    content_.Headers.TryAddWithoutValidation("Content-Type", "multipart/form-data; boundary=" + boundary_);
-                    if (request != null)
-                        content_.Add(new System.Net.Http.StringContent(ConvertToString(request, System.Globalization.CultureInfo.InvariantCulture)), "request");
+                    var content_ = new System.Net.Http.StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value));
+                    content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
                     request_.Content = content_;
                     request_.Method = new System.Net.Http.HttpMethod("POST");
                     request_.Headers.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));

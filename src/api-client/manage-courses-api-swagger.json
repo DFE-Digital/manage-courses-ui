@@ -6,7 +6,7 @@
     "description": "An API for managing course data",
     "version": "v1"
   },
-  "host": "localhost:60699",
+  "host": "localhost:6001",
   "schemes": [
     "http"
   ],
@@ -25,10 +25,10 @@
         "operationId": "AccessRequest_Index",
         "parameters": [
           {
-            "type": "object",
             "name": "request",
-            "in": "formData",
-            "x-schema": {
+            "in": "body",
+            "required": true,
+            "schema": {
               "$ref": "#/definitions/AccessRequest"
             },
             "x-nullable": true
