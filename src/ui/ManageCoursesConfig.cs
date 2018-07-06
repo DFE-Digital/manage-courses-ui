@@ -22,9 +22,9 @@ namespace GovUk.Education.ManageCourses.Ui
 
         public string SiteBaseUrl => _configuration["url:site"];
 
-        public string RegisterBaseUrl => _configuration["url:register"];
+        public string ProfileBaseUrl => _configuration["url:profile"];
 
-        public string ExternalRegistrationUrl => $"{RegisterBaseUrl}?client_id={ClientId}&redirect_uri={SiteBaseUrl}/{RegisterCallbackPath}";
+        public string ExternalRegistrationUrl => $"{ProfileBaseUrl}/register?client_id={ClientId}&redirect_uri={SiteBaseUrl}/{RegisterCallbackPath}";
 
         public string ApiUrl => _configuration["ApiConnection:Url"];
     }
