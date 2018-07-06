@@ -2,6 +2,11 @@
 
 @import "patterns/course-parts";
 
+#proposition-links {
+    color: $white;
+    font-weight: bold;
+  }
+
 // Add a red border to .form-control-group if validation fails
 .input-validation-error {
     border: 4px solid $error-colour;

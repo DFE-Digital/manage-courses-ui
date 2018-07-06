@@ -8,12 +8,14 @@
         + ViewData["serviceName"] + " - GOV.UK";
     ViewData["headerClass"] = "with-proposition";
 
-    string name = null;
+    var name = "";
     if (User.Identity.IsAuthenticated)
     {
-        var nameClaim = User.Claims.FirstOrDefault(c => c.Type == "given_name");
-        name = nameClaim?.Value;
+        var given_name = User.Claims.FirstOrDefault(c => c.Type == "given_name")?.Value;
+        var family_name = User.Claims.FirstOrDefault(c => c.Type == "family_name")?.Value;
+        name = $"{given_name} {family_name}";
     }
+    var profileUrl = config.ProfileBaseUrl;
     var registerUrl = config.ExternalRegistrationUrl;
 }
 
@@ -39,7 +41,7 @@
                 <ul id="proposition-links">
                     @if (User.Identity.IsAuthenticated)
                     {
-                        <li><a asp-controller="Auth" asp-action="Logout">Sign out</a></li>
+                    <li><a asp-controller="Auth" asp-action="Logout">Sign out</a> ( <a href="@profileUrl"> @name </a> ) </li>
                     }
                     else
                     {
@@ -47,7 +49,7 @@
                         <li><a href="@registerUrl">Register</a></li>
                     }
                 </ul>
-                
+
             </nav>
         </div>
     </div>
