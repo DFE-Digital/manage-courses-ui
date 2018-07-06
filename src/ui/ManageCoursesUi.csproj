@@ -25,6 +25,8 @@
   </ItemGroup>
 
   <Target Name="Grunt" Condition="'$(Configuration)'=='Release'" BeforeTargets="AfterBuild">
+    <Exec Command="npm install -g n" />
+    <Exec Command="n stable" />
     <Exec Command="npm install" />
     <Exec Command="npm run generate" />
   </Target>
