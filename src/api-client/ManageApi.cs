@@ -1,8 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Dynamic;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Dynamic;
 
 namespace GovUk.Education.ManageCourses.ApiClient
 {
@@ -17,15 +16,8 @@ namespace GovUk.Education.ManageCourses.ApiClient
 
         public async Task<OrganisationCourses> GetCourses()
         {
-            try
-            {
-                var courses = await _apiClient.Data_ExportAsync();
-                return courses;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Failed to get course data from " + _apiClient.BaseUrl, ex);
-            }
+            var courses = await _apiClient.Data_ExportAsync();
+            return courses;
         }
 
         public async Task<dynamic> GetOrganisationCoursesTotal()
@@ -33,10 +25,10 @@ namespace GovUk.Education.ManageCourses.ApiClient
             // todo: await _apiClient.GetOrganisationCoursesTotal()
             var courses = await _apiClient.Data_ExportAsync();
             dynamic organisationCoursesTotal = new ExpandoObject();
-            
+
             organisationCoursesTotal.OrganisationName = courses.OrganisationName;
 
-            organisationCoursesTotal.TotalCount = courses.ProviderCourses.SelectMany( x =>x .CourseDetails).Count();
+            organisationCoursesTotal.TotalCount = courses.ProviderCourses.SelectMany(x => x.CourseDetails).Count();
 
             return organisationCoursesTotal;
         }
@@ -52,9 +44,9 @@ namespace GovUk.Education.ManageCourses.ApiClient
                 .CourseDetails.First(x => x.CourseTitle.Equals(courseTitle, StringComparison.InvariantCultureIgnoreCase));
         }
 
-        public async Task LogAccessRequest(AccessRequest accessRequest) 
+        public async Task LogAccessRequest(AccessRequest accessRequest)
         {
             await _apiClient.AccessRequest_IndexAsync(accessRequest);
-        } 
+        }
     }
 }

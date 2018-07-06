@@ -50,6 +50,12 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
         }
 
+        [Authorize]
+        public ViewResult Unauthorized()
+        {
+            return View();
+        }
+
         /// <summary>
         /// Endpoint for registration callback.
         /// Route is configured from config in <see cref="Startup.Configure"/>
