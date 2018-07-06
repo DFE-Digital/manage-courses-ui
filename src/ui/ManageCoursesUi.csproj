@@ -24,8 +24,8 @@
     <ProjectReference Include="..\api-client\ApiClient.csproj" />
   </ItemGroup>
 
-  <Target Name="Grunt" Condition="'$(Configuration)'=='Release'" BeforeTargets="AfterBuild">
+  <!--<Target Name="Grunt" Condition="'$(Configuration)'=='Release'" BeforeTargets="AfterBuild">
     <Exec Command="npm install" />
     <Exec Command="npm run generate" />
-  </Target>
+  </Target>-->
 </Project>
