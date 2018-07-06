@@ -58,7 +58,7 @@ The best way to set and store them is [user-secrets](https://docs.microsoft.com/
 ```powershell
 cd src\ui
 dotnet user-secrets set ASPNET_ENVIRONMENT Development
-dotnet user-secrets set ApiConnection:url https://manage-courses-ui-bat-development.e4ff.pro-eu-west-1.openshiftapps.com
+dotnet user-secrets set ApiConnection:url https://manage-courses-api-bat-development.e4ff.pro-eu-west-1.openshiftapps.com
 dotnet user-secrets set DFE_SIGNIN_CLIENT_SECRET <the client secret>
 ```
 
