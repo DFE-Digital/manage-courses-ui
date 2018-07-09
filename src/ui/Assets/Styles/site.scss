@@ -20,6 +20,19 @@ $success-colour: $button-colour;
     font-size: 0;
 }
 
+.govuk-header__link--profile {
+    @extend .govuk-header__link;
+
+    &:after {
+        content: ")";
+    }
+
+    &:before {
+        content: "(";
+        margin-left: govuk-spacing(1);
+    }
+}
+
 // Add a red border to .form-control-group if validation fails
 .input-validation-error {
     border: 4px solid govuk-color("red");
