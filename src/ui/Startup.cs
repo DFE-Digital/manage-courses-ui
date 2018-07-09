@@ -32,14 +32,17 @@ namespace GovUk.Education.ManageCourses.Ui
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc();
-            
+            services.AddMvc(options =>
+                options.Filters.Add(typeof(McExceptionFilter))
+            );
+
             services.AddAuthentication(options =>
             {
                 options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
                 options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
                 options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
-            }).AddCookie(options => {
+            }).AddCookie(options =>
+            {
                 options.ExpireTimeSpan = TimeSpan.FromMinutes(20);
             }).AddOpenIdConnect(options =>
             {
@@ -53,7 +56,7 @@ namespace GovUk.Education.ManageCourses.Ui
                 {
                     throw new Exception("Missing environment variable " + envKeyClientSecret + " - get this from the DfE Sign-in team.");
                 }
-                
+
                 options.ClientSecret = clientSecret;
                 options.ResponseType = OpenIdConnectResponseType.Code;
                 options.GetClaimsFromUserInfoEndpoint = true;
@@ -62,7 +65,7 @@ namespace GovUk.Education.ManageCourses.Ui
                 options.Scope.Add("openid");
                 options.Scope.Add("email");
                 options.Scope.Add("profile");
-                
+
                 options.Scope.Add("offline_access");
 
                 options.SaveTokens = true;
@@ -114,7 +117,7 @@ namespace GovUk.Education.ManageCourses.Ui
             }
 
             app.UseStatusCodePagesWithReExecute("/Home/Error");
-            
+
             app.UseStaticFiles();
 
             // https://docs.microsoft.com/en-gb/aspnet/core/host-and-deploy/linux-nginx?view=aspnetcore-2.1&tabs=aspnetcore2x
@@ -153,9 +156,9 @@ namespace GovUk.Education.ManageCourses.Ui
                 routes.MapRoute("tandc", "terms-conditions",
                     defaults: new { controller = "Legal", action = "TandC" });
                 routes.MapRoute(
-                    "index", 
+                    "index",
                     "request-access",
-                    defaults: new { controller = "RequestAccess", action = "Index"});
+                    defaults: new { controller = "RequestAccess", action = "Index" });
             });
         }
     }

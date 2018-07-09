@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using GovUk.Education.ManageCourses.Ui.Claims;
@@ -48,6 +49,18 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
         {
             await HttpContext.SignOutAsync(OpenIdConnectDefaults.AuthenticationScheme);
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+        }
+
+        /// <summary>
+        /// User is signed in but does not have access ot the requested page/action.
+        /// The user ends up here when the API returns a 401.
+        /// </summary>
+        /// <returns></returns>
+        [Authorize]
+        public ViewResult AccessDenied()
+        {
+            Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+            return View();
         }
 
         /// <summary>
