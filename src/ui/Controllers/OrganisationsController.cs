@@ -5,7 +5,6 @@ using GovUk.Education.ManageCourses.ApiClient;
 using GovUk.Education.ManageCourses.Ui.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using SmartBreadcrumbs;
 
 namespace GovUk.Education.ManageCourses.Ui.Controllers
 {
@@ -19,7 +18,6 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
         {
             _manageApi = manageApi;
         }
-        [Breadcrumb("Organisations", FromAction = "Home.Index")]
         public async Task<IActionResult> Index()
         {
             var orgs = await _manageApi.GetOrganisations();

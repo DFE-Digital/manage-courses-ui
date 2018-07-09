@@ -7,7 +7,6 @@ using GovUk.Education.ManageCourses.Ui.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using GovUk.Education.ManageCourses.Ui.Helpers;
-using SmartBreadcrumbs;
 
 namespace GovUk.Education.ManageCourses.Ui.Controllers
 {
@@ -22,7 +21,6 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             _manageApi = manageApi;
         }
         [Route("{accreditingProviderId=self}/{courseTitle}/{ucasCode}")]
-        //[Breadcrumb("Course", FromAction = "Courses.Index")]
         public async Task<IActionResult> Variants(string accreditingProviderId, string courseTitle, string ucasCode, string organisationId)
         {
             var course = await _manageApi.GetCoursesByOrganisation(organisationId);
