@@ -41,7 +41,7 @@
                 <ul id="proposition-links">
                     @if (User.Identity.IsAuthenticated)
                     {
-                    <li><a asp-controller="Auth" asp-action="Logout">Sign out</a> ( <a href="@profileUrl"> @name </a> ) </li>
+                    <li><a asp-controller="Auth" asp-action="Logout">Sign out</a> (<a href="@profileUrl"> @name </a>) </li>
                     }
                     else
                     {
