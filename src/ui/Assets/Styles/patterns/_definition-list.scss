@@ -1,0 +1,28 @@
+%govuk-list--description {
+    @include govuk-grid-row;
+}
+
+%govuk-list--description > dt {
+    @include govuk-font($size: 19, $weight: bold);
+}
+
+%govuk-list--description > dt {
+    // margin-top is applied to the dt as the last dd in each dt cannot be targeted.
+    @include govuk-responsive-margin(4, "top");
+
+     @include govuk-media-query($from: tablet) {
+         @include govuk-grid-column(one-third);
+     }
+}
+
+%govuk-list--description > dt:first-child {
+    margin-top: 0;
+}
+
+%govuk-list--description > dd {
+    margin-left: 0;
+}
+
+.govuk-list--description {
+    @extend %govuk-list--description;
+}

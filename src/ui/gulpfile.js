@@ -17,7 +17,7 @@ gulp.task('clean', function () {
 });
 
 gulp.task('sass', function () {
-  return gulp.src(configPaths.assets + '/Styles/*.scss')
+  return gulp.src(configPaths.assets + '/Styles/**/*.scss')
     .pipe(sourcemaps.init())
     .pipe(sass({
       outputStyle: 'expanded'

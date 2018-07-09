@@ -19,82 +19,84 @@
 }
 
 <div class="govuk-width-container">
-    <div class="govuk-grid-row">
-        <div class="govuk-grid-column-two-thirds">
-            @Html.Partial("~/Views/Courses/Shared/RequestAccessSuccess.cshtml")
-            <h1 class="govuk-heading-xl">
-                @Model.Courses.OrganisationName
-            </h1>
+    <main role="main" class="govuk-main-wrapper" id="main-content">
+        <div class="govuk-grid-row">
+            <div class="govuk-grid-column-two-thirds">
+                @Html.Partial("~/Views/Courses/Shared/RequestAccessSuccess.cshtml")
+                <h1 class="govuk-heading-xl">
+                    @Model.Courses.OrganisationName
+                </h1>
 
-            <h2 class="govuk-heading-l">
-                Request access for someone
-            </h2>
+                <h2 class="govuk-heading-l">
+                    Request access for someone
+                </h2>
 
-            <p>
-                You can @Html.ActionLink("request a DfE Sign-in account", "Index", "RequestAccess") for others who manage your courses.
-            </p>
+                <p>
+                    You can @Html.ActionLink("request a DfE Sign-in account", "Index", "RequestAccess") for others who manage your courses.
+                </p>
 
-            <h2 class="govuk-heading-l">
-                Check your courses
-            </h2>
+                <h2 class="govuk-heading-l">
+                    Check your courses
+                </h2>
 
-            <p>
-                We found @Model.TotalCount courses belonging to @Model.Courses.OrganisationName.
-            </p>
-            <p>
-                Check that your course information is correct. If there are any problems, you should <a href="mailto:becomingateacher@digital.education.gov.uk?subject=Publish%20teacher%20training%20courses%20problem">contact the Becoming a Teacher team</a> to let us know.
-            </p>
-            <p>
-                To make any changes, for now you’ll still need to use UCAS web-link. Changes on UCAS will normally show here within one working day.
-            </p>
-            <p>
-                Soon you’ll be able to add extra content to tell applicants more about you and your courses. <a href="https://afdebatmanageui.blob.core.windows.net/public-assets/How%20to%20prepare%20the%20rest%20of%20your%20course%20information.pdf">Find out more about this here</a>.
-            </p>
-            <p>
-                In the future, you’ll be able to edit all course information here.
-            </p>
+                <p>
+                    We found @Model.TotalCount courses belonging to @Model.Courses.OrganisationName.
+                </p>
+                <p>
+                    Check that your course information is correct. If there are any problems, you should <a href="mailto:becomingateacher@digital.education.gov.uk?subject=Publish%20teacher%20training%20courses%20problem">contact the Becoming a Teacher team</a> to let us know.
+                </p>
+                <p>
+                    To make any changes, for now you’ll still need to use UCAS web-link. Changes on UCAS will normally show here within one working day.
+                </p>
+                <p>
+                    Soon you’ll be able to add extra content to tell applicants more about you and your courses. <a href="https://afdebatmanageui.blob.core.windows.net/public-assets/How%20to%20prepare%20the%20rest%20of%20your%20course%20information.pdf">Find out more about this here</a>.
+                </p>
+                <p>
+                    In the future, you’ll be able to edit all course information here.
+                </p>
+            </div>
         </div>
-    </div>
 
-    <div class="govuk-grid-row">
-        <div class="govuk-grid-column-full">
-            @foreach (var providerCourse in Model.Courses.ProviderCourses)
-            {
-                if (!string.IsNullOrWhiteSpace(providerCourse.AccreditingProviderId))
+        <div class="govuk-grid-row">
+            <div class="govuk-grid-column-full">
+                @foreach (var providerCourse in Model.Courses.ProviderCourses)
                 {
-                    <h3 class="govuk-heading-m">
-                        <span class="govuk-caption-m">Accrediting provider</span>
-                        @providerCourse.AccreditingProviderName
-                    </h3>
-                }
+                    if (!string.IsNullOrWhiteSpace(providerCourse.AccreditingProviderId))
+                    {
+                        <h3 class="govuk-heading-m">
+                            <span class="govuk-caption-m">Accrediting provider</span>
+                            @providerCourse.AccreditingProviderName
+                        </h3>
+                    }
 
-                <table class="ucas-info-table govuk-table">
-                    <thead class="govuk-table__head">
-                        <tr class="govuk-table__row">
-                            <th class="govuk-table__header subject-col" scope="col">Subject</th>
-                            <th class="govuk-table__header code-col" scope="col">UCAS code</th>
-                            <th class="govuk-table__header type-col" scope="col">Type</th>
-                            <th class="govuk-table__header link-col" scope="col"></th>
-                        </tr>
-                    </thead>
-                    <tbody class="govuk-table__body">
-                        @foreach (var course in providerCourse.CourseDetails)
-                        {
-                            foreach (var variant in course.Variants)
+                    <table class="ucas-info-table govuk-table">
+                        <thead class="govuk-table__head">
+                            <tr class="govuk-table__row">
+                                <th class="govuk-table__header subject-col" scope="col">Subject</th>
+                                <th class="govuk-table__header code-col" scope="col">UCAS code</th>
+                                <th class="govuk-table__header type-col" scope="col">Type</th>
+                                <th class="govuk-table__header link-col" scope="col"></th>
+                            </tr>
+                        </thead>
+                        <tbody class="govuk-table__body">
+                            @foreach (var course in providerCourse.CourseDetails)
                             {
-                        <tr class="govuk-table__row">
-                            <td class="govuk-table__cell">@course.CourseTitle</td>
-                            <td class="govuk-table__cell">@variant.UcasCode</td>
-                            <td class="govuk-table__cell">@variant.GetCourseVariantType()</td>
-                            <td class="govuk-table__cell ucas-view-link">
-                                <a href="@Url.Action("variants", "course", new { accreditingProviderId = providerCourse.AccreditingProviderId, courseTitle = course.CourseTitle, ucasCode = variant.UcasCode })">View course</a>
-                            </td>
-                        </tr>
+                                foreach (var variant in course.Variants)
+                                {
+                            <tr class="govuk-table__row">
+                                <td class="govuk-table__cell">@course.CourseTitle</td>
+                                <td class="govuk-table__cell">@variant.UcasCode</td>
+                                <td class="govuk-table__cell">@variant.GetCourseVariantType()</td>
+                                <td class="govuk-table__cell ucas-view-link">
+                                    <a href="@Url.Action("variants", "course", new { accreditingProviderId = providerCourse.AccreditingProviderId, courseTitle = course.CourseTitle, ucasCode = variant.UcasCode })">View course</a>
+                                </td>
+                            </tr>
+                                }
                             }
-                        }
-                    </tbody>
-                </table>
-            }
+                        </tbody>
+                    </table>
+                }
+            </div>
         </div>
-    </div>
+    </main>
 </div>
