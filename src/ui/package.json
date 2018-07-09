@@ -12,13 +12,13 @@
     "clean": "gulp clean"
   },
   "dependencies": {
-    "govuk-frontend": "^1.0.0",
-    "gulp": "^3.9.1",
-    "gulp-clean": "^0.3.2",
-    "gulp-copy": "^1.1.0",
+    "govuk-frontend": "1.0.0",
+    "gulp": "3.9.1",
+    "gulp-clean": "0.3.2",
+    "gulp-copy": "1.1.0",
     "gulp-sass": "3.1.0",
-    "gulp-sourcemaps": "^2.6.4",
-    "require-dir": "^1.0.0",
-    "run-sequence": "^1.2.2"
+    "gulp-sourcemaps": "2.6.4",
+    "require-dir": "1.0.0",
+    "run-sequence": "1.2.2"
   }
 }
