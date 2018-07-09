@@ -22,16 +22,17 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
 
         [Route("{organisationId}")]
         //[Breadcrumb("Courses", FromAction = "Organisations.Index")]
-        public async Task<IActionResult> Index(string organisationId, int organisationCount)
+        public async Task<IActionResult> Index(string organisationId)
         {
             var courses = await _manageApi.GetCoursesByOrganisation(organisationId);
+            var orgs = await _manageApi.GetOrganisations();
 
             var data = await _manageApi.GetOrganisationCoursesTotal(organisationId);
             var model = new CourseListViewModel
             {
                 Courses = courses,
                 TotalCount = data.TotalCount,
-                OrganisationCount = organisationCount
+                MultipleOrganisations = orgs.Count() > 1
             };
             return View("Index", model);
         }

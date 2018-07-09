@@ -23,7 +23,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
         }
         [Route("{accreditingProviderId=self}/{courseTitle}/{ucasCode}")]
         //[Breadcrumb("Course", FromAction = "Courses.Index")]
-        public async Task<IActionResult> Variants(string accreditingProviderId, string courseTitle, string ucasCode, string organisationId, int organisationCount)
+        public async Task<IActionResult> Variants(string accreditingProviderId, string courseTitle, string ucasCode, string organisationId)
         {
             var course = await _manageApi.GetCoursesByOrganisation(organisationId);
 
@@ -76,12 +76,12 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
                         };
                     })
                 };
-
+            var orgs = await _manageApi.GetOrganisations();
             var viewModel = new FromUcasViewModel//TODO change view model to show on course variant
             {
                 OrganisationName = course.OrganisationName,
                 OrganisationId = course.OrganisationId,
-                OrganisationCount = organisationCount,
+                MultipleOrganisations = orgs.Count() > 1,
                 CourseTitle = courseDetail.CourseTitle,
                 AccreditingProviderId = providerCourse.AccreditingProviderId,
                 Course = courseVariant

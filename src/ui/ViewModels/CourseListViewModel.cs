@@ -10,6 +10,6 @@ namespace GovUk.Education.ManageCourses.Ui.ViewModels
     {
         public OrganisationCourses Courses { get; set; }
         public int TotalCount { get; set; }
-        public int OrganisationCount { get; set; }
+        public bool MultipleOrganisations { get; set; }
     }
 }

@@ -27,7 +27,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
 
             if (orgs.Count() == 1)
             {
-                return this.RedirectToAction("Index", "Courses", new {organisationId = orgs[0].OrganisationId, organisationCount = 1 });
+                return this.RedirectToAction("Index", "Courses", new {organisationId = orgs[0].OrganisationId });
             }
 
             if (orgs.Count() > 1)
