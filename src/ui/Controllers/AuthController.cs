@@ -51,8 +51,13 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
         }
 
+        /// <summary>
+        /// User is signed in but does not have access ot the requested page/action.
+        /// The user ends up here when the API returns a 401.
+        /// </summary>
+        /// <returns></returns>
         [Authorize]
-        public ViewResult Unauthorized()
+        public ViewResult AccessDenied()
         {
             Response.StatusCode = (int)HttpStatusCode.Unauthorized;
             return View();
