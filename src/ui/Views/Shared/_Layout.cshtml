@@ -37,11 +37,10 @@
             <nav id="proposition-menu">
                 <a href="/courses" id="proposition-name" role="link">@ViewData["serviceName"]</a>
 
-
                 <ul id="proposition-links">
                     @if (User.Identity.IsAuthenticated)
                     {
-                    <li><a asp-controller="Auth" asp-action="Logout">Sign out</a> (<a href="@profileUrl"> @name </a>) </li>
+                    <li><a asp-controller="Auth" asp-action="Logout">Sign out</a> (<a href="@profileUrl">@name</a>) </li>
                     }
                     else
                     {
