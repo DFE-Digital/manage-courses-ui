@@ -4,6 +4,7 @@
 
 const gulp = require('gulp');
 const configPaths = require('./Config/paths.json');
+const runSequence = require('run-sequence');
 const clean = require('gulp-clean');
 const sass = require('gulp-sass');
 const sourcemaps = require('gulp-sourcemaps');
@@ -40,10 +41,14 @@ gulp.task('copy-scripts', function () {
     .pipe(gulp.dest(configPaths.public + '/scripts/'))
 });
 
-gulp.task('generate-assets', gulp.series(
-  'clean',
-  'sass',
-  'copy-fonts',
-  'copy-images',
-  'copy-scripts'
-));
+gulp.task('generate-assets', function (done) {
+  runSequence('clean',
+              'sass',
+              'copy-fonts',
+              'copy-images',
+              'copy-scripts', done)
+})
+
+gulp.task('default', function (done) {
+  runSequence('generate-assets', done)
+})
