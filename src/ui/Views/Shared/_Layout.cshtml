@@ -38,7 +38,8 @@
                 @if (User.Identity.IsAuthenticated)
                 {
                     <li class="govuk-header__navigation-item">
-                        <a class="govuk-header__link" asp-controller="Auth" asp-action="Logout">Sign out (<a href="@profileUrl">@name</a>)</a>
+                        <a class="govuk-header__link" asp-controller="Auth" asp-action="Logout">Sign out</a> 
+                        <a href="@profileUrl">(@name)</a>
                     </li>
                 }
                 else
