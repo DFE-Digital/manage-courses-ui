@@ -1,22 +1,12 @@
-.error-summary-heading:only-child {
-  margin-bottom: 0;
-}
-
-.error-summary p:only-child {
-  font-weight: bold;
-}
-
-$success-green: $button-colour;
 .success-summary {
   @extend .error-summary;
-  border-color: $success-green;
-  .success-summary-list {
-    @extend .error-summary-list;
-    a {
-      color: $success-green;
-    }
+  border-color: $success-colour;
+
+  p:last-child {
+    margin-bottom: 0;
   }
-  .success-summary-heading {
-    @extend .error-summary-heading;
-  }
+}
+
+.success-summary-heading {
+  @extend .error-summary-heading;
 }
