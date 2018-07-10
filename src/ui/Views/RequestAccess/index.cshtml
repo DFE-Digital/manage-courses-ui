@@ -9,6 +9,8 @@
         <p>You can request a DfE Sign-in account for others who manage your courses.</p>
         @using (Html.BeginForm("Index", "RequestAccess", FormMethod.Post))
         {
+            @Html.ValidationSummary(false);
+
             <div class="form-group @((ViewData.ModelState["FirstName"] != null && ViewData.ModelState["FirstName"].Errors.Any()) ? "form-group-error" : "")">
                 @Html.LabelFor(m => m.FirstName, new { @class="form-label" })
                 @Html.ValidationMessageFor(m => m.FirstName, "", new { @class="error-message" })
