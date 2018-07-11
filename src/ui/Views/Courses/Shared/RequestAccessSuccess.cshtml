@@ -1,0 +1,13 @@
+﻿@{ 
+    var name = TempData.Get("RequestAccess_To_Name");
+}
+
+@if (name != null) {
+    <div class="column-full">
+        <div class="success-summary" role="alert">
+            <h3 class="heading-medium success-summary-heading">DfE has received your request to give access to @name.</h3>
+            <p>They will receive sign-up instructions if their account is approved.</p>
+            <p>@Html.ActionLink("Request access for someone else", "Index", "RequestAccess")</p>
+        </div>
+    </div>
+}
