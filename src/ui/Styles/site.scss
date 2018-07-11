@@ -1,4 +1,6 @@
-﻿@import "govuk-elements";
+﻿$path: "/images/";
+
+@import "govuk-elements";
 
 $success-colour: $button-colour;
 
@@ -13,6 +15,10 @@ $success-colour: $button-colour;
 // Add a red border to .form-control-group if validation fails
 .input-validation-error {
     border: 4px solid $error-colour;
+}
+
+.breadcrumbs {
+   @include breadcrumbs;
 }
 
 .phase-banner-wrapper

@@ -5,7 +5,16 @@
 }
 @if (Model.MultipleOrganisations)
 {
-    <a href="@Url.Action("index","Organisations")">Organisations</a>
+    <nav class="breadcrumbs">
+        <ul>
+            <li>
+                <a href="@Url.Action("index", "Organisations")">Organisations</a>
+            </li>
+            <li>
+                @Model.Courses.OrganisationName
+            </li>
+        </ul>
+    </nav>
 }
 
 <div class="grid-row add-double-bottom-margin">
