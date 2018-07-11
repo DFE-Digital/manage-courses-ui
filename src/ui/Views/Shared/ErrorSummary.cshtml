@@ -1,0 +1,34 @@
+﻿@using Microsoft.AspNetCore.Mvc.ModelBinding;
+@using System.Linq;
+
+
+@if (!@ViewContext.ModelState.IsValid)
+{
+    var properties = this.ViewData.ModelExplorer.Properties.Select(x => x.Metadata.PropertyName).ToList();
+
+
+    var modelState = properties.Where(x =>
+    {
+
+        return this.ViewContext.ModelState.ContainsKey(x) && this.ViewContext.ModelState[x].ValidationState == ModelValidationState.Invalid;
+
+    }).Select(x => new { Key = x, Value = this.ViewContext.ModelState[x] });
+
+    <div class="error-summary" role="alert" aria-labelledby="error-summary-heading" tabindex="-1">
+        <h2 class="heading-medium error-summary-heading" id="error-summary-heading">
+            You&#8217;ll need to correct some information.
+        </h2>
+
+        <ul class="error-summary-list">
+
+            @foreach (var state in modelState)
+            {
+                foreach (var error in state.Value.Errors)
+                {
+                    <li><a href="#@state.Key-wrapper">@error.ErrorMessage</a></li>
+                }
+            }
+
+        </ul>
+    </div>
+}
