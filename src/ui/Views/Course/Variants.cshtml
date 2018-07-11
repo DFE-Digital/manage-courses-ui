@@ -6,15 +6,23 @@
     var link = "mailto:becomingateacher@digital.education.gov.uk?subject=Problem%20with%20course%20" + Model.Course.ProgrammeCode;
 }
 
-<div>
-    @if (Model.MultipleOrganisations)
-    {
-
-        <a href="@Url.Action("index","Organisations")">Organisations</a><strong> &rsaquo; </strong>
-        }
-        <a href="@Url.Action("index","courses", new {organisationId= Model.OrganisationId})">@Model.OrganisationName</a>
-    </div>    
-
+@if (Model.MultipleOrganisations)
+{
+    <nav class="breadcrumbs">
+        <ul>
+            <li>
+                <a href="@Url.Action("index", "organisations")">Organisations</a>
+            </li>
+            <li>
+                <a href="@Url.Action("index", "courses", new {organisationId= Model.OrganisationId})">@Model.OrganisationName</a>
+            </li>
+            <li>
+                @Model.Course.Name
+            </li>
+        </ul>
+    </nav>
+}
+           
 <h1 class="heading-xlarge">
     <span class="heading-secondary">@Model.Course.Name</span>
     @Model.Course.Type (@Model.Course.ProgrammeCode)
