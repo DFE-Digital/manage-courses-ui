@@ -15,11 +15,6 @@ namespace GovUk.Education.ManageCourses.ApiClient
             _apiClient = apiClient;
         }
 
-        public async Task<OrganisationCourses> GetCourses()
-        {
-            var courses = await _apiClient.Data_ExportAsync();
-            return courses;
-        }
         public async Task<OrganisationCourses> GetCoursesByOrganisation(string organisationId)
         {
             try
@@ -32,7 +27,6 @@ namespace GovUk.Education.ManageCourses.ApiClient
                 throw new Exception("Failed to get course data from " + _apiClient.BaseUrl, ex);
             }
         }
-
         public async Task<dynamic> GetOrganisationCoursesTotal()
         {
             var courses = await _apiClient.Data_ExportAsync();
@@ -60,16 +54,6 @@ namespace GovUk.Education.ManageCourses.ApiClient
         {
             var orgs = await _apiClient.Organisations_GetAsync();
             return orgs;
-        }
-        public async Task<CourseDetail> GetCourse(string accreditingProviderId, string courseTitle)
-        {
-            // todo: expand api to allow fetching single course
-            var courses = await _apiClient.Data_ExportAsync();
-            // todo: don't use first once we have course-folding in place
-            //return courses.First(c => c.UcasCode == ucasCode);
-            return courses.ProviderCourses
-                .First(c => c.AccreditingProviderId.Equals(accreditingProviderId, StringComparison.InvariantCultureIgnoreCase))
-                .CourseDetails.First(x => x.CourseTitle.Equals(courseTitle, StringComparison.InvariantCultureIgnoreCase));
         }
 
         public async Task LogAccessRequest(AccessRequest accessRequest)

@@ -47,7 +47,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
                     UcasCode = course.UcasCode,
                     AgeRange = courseDetail.AgeRange,
                     Route = variant.ProgramType,
-                    Qualifications= variant.ProfPostFlag,
+                    Qualifications = variant.ProfPostFlag,
                     StudyMode = variant.StudyMode,
                     Subjects = subjects,
                     Schools = variant.Campuses.Select(campus =>
@@ -88,37 +88,5 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             return View(viewModel);
         }
 
-        [Route("{accreditingProviderId}/{courseTitle}")]
-        public async Task<IActionResult> Details(string accreditingProviderId, string courseTitle)
-        {
-            var course = await _manageApi.GetCourses();
-
-            var providerCourse = course.ProviderCourses
-                .First(c => c.AccreditingProviderId.Equals(accreditingProviderId, StringComparison.InvariantCultureIgnoreCase));
-
-            var courseDetail = providerCourse.CourseDetails
-                .First(x => x.CourseTitle.Equals(courseTitle, StringComparison.InvariantCultureIgnoreCase));
-
-            var subjects = courseDetail.Variants.Select(x =>
-
-                new SubjectViewModel
-                {
-                    Name = courseDetail.CourseTitle,
-                    Type = x.GetCourseVariantType(),
-                    ProviderCode = x.TrainingProviderCode,
-                    ProgrammeCode = x.CourseCode
-                }
-            );
-
-            var courseDetails = new CourseDetailsViewModel
-            {
-                OrganisationName = course.OrganisationName,
-                CourseTitle = courseDetail.CourseTitle,
-                Subjects = subjects,
-                UcasCode = providerCourse.AccreditingProviderId
-            };
-
-            return View(courseDetails);
-        }
     }
 }
