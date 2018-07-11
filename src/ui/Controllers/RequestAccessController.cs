@@ -1,10 +1,8 @@
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using GovUk.Education.ManageCourses.ApiClient;
 using GovUk.Education.ManageCourses.Ui.ViewModels;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using GovUk.Education.ManageCourses.Ui.Helpers;
 
 namespace GovUk.Education.ManageCourses.Ui.Controllers
 {
@@ -42,7 +40,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
                 Reason = model.Reason,
             });
 
-            this.TempData["RequestAccess_To_Name"] = $"{model.FirstName} {model.LastName}";
+            this.TempData.Set("RequestAccess_To_Name", $"{model.FirstName} {model.LastName}");
 
             return new RedirectResult ("/");
         }
