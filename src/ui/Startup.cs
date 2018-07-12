@@ -113,11 +113,10 @@ namespace GovUk.Education.ManageCourses.Ui
             }
             else
             {
-                app.UseExceptionHandler("/Home/Error");
+                app.UseExceptionHandler("/error/500");
             }
 
-            app.UseStatusCodePagesWithReExecute("/Home/Error");
-
+            app.UseStatusCodePagesWithReExecute("/error/{0}");
             app.UseStaticFiles();
 
             // https://docs.microsoft.com/en-gb/aspnet/core/host-and-deploy/linux-nginx?view=aspnetcore-2.1&tabs=aspnetcore2x

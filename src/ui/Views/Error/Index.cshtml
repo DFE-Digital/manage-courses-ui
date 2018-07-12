@@ -1,0 +1,24 @@
+@model int
+
+@{
+    Layout = "_Layout";
+
+    var statusCode = Model;
+    var errorViewPage = "";
+    switch (statusCode)
+    {
+        case 403:
+            errorViewPage = "AccessDenied";
+            break;
+        case 404:
+            errorViewPage = "NotFound";
+            break;
+        default:
+            errorViewPage = "ServerError";
+            break;
+    }
+}
+
+@Html.Partial(errorViewPage)
+
+<div>@statusCode </div> 
