@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -33,7 +34,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
                 return this.RedirectToAction("Index", "Organisations");
             }
 
-            return null;
+            throw new Exception("No organisations returned from API for this user");
         }
 
         [Authorize]
