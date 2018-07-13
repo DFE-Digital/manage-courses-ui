@@ -15,11 +15,11 @@ namespace GovUk.Education.ManageCourses.ApiClient
             _apiClient = apiClient;
         }
 
-        public async Task<OrganisationCourses> GetCoursesByOrganisation(string organisationId)
+        public async Task<OrganisationCourses> GetCoursesByOrganisation(string ucasCode)
         {
             try
             {
-                var courses = await _apiClient.Data_ExportByOrganisationAsync(organisationId);
+                var courses = await _apiClient.Data_ExportByOrganisationAsync(ucasCode);
                 return courses;
             }
             catch (Exception ex)

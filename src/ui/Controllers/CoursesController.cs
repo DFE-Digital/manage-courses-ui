@@ -19,13 +19,13 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             _manageApi = manageApi;
         }
 
-        [Route("{organisationId}")]        
-        public async Task<IActionResult> Index(string organisationId)
+        [Route("{ucasCode}")]        
+        public async Task<IActionResult> Index(string ucasCode)
         {
-            var courses = await _manageApi.GetCoursesByOrganisation(organisationId);
+            var courses = await _manageApi.GetCoursesByOrganisation(ucasCode);
             var orgs = await _manageApi.GetOrganisations();
 
-            var data = await _manageApi.GetOrganisationCoursesTotal(organisationId);
+            var data = await _manageApi.GetOrganisationCoursesTotal(ucasCode);
             var model = new CourseListViewModel
             {
                 Courses = courses,

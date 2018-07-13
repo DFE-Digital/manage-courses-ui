@@ -14,7 +14,7 @@
                 <a href="@Url.Action("index", "organisations")">Organisations</a>
             </li>
             <li>
-                <a href="@Url.Action("index", "courses", new {organisationId= Model.OrganisationId})">@Model.OrganisationName</a>
+                <a href="@Url.Action("index", "courses", new {ucasCode= Model.Course.UcasCode})">@Model.OrganisationName</a>
             </li>
             <li>
                 @Model.Course.Name
