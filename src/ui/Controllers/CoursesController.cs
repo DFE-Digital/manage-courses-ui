@@ -32,7 +32,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
                 TotalCount = data.TotalCount,
                 MultipleOrganisations = orgs.Count() > 1
             };
-            return View("Index", model);
+            return View(model);
         }
     }
 }

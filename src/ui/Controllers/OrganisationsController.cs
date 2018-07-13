@@ -18,6 +18,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
         {
             _manageApi = manageApi;
         }
+        [HttpGet]
         public async Task<IActionResult> Index()
         {
             var orgs = await _manageApi.GetOrganisations();
