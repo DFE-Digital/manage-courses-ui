@@ -84,7 +84,7 @@
                 <td>@variant.UcasCode</td>
                 <td>@variant.GetCourseVariantType()</td>
                 <td class="ucas-view-link">
-                    <a href="@Url.Action("variants", "course", new { accreditingProviderId = providerCourse.AccreditingProviderId, courseTitle = course.CourseTitle, ucasCode = variant.UcasCode, organisationId = Model.Courses.OrganisationId })">View course</a>
+                    <a href="@Url.Action("variants", "course", new { organisationId = Model.Courses.OrganisationId, accreditingProviderId = providerCourse.AccreditingProviderId, courseTitle = course.CourseTitle, ucasCode = variant.UcasCode })">View course</a>
                 </td>
             </tr>
                 }

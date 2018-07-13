@@ -20,8 +20,8 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
         {
             _manageApi = manageApi;
         }
-        [Route("{accreditingProviderId=self}/{courseTitle}/{ucasCode}")]
-        public async Task<IActionResult> Variants(string accreditingProviderId, string courseTitle, string ucasCode, string organisationId)
+        [Route("{organisationId}/{accreditingProviderId=self}/{courseTitle}/{ucasCode}")]
+        public async Task<IActionResult> Variants(string organisationId, string accreditingProviderId, string courseTitle, string ucasCode)
         {
             var course = await _manageApi.GetCoursesByOrganisation(organisationId);
 
