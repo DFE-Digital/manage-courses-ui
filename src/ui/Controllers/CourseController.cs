@@ -75,7 +75,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
                     })
                 };
             var orgs = await _manageApi.GetOrganisations();
-            var viewModel = new FromUcasViewModel//TODO change view model to show on course variant
+            var viewModel = new FromUcasViewModel
             {
                 OrganisationName = course.OrganisationName,
                 OrganisationId = course.OrganisationId,
