@@ -37,21 +37,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             throw new Exception("No organisations returned from API for this user");
         }
 
-        [Authorize]
-        [Route("/we-imported")]
-        public async Task<ActionResult> Imported()
-        {
-            var data = await _manageApi.GetOrganisationCoursesTotal();
-            var viewModel = new ImportedCoursesViewModel()
-            {
-                OrganisationName = data.OrganisationName,
-                TotalCount = data.TotalCount
-            };
-            
-            return View(viewModel);
-        }
-
-        [AllowAnonymous]
+           [AllowAnonymous]
         public IActionResult Error()
         {
             return View();

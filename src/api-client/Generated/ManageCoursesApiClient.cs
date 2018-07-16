@@ -112,19 +112,23 @@ namespace GovUk.Education.ManageCourses.ApiClient
         /// <summary>Exports the data.</summary>
         /// <returns>The exported data</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<OrganisationCourses> Data_ExportAsync()
+        public System.Threading.Tasks.Task<OrganisationCourses> Data_ExportByOrganisationAsync(string ucasCode)
         {
-            return Data_ExportAsync(System.Threading.CancellationToken.None);
+            return Data_ExportByOrganisationAsync(ucasCode, System.Threading.CancellationToken.None);
         }
     
         /// <summary>Exports the data.</summary>
         /// <returns>The exported data</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        public async System.Threading.Tasks.Task<OrganisationCourses> Data_ExportAsync(System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<OrganisationCourses> Data_ExportByOrganisationAsync(string ucasCode, System.Threading.CancellationToken cancellationToken)
         {
+            if (ucasCode == null)
+                throw new System.ArgumentNullException("ucasCode");
+    
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Data");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Data/{ucasCode}");
+            urlBuilder_.Replace("{ucasCode}", System.Uri.EscapeDataString(ConvertToString(ucasCode, System.Globalization.CultureInfo.InvariantCulture)));
     
             var client_ = new System.Net.Http.HttpClient();
             try
@@ -242,90 +246,6 @@ namespace GovUk.Education.ManageCourses.ApiClient
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
                             throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
                         }
-                    }
-                    finally
-                    {
-                        if (response_ != null)
-                            response_.Dispose();
-                    }
-                }
-            }
-            finally
-            {
-                if (client_ != null)
-                    client_.Dispose();
-            }
-        }
-    
-        /// <summary>Exports the data.</summary>
-        /// <returns>The exported data</returns>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<OrganisationCourses> Data_ExportByOrganisationAsync(string organisationId)
-        {
-            return Data_ExportByOrganisationAsync(organisationId, System.Threading.CancellationToken.None);
-        }
-    
-        /// <summary>Exports the data.</summary>
-        /// <returns>The exported data</returns>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        public async System.Threading.Tasks.Task<OrganisationCourses> Data_ExportByOrganisationAsync(string organisationId, System.Threading.CancellationToken cancellationToken)
-        {
-            if (organisationId == null)
-                throw new System.ArgumentNullException("organisationId");
-    
-            var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Data/{organisationId}");
-            urlBuilder_.Replace("{organisationId}", System.Uri.EscapeDataString(ConvertToString(organisationId, System.Globalization.CultureInfo.InvariantCulture)));
-    
-            var client_ = new System.Net.Http.HttpClient();
-            try
-            {
-                using (var request_ = new System.Net.Http.HttpRequestMessage())
-                {
-                    request_.Method = new System.Net.Http.HttpMethod("GET");
-                    request_.Headers.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
-    
-                    PrepareRequest(client_, request_, urlBuilder_);
-                    var url_ = urlBuilder_.ToString();
-                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
-                    PrepareRequest(client_, request_, url_);
-    
-                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
-                    try
-                    {
-                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
-                        if (response_.Content != null && response_.Content.Headers != null)
-                        {
-                            foreach (var item_ in response_.Content.Headers)
-                                headers_[item_.Key] = item_.Value;
-                        }
-    
-                        ProcessResponse(client_, response_);
-    
-                        var status_ = ((int)response_.StatusCode).ToString();
-                        if (status_ == "200") 
-                        {
-                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            var result_ = default(OrganisationCourses); 
-                            try
-                            {
-                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<OrganisationCourses>(responseData_, _settings.Value);
-                                return result_; 
-                            } 
-                            catch (System.Exception exception_) 
-                            {
-                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
-                            }
-                        }
-                        else
-                        if (status_ != "200" && status_ != "204")
-                        {
-                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
-                        }
-            
-                        return default(OrganisationCourses);
                     }
                     finally
                     {
@@ -1160,7 +1080,6 @@ namespace GovUk.Education.ManageCourses.ApiClient
         private System.Collections.ObjectModel.ObservableCollection<McOrganisationInstitution> _organisationInstitutions;
         private System.Collections.ObjectModel.ObservableCollection<McOrganisationUser> _organisationUsers;
         private System.Collections.ObjectModel.ObservableCollection<McUser> _users;
-        private System.Collections.ObjectModel.ObservableCollection<ProviderMapper> _mappers;
     
         [Newtonsoft.Json.JsonProperty("courses", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.Collections.ObjectModel.ObservableCollection<UcasCourse> Courses
@@ -1316,20 +1235,6 @@ namespace GovUk.Education.ManageCourses.ApiClient
             }
         }
     
-        [Newtonsoft.Json.JsonProperty("mappers", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Collections.ObjectModel.ObservableCollection<ProviderMapper> Mappers
-        {
-            get { return _mappers; }
-            set 
-            {
-                if (_mappers != value)
-                {
-                    _mappers = value; 
-                    RaisePropertyChanged();
-                }
-            }
-        }
-    
         public string ToJson() 
         {
             return Newtonsoft.Json.JsonConvert.SerializeObject(this);
@@ -1365,6 +1270,10 @@ namespace GovUk.Education.ManageCourses.ApiClient
         private string _programType;
         private string _accreditingProvider;
         private string _crseOpenDate;
+        private UcasInstitution _ucasInstitution;
+        private UcasInstitution _accreditingProviderInstitution;
+        private UcasCampus _ucasCampus;
+        private CourseCode _courseCode;
     
         [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.Always)]
         public int Id
@@ -1520,6 +1429,62 @@ namespace GovUk.Education.ManageCourses.ApiClient
             }
         }
     
+        [Newtonsoft.Json.JsonProperty("ucasInstitution", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public UcasInstitution UcasInstitution
+        {
+            get { return _ucasInstitution; }
+            set 
+            {
+                if (_ucasInstitution != value)
+                {
+                    _ucasInstitution = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        [Newtonsoft.Json.JsonProperty("accreditingProviderInstitution", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public UcasInstitution AccreditingProviderInstitution
+        {
+            get { return _accreditingProviderInstitution; }
+            set 
+            {
+                if (_accreditingProviderInstitution != value)
+                {
+                    _accreditingProviderInstitution = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        [Newtonsoft.Json.JsonProperty("ucasCampus", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public UcasCampus UcasCampus
+        {
+            get { return _ucasCampus; }
+            set 
+            {
+                if (_ucasCampus != value)
+                {
+                    _ucasCampus = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        [Newtonsoft.Json.JsonProperty("courseCode", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public CourseCode CourseCode
+        {
+            get { return _courseCode; }
+            set 
+            {
+                if (_courseCode != value)
+                {
+                    _courseCode = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
         public string ToJson() 
         {
             return Newtonsoft.Json.JsonConvert.SerializeObject(this);
@@ -1562,6 +1527,11 @@ namespace GovUk.Education.ManageCourses.ApiClient
         private string _accreditingProvider;
         private string _schemeMember;
         private System.Collections.ObjectModel.ObservableCollection<McOrganisationInstitution> _mcOrganisationInstitutions;
+        private System.Collections.ObjectModel.ObservableCollection<UcasCourse> _ucasCourses;
+        private System.Collections.ObjectModel.ObservableCollection<UcasCourse> _accreditedUcasCourses;
+        private System.Collections.ObjectModel.ObservableCollection<UcasCourseSubject> _ucasCourseSubjects;
+        private System.Collections.ObjectModel.ObservableCollection<UcasCampus> _ucasCampuses;
+        private System.Collections.ObjectModel.ObservableCollection<CourseCode> _courseCodes;
     
         [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.Always)]
         public int Id
@@ -1810,6 +1780,76 @@ namespace GovUk.Education.ManageCourses.ApiClient
                 if (_mcOrganisationInstitutions != value)
                 {
                     _mcOrganisationInstitutions = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        [Newtonsoft.Json.JsonProperty("ucasCourses", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.ObjectModel.ObservableCollection<UcasCourse> UcasCourses
+        {
+            get { return _ucasCourses; }
+            set 
+            {
+                if (_ucasCourses != value)
+                {
+                    _ucasCourses = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        [Newtonsoft.Json.JsonProperty("accreditedUcasCourses", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.ObjectModel.ObservableCollection<UcasCourse> AccreditedUcasCourses
+        {
+            get { return _accreditedUcasCourses; }
+            set 
+            {
+                if (_accreditedUcasCourses != value)
+                {
+                    _accreditedUcasCourses = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        [Newtonsoft.Json.JsonProperty("ucasCourseSubjects", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.ObjectModel.ObservableCollection<UcasCourseSubject> UcasCourseSubjects
+        {
+            get { return _ucasCourseSubjects; }
+            set 
+            {
+                if (_ucasCourseSubjects != value)
+                {
+                    _ucasCourseSubjects = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        [Newtonsoft.Json.JsonProperty("ucasCampuses", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.ObjectModel.ObservableCollection<UcasCampus> UcasCampuses
+        {
+            get { return _ucasCampuses; }
+            set 
+            {
+                if (_ucasCampuses != value)
+                {
+                    _ucasCampuses = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        [Newtonsoft.Json.JsonProperty("courseCodes", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.ObjectModel.ObservableCollection<CourseCode> CourseCodes
+        {
+            get { return _courseCodes; }
+            set 
+            {
+                if (_courseCodes != value)
+                {
+                    _courseCodes = value; 
                     RaisePropertyChanged();
                 }
             }
@@ -2237,91 +2277,6 @@ namespace GovUk.Education.ManageCourses.ApiClient
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.10.50.0 (Newtonsoft.Json v9.0.0.0)")]
-    public partial class UcasSubject : System.ComponentModel.INotifyPropertyChanged
-    {
-        private int _id;
-        private string _subjectCode;
-        private string _subjectDescription;
-        private string _titleMatch;
-    
-        [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.Always)]
-        public int Id
-        {
-            get { return _id; }
-            set 
-            {
-                if (_id != value)
-                {
-                    _id = value; 
-                    RaisePropertyChanged();
-                }
-            }
-        }
-    
-        [Newtonsoft.Json.JsonProperty("subjectCode", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string SubjectCode
-        {
-            get { return _subjectCode; }
-            set 
-            {
-                if (_subjectCode != value)
-                {
-                    _subjectCode = value; 
-                    RaisePropertyChanged();
-                }
-            }
-        }
-    
-        [Newtonsoft.Json.JsonProperty("subjectDescription", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string SubjectDescription
-        {
-            get { return _subjectDescription; }
-            set 
-            {
-                if (_subjectDescription != value)
-                {
-                    _subjectDescription = value; 
-                    RaisePropertyChanged();
-                }
-            }
-        }
-    
-        [Newtonsoft.Json.JsonProperty("titleMatch", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string TitleMatch
-        {
-            get { return _titleMatch; }
-            set 
-            {
-                if (_titleMatch != value)
-                {
-                    _titleMatch = value; 
-                    RaisePropertyChanged();
-                }
-            }
-        }
-    
-        public string ToJson() 
-        {
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
-        }
-        
-        public static UcasSubject FromJson(string data)
-        {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<UcasSubject>(data);
-        }
-    
-        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
-        
-        protected virtual void RaisePropertyChanged([System.Runtime.CompilerServices.CallerMemberName] string propertyName = null)
-        {
-            var handler = PropertyChanged;
-            if (handler != null) 
-                handler(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
-        }
-    
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.10.50.0 (Newtonsoft.Json v9.0.0.0)")]
     public partial class UcasCourseSubject : System.ComponentModel.INotifyPropertyChanged
     {
         private int _id;
@@ -2329,6 +2284,9 @@ namespace GovUk.Education.ManageCourses.ApiClient
         private string _crseCode;
         private string _subjectCode;
         private string _yearCode;
+        private UcasInstitution _ucasInstitution;
+        private CourseCode _courseCode;
+        private UcasSubject _ucasSubject;
     
         [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.Always)]
         public int Id
@@ -2400,6 +2358,48 @@ namespace GovUk.Education.ManageCourses.ApiClient
             }
         }
     
+        [Newtonsoft.Json.JsonProperty("ucasInstitution", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public UcasInstitution UcasInstitution
+        {
+            get { return _ucasInstitution; }
+            set 
+            {
+                if (_ucasInstitution != value)
+                {
+                    _ucasInstitution = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        [Newtonsoft.Json.JsonProperty("courseCode", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public CourseCode CourseCode
+        {
+            get { return _courseCode; }
+            set 
+            {
+                if (_courseCode != value)
+                {
+                    _courseCode = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        [Newtonsoft.Json.JsonProperty("ucasSubject", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public UcasSubject UcasSubject
+        {
+            get { return _ucasSubject; }
+            set 
+            {
+                if (_ucasSubject != value)
+                {
+                    _ucasSubject = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
         public string ToJson() 
         {
             return Newtonsoft.Json.JsonConvert.SerializeObject(this);
@@ -2408,6 +2408,221 @@ namespace GovUk.Education.ManageCourses.ApiClient
         public static UcasCourseSubject FromJson(string data)
         {
             return Newtonsoft.Json.JsonConvert.DeserializeObject<UcasCourseSubject>(data);
+        }
+    
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected virtual void RaisePropertyChanged([System.Runtime.CompilerServices.CallerMemberName] string propertyName = null)
+        {
+            var handler = PropertyChanged;
+            if (handler != null) 
+                handler(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.10.50.0 (Newtonsoft.Json v9.0.0.0)")]
+    public partial class CourseCode : System.ComponentModel.INotifyPropertyChanged
+    {
+        private int _id;
+        private string _instCode;
+        private string _crseCode;
+        private UcasInstitution _ucasInstitution;
+        private System.Collections.ObjectModel.ObservableCollection<UcasCourse> _ucasCourses;
+        private System.Collections.ObjectModel.ObservableCollection<UcasCourseSubject> _ucasCourseSubjects;
+    
+        [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.Always)]
+        public int Id
+        {
+            get { return _id; }
+            set 
+            {
+                if (_id != value)
+                {
+                    _id = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        [Newtonsoft.Json.JsonProperty("instCode", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string InstCode
+        {
+            get { return _instCode; }
+            set 
+            {
+                if (_instCode != value)
+                {
+                    _instCode = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        [Newtonsoft.Json.JsonProperty("crseCode", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string CrseCode
+        {
+            get { return _crseCode; }
+            set 
+            {
+                if (_crseCode != value)
+                {
+                    _crseCode = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        [Newtonsoft.Json.JsonProperty("ucasInstitution", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public UcasInstitution UcasInstitution
+        {
+            get { return _ucasInstitution; }
+            set 
+            {
+                if (_ucasInstitution != value)
+                {
+                    _ucasInstitution = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        [Newtonsoft.Json.JsonProperty("ucasCourses", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.ObjectModel.ObservableCollection<UcasCourse> UcasCourses
+        {
+            get { return _ucasCourses; }
+            set 
+            {
+                if (_ucasCourses != value)
+                {
+                    _ucasCourses = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        [Newtonsoft.Json.JsonProperty("ucasCourseSubjects", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.ObjectModel.ObservableCollection<UcasCourseSubject> UcasCourseSubjects
+        {
+            get { return _ucasCourseSubjects; }
+            set 
+            {
+                if (_ucasCourseSubjects != value)
+                {
+                    _ucasCourseSubjects = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+        
+        public static CourseCode FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<CourseCode>(data);
+        }
+    
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected virtual void RaisePropertyChanged([System.Runtime.CompilerServices.CallerMemberName] string propertyName = null)
+        {
+            var handler = PropertyChanged;
+            if (handler != null) 
+                handler(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.10.50.0 (Newtonsoft.Json v9.0.0.0)")]
+    public partial class UcasSubject : System.ComponentModel.INotifyPropertyChanged
+    {
+        private int _id;
+        private string _subjectCode;
+        private string _subjectDescription;
+        private string _titleMatch;
+        private System.Collections.ObjectModel.ObservableCollection<UcasCourseSubject> _ucasCourseSubjects;
+    
+        [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.Always)]
+        public int Id
+        {
+            get { return _id; }
+            set 
+            {
+                if (_id != value)
+                {
+                    _id = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        [Newtonsoft.Json.JsonProperty("subjectCode", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string SubjectCode
+        {
+            get { return _subjectCode; }
+            set 
+            {
+                if (_subjectCode != value)
+                {
+                    _subjectCode = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        [Newtonsoft.Json.JsonProperty("subjectDescription", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string SubjectDescription
+        {
+            get { return _subjectDescription; }
+            set 
+            {
+                if (_subjectDescription != value)
+                {
+                    _subjectDescription = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        [Newtonsoft.Json.JsonProperty("titleMatch", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string TitleMatch
+        {
+            get { return _titleMatch; }
+            set 
+            {
+                if (_titleMatch != value)
+                {
+                    _titleMatch = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        [Newtonsoft.Json.JsonProperty("ucasCourseSubjects", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.ObjectModel.ObservableCollection<UcasCourseSubject> UcasCourseSubjects
+        {
+            get { return _ucasCourseSubjects; }
+            set 
+            {
+                if (_ucasCourseSubjects != value)
+                {
+                    _ucasCourseSubjects = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+        
+        public static UcasSubject FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<UcasSubject>(data);
         }
     
         public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
@@ -2436,6 +2651,8 @@ namespace GovUk.Education.ManageCourses.ApiClient
         private string _telNo;
         private string _email;
         private string _regionCode;
+        private UcasInstitution _ucasInstitution;
+        private System.Collections.ObjectModel.ObservableCollection<UcasCourse> _ucasCourses;
     
         [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.Always)]
         public int Id
@@ -2600,6 +2817,34 @@ namespace GovUk.Education.ManageCourses.ApiClient
                 if (_regionCode != value)
                 {
                     _regionCode = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        [Newtonsoft.Json.JsonProperty("ucasInstitution", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public UcasInstitution UcasInstitution
+        {
+            get { return _ucasInstitution; }
+            set 
+            {
+                if (_ucasInstitution != value)
+                {
+                    _ucasInstitution = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        [Newtonsoft.Json.JsonProperty("ucasCourses", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.ObjectModel.ObservableCollection<UcasCourse> UcasCourses
+        {
+            get { return _ucasCourses; }
+            set 
+            {
+                if (_ucasCourses != value)
+                {
+                    _ucasCourses = value; 
                     RaisePropertyChanged();
                 }
             }
@@ -2843,121 +3088,6 @@ namespace GovUk.Education.ManageCourses.ApiClient
         public static UcasNoteText FromJson(string data)
         {
             return Newtonsoft.Json.JsonConvert.DeserializeObject<UcasNoteText>(data);
-        }
-    
-        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
-        
-        protected virtual void RaisePropertyChanged([System.Runtime.CompilerServices.CallerMemberName] string propertyName = null)
-        {
-            var handler = PropertyChanged;
-            if (handler != null) 
-                handler(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
-        }
-    
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.10.50.0 (Newtonsoft.Json v9.0.0.0)")]
-    public partial class ProviderMapper : System.ComponentModel.INotifyPropertyChanged
-    {
-        private int _id;
-        private string _orgId;
-        private string _ucasCode;
-        private int _urn;
-        private string _type;
-        private string _institutionName;
-    
-        [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.Always)]
-        public int Id
-        {
-            get { return _id; }
-            set 
-            {
-                if (_id != value)
-                {
-                    _id = value; 
-                    RaisePropertyChanged();
-                }
-            }
-        }
-    
-        [Newtonsoft.Json.JsonProperty("orgId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string OrgId
-        {
-            get { return _orgId; }
-            set 
-            {
-                if (_orgId != value)
-                {
-                    _orgId = value; 
-                    RaisePropertyChanged();
-                }
-            }
-        }
-    
-        [Newtonsoft.Json.JsonProperty("ucasCode", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string UcasCode
-        {
-            get { return _ucasCode; }
-            set 
-            {
-                if (_ucasCode != value)
-                {
-                    _ucasCode = value; 
-                    RaisePropertyChanged();
-                }
-            }
-        }
-    
-        [Newtonsoft.Json.JsonProperty("urn", Required = Newtonsoft.Json.Required.Always)]
-        public int Urn
-        {
-            get { return _urn; }
-            set 
-            {
-                if (_urn != value)
-                {
-                    _urn = value; 
-                    RaisePropertyChanged();
-                }
-            }
-        }
-    
-        [Newtonsoft.Json.JsonProperty("type", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Type
-        {
-            get { return _type; }
-            set 
-            {
-                if (_type != value)
-                {
-                    _type = value; 
-                    RaisePropertyChanged();
-                }
-            }
-        }
-    
-        [Newtonsoft.Json.JsonProperty("institutionName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string InstitutionName
-        {
-            get { return _institutionName; }
-            set 
-            {
-                if (_institutionName != value)
-                {
-                    _institutionName = value; 
-                    RaisePropertyChanged();
-                }
-            }
-        }
-    
-        public string ToJson() 
-        {
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
-        }
-        
-        public static ProviderMapper FromJson(string data)
-        {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<ProviderMapper>(data);
         }
     
         public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
