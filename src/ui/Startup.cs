@@ -113,10 +113,8 @@ namespace GovUk.Education.ManageCourses.Ui
             }
             else
             {
-                app.UseExceptionHandler("/Home/Error");
+                app.UseStatusCodePagesWithRedirects("/error/{0}");
             }
-
-            app.UseStatusCodePagesWithReExecute("/Home/Error");
 
             app.UseStaticFiles();
 

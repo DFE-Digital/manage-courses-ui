@@ -12,7 +12,7 @@ namespace GovUk.Education.ManageCourses.Ui.ActionFilters
             if (context.Exception is SwaggerException swaggerException
                 && swaggerException.StatusCode == (int)HttpStatusCode.Unauthorized)
             {
-                context.Result = new RedirectToActionResult("AccessDenied", "Auth", null);
+                context.Result = new RedirectToActionResult("Index", "Error", new { statusCode = 401 });
                 context.ExceptionHandled = true;
             }
         }

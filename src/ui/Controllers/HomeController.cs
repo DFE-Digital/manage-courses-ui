@@ -37,11 +37,5 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
 
             throw new Exception("No organisations returned from API for this user");
         }
-
-           [AllowAnonymous]
-        public IActionResult Error()
-        {
-            return View();
-        }
     }
 }
