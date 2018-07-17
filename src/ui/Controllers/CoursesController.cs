@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace GovUk.Education.ManageCourses.Ui.Controllers
 {
     [Authorize]
-    [Route("courses")]
+    [Route("organisation")]
     public class CoursesController : CommonAttributesControllerBase
     {
         private readonly ManageApi _manageApi;
@@ -19,17 +19,16 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             _manageApi = manageApi;
         }
 
-        [Route("{ucasCode}")]        
+        [Route("{ucasCode}/courses")]        
         public async Task<IActionResult> Index(string ucasCode)
         {
             var courses = await _manageApi.GetCoursesByOrganisation(ucasCode);
             var orgs = await _manageApi.GetOrganisations();
-
-            var data = await _manageApi.GetOrganisationCoursesTotal(ucasCode);
+           
             var model = new CourseListViewModel
             {
                 Courses = courses,
-                TotalCount = data.TotalCount,
+                TotalCount = courses.ProviderCourses.SelectMany(x => x.CourseDetails).SelectMany(v => v.Variants).Count(),
                 MultipleOrganisations = orgs.Count() > 1
             };
             return View(model);

@@ -11,7 +11,7 @@ using GovUk.Education.ManageCourses.Ui.Helpers;
 namespace GovUk.Education.ManageCourses.Ui.Controllers
 {
     [Authorize]
-    [Route("course")]
+    [Route("organisation")]
     public class CourseController : CommonAttributesControllerBase
     {
         private readonly ManageApi _manageApi;
@@ -20,7 +20,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
         {
             _manageApi = manageApi;
         }
-        [Route("{instCode}/{accreditingProviderId=self}/{courseTitle}/{ucasCode}")]
+        [Route("{instCode}/course/{accreditingProviderId=self}/{courseTitle}/{ucasCode}")]
         public async Task<IActionResult> Variants(string instCode, string accreditingProviderId, string courseTitle, string ucasCode)
         {
             var course = await _manageApi.GetCoursesByOrganisation(instCode);

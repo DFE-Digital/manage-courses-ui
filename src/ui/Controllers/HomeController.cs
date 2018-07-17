@@ -20,16 +20,17 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
 
         // GET: Home
         [Authorize]
-        public ActionResult Index()
+        public async Task<ActionResult> Index()
         {
-            var orgs = _manageApi.GetOrganisations().Result.ToList();
+            var orgs = await _manageApi.GetOrganisations();
 
-            if (orgs.Count() == 1)
+            var userOrganisations = orgs.ToList();
+            if (userOrganisations.Count() == 1)
             {
-                return this.RedirectToAction("Index", "Courses", new { ucasCode = orgs[0].UcasCode });
+                return this.RedirectToAction("Index", "Courses", new { ucasCode = userOrganisations[0].UcasCode });
             }
 
-            if (orgs.Count() > 1)
+            if (userOrganisations.Count() > 1)
             {
                 return this.RedirectToAction("Index", "Organisations");
             }
