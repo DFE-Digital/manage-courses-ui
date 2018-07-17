@@ -14,10 +14,8 @@
 </div>
 @foreach (var organisation in Model.Oganisations)
 {
-<h3 class="heading-medium">
-    <span>
-        <a href="@Url.Action("Index", "courses", new {ucasCode = organisation.UcasCode})">@organisation.OrganisationName</a>
-        <br/>@organisation.TotalCourses courses
-    </span>
+<h3 class="heading-medium remove-bottom-margin">
+    <a href="@Url.Action("Index", "courses", new {ucasCode = organisation.UcasCode})">@organisation.OrganisationName</a>
 </h3>
+<p>@organisation.TotalCourses courses</p>
 }
