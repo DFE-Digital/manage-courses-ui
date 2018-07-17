@@ -19,6 +19,7 @@ $success-colour: $button-colour;
 
 .breadcrumbs {
    @include breadcrumbs;
+   overflow: hidden;
 }
 
 .phase-banner-wrapper
