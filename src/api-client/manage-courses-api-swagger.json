@@ -42,16 +42,30 @@
               "type": "file"
             }
           }
-        }
+        },
+        "security": [
+          {
+            "BearerTokenScheme": []
+          }
+        ]
       }
     },
-    "/api/Data": {
+    "/api/Data/{ucasCode}": {
       "get": {
         "tags": [
           "Data"
         ],
         "summary": "Exports the data.",
-        "operationId": "Data_Export",
+        "operationId": "Data_ExportByOrganisation",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "ucasCode",
+            "in": "path",
+            "required": true,
+            "x-nullable": false
+          }
+        ],
         "responses": {
           "200": {
             "x-nullable": true,
@@ -60,8 +74,15 @@
               "$ref": "#/definitions/OrganisationCourses"
             }
           }
-        }
-      },
+        },
+        "security": [
+          {
+            "BearerTokenScheme": []
+          }
+        ]
+      }
+    },
+    "/api/Data": {
       "post": {
         "tags": [
           "Data"
@@ -83,7 +104,38 @@
           "200": {
             "description": ""
           }
-        }
+        },
+        "security": [
+          {
+            "BearerTokenScheme": []
+          }
+        ]
+      }
+    },
+    "/api/Organisations": {
+      "get": {
+        "tags": [
+          "Organisations"
+        ],
+        "summary": "Exports the data.",
+        "operationId": "Organisations_Get",
+        "responses": {
+          "200": {
+            "x-nullable": true,
+            "description": "The exported data",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/UserOrganisation"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "BearerTokenScheme": []
+          }
+        ]
       }
     }
   },
@@ -319,12 +371,6 @@
           "items": {
             "$ref": "#/definitions/McUser"
           }
-        },
-        "mappers": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/ProviderMapper"
-          }
         }
       }
     },
@@ -368,6 +414,18 @@
         },
         "crseOpenDate": {
           "type": "string"
+        },
+        "ucasInstitution": {
+          "$ref": "#/definitions/UcasInstitution"
+        },
+        "accreditingProviderInstitution": {
+          "$ref": "#/definitions/UcasInstitution"
+        },
+        "ucasCampus": {
+          "$ref": "#/definitions/UcasCampus"
+        },
+        "courseCode": {
+          "$ref": "#/definitions/CourseCode"
         }
       }
     },
@@ -434,6 +492,36 @@
           "type": "array",
           "items": {
             "$ref": "#/definitions/McOrganisationInstitution"
+          }
+        },
+        "ucasCourses": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/UcasCourse"
+          }
+        },
+        "accreditedUcasCourses": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/UcasCourse"
+          }
+        },
+        "ucasCourseSubjects": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/UcasCourseSubject"
+          }
+        },
+        "ucasCampuses": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/UcasCampus"
+          }
+        },
+        "courseCodes": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/CourseCode"
           }
         }
       }
@@ -547,28 +635,6 @@
         }
       }
     },
-    "UcasSubject": {
-      "type": "object",
-      "additionalProperties": false,
-      "required": [
-        "id"
-      ],
-      "properties": {
-        "id": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "subjectCode": {
-          "type": "string"
-        },
-        "subjectDescription": {
-          "type": "string"
-        },
-        "titleMatch": {
-          "type": "string"
-        }
-      }
-    },
     "UcasCourseSubject": {
       "type": "object",
       "additionalProperties": false,
@@ -591,6 +657,77 @@
         },
         "yearCode": {
           "type": "string"
+        },
+        "ucasInstitution": {
+          "$ref": "#/definitions/UcasInstitution"
+        },
+        "courseCode": {
+          "$ref": "#/definitions/CourseCode"
+        },
+        "ucasSubject": {
+          "$ref": "#/definitions/UcasSubject"
+        }
+      }
+    },
+    "CourseCode": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id"
+      ],
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "instCode": {
+          "type": "string"
+        },
+        "crseCode": {
+          "type": "string"
+        },
+        "ucasInstitution": {
+          "$ref": "#/definitions/UcasInstitution"
+        },
+        "ucasCourses": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/UcasCourse"
+          }
+        },
+        "ucasCourseSubjects": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/UcasCourseSubject"
+          }
+        }
+      }
+    },
+    "UcasSubject": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id"
+      ],
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "subjectCode": {
+          "type": "string"
+        },
+        "subjectDescription": {
+          "type": "string"
+        },
+        "titleMatch": {
+          "type": "string"
+        },
+        "ucasCourseSubjects": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/UcasCourseSubject"
+          }
         }
       }
     },
@@ -637,6 +774,15 @@
         },
         "regionCode": {
           "type": "string"
+        },
+        "ucasInstitution": {
+          "$ref": "#/definitions/UcasInstitution"
+        },
+        "ucasCourses": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/UcasCourse"
+          }
         }
       }
     },
@@ -696,35 +842,35 @@
         }
       }
     },
-    "ProviderMapper": {
+    "UserOrganisation": {
       "type": "object",
       "additionalProperties": false,
       "required": [
-        "id",
-        "urn"
+        "totalCourses"
       ],
       "properties": {
-        "id": {
-          "type": "integer",
-          "format": "int32"
+        "organisationName": {
+          "type": "string"
         },
-        "orgId": {
+        "organisationId": {
           "type": "string"
         },
         "ucasCode": {
           "type": "string"
         },
-        "urn": {
+        "totalCourses": {
           "type": "integer",
           "format": "int32"
-        },
-        "type": {
-          "type": "string"
-        },
-        "institutionName": {
-          "type": "string"
         }
       }
+    }
+  },
+  "securityDefinitions": {
+    "BearerTokenScheme": {
+      "type": "apiKey",
+      "description": "In order to interactive with the api please input `Bearer {code}`",
+      "name": "Authorization",
+      "in": "header"
     }
   }
 }

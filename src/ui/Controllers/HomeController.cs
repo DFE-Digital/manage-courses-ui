@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,27 +19,26 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
         }
 
         // GET: Home
-        public ActionResult Index()
-        {
-
-            return this.RedirectToAction("Index", "Courses");
-        }
-
         [Authorize]
-        [Route("/we-imported")]
-        public async Task<ActionResult> Imported()
+        public async Task<ActionResult> Index()
         {
-            var data = await _manageApi.GetOrganisationCoursesTotal();
-            var viewModel = new ImportedCoursesViewModel()
+            var orgs = await _manageApi.GetOrganisations();
+
+            var userOrganisations = orgs.ToList();
+            if (userOrganisations.Count() == 1)
             {
-                OrganisationName = data.OrganisationName,
-                TotalCount = data.TotalCount
-            };
-            
-            return View(viewModel);
+                return this.RedirectToAction("Index", "Courses", new { ucasCode = userOrganisations[0].UcasCode });
+            }
+
+            if (userOrganisations.Count() > 1)
+            {
+                return this.RedirectToAction("Index", "Organisations");
+            }
+
+            throw new Exception("No organisations returned from API for this user");
         }
 
-        [AllowAnonymous]
+           [AllowAnonymous]
         public IActionResult Error()
         {
             return View();

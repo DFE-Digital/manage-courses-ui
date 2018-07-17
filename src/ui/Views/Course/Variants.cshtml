@@ -2,11 +2,28 @@
 
 @{
     Layout = "_Layout";
-
+    ViewBag.Title = Model.Course.Name;
     var link = "mailto:becomingateacher@digital.education.gov.uk?subject=Problem%20with%20course%20" + Model.Course.ProgrammeCode;
 }
 
-<a class="link-back" href="@Url.Action("index","courses")">Back</a>
+<nav class="breadcrumbs">
+    <ul>
+        @if (Model.MultipleOrganisations)
+        {
+            <li>
+                <a href="@Url.Action("index", "organisations")">Organisations</a>
+            </li>
+        }
+        <li>
+            <a href="@Url.Action("index", "courses", new {ucasCode = Model.Course.UcasCode})">@Model.OrganisationName</a>
+        </li>
+        <li>
+            @Model.Course.Name
+        </li>
+    </ul>
+</nav>
+
+           
 <h1 class="heading-xlarge">
     <span class="heading-secondary">@Model.Course.Name</span>
     @Model.Course.Type (@Model.Course.ProgrammeCode)
