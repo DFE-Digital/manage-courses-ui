@@ -20,8 +20,8 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
         {
             _manageApi = manageApi;
         }
-        [Route("{instCode}/course/{accreditingProviderId=self}/{courseTitle}/{ucasCode}")]
-        public async Task<IActionResult> Variants(string instCode, string accreditingProviderId, string courseTitle, string ucasCode)
+        [Route("{instCode}/course/{accreditingProviderId=self}/{ucasCode}")]
+        public async Task<IActionResult> Variants(string instCode, string accreditingProviderId, string ucasCode)
         {
             var course = await _manageApi.GetCoursesByOrganisation(instCode);
 
@@ -29,12 +29,12 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
                 ? course.ProviderCourses.First(c => String.IsNullOrEmpty(c.AccreditingProviderId))
                 : course.ProviderCourses
                     .First(c => c.AccreditingProviderId.Equals(accreditingProviderId, StringComparison.InvariantCultureIgnoreCase));
+            var courseDetail = providerCourse.CourseDetails.First(x => x.Variants.Select(v => v.UcasCode == ucasCode).Any());
 
-            var courseDetail = providerCourse.CourseDetails.First(x => x.CourseTitle.Equals(courseTitle, StringComparison.InvariantCultureIgnoreCase));
             var variant = courseDetail.Variants.FirstOrDefault(v => v.UcasCode == ucasCode);
             if (variant == null) return null;
 
-            var subjects = variant.Subjects.Count() > 0 ? variant.Subjects.Aggregate((current, next) => current + ", " + next) : "";
+            var subjects = variant.Subjects.Any() ? variant.Subjects.Aggregate((current, next) => current + ", " + next) : "";
 
             var courseVariant =
                 new CourseVariantViewModel
@@ -74,7 +74,9 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
                         };
                     })
                 };
+
             var orgs = await _manageApi.GetOrganisations();
+
             var viewModel = new FromUcasViewModel
             {
                 OrganisationName = course.OrganisationName,
@@ -87,6 +89,5 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
 
             return View(viewModel);
         }
-
     }
 }
