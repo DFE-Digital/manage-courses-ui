@@ -23,73 +23,71 @@
     </ol>
 </nav>
 
-<div class="govuk-width-container">
-    <main role="main" class="govuk-main-wrapper" id="main-content">
-        <h1 class="govuk-heading-xl">
-            <span class="govuk-caption-xl">@Model.Course.Name</span>
-            @Model.Course.Type (@Model.Course.ProgrammeCode)
-        </h1>
+<main role="main" class="govuk-main-wrapper" id="main-content">
+    <h1 class="govuk-heading-xl">
+        <span class="govuk-caption-xl">@Model.Course.Name</span>
+        @Model.Course.Type (@Model.Course.ProgrammeCode)
+    </h1>
 
-        <div class="govuk-grid-row">
-            <div class="govuk-grid-column-two-thirds">
-                <p class="govuk-body-l">
-                    Information imported from UCAS for course @Model.Course.ProgrammeCode.
-                </p>
-            </div>
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+            <p class="govuk-body-l">
+                Information imported from UCAS for course @Model.Course.ProgrammeCode.
+            </p>
         </div>
+    </div>
 
-        <dl class="govuk-list govuk-list--description">
-            <dt>Name:</dt>
-            <dd>@Model.Course.Name</dd>
-            <dt>Training provider code:</dt>
-            <dd>@Model.Course.UcasCode</dd>
-            <dt>Training programme code:</dt>
-            <dd>@Model.Course.ProgrammeCode</dd>
-            <dt>Accrediting provider:</dt>
-            <dd>@Model.Course.Accrediting</dd>
-            <dt>Route:</dt>
-            <dd>@Model.Course.GetRoute()</dd>
-            <dt>Subjects:</dt>
-            <dd>@Model.Course.Subjects</dd>
-            <dt>Mode of study:</dt>
-            <dd>@Model.Course.GetStudyMode()</dd>
-            <dt>Age range:</dt>
-            <dd>@Model.Course.GetAgeRange()</dd>
-            <dt>Qualification:</dt>
-            <dd>@Model.Course.GetQualification()</dd>
-            @*<dt>Regions:</dt>
-                <dd>@course.Regions</dd>*@
-        </dl>
+    <dl class="govuk-list govuk-list--description">
+        <dt>Name:</dt>
+        <dd>@Model.Course.Name</dd>
+        <dt>Training provider code:</dt>
+        <dd>@Model.Course.UcasCode</dd>
+        <dt>Training programme code:</dt>
+        <dd>@Model.Course.ProgrammeCode</dd>
+        <dt>Accrediting provider:</dt>
+        <dd>@Model.Course.Accrediting</dd>
+        <dt>Route:</dt>
+        <dd>@Model.Course.GetRoute()</dd>
+        <dt>Subjects:</dt>
+        <dd>@Model.Course.Subjects</dd>
+        <dt>Mode of study:</dt>
+        <dd>@Model.Course.GetStudyMode()</dd>
+        <dt>Age range:</dt>
+        <dd>@Model.Course.GetAgeRange()</dd>
+        <dt>Qualification:</dt>
+        <dd>@Model.Course.GetQualification()</dd>
+        @*<dt>Regions:</dt>
+            <dd>@course.Regions</dd>*@
+    </dl>
 
-        <h3 class="govuk-heading-m">Training locations</h3>
-        <table class="govuk-table">
-            <thead class="govuk-table__head">
+    <h3 class="govuk-heading-m">Training locations</h3>
+    <table class="govuk-table">
+        <thead class="govuk-table__head">
+            <tr class="govuk-table__row">
+                <th class="govuk-table__header" scope="col">Location name</th>
+                <th class="govuk-table__header" scope="col">Address</th>
+                <th class="govuk-table__header" scope="col">Code</th>
+                @*<th class="govuk-table__header" scope="col">Full time vacancies</th>
+                    <th class="govuk-table__header" scope="col">Part time vacancies</th>*@
+                <th class="govuk-table__header" scope="col">Applications accepted from</th>
+            </tr>
+        </thead>
+        <tbody class="govuk-table__body">
+            @foreach (var school in Model.Course.Schools)
+            {
                 <tr class="govuk-table__row">
-                    <th class="govuk-table__header" scope="col">Location name</th>
-                    <th class="govuk-table__header" scope="col">Address</th>
-                    <th class="govuk-table__header" scope="col">Code</th>
-                    @*<th class="govuk-table__header" scope="col">Full time vacancies</th>
-                        <th class="govuk-table__header" scope="col">Part time vacancies</th>*@
-                    <th class="govuk-table__header" scope="col">Applications accepted from</th>
+                    <td class="govuk-table__cell">@school.LocationName</td>
+                    <td class="govuk-table__cell">@school.Address</td>
+                    <td class="govuk-table__cell">@school.Code</td>
+                    @*<td class="govuk-table__cell">Vacancies</td>
+                        <td class="govuk-table__cell">Not applicable</td>*@
+                    <td class="govuk-table__cell">@school.ApplicationsAcceptedFrom</td>
                 </tr>
-            </thead>
-            <tbody class="govuk-table__body">
-                @foreach (var school in Model.Course.Schools)
-                {
-                    <tr class="govuk-table__row">
-                        <td class="govuk-table__cell">@school.LocationName</td>
-                        <td class="govuk-table__cell">@school.Address</td>
-                        <td class="govuk-table__cell">@school.Code</td>
-                        @*<td class="govuk-table__cell">Vacancies</td>
-                            <td class="govuk-table__cell">Not applicable</td>*@
-                        <td class="govuk-table__cell">@school.ApplicationsAcceptedFrom</td>
-                    </tr>
-                }
-            </tbody>
-        </table>
+            }
+        </tbody>
+    </table>
 
-        <p>
-            <a href="@link" class="govuk-link">Contact the Becoming a Teacher team to report a problem</a>
-        </p>
-    </main>
-</div>
+    <p>
+        <a href="@link" class="govuk-link">Contact the Becoming a Teacher team to report a problem</a>
+    </p>
+</main>

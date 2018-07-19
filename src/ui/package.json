@@ -12,7 +12,7 @@
     "clean": "gulp clean"
   },
   "dependencies": {
-    "govuk-frontend": "1.0.0",
+    "govuk-frontend": "1.1.1",
     "gulp": "3.9.1",
     "gulp-clean": "0.3.2",
     "gulp-copy": "1.1.0",

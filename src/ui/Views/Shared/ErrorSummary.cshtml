@@ -14,21 +14,23 @@
 
     }).Select(x => new { Key = x, Value = this.ViewContext.ModelState[x] });
 
-    <div class="error-summary" role="alert" aria-labelledby="error-summary-heading" tabindex="-1">
-        <h2 class="heading-medium error-summary-heading" id="error-summary-heading">
+    <div class="govuk-error-summary" role="alert" aria-labelledby="error-summary-heading" tabindex="-1">
+        <h2 class="govuk-heading-m govuk-error-summary__title" id="error-summary-heading">
             You&#8217;ll need to correct some information.
         </h2>
 
-        <ul class="error-summary-list">
+        <div class="govuk-error-summary__body">
+            <ul class="govuk-list govuk-error-summary__list">
 
-            @foreach (var state in modelState)
-            {
-                foreach (var error in state.Value.Errors)
+                @foreach (var state in modelState)
                 {
-                    <li><a href="#@state.Key-wrapper">@error.ErrorMessage</a></li>
+                    foreach (var error in state.Value.Errors)
+                    {
+                        <li><a href="#@state.Key-wrapper">@error.ErrorMessage</a></li>
+                    }
                 }
-            }
 
-        </ul>
+            </ul>
+        </div>
     </div>
 }

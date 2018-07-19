@@ -77,8 +77,10 @@
     </header>
 
     @RenderSection("afterHeader", required: false)
-
-    @RenderBody()
+    
+    <div class="govuk-width-container">
+        @RenderBody()
+    </div>
 
     <footer class="govuk-footer" role="contentinfo">
 

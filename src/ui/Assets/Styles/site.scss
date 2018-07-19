@@ -7,18 +7,11 @@ $govuk-global-styles: true;
 
 @import "components/cookie-banner";
 
-$success-colour: $button-colour;
-
 @import "patterns/course-parts";
 
 @import "patterns/success-summary";
 
 @import "patterns/definition-list";
-
-// https://github.com/alphagov/govuk-frontend/issues/828
-.govuk-header {
-    font-size: 0;
-}
 
 .govuk-header__link--profile {
     @extend .govuk-header__link;
