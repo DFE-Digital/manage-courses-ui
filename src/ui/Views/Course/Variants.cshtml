@@ -6,87 +6,89 @@
     var link = "mailto:becomingateacher@digital.education.gov.uk?subject=Problem%20with%20course%20" + Model.Course.ProgrammeCode;
 }
 
-<nav class="breadcrumbs">
-    <ul>
-        @if (Model.MultipleOrganisations)
-        {
-            <li>
-                <a href="@Url.Action("index", "organisations")">Organisations</a>
-            </li>
-        }
-        <li>
-            <a href="@Url.Action("index", "courses", new {ucasCode = Model.Course.UcasCode})">@Model.OrganisationName</a>
-        </li>
-        <li>
-            @Model.Course.Name
-        </li>
-    </ul>
-</nav>
+<a href="@Url.Action("index", "courses", new {ucasCode = Model.Course.UcasCode})" class="govuk-back-link">Back</a>  
 
-           
-<h1 class="heading-xlarge">
-    <span class="heading-secondary">@Model.Course.Name</span>
-    @Model.Course.Type (@Model.Course.ProgrammeCode)
-</h1>
+<main role="main" class="govuk-main-wrapper" id="main-content">
+    <h1 class="govuk-heading-xl">
+        <span class="govuk-caption-xl">@Model.Course.Name</span>
+        @Model.Course.Type (@Model.Course.ProgrammeCode)
+    </h1>
 
-<div class="grid-row">
-    <div class="column-two-thirds">
-        <p class="lede">
-            Information imported from UCAS for course @Model.Course.ProgrammeCode.
-        </p>
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+            <p class="govuk-body-l">
+                Information imported from UCAS for course @Model.Course.ProgrammeCode.
+            </p>
+        </div>
     </div>
-</div>
 
-<dl class="aligned">
-    <dt>Name:</dt>
-    <dd>@Model.Course.Name</dd>
-    <dt>Training provider code:</dt>
-    <dd>@Model.Course.UcasCode</dd>
-    <dt>Training programme code:</dt>
-    <dd>@Model.Course.ProgrammeCode</dd>
-    <dt>Accrediting provider:</dt>
-    <dd>@Model.Course.Accrediting</dd>
-    <dt>Route:</dt>
-    <dd>@Model.Course.GetRoute()</dd>
-    <dt>Subjects:</dt>
-    <dd>@Model.Course.Subjects</dd>
-    <dt>Mode of study:</dt>
-    <dd>@Model.Course.GetStudyMode()</dd>
-    <dt>Age range:</dt>
-    <dd>@Model.Course.GetAgeRange()</dd>
-    <dt>Qualification:</dt>
-    <dd>@Model.Course.GetQualification()</dd>
-    @*<dt>Regions:</dt>
-        <dd>@course.Regions</dd>*@
-</dl>
-
-<h3 class="heading-medium">Training locations</h3>
-<table class="add-double-bottom-margin">
-    <thead>
-        <tr>
-            <th>Location name</th>
-            <th>Address</th>
-            <th>Code</th>
-            @*<th>Full time vacancies</th>
-                <th>Part time vacancies</th>*@
-            <th>Applications accepted from</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var school in Model.Course.Schools)
-        {
-            <tr>
-                <td>@school.LocationName</td>
-                <td>@school.Address</td>
-                <td>@school.Code</td>
-                @*<td>Vacancies</td>
-                    <td>Not applicable</td>*@
-                <td>@school.ApplicationsAcceptedFrom</td>
-            </tr>
+    <dl class="govuk-list govuk-list--description">
+        @if (!string.IsNullOrEmpty(@Model.Course.Name)) {
+            <dt>Name:</dt>
+            <dd>@Model.Course.Name</dd>
         }
-    </tbody>
-</table>
+        @if (!string.IsNullOrEmpty(@Model.Course.UcasCode)) {
+            <dt>Training provider code:</dt>
+            <dd>@Model.Course.UcasCode</dd>
+        }
+        @if (!string.IsNullOrEmpty(@Model.Course.ProgrammeCode)) {
+            <dt>Training programme code:</dt>
+            <dd>@Model.Course.ProgrammeCode</dd>
+        }
+        @if (!string.IsNullOrEmpty(@Model.Course.Accrediting)) {
+            <dt>Accrediting provider:</dt>
+            <dd>@Model.Course.Accrediting</dd>
+        }
+        @if (!string.IsNullOrEmpty(@Model.Course.GetRoute())) {
+            <dt>Route:</dt>
+            <dd>@Model.Course.GetRoute()</dd>
+        }
+        @if (!string.IsNullOrEmpty(@Model.Course.Subjects)) {
+            <dt>Subjects:</dt>
+            <dd>@Model.Course.Subjects</dd>
+        }
+        @if (!string.IsNullOrEmpty(@Model.Course.GetStudyMode())) {
+            <dt>Mode of study:</dt>
+            <dd>@Model.Course.GetStudyMode()</dd>
+        }
+        @if (!string.IsNullOrEmpty(@Model.Course.GetAgeRange())) {
+            <dt>Age range:</dt>
+            <dd>@Model.Course.GetAgeRange()</dd>
+        }
+        @if (!string.IsNullOrEmpty(@Model.Course.GetQualification())) {
+            <dt>Qualification:</dt>
+            <dd>@Model.Course.GetQualification()</dd>
+        }
+    </dl>
 
-<p>
-    <a href="@link">Contact the Becoming a Teacher team to report a problem</a>
-</p>
+    <h3 class="govuk-heading-m">Training locations</h3>
+    <table class="govuk-table">
+        <thead class="govuk-table__head">
+            <tr class="govuk-table__row">
+                <th class="govuk-table__header" scope="col">Location name</th>
+                <th class="govuk-table__header" scope="col">Address</th>
+                <th class="govuk-table__header" scope="col">Code</th>
+                @*<th class="govuk-table__header" scope="col">Full time vacancies</th>
+                    <th class="govuk-table__header" scope="col">Part time vacancies</th>*@
+                <th class="govuk-table__header" scope="col">Applications accepted from</th>
+            </tr>
+        </thead>
+        <tbody class="govuk-table__body">
+            @foreach (var school in Model.Course.Schools)
+            {
+                <tr class="govuk-table__row">
+                    <td class="govuk-table__cell">@school.LocationName</td>
+                    <td class="govuk-table__cell">@school.Address</td>
+                    <td class="govuk-table__cell">@school.Code</td>
+                    @*<td class="govuk-table__cell">Vacancies</td>
+                        <td class="govuk-table__cell">Not applicable</td>*@
+                    <td class="govuk-table__cell">@school.ApplicationsAcceptedFrom</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <p>
+        <a href="@link" class="govuk-link">Contact the Becoming a Teacher team to report a problem</a>
+    </p>
+</main>

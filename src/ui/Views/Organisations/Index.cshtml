@@ -5,17 +5,24 @@
     Layout = "_Layout";
 }
 
-<div class="grid-row add-double-bottom-margin">
-    <div class="column-two-thirds">
-        <h1 class="heading-xlarge">
-            Organisations
-        </h1>
+<main role="main" class="govuk-main-wrapper" id="main-content">
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+            @Html.Partial("~/Views/Courses/Shared/RequestAccessSuccess.cshtml")
+            <h1 class="govuk-heading-xl">
+                Organisations
+            </h1>
+            <ul class="govuk-list">
+                @foreach (var organisation in Model.Oganisations)
+                {
+                <li>
+                    <h3 class="govuk-heading-m">
+                        <a href="@Url.Action("Index", "courses", new {ucasCode = organisation.UcasCode})" class="govuk-link">@organisation.OrganisationName</a>
+                        <span class="govuk-body govuk-!-font-weight-regular govuk-!-display-block">@organisation.TotalCourses courses</span>
+                    </h3>    
+                </li>
+                }
+            </ul>
+        </div>
     </div>
-</div>
-@foreach (var organisation in Model.Oganisations)
-{
-<h3 class="heading-medium remove-bottom-margin">
-    <a href="@Url.Action("Index", "courses", new {ucasCode = organisation.UcasCode})">@organisation.OrganisationName</a>
-</h3>
-<p>@organisation.TotalCourses courses</p>
-}
+</main>
