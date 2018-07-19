@@ -23,26 +23,42 @@
     </div>
 
     <dl class="govuk-list govuk-list--description">
-        <dt>Name:</dt>
-        <dd>@Model.Course.Name</dd>
-        <dt>Training provider code:</dt>
-        <dd>@Model.Course.UcasCode</dd>
-        <dt>Training programme code:</dt>
-        <dd>@Model.Course.ProgrammeCode</dd>
-        <dt>Accrediting provider:</dt>
-        <dd>@Model.Course.Accrediting</dd>
-        <dt>Route:</dt>
-        <dd>@Model.Course.GetRoute()</dd>
-        <dt>Subjects:</dt>
-        <dd>@Model.Course.Subjects</dd>
-        <dt>Mode of study:</dt>
-        <dd>@Model.Course.GetStudyMode()</dd>
-        <dt>Age range:</dt>
-        <dd>@Model.Course.GetAgeRange()</dd>
-        <dt>Qualification:</dt>
-        <dd>@Model.Course.GetQualification()</dd>
-        @*<dt>Regions:</dt>
-            <dd>@course.Regions</dd>*@
+        @if (!string.IsNullOrEmpty(@Model.Course.Name)) {
+            <dt>Name:</dt>
+            <dd>@Model.Course.Name</dd>
+        }
+        @if (!string.IsNullOrEmpty(@Model.Course.UcasCode)) {
+            <dt>Training provider code:</dt>
+            <dd>@Model.Course.UcasCode</dd>
+        }
+        @if (!string.IsNullOrEmpty(@Model.Course.ProgrammeCode)) {
+            <dt>Training programme code:</dt>
+            <dd>@Model.Course.ProgrammeCode</dd>
+        }
+        @if (!string.IsNullOrEmpty(@Model.Course.Accrediting)) {
+            <dt>Accrediting provider:</dt>
+            <dd>@Model.Course.Accrediting</dd>
+        }
+        @if (!string.IsNullOrEmpty(@Model.Course.GetRoute())) {
+            <dt>Route:</dt>
+            <dd>@Model.Course.GetRoute()</dd>
+        }
+        @if (!string.IsNullOrEmpty(@Model.Course.Subjects)) {
+            <dt>Subjects:</dt>
+            <dd>@Model.Course.Subjects</dd>
+        }
+        @if (!string.IsNullOrEmpty(@Model.Course.GetStudyMode())) {
+            <dt>Mode of study:</dt>
+            <dd>@Model.Course.GetStudyMode()</dd>
+        }
+        @if (!string.IsNullOrEmpty(@Model.Course.GetAgeRange())) {
+            <dt>Age range:</dt>
+            <dd>@Model.Course.GetAgeRange()</dd>
+        }
+        @if (!string.IsNullOrEmpty(@Model.Course.GetQualification())) {
+            <dt>Qualification:</dt>
+            <dd>@Model.Course.GetQualification()</dd>
+        }
     </dl>
 
     <h3 class="govuk-heading-m">Training locations</h3>
