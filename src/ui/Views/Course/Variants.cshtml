@@ -6,22 +6,7 @@
     var link = "mailto:becomingateacher@digital.education.gov.uk?subject=Problem%20with%20course%20" + Model.Course.ProgrammeCode;
 }
 
-<nav class="govuk-breadcrumbs">
-    <ol class="govuk-breadcrumbs__list">
-        @if (Model.MultipleOrganisations)
-        {
-            <li class="govuk-breadcrumbs__list-item">
-                <a href="@Url.Action(" index ", "organisations ")" class="govuk-breadcrumbs__link">Organisations</a>
-            </li>
-        }
-        <li class="govuk-breadcrumbs__list-item">
-            <a href="@Url.Action(" index ", "courses ", new {ucasCode = Model.Course.UcasCode})" class="govuk-breadcrumbs__link">@Model.OrganisationName</a>
-        </li>
-        <li class="govuk-breadcrumbs__list-item" aria-current="page">
-            @Model.Course.Name
-        </li>
-    </ol>
-</nav>
+<a href="@Url.Action("index", "courses", new {ucasCode = Model.Course.UcasCode})" class="govuk-back-link">Back</a>  
 
 <main role="main" class="govuk-main-wrapper" id="main-content">
     <h1 class="govuk-heading-xl">
