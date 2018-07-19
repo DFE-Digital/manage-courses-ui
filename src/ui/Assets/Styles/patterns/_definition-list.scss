@@ -4,7 +4,6 @@
 
 %govuk-list--description > dt {
     @include govuk-font($size: 19, $weight: normal);
-    @include govuk-responsive-margin(4, "top");
     vertical-align: top;
 
     @include mq ($from: desktop) {
@@ -18,7 +17,6 @@
    
     @include mq ($from: desktop) {
         float: left;
-        @include govuk-responsive-margin(4, "top");
         width: 66.66%;
     }
 }
