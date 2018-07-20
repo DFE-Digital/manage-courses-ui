@@ -69,9 +69,12 @@ namespace GovUk.Education.ManageCourses.Ui.Helpers
 
         public static string GetAgeRange(this CourseVariantViewModel viewModel)
         {
-            var ageRange = viewModel.AgeRange.ToLowerInvariant();
-
             var result = "";
+
+            if (string.IsNullOrEmpty(viewModel.AgeRange)) return result;
+
+            var ageRange = viewModel.AgeRange.Trim().ToLowerInvariant();
+            
             switch (ageRange)
             {
                 case "s":
@@ -102,30 +105,36 @@ namespace GovUk.Education.ManageCourses.Ui.Helpers
         {
             var result = "";
 
-            var qualifications = viewModel.Qualifications.ToLowerInvariant();
+            if (viewModel.Qualifications == null) return result;
+
+            var qualifications = viewModel.Qualifications.Trim().ToLowerInvariant();
 
             switch (qualifications)
             {
                 case "pf":
-                    {
-                        result = "Professional";
-                        break;
-                    }
+                {
+                    result = "Professional";
+                    break;
+                }
                 case "pg":
-                    {
-                        result = "Postgraduate";
-                        break;
-                    }
+                {
+                    result = "Postgraduate";
+                    break;
+                }
                 case "bo":
-                    {
-                        result = "Professional/Postgraduate";
+                {
+                    result = "Professional/Postgraduate";
+                    break;
+                }
+                case "":
+                {
+                    result = "Recommendation for QTS";
                         break;
-                    }
+                }
                 default:
-                    {
-                        result = "Recommendation for QTS";
-                        break;
-                    }
+                {
+                    break;
+                }
             }
 
             return result;
