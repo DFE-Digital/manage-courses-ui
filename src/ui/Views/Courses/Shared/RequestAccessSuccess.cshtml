@@ -3,11 +3,11 @@
 }
 
 @if (name != null) {
-    <div class="column-full">
-        <div class="success-summary" role="alert">
-            <h3 class="heading-medium success-summary-heading">DfE has received your request to give access to @name.</h3>
-            <p>They will receive sign-up instructions if their account is approved.</p>
-            <p>@Html.ActionLink("Request access for someone else", "Index", "RequestAccess")</p>
+    <div class="govuk-success-summary" role="alert">
+        <h3 class="govuk-heading-m govuk-success-summary__title">DfE has received your request to give access to @name.</h3>
+        <div class="govuk-success-summary__body">
+            <p class="govuk-body">They will receive sign-up instructions if their account is approved.</p>
+            <p class="govuk-body">@Html.ActionLink("Request access for someone else", "Index", "RequestAccess")</p>
         </div>
     </div>
 }
