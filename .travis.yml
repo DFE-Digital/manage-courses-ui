@@ -3,3 +3,24 @@ mono: none
 dotnet: 2.0.0
 script:
  - dotnet restore
+deploy:
+- provider: azure_web_apps
+  username: govuk-dfe-bat-deployment-user
+  password: 
+    secure: "naOgilAhXDVFMZyC+2WDXyfx7ZlhK8GpBpeHmlJ5M6rfXf9rAAQ5apHpfQE5S7x+tpUqEPOkgK+ML3cJ5wDIZB2pcul5v9jtaf5WkQYzfYybP0Ma85ENBKVcNbKpCrYBcZj/EXVI/QA3ZQ9L5Rg+A9HDCJpQENEvNLI6Wn3aLSVHmD1PsQNleKZSn+5L3rmR+LnMlELu9JPgxKEY83rjHnUgR0ACC79GOFVyRzXBmUxXs5+pm/nkr5vmi+E8cwOyoKtRiEw+6n9ZG4faPDLkBO3Evaz4eF0GmjSUKmfOcgZ5Ndqz1MABmnToACv3X7hTbYRO1S/2u4YxCboQA+FhfjRG5VPVkDLjKamTtbLd8hSvnFoD6VbVoH3ErKnELiVZeda6iYCSXio9JbMDpzXvvW49sr2DriVi1ALkE9XljZ00b/GeFr2c4ibEyQhrUm4NjeDbH6a9g+Y6XDNNSBYj5G43j5ZRYe4x4RjdRpZ95hs3mMjcX9sVPA53DHI0p1zgf2MozRKK9F4Fjhbl9FqRP6yUkDqaeSdJaDa8oSmgmYZUohNuh6wjfWaYNcGrTiZDMV7XUMAmEneXQt+VrL4U/2e5IWCS2uYMLS2b96lJnWpO9IudB7fh072gXf7JoIbeP2KdYCpDKzmAX3EFqEa/Uog1hxiKQM7gv4fkg5UiOno="  site: bat-dev-search-and-compare-ui-app
+  on:
+    branch: master
+- provider: azure_web_apps
+  username: govuk-dfe-bat-deployment-user
+  password: 
+    secure: "naOgilAhXDVFMZyC+2WDXyfx7ZlhK8GpBpeHmlJ5M6rfXf9rAAQ5apHpfQE5S7x+tpUqEPOkgK+ML3cJ5wDIZB2pcul5v9jtaf5WkQYzfYybP0Ma85ENBKVcNbKpCrYBcZj/EXVI/QA3ZQ9L5Rg+A9HDCJpQENEvNLI6Wn3aLSVHmD1PsQNleKZSn+5L3rmR+LnMlELu9JPgxKEY83rjHnUgR0ACC79GOFVyRzXBmUxXs5+pm/nkr5vmi+E8cwOyoKtRiEw+6n9ZG4faPDLkBO3Evaz4eF0GmjSUKmfOcgZ5Ndqz1MABmnToACv3X7hTbYRO1S/2u4YxCboQA+FhfjRG5VPVkDLjKamTtbLd8hSvnFoD6VbVoH3ErKnELiVZeda6iYCSXio9JbMDpzXvvW49sr2DriVi1ALkE9XljZ00b/GeFr2c4ibEyQhrUm4NjeDbH6a9g+Y6XDNNSBYj5G43j5ZRYe4x4RjdRpZ95hs3mMjcX9sVPA53DHI0p1zgf2MozRKK9F4Fjhbl9FqRP6yUkDqaeSdJaDa8oSmgmYZUohNuh6wjfWaYNcGrTiZDMV7XUMAmEneXQt+VrL4U/2e5IWCS2uYMLS2b96lJnWpO9IudB7fh072gXf7JoIbeP2KdYCpDKzmAX3EFqEa/Uog1hxiKQM7gv4fkg5UiOno="  site: bat-dev-search-and-compare-ui-app
+  site: bat-staging-search-and-compare-ui-app
+  on:
+    branch: staging
+- provider: azure_web_apps
+  username: govuk-dfe-bat-deployment-user
+  password: 
+    secure: "naOgilAhXDVFMZyC+2WDXyfx7ZlhK8GpBpeHmlJ5M6rfXf9rAAQ5apHpfQE5S7x+tpUqEPOkgK+ML3cJ5wDIZB2pcul5v9jtaf5WkQYzfYybP0Ma85ENBKVcNbKpCrYBcZj/EXVI/QA3ZQ9L5Rg+A9HDCJpQENEvNLI6Wn3aLSVHmD1PsQNleKZSn+5L3rmR+LnMlELu9JPgxKEY83rjHnUgR0ACC79GOFVyRzXBmUxXs5+pm/nkr5vmi+E8cwOyoKtRiEw+6n9ZG4faPDLkBO3Evaz4eF0GmjSUKmfOcgZ5Ndqz1MABmnToACv3X7hTbYRO1S/2u4YxCboQA+FhfjRG5VPVkDLjKamTtbLd8hSvnFoD6VbVoH3ErKnELiVZeda6iYCSXio9JbMDpzXvvW49sr2DriVi1ALkE9XljZ00b/GeFr2c4ibEyQhrUm4NjeDbH6a9g+Y6XDNNSBYj5G43j5ZRYe4x4RjdRpZ95hs3mMjcX9sVPA53DHI0p1zgf2MozRKK9F4Fjhbl9FqRP6yUkDqaeSdJaDa8oSmgmYZUohNuh6wjfWaYNcGrTiZDMV7XUMAmEneXQt+VrL4U/2e5IWCS2uYMLS2b96lJnWpO9IudB7fh072gXf7JoIbeP2KdYCpDKzmAX3EFqEa/Uog1hxiKQM7gv4fkg5UiOno="  site: bat-dev-search-and-compare-ui-app
+  site: bat-prod-search-and-compare-ui-app
+  on:
+    branch: production
