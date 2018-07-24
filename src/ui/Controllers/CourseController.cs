@@ -14,9 +14,9 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
     [Route("organisation")]
     public class CourseController : CommonAttributesControllerBase
     {
-        private readonly ManageApi _manageApi;
+        private readonly IManageApi _manageApi;
 
-        public CourseController(ManageApi manageApi)
+        public CourseController(IManageApi manageApi)
         {
             _manageApi = manageApi;
         }
@@ -34,13 +34,13 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
 
             if (courseDetail == null)
             {
-                throw new Exception("Unexpected error");
+                throw new Exception("Unexpected error: course should not be null");
             }
 
             var variant = courseDetail.Variants.FirstOrDefault(v => v.UcasCode == ucasCode);
             if (variant == null)
             {
-                throw new Exception("Unexpected error");
+                throw new Exception("Unexpected error: variant should not be null");
             }
 
             var subjects = variant.Subjects.Any() ? variant.Subjects.Aggregate((current, next) => current + ", " + next) : "";

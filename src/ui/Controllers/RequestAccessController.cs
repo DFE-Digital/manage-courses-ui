@@ -8,9 +8,9 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
 {
     public class RequestAccessController : CommonAttributesControllerBase
     {
-        private readonly ManageApi _manageApi;
+        private readonly IManageApi _manageApi;
 
-        public RequestAccessController (ManageApi manageApi)
+        public RequestAccessController (IManageApi manageApi)
         {
             _manageApi = manageApi;
         }

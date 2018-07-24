@@ -91,7 +91,7 @@ namespace GovUk.Education.ManageCourses.Ui
             services.AddScoped<AnalyticsAttribute>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddSingleton<ManageCoursesConfig, ManageCoursesConfig>();
-            services.AddSingleton<ManageApi, ManageApi>();
+            services.AddSingleton<IManageApi, ManageApi>();
             services.AddSingleton(serviceProvider =>
             {
                 var manageCoursesApiClientConfiguration = serviceProvider.GetService<IManageCoursesApiClientConfiguration>();
