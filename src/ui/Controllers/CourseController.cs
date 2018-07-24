@@ -29,10 +29,19 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
                 ? course.ProviderCourses.First(c => String.IsNullOrEmpty(c.AccreditingProviderId))
                 : course.ProviderCourses
                     .First(c => c.AccreditingProviderId.Equals(accreditingProviderId, StringComparison.InvariantCultureIgnoreCase));
-            var courseDetail = providerCourse.CourseDetails.First(x => x.Variants.Select(v => v.UcasCode == ucasCode).Any());
+
+            var courseDetail = providerCourse.CourseDetails.FirstOrDefault(c => c.Variants.Any(v => v.UcasCode == ucasCode));
+
+            if (courseDetail == null)
+            {
+                throw new Exception("Unexpected error");
+            }
 
             var variant = courseDetail.Variants.FirstOrDefault(v => v.UcasCode == ucasCode);
-            if (variant == null) return null;
+            if (variant == null)
+            {
+                throw new Exception("Unexpected error");
+            }
 
             var subjects = variant.Subjects.Any() ? variant.Subjects.Aggregate((current, next) => current + ", " + next) : "";
 
