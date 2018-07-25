@@ -26,24 +26,22 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             Validate(instCode, accreditingProviderId, ucasCode);
 
             var course = await _manageApi.GetCoursesByOrganisation(instCode);
+            if (course == null)return NotFound();
 
             var providerCourse = "self".Equals(accreditingProviderId, StringComparison.InvariantCultureIgnoreCase)
-                ? course.ProviderCourses.First(c => String.IsNullOrEmpty(c.AccreditingProviderId))
+                ? course.ProviderCourses.SingleOrDefault(c => String.IsNullOrEmpty(c.AccreditingProviderId))
                 : course.ProviderCourses
-                    .First(c => c.AccreditingProviderId.Equals(accreditingProviderId, StringComparison.InvariantCultureIgnoreCase));
+                    .SingleOrDefault(c => c.AccreditingProviderId.Equals(accreditingProviderId, StringComparison.InvariantCultureIgnoreCase));
 
-            var courseDetail = providerCourse.CourseDetails.FirstOrDefault(c => c.Variants.Any(v => v.UcasCode == ucasCode));
+            if (providerCourse == null) {return NotFound();}
 
-            if (courseDetail == null)
-            {
-                throw new Exception("Unexpected error: course should not be null");
-            }
+            var courseDetail = providerCourse.CourseDetails.SingleOrDefault(c => c.Variants.Any(v => v.UcasCode == ucasCode));
 
-            var variant = courseDetail.Variants.FirstOrDefault(v => v.UcasCode == ucasCode);
-            if (variant == null)
-            {
-                throw new Exception("Unexpected error: variant should not be null");
-            }
+            if (courseDetail == null) { throw new Exception("Unexpected error: course should not be null"); }
+
+            var variant = courseDetail.Variants.SingleOrDefault(v => v.UcasCode == ucasCode);
+
+            if (variant == null) { throw new Exception("Unexpected error: variant should not be null"); }
 
             var subjects = variant.Subjects.Any() ? variant.Subjects.Aggregate((current, next) => current + ", " + next) : "";
 
@@ -103,9 +101,9 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
 
         private void Validate(string instCode, string accreditingProviderId, string ucasCode)
         {
-            if (string.IsNullOrEmpty(instCode)) throw new ArgumentNullException(instCode, "instCode cannot be null or empty");
-            if (string.IsNullOrEmpty(accreditingProviderId)) throw new ArgumentNullException(accreditingProviderId, "accreditingProviderId cannot be null or empty");
-            if (string.IsNullOrEmpty(ucasCode)) throw new ArgumentNullException(ucasCode, "ucasCode cannot be null or empty");
+            if (string.IsNullOrEmpty(instCode)) {throw new ArgumentNullException(instCode, "instCode cannot be null or empty");}
+            if (string.IsNullOrEmpty(accreditingProviderId)) {throw new ArgumentNullException(accreditingProviderId, "accreditingProviderId cannot be null or empty");}
+            if (string.IsNullOrEmpty(ucasCode)) {throw new ArgumentNullException(ucasCode, "ucasCode cannot be null or empty");}
         }
     }
 }

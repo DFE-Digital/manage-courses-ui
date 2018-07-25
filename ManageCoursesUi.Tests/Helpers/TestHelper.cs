@@ -30,17 +30,20 @@ namespace ManageCoursesUi.Tests.Helpers
 
         private static string _courseTitles = "Maths,Chemistry,Biology,Music,Languages";
 
-        public static OrganisationCourses GetTestData(EnumDataType dataType)
+        public static OrganisationCourses GetTestData(EnumDataType dataType, string accreditedProviderId, string accreditedProviderName)
         {
-            return GenerateData(dataType);
+            return GenerateData(dataType, accreditedProviderId, accreditedProviderName);
         }
+
         /// <summary>
         /// Creates the top level OrganisationCourse class
         /// Call the method to create the course details
         /// </summary>
         /// <param name="dataType">Defines the 2 types of data setup that is expected from the Api plus one that is not expected</param>
+        /// <param name="accreditedProviderId">used to setup the providerCourse object</param>
+        /// <param name="accreditedProviderName">used to setup the providerCourse object</param>
         /// <returns></returns>
-        private static OrganisationCourses GenerateData(EnumDataType dataType)
+        private static OrganisationCourses GenerateData(EnumDataType dataType, string accreditedProviderId, string accreditedProviderName)
         {
             var testData = new OrganisationCourses
             {
@@ -51,6 +54,8 @@ namespace ManageCoursesUi.Tests.Helpers
                 {
                     new ProviderCourse
                     {
+                        AccreditingProviderId = accreditedProviderId,
+                        AccreditingProviderName = accreditedProviderName,
                         CourseDetails = new ObservableCollection<CourseDetail>(GenerateCourseDetails(dataType))
                     }
                 }

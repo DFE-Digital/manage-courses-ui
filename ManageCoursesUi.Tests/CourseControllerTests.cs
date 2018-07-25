@@ -19,7 +19,7 @@ namespace ManageCoursesUi.Tests
         public async Task TestController_Variants_should_return_matched_model(EnumDataType type)
         {
             var manageApi = new Mock<IManageApi>();
-            var testData = TestHelper.GetTestData(type);
+            var testData = TestHelper.GetTestData(type, null, null);
 
             manageApi.Setup(x => x.GetCoursesByOrganisation(It.IsAny<string>())).ReturnsAsync(testData);
 
@@ -40,7 +40,7 @@ namespace ManageCoursesUi.Tests
         {
             var exceptionCalled = false;
             var manageApi = new Mock<IManageApi>();
-            var testData = TestHelper.GetTestData(type);
+            var testData = TestHelper.GetTestData(type, null, null);
 
             manageApi.Setup(x => x.GetCoursesByOrganisation(It.IsAny<string>())).ReturnsAsync(testData);
 
@@ -57,32 +57,26 @@ namespace ManageCoursesUi.Tests
             Assert.IsTrue(exceptionCalled);
         }
         [Test]
-        [TestCase("xxx", "xxx", "xxx")]
-        [TestCase("xxx", "xxx", "35L6")]
-        [TestCase("xxx", "self", "xxx")]
         [TestCase("2AT", "xxx", "xxx")]
         [TestCase("2AT", "self", "xxx")]
         [TestCase("2AT", "xxx", "35L6")]
+        [TestCase("xxx", "xxx", "xxx")]
+        [TestCase("xxx", "xxx", "35L6")]
+        [TestCase("xxx", "self", "xxx")]
         [TestCase("xxx", "self", "35L6")]
-        public async Task TestController_Variants_with_incorrect_parameters_should_return_exception(string institutionCode, string accreditedProviderId, string ucasCode)
+        public async Task TestController_Variants_with_incorrect_parameters_should_return_note_found_status(string institutionCode, string accreditedProviderId, string ucasCode)
         {
-            var exceptionCalled = false;
             var manageApi = new Mock<IManageApi>();
-            var testData = TestHelper.GetTestData(EnumDataType.SingleVariantOneMatch);
+            var testData = TestHelper.GetTestData(EnumDataType.SingleVariantOneMatch, "123", "provider Name");
 
             manageApi.Setup(x => x.GetCoursesByOrganisation("2AT")).ReturnsAsync(testData);
 
             var controller = new CourseController(manageApi.Object);
 
-            try
-            {
-                await controller.Variants(institutionCode, accreditedProviderId, ucasCode);
-            }
-            catch
-            {
-                exceptionCalled = true;
-            }
-            Assert.IsTrue(exceptionCalled);
+            var result = await controller.Variants(institutionCode, accreditedProviderId, ucasCode);
+
+            Assert.NotNull(result);
+            Assert.IsInstanceOf(typeof(NotFoundResult), result);
         }
         [Test]
         [TestCase("", "xxx", "xxx", "instCode cannot be null or empty")]
@@ -95,7 +89,7 @@ namespace ManageCoursesUi.Tests
         {
             var exceptionCalled = false;
             var manageApi = new Mock<IManageApi>();
-            var testData = TestHelper.GetTestData(EnumDataType.SingleVariantOneMatch);
+            var testData = TestHelper.GetTestData(EnumDataType.SingleVariantOneMatch, null, null);
 
             manageApi.Setup(x => x.GetCoursesByOrganisation(It.IsAny<string>())).ReturnsAsync(testData);
 
