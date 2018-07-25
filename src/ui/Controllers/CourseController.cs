@@ -23,6 +23,8 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
         [Route("{instCode}/course/{accreditingProviderId=self}/{ucasCode}")]
         public async Task<IActionResult> Variants(string instCode, string accreditingProviderId, string ucasCode)
         {
+            Validate(instCode, accreditingProviderId, ucasCode);
+
             var course = await _manageApi.GetCoursesByOrganisation(instCode);
 
             var providerCourse = "self".Equals(accreditingProviderId, StringComparison.InvariantCultureIgnoreCase)
@@ -97,6 +99,13 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             };
 
             return View(viewModel);
+        }
+
+        private void Validate(string instCode, string accreditingProviderId, string ucasCode)
+        {
+            if (string.IsNullOrEmpty(instCode)) throw new ArgumentNullException(instCode, "instCode cannot be null or empty");
+            if (string.IsNullOrEmpty(accreditingProviderId)) throw new ArgumentNullException(accreditingProviderId, "accreditingProviderId cannot be null or empty");
+            if (string.IsNullOrEmpty(ucasCode)) throw new ArgumentNullException(ucasCode, "ucasCode cannot be null or empty");
         }
     }
 }
