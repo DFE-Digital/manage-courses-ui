@@ -14,25 +14,34 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
     [Route("organisation")]
     public class CourseController : CommonAttributesControllerBase
     {
-        private readonly ManageApi _manageApi;
+        private readonly IManageApi _manageApi;
 
-        public CourseController(ManageApi manageApi)
+        public CourseController(IManageApi manageApi)
         {
             _manageApi = manageApi;
         }
         [Route("{instCode}/course/{accreditingProviderId=self}/{ucasCode}")]
         public async Task<IActionResult> Variants(string instCode, string accreditingProviderId, string ucasCode)
         {
+            Validate(instCode, accreditingProviderId, ucasCode);
+
             var course = await _manageApi.GetCoursesByOrganisation(instCode);
+            if (course == null)return NotFound();
 
             var providerCourse = "self".Equals(accreditingProviderId, StringComparison.InvariantCultureIgnoreCase)
-                ? course.ProviderCourses.First(c => String.IsNullOrEmpty(c.AccreditingProviderId))
+                ? course.ProviderCourses.SingleOrDefault(c => String.IsNullOrEmpty(c.AccreditingProviderId))
                 : course.ProviderCourses
-                    .First(c => c.AccreditingProviderId.Equals(accreditingProviderId, StringComparison.InvariantCultureIgnoreCase));
-            var courseDetail = providerCourse.CourseDetails.First(x => x.Variants.Select(v => v.UcasCode == ucasCode).Any());
+                    .SingleOrDefault(c => c.AccreditingProviderId.Equals(accreditingProviderId, StringComparison.InvariantCultureIgnoreCase));
 
-            var variant = courseDetail.Variants.FirstOrDefault(v => v.UcasCode == ucasCode);
-            if (variant == null) return null;
+            if (providerCourse == null) {return NotFound();}
+
+            var courseDetail = providerCourse.CourseDetails.SingleOrDefault(c => c.Variants.Any(v => v.UcasCode == ucasCode));
+
+            if (courseDetail == null) { throw new InvalidOperationException($"Course variant with ucas code '{ucasCode}' not found"); }
+
+            var variant = courseDetail.Variants.SingleOrDefault(v => v.UcasCode == ucasCode);
+
+            if (variant == null) { throw new Exception("Unexpected error: variant should not be null"); }
 
             var subjects = variant.Subjects.Any() ? variant.Subjects.Aggregate((current, next) => current + ", " + next) : "";
 
@@ -88,6 +97,13 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             };
 
             return View(viewModel);
+        }
+
+        private void Validate(string instCode, string accreditingProviderId, string ucasCode)
+        {
+            if (string.IsNullOrEmpty(instCode)) {throw new ArgumentNullException(instCode, "instCode cannot be null or empty");}
+            if (string.IsNullOrEmpty(accreditingProviderId)) {throw new ArgumentNullException(accreditingProviderId, "accreditingProviderId cannot be null or empty");}
+            if (string.IsNullOrEmpty(ucasCode)) {throw new ArgumentNullException(ucasCode, "ucasCode cannot be null or empty");}
         }
     }
 }

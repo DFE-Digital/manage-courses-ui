@@ -11,9 +11,9 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
 {
     public class HomeController : CommonAttributesControllerBase
     {
-        private readonly ManageApi _manageApi;
+        private readonly IManageApi _manageApi;
 
-        public HomeController(ManageApi manageApi)
+        public HomeController(IManageApi manageApi)
         {
             _manageApi = manageApi;
         }
