@@ -25,6 +25,12 @@ dotnet restore
 cd src\ui
 npm install
 npm run-script generate
+npm run-script watch (if making SASS changes)
+```
+
+Open new terminal window/tab
+```
+dotnet run
 ```
 
 Go to `https://localhost:44364` in your browser
