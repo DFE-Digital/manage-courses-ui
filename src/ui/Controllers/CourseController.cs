@@ -37,7 +37,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
 
             var courseDetail = providerCourse.CourseDetails.SingleOrDefault(c => c.Variants.Any(v => v.UcasCode == ucasCode));
 
-            if (courseDetail == null) { throw new Exception("Unexpected error: course should not be null"); }
+            if (courseDetail == null) { throw new InvalidOperationException($"Course variant with ucas code '{ucasCode}' not found"); }
 
             var variant = courseDetail.Variants.SingleOrDefault(v => v.UcasCode == ucasCode);
 

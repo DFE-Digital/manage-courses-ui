@@ -36,9 +36,8 @@ namespace ManageCoursesUi.Tests
         [Test]
         [TestCase(EnumDataType.SingleVariantNoMatch)]
         [TestCase(EnumDataType.MultiVariantNoMatch)]
-        public async Task TestController_Variants_should_return_exception(EnumDataType type)
-        {
-            var exceptionCalled = false;
+        public void TestController_Variants_should_return_exception(EnumDataType type)
+        {        
             var manageApi = new Mock<IManageApi>();
             var testData = TestHelper.GetTestData(type, null, null);
 
@@ -46,15 +45,7 @@ namespace ManageCoursesUi.Tests
 
             var controller = new CourseController(manageApi.Object);
 
-            try
-            {
-                await controller.Variants(TestHelper.InstitutionCode, TestHelper.AccreditedProviderId, TestHelper.TargetedUcasCode);
-            }
-            catch (Exception e)
-            {
-                exceptionCalled = (e.Message == "Unexpected error: course should not be null");
-            }            
-            Assert.IsTrue(exceptionCalled);
+            Assert.ThrowsAsync<InvalidOperationException>(async () => await controller.Variants(TestHelper.InstitutionCode, TestHelper.AccreditedProviderId, TestHelper.TargetedUcasCode));
         }
         [Test]
         [TestCase("2AT", "xxx", "xxx")]
@@ -79,51 +70,31 @@ namespace ManageCoursesUi.Tests
             Assert.IsInstanceOf(typeof(NotFoundResult), result);
         }
         [Test]
-        [TestCase("", "xxx", "xxx", "instCode cannot be null or empty")]
-        [TestCase(null, "self", "35L6", "instCode cannot be null or empty")]
-        [TestCase("2AT", "", "35L6", "accreditingProviderId cannot be null or empty")]
-        [TestCase("2AT", null, "35L6", "accreditingProviderId cannot be null or empty")]
-        [TestCase("2AT", "self", "", "ucasCode cannot be null or empty")]
-        [TestCase("2AT", "self", null, "ucasCode cannot be null or empty")]
-        public async Task TestController_Variants_with_null_or_empty_parameters_should_return_exception(string institutionCode, string accreditedProviderId, string ucasCode, string expectedMessage)
+        [TestCase("", "xxx", "xxx")]
+        [TestCase(null, "self", "35L6")]
+        [TestCase("2AT", "", "35L6")]
+        [TestCase("2AT", null, "35L6")]
+        [TestCase("2AT", "self", "")]
+        [TestCase("2AT", "self", null)]
+        public void TestController_Variants_with_null_or_empty_parameters_should_return_exception(string institutionCode, string accreditedProviderId, string ucasCode)
         {
-            var exceptionCalled = false;
             var manageApi = new Mock<IManageApi>();
             var testData = TestHelper.GetTestData(EnumDataType.SingleVariantOneMatch, null, null);
 
             manageApi.Setup(x => x.GetCoursesByOrganisation(It.IsAny<string>())).ReturnsAsync(testData);
 
             var controller = new CourseController(manageApi.Object);
-
-            try
-            {
-                await controller.Variants(institutionCode, accreditedProviderId, ucasCode);
-            }
-            catch (ArgumentNullException e)
-            {
-                exceptionCalled = (e.Message == expectedMessage);
-            }
-            Assert.IsTrue(exceptionCalled);
+            Assert.ThrowsAsync<ArgumentNullException>(async () => await controller.Variants(institutionCode, accreditedProviderId, ucasCode));
         }
         [Test]
-        public async Task TestController_Variants__with_api_exception_should_return_exception()
+        public void TestController_Variants__with_api_exception_should_return_exception()
         {
-            var exceptionCalled = false;
             var manageApi = new Mock<IManageApi>();
 
             manageApi.Setup(x => x.GetCoursesByOrganisation(It.IsAny<string>())).ThrowsAsync(new Exception());
 
             var controller = new CourseController(manageApi.Object);
-
-            try
-            {
-                await controller.Variants(TestHelper.InstitutionCode, TestHelper.AccreditedProviderId, TestHelper.TargetedUcasCode);
-            }
-            catch
-            {
-                exceptionCalled = true;
-            }
-            Assert.IsTrue(exceptionCalled);
+            Assert.ThrowsAsync<Exception>(async () => await controller.Variants(TestHelper.InstitutionCode, TestHelper.AccreditedProviderId, TestHelper.TargetedUcasCode));
         }
     }
 }
