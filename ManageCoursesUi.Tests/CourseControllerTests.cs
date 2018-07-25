@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using GovUk.Education.ManageCourses.ApiClient;
 using GovUk.Education.ManageCourses.Ui.Controllers;
 using GovUk.Education.ManageCourses.Ui.ViewModels;
+using ManageCoursesUi.Tests.Enums;
 using ManageCoursesUi.Tests.Helpers;
 using Microsoft.AspNetCore.Mvc;
 using NUnit.Framework;
