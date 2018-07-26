@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace GovUk.Education.ManageCourses.Ui.ViewModels
 {
-    public class RequestAccessViewModel
+    public class RequestAccessViewModel : TabbedViewModel
     {
         [Required(ErrorMessage = "Enter your first name")]
         [Display(Name = "First name")]

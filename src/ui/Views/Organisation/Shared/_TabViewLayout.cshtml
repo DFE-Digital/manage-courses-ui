@@ -1,0 +1,58 @@
+﻿@model TabbedViewModel
+
+@{
+    Layout = "Shared/_OrganisationDetailsLayout";
+    var viewModel = Model.TabViewModel;
+}
+
+@section breadCrumbs
+    {
+    @if (viewModel.MultipleOrganisations)
+    {
+        <nav class="govuk-breadcrumbs">
+            <ol class="govuk-breadcrumbs__list">
+                <li class="govuk-breadcrumbs__list-item">
+                    <a href="@Url.Action("index", "Organisations")" class="govuk-breadcrumbs__link">Organisations</a>
+                </li>
+                <li class="govuk-breadcrumbs__list-item" aria-current="page">
+                    @viewModel.OrganisationName
+                </li>
+            </ol>
+        </nav>
+    }
+}
+
+@section tabs
+    {
+        @{
+            var isCoursesTab = "courses" == viewModel.CurrentTab;
+            var isRequestAccessTab = "request-access" == viewModel.CurrentTab;
+            var modelValues = new { viewModel.UcasCode };
+
+        }
+    <ul class="govuk-tabs__list">
+        <li class="govuk-tabs__list-item">
+            <a class="govuk-tabs__tab" href="@Url.Action("Courses", "Organisation", modelValues)" aria-selected="@isCoursesTab.ToString().ToLower()">
+                Courses
+            </a>
+        </li>
+        <li class="govuk-tabs__list-item">
+            <a class="govuk-tabs__tab" href="@Url.Action("RequestAccess", "Organisation", modelValues)" aria-selected="@isRequestAccessTab.ToString().ToLower()">
+                Request access for someone else
+            </a>
+        </li>
+    </ul>
+}
+
+@section organisationName
+    {
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+            <h1 class="govuk-heading-xl">
+                @viewModel.OrganisationName
+            </h1>
+        </div>
+    </div>
+}
+
+@RenderBody()
