@@ -13,9 +13,9 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
     [Route("[controller]")]
     public class OrganisationController : CommonAttributesControllerBase
     {
-        private readonly ManageApi _manageApi;
+        private readonly IManageApi _manageApi;
 
-        public OrganisationController(ManageApi manageApi)
+        public OrganisationController(IManageApi manageApi)
         {
             _manageApi = manageApi;
         }
@@ -25,10 +25,14 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
         {
             var courses = await _manageApi.GetCoursesByOrganisation(ucasCode);
             var tabViewModel = await GetTabViewModelAsync(ucasCode, "courses");
+            var variants = courses.ProviderCourses
+                    .SelectMany(pc => pc.CourseDetails)
+                    .SelectMany(cd => cd.Variants);
+
             var model = new CourseListViewModel
             {
                 Courses = courses,
-                TotalCount = courses.ProviderCourses.SelectMany(x => x.CourseDetails).SelectMany(v => v.Variants).Count(),
+                TotalCount = variants.Count(),
                 TabViewModel = tabViewModel
             };
 
@@ -37,12 +41,12 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
 
         private async Task<TabViewModel> GetTabViewModelAsync(string ucasCode, string currentTab) {
             var orgs = await _manageApi.GetOrganisations();
-
+            var organisationName = orgs.FirstOrDefault(o => ucasCode.Equals(o.UcasCode, StringComparison.InvariantCultureIgnoreCase))?.OrganisationName;
             var result = new TabViewModel
             {
                 CurrentTab = currentTab,
                 MultipleOrganisations = orgs.Count() > 1,
-                OrganisationName = orgs.FirstOrDefault(o => o.UcasCode.Equals(ucasCode, StringComparison.InvariantCultureIgnoreCase))?.OrganisationName,
+                OrganisationName = organisationName,
                 UcasCode = ucasCode
             };
 
@@ -79,7 +83,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
                 Reason = model.Reason,
             });
 
-            this.TempData.Set("RequestAccess_To_Name", $"{model.FirstName} {model.LastName}");
+            this.TempData.Add("RequestAccess_To_Name", $"{model.FirstName} {model.LastName}");
 
             return new RedirectToActionResult("RequestAccess","Organisation", new {ucasCode });
         }
