@@ -1,28 +1,25 @@
 ﻿@model OrganisationListViewModel
 
 @{
-    ViewBag.Title = "Organisations";
-    Layout = "_Layout";
+  ViewBag.Title = "Organisations";
+  Layout = "_Layout";
 }
 
 <main role="main" class="govuk-main-wrapper" id="main-content">
-    <div class="govuk-grid-row">
-        <div class="govuk-grid-column-two-thirds">
-            
-            <h1 class="govuk-heading-xl">
-                Organisations
-            </h1>
-            <ul class="govuk-list">
-                @foreach (var organisation in Model.Oganisations)
-                {
-                <li>
-                    <h3 class="govuk-heading-m">
-                        <a href="@Url.Action("Courses", "Organisation", new {ucasCode = organisation.UcasCode})" class="govuk-link">@organisation.OrganisationName</a>
-                        <span class="govuk-body govuk-!-font-weight-regular govuk-!-display-block">@organisation.TotalCourses courses</span>
-                    </h3>    
-                </li>
-                }
-            </ul>
-        </div>
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <h1 class="govuk-heading-xl">Organisations</h1>
+      <ul class="govuk-list">
+        @foreach (var organisation in Model.Oganisations)
+        {
+          <li>
+            <h3 class="govuk-heading-m">
+              <a href="@Url.Action("Courses", "Organisation", new {ucasCode = organisation.UcasCode})" class="govuk-link">@organisation.OrganisationName</a>
+              <span class="govuk-body govuk-!-font-weight-regular govuk-!-display-block">@organisation.TotalCourses courses</span>
+            </h3>
+          </li>
+        }
+      </ul>
     </div>
+  </div>
 </main>
