@@ -10,7 +10,7 @@ using GovUk.Education.ManageCourses.Ui.Helpers;
 namespace GovUk.Education.ManageCourses.Ui.Controllers
 {
     [Authorize]
-    [Route("organisation")]
+    [Route("[controller]")]
     public class OrganisationController : CommonAttributesControllerBase
     {
         private readonly ManageApi _manageApi;
