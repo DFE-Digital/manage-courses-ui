@@ -11,7 +11,7 @@ namespace GovUk.Education.ManageCourses.Ui.Helpers
 
         public static string Get(this ITempDataDictionary data, string key)
         {
-            return data.Get(key);
+            return data[key] as string;
         }
     }
 }
