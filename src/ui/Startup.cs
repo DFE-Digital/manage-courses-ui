@@ -36,6 +36,8 @@ namespace GovUk.Education.ManageCourses.Ui
                 options.Filters.Add(typeof(McExceptionFilter))
             );
 
+            services.AddRouting(options => options.LowercaseUrls = true);
+
             services.AddAuthentication(options =>
             {
                 options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
