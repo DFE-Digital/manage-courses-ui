@@ -4,9 +4,9 @@ namespace GovUk.Education.ManageCourses.Ui.Helpers
 {
     public static class TempDataHelper
     {
-        public static void Set(this ITempDataDictionary data, string key, string value)
+        public static void Add(this ITempDataDictionary data, string key, string value)
         {
-            data[key] = value;
+            data.Add(key, value);
         }
 
         public static string Get(this ITempDataDictionary data, string key)

@@ -20,6 +20,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
         {
             _manageApi = manageApi;
         }
+
         [Route("{instCode}/course/{accreditingProviderId=self}/{ucasCode}")]
         public async Task<IActionResult> Variants(string instCode, string accreditingProviderId, string ucasCode)
         {
