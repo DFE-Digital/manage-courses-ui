@@ -12,9 +12,9 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
     [Route("organisations")]
     public class OrganisationsController : CommonAttributesControllerBase
     {
-        private readonly ManageApi _manageApi;
+        private readonly IManageApi _manageApi;
 
-        public OrganisationsController(ManageApi manageApi)
+        public OrganisationsController(IManageApi manageApi)
         {
             _manageApi = manageApi;
         }

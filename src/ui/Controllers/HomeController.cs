@@ -11,9 +11,9 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
 {
     public class HomeController : CommonAttributesControllerBase
     {
-        private readonly ManageApi _manageApi;
+        private readonly IManageApi _manageApi;
 
-        public HomeController(ManageApi manageApi)
+        public HomeController(IManageApi manageApi)
         {
             _manageApi = manageApi;
         }
@@ -27,7 +27,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             var userOrganisations = orgs.ToList();
             if (userOrganisations.Count() == 1)
             {
-                return this.RedirectToAction("Index", "Courses", new { ucasCode = userOrganisations[0].UcasCode });
+                return this.RedirectToAction("Courses", "Organisation", new { ucasCode = userOrganisations[0].UcasCode });
             }
 
             if (userOrganisations.Count() > 1)

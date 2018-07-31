@@ -7,7 +7,7 @@ using GovUk.Education.ManageCourses.ApiClient;
 
 namespace GovUk.Education.ManageCourses.Ui
 {
-    public class ManageApi
+    public class ManageApi : IManageApi
     {
         private readonly ManageCoursesApiClient _apiClient;
 
@@ -27,17 +27,6 @@ namespace GovUk.Education.ManageCourses.Ui
             {
                 throw new Exception("Failed to get course data from " + _apiClient.BaseUrl, ex);
             }
-        }
-        public async Task<dynamic> GetOrganisationCoursesTotal(string ucasCode)
-        {
-            var courses = await _apiClient.Data_ExportByOrganisationAsync(ucasCode);
-            dynamic organisationCoursesTotal = new ExpandoObject();
-
-            organisationCoursesTotal.OrganisationName = courses.OrganisationName;
-
-            organisationCoursesTotal.TotalCount = courses.ProviderCourses.SelectMany(x => x.CourseDetails.FirstOrDefault()?.Variants).Count();
-
-            return organisationCoursesTotal;
         }
         public async Task<IEnumerable<UserOrganisation>> GetOrganisations()
         {

@@ -36,6 +36,8 @@ namespace GovUk.Education.ManageCourses.Ui
                 options.Filters.Add(typeof(McExceptionFilter))
             );
 
+            services.AddRouting(options => options.LowercaseUrls = true);
+
             services.AddAuthentication(options =>
             {
                 options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
@@ -91,7 +93,7 @@ namespace GovUk.Education.ManageCourses.Ui
             services.AddScoped<AnalyticsAttribute>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddSingleton<ManageCoursesConfig, ManageCoursesConfig>();
-            services.AddSingleton<ManageApi, ManageApi>();
+            services.AddSingleton<IManageApi, ManageApi>();
             services.AddSingleton(serviceProvider =>
             {
                 var manageCoursesApiClientConfiguration = serviceProvider.GetService<IManageCoursesApiClientConfiguration>();
@@ -153,10 +155,6 @@ namespace GovUk.Education.ManageCourses.Ui
                     defaults: new { controller = "Legal", action = "Privacy" });
                 routes.MapRoute("tandc", "terms-conditions",
                     defaults: new { controller = "Legal", action = "TandC" });
-                routes.MapRoute(
-                    "index",
-                    "request-access",
-                    defaults: new { controller = "RequestAccess", action = "Index" });
             });
         }
     }

@@ -1,0 +1,12 @@
+﻿@{
+  var name = TempData.Get("RequestAccess_To_Name");
+}
+
+@if (name != null) {
+  <div class="govuk-success-summary" role="alert">
+    <h3 class="govuk-heading-m govuk-success-summary__title">DfE has received your request to give access to @name.</h3>
+    <div class="govuk-success-summary__body">
+      <p class="govuk-body">They will receive sign-up instructions if their account is approved.</p>
+    </div>
+  </div>
+}

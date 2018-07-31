@@ -6,9 +6,8 @@ using GovUk.Education.ManageCourses.ApiClient;
 
 namespace GovUk.Education.ManageCourses.Ui.ViewModels
 {
-    public class CourseListViewModel : TabbedViewModel
+    public class TabbedViewModel
     {
-        public OrganisationCourses Courses { get; set; }
-        public int TotalCount { get; set; }
+        public TabViewModel TabViewModel { get; set; }
     }
 }
