@@ -27,20 +27,20 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             Validate(instCode, accreditingProviderId, ucasCode);
 
             var course = await _manageApi.GetCoursesByOrganisation(instCode);
-            if (course == null)return NotFound();
+            if (course == null) return NotFound();
 
             var providerCourse = "self".Equals(accreditingProviderId, StringComparison.InvariantCultureIgnoreCase)
                 ? course.ProviderCourses.SingleOrDefault(c => String.IsNullOrEmpty(c.AccreditingProviderId))
                 : course.ProviderCourses
                     .SingleOrDefault(c => c.AccreditingProviderId.Equals(accreditingProviderId, StringComparison.InvariantCultureIgnoreCase));
 
-            if (providerCourse == null) {return NotFound();}
+            if (providerCourse == null) { return NotFound(); }
 
-            var courseDetail = providerCourse.CourseDetails.SingleOrDefault(c => c.Variants.Any(v => v.UcasCode == ucasCode));
+            var courseDetail = providerCourse.CourseDetails.SingleOrDefault(c => c.Variants.Any(v => ucasCode.Equals(v.UcasCode, StringComparison.InvariantCultureIgnoreCase)));
 
             if (courseDetail == null) { throw new InvalidOperationException($"Course variant with ucas code '{ucasCode}' not found"); }
 
-            var variant = courseDetail.Variants.SingleOrDefault(v => v.UcasCode == ucasCode);
+            var variant = courseDetail.Variants.SingleOrDefault(v => ucasCode.Equals(v.UcasCode, StringComparison.InvariantCultureIgnoreCase));
 
             if (variant == null) { throw new Exception("Unexpected error: variant should not be null"); }
 
@@ -102,9 +102,9 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
 
         private void Validate(string instCode, string accreditingProviderId, string ucasCode)
         {
-            if (string.IsNullOrEmpty(instCode)) {throw new ArgumentNullException(instCode, "instCode cannot be null or empty");}
-            if (string.IsNullOrEmpty(accreditingProviderId)) {throw new ArgumentNullException(accreditingProviderId, "accreditingProviderId cannot be null or empty");}
-            if (string.IsNullOrEmpty(ucasCode)) {throw new ArgumentNullException(ucasCode, "ucasCode cannot be null or empty");}
+            if (string.IsNullOrEmpty(instCode)) { throw new ArgumentNullException(instCode, "instCode cannot be null or empty"); }
+            if (string.IsNullOrEmpty(accreditingProviderId)) { throw new ArgumentNullException(accreditingProviderId, "accreditingProviderId cannot be null or empty"); }
+            if (string.IsNullOrEmpty(ucasCode)) { throw new ArgumentNullException(ucasCode, "ucasCode cannot be null or empty"); }
         }
     }
 }
