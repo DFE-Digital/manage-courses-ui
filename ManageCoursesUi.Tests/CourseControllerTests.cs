@@ -35,6 +35,46 @@ namespace ManageCoursesUi.Tests
                           model.OrganisationName == TestHelper.OrganisationName);
         }
         [Test]
+        [TestCase(EnumDataType.SingleVariantOneMatch)]
+        [TestCase(EnumDataType.MultiVariantOneMatch)]
+        public async Task TestController_Variants_with_lower_case_parameters_should_return_matched_model(EnumDataType type)
+        {
+            var manageApi = new Mock<IManageApi>();
+            var testData = TestHelper.GetTestData(type, null, null);
+
+            manageApi.Setup(x => x.GetCoursesByOrganisation(It.IsAny<string>())).ReturnsAsync(testData);
+
+            var controller = new CourseController(manageApi.Object);
+            var result = await controller.Variants(TestHelper.InstitutionCode.ToLower(), TestHelper.AccreditedProviderId.ToLower(), TestHelper.TargetedUcasCode.ToLower());
+
+            Assert.IsInstanceOf(typeof(ViewResult), result);
+
+            Assert.IsTrue((result as ViewResult)?.Model is FromUcasViewModel model &&
+                          model.CourseTitle == TestHelper.TargetedCourseTitle &&
+                          model.OrganisationId == TestHelper.OrganisationId &&
+                          model.OrganisationName == TestHelper.OrganisationName);
+        }
+        [Test]
+        [TestCase(EnumDataType.SingleVariantOneMatch)]
+        [TestCase(EnumDataType.MultiVariantOneMatch)]
+        public async Task TestController_Variants_with_upper_case_parameters_should_return_matched_model(EnumDataType type)
+        {
+            var manageApi = new Mock<IManageApi>();
+            var testData = TestHelper.GetTestData(type, null, null);
+
+            manageApi.Setup(x => x.GetCoursesByOrganisation(It.IsAny<string>())).ReturnsAsync(testData);
+
+            var controller = new CourseController(manageApi.Object);
+            var result = await controller.Variants(TestHelper.InstitutionCode.ToUpper(), TestHelper.AccreditedProviderId.ToUpper(), TestHelper.TargetedUcasCode.ToUpper());
+
+            Assert.IsInstanceOf(typeof(ViewResult), result);
+
+            Assert.IsTrue((result as ViewResult)?.Model is FromUcasViewModel model &&
+                          model.CourseTitle == TestHelper.TargetedCourseTitle &&
+                          model.OrganisationId == TestHelper.OrganisationId &&
+                          model.OrganisationName == TestHelper.OrganisationName);
+        }
+        [Test]
         [TestCase(EnumDataType.SingleVariantNoMatch)]
         [TestCase(EnumDataType.MultiVariantNoMatch)]
         public void TestController_Variants_should_return_exception(EnumDataType type)
