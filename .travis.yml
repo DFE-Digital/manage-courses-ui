@@ -8,15 +8,12 @@ env:
     # AZURE_WA_PASSWORD
     secure: Jevjau9bkjgarHgHLBmptIRIysFdMWYaYjMQdJNd61GS1hDIZqwdIr843hfnvEbgRIJRa/8oCpW/2iasjC9qQ6ZZuM8Km8Ay75qWEpaWRWCddq5fSKtIb6pnzRhC0NsviMVRluJvlQYA5b4NnOosS26913ylk1PKgfEcV5s/nxb7UxiEvoSeCjLxhOq1SXhM8SS2D8kjXZz7xYEigTGzNc4e6ZMj44b4O1sDZAQPxpKc6ELAi8ncZXZax5ZuuUsUMKT+qwo1JbDcJE2CwUXgWR/8yUFWNVDkjM0N0+z2m3wEJhOcYJV0q7X2YavI920KAp4iAbOLqRXd/uaaxW5AorzJFP4FyH2fBtYsISGZUeLXp20qgeJoz3XxZJP4LjCttXGNU2CTNpupuqCudJaT0D4HIGU4GyOnki24sRbnbeFjRstx1/+VLoKNndgZW49T4KuzURXudKsNfjM4n0SYJwbiWUSzOqJJ3CWdXarFo82HARuYXa8gi7QiigV0U6VvLQbXp6RZLtDHE4xYW7TXmrilx7o77kePR1duqGehgys+ICJy8JW7YawSYCo9W4RolL6l5gDTMCSp1vk9vfXBWevngbWi5Px/O4Qhb3A+JfPiW/eTflNqTlcZRCi4YvYWpl3Dbfkl09HvBqAmpAGAKdFHOak63E6iiIB2E5Xlfew=
 deploy:
-- provider: azure_web_apps
-  username: govuk-dfe-bat-deployment-user
-  site: bat-dev-manage-courses-ui-app
+- provider: script
+  script: git fetch --unshallow && git push https://govuk-dfe-bat-deployment-user:$AZURE_WA_PASSWORD@bat-dev-manage-courses-ui-app.scm.azurewebsites.net:443/bat-dev-manage-courses-ui-app.git HEAD:refs/heads/master
   on: master
-- provider: azure_web_apps
-  username: govuk-dfe-bat-deployment-user
-  site: bat-staging-manage-courses-ui-app
+- provider: script
+  script: git fetch --unshallow && git push https://govuk-dfe-bat-deployment-user:$AZURE_WA_PASSWORD@bat-staging-manage-courses-ui-app.scm.azurewebsites.net:443/bat-staging-manage-courses-ui-app.git HEAD:refs/heads/master
   on: staging
-- provider: azure_web_apps
-  username: govuk-dfe-bat-deployment-user
-  site: bat-prod-manage-courses-ui-app
+- provider: script
+  script: git fetch --unshallow && git push https://govuk-dfe-bat-deployment-user:$AZURE_WA_PASSWORD@bat-prod-manage-courses-ui-app.scm.azurewebsites.net:443/bat-prod-manage-courses-ui-app.git HEAD:refs/heads/master
   on: production
