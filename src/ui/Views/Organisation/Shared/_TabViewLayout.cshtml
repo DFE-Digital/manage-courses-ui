@@ -27,6 +27,7 @@
         @{
             var isCoursesTab = "courses" == viewModel.CurrentTab;
             var isRequestAccessTab = "request-access" == viewModel.CurrentTab;
+            var isAboutTab = "about" == viewModel.CurrentTab;
             var modelValues = new { viewModel.UcasCode };
 
         }
@@ -34,6 +35,11 @@
         <li class="govuk-tabs__list-item">
             <a class="govuk-tabs__tab" href="@Url.Action("Courses", "Organisation", modelValues)" aria-selected="@isCoursesTab.ToString().ToLower()">
                 Courses
+            </a>
+        </li>
+        <li class="govuk-tabs__list-item">
+            <a class="govuk-tabs__tab" href="@Url.Action("About", "Organisation")" aria-selected="@isAboutTab.ToString().ToLower()">
+                About your organisation
             </a>
         </li>
         <li class="govuk-tabs__list-item">

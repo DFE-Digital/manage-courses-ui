@@ -1,0 +1,67 @@
+@model OrganisationViewModel
+
+@{
+  Layout = "Shared/_TabViewLayout";
+  ViewBag.Title = Model.TabViewModel.OrganisationName;
+  var domain = ViewData.ModelState["DomainName"] != null && ViewData.ModelState["DomainName"].Errors.Any();
+  var train_with_us = ViewData.ModelState["TrainWithUs"] != null && ViewData.ModelState["TrainWithUs"].Errors.Any();
+  var about_training_provider = ViewData.ModelState["AboutTrainingProvider"] != null && ViewData.ModelState["AboutTrainingProvider"].Errors.Any();
+  var train_with_disability = ViewData.ModelState["TrainWithDisability"] != null && ViewData.ModelState["TrainWithDisability"].Errors.Any();
+}
+
+<section class="govuk-tabs__panel--without-border">
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <h2 class="govuk-heading-l">About your organisation</h2>
+      @using (Html.BeginForm("About", "Organisation", FormMethod.Post))
+      {
+        @Html.Partial("ErrorSummary")
+        <p class="govuk-body">This is your chance to tell applicants why they should choose to train with you. You could describe any advantages and special
+        features of you as a training provider.</p>
+        <p class="govuk-body">You must be specific and factual with any claims you make, and support them with evidence. For example:</p>
+        <ul>
+          <li>don’t say “our students are some of the happiest in the country”</li>
+          <li> do say “the Times Educational Supplement ranked our studentsas 4th happiest in the country”</li>
+        </ul>
+        <div id="TrainWithUs-wrapper" class="govuk-form-group @(train_with_us ? "govuk-form-group--error" : " ")">
+          @Html.LabelFor(m => m.TrainWithUs, new { @class="govuk-label govuk-!-font-weight-bold" })
+          @if (train_with_us) {
+            @Html.ValidationMessageFor(m => m.TrainWithUs, "", new { @class="govuk-error-message" })
+          }
+          @Html.TextAreaFor(m => m.TrainWithUs, new { @class= "govuk-textarea", rows = 15})
+        </div>
+        <div id="DomainName-wrapper" class="govuk-form-group @(domain ? "govuk-form-group--error" : " ")">
+          @Html.LabelFor(m => m.DomainName, new { @class="govuk-label" })
+          @if (domain) {
+            @Html.ValidationMessageFor(m => m.DomainName, "", new { @class="govuk-error-message" })
+          }
+          @Html.TextBoxFor(m => m.DomainName, new { @class= "govuk-input"})
+        </div>
+        <h2 class="govuk-heading-l">About your accrediting provider</h2>
+        <p class="govuk-body">Describe advantages and special features of your accrediting provider. You must be specific and factual with any claims you make, and support them with evidence.</p>
+        <div id="AboutTrainingProvider-wrapper" class="govuk-form-group @(about_training_provider ? "govuk-form-group--error" : " ")">
+          @Html.LabelFor(m => m.AboutTrainingProvider, new { @class="govuk-label govuk-!-font-weight-bold" })
+          @if (about_training_provider) {
+            @Html.ValidationMessageFor(m => m.AboutTrainingProvider, "", new { @class="govuk-error-message" })
+          }
+          @Html.TextAreaFor(m => m.AboutTrainingProvider, new { @class= "govuk-textarea", rows = 10})
+        </div>
+        <h2 class="govuk-heading-l">Training with a disability</h2>
+        <p class="govuk-body">Here you should summarise the accessibility of your course. Bear in mind the range of disabilities that applicants may have (eg dyslexia, or physical, hearing and visual impairments). If accessibility varies between schools or other sites, give details. You could also offer examples of how you’ve accommodated candidates with particular accessibility needs.</p>
+        <div id="TrainWithDisability-wrapper" class="govuk-form-group @(train_with_disability ? "govuk-form-group--error" : "")">
+          @Html.LabelFor(m => m.TrainWithDisability, new { @class="govuk-label govuk-!-font-weight-bold" })
+          @if (train_with_disability) {
+            @Html.ValidationMessageFor(m => m.TrainWithDisability, "", new { @class="govuk-error-message" })
+          }
+          @Html.TextAreaFor(m => m.TrainWithDisability, new { @class= "govuk-textarea", rows = 15})
+        </div>
+        <div class="form-group">
+          <input type="submit" class="govuk-button" value="Save" />
+        </div>
+        <div class="form-group">
+          <a href="@Url.Action(" About ", "Organisation ")" class="govuk-link">Cancel changes</a>
+        </div>
+      }
+    </div>
+  </div>
+</section>

@@ -55,6 +55,16 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
         }
 
         [HttpGet]
+        [Route("{ucasCode}/about")]
+        public async Task<ViewResult> About(string ucasCode)
+        {
+            var tabViewModel = await GetTabViewModelAsync(ucasCode, "about");
+            var model = new OrganisationViewModel { TabViewModel = tabViewModel };
+
+            return View(model);
+        }
+
+        [HttpGet]
         [Route("{ucasCode}/request-access")]
         public async Task<ViewResult> RequestAccess(string ucasCode)
         {
