@@ -165,5 +165,71 @@ namespace ManageCoursesUi.Tests
             Assert.AreEqual(ucasCode, actionResult.RouteValues[ucasCode]);
 
         }
+
+        [Test]
+        public async Task About()
+        {
+            var ucasCode = "ucasCode";
+            var organisationName = "OrganisationName";
+            var currentTab = "about";
+            var domainName = "DomainName";
+
+            var orgs = new List<UserOrganisation> {
+                        new UserOrganisation {
+                            UcasCode = ucasCode,
+                            OrganisationName = organisationName }
+                    };
+
+            var organisation = new Organisation(){
+                DomainName = "DomainName"
+            };
+
+            var apiMock = new Mock<IManageApi>();
+
+            apiMock.Setup(x => x.GetOrganisations())
+                .ReturnsAsync(orgs);
+
+            apiMock.Setup(x => x.GetOrganisationDetails(ucasCode))
+                .ReturnsAsync(organisation);
+
+            var controller = new OrganisationController(apiMock.Object);
+
+            var result = await controller.About(ucasCode);
+
+            var viewResult = result as ViewResult;
+
+            Assert.IsNotNull(viewResult);
+            var organisationViewModel = viewResult.ViewData.Model as OrganisationViewModel;
+
+            var tabViewModel = organisationViewModel.TabViewModel;
+            Assert.AreEqual(currentTab, tabViewModel.CurrentTab);
+            Assert.AreEqual(organisationName, tabViewModel.OrganisationName);
+            Assert.AreEqual(ucasCode, tabViewModel.UcasCode);
+            Assert.AreEqual(domainName, organisationViewModel.DomainName);
+            Assert.IsFalse(tabViewModel.MultipleOrganisations);
+        }
+
+        [Test]
+        public async Task AboutPost()
+        {
+            var ucasCode = "ucasCode";
+            var viewModel = new OrganisationViewModel{ DomainName = "DomainName" };
+
+            var apiMock = new Mock<IManageApi>();
+
+            var controller = new OrganisationController(apiMock.Object);
+
+            var result = await controller.AboutPost(ucasCode, viewModel);
+
+            apiMock.Verify(x => x.GetOrganisations(), Times.Never);
+            apiMock.Verify(x => x.SaveOrganisationDetails(It.IsAny<Organisation>()), Times.Once);
+
+            var actionResult = result as RedirectToActionResult;
+
+            Assert.IsNotNull(actionResult);
+            Assert.AreEqual("About", actionResult.ActionName);
+            Assert.AreEqual("Organisation", actionResult.ControllerName);
+            Assert.AreEqual(ucasCode, actionResult.RouteValues[ucasCode]);
+        }
     }
 }
