@@ -58,10 +58,32 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
         [Route("{ucasCode}/about")]
         public async Task<ViewResult> About(string ucasCode)
         {
+            var organisation = await _manageApi.GetOrganisationDetails(ucasCode);
             var tabViewModel = await GetTabViewModelAsync(ucasCode, "about");
-            var model = new OrganisationViewModel { TabViewModel = tabViewModel };
+            var model = new OrganisationViewModel {
+                TabViewModel = tabViewModel,
+                TrainWithUs = organisation.TrainWithUs,
+                DomainName = organisation.DomainName,
+                AboutTrainingProvider = organisation.AboutTrainingProvider,
+                TrainWithDisability = organisation.TrainWithDisability
+            };
 
             return View(model);
+        }
+
+        [HttpPost]
+        [Route("{ucasCode}/about")]
+        public async Task<ActionResult> AboutPost(string ucasCode, OrganisationViewModel model)
+        {
+            await _manageApi.SaveOrganisationDetails(new Organisation()
+            {
+                TrainWithUs = model.TrainWithUs,
+                DomainName = model.DomainName,
+                AboutTrainingProvider = model.AboutTrainingProvider,
+                TrainWithDisability = model.TrainWithDisability
+            });
+
+            return new RedirectToActionResult("About", "Organisation", new { ucasCode });
         }
 
         [HttpGet]
