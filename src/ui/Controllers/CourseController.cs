@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using GovUk.Education.ManageCourses.Ui.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using GovUk.Education.ManageCourses.Ui;
 using GovUk.Education.ManageCourses.Ui.Helpers;
 
 namespace GovUk.Education.ManageCourses.Ui.Controllers

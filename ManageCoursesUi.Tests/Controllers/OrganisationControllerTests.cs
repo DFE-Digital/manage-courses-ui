@@ -12,6 +12,8 @@ using GovUk.Education.ManageCourses.Ui.Helpers;
 using GovUk.Education.ManageCourses.Ui.ViewModels;
 using GovUk.Education.ManageCourses.Ui.Controllers;
 using GovUk.Education.ManageCourses.ApiClient;
+using GovUk.Education.ManageCourses.Ui;
+
 namespace ManageCoursesUi.Tests
 {
     [TestFixture]
@@ -72,7 +74,7 @@ namespace ManageCoursesUi.Tests
             var ucasCode = "ucasCode";
             var organisationName = "organisationName";
             var currentTab = "request-access";
-            
+
             var orgs = new List<UserOrganisation> {
                  new UserOrganisation {
                     UcasCode = ucasCode,
@@ -80,7 +82,7 @@ namespace ManageCoursesUi.Tests
             };
 
             var apiMock = new Mock<IManageApi>();
-            
+
             apiMock.Setup(x => x.GetOrganisations())
                 .ReturnsAsync(orgs);
 
@@ -92,7 +94,7 @@ namespace ManageCoursesUi.Tests
 
             Assert.IsNotNull(viewResult);
             var model = viewResult.ViewData.Model as RequestAccessViewModel;
-            
+
             var tabViewModel = model.TabViewModel;
             Assert.AreEqual(currentTab, tabViewModel.CurrentTab);
             Assert.AreEqual(organisationName, tabViewModel.OrganisationName);
@@ -153,7 +155,7 @@ namespace ManageCoursesUi.Tests
             apiMock.Verify(x => x.GetOrganisations(), Times.Never);
             apiMock.Verify(x => x.LogAccessRequest(It.IsAny<AccessRequest>()), Times.Once);
 
-            tempDataMock.Verify(x => x.Add("RequestAccess_To_Name", $"{viewModel.FirstName} {viewModel.LastName}"));
+            tempDataMock.Verify(x => x.Add(tempKey, $"{viewModel.FirstName} {viewModel.LastName}"));
 
             var actionResult = result as RedirectToActionResult;
 

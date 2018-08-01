@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 using GovUk.Education.ManageCourses.ApiClient;
 using GovUk.Education.ManageCourses.Ui.ViewModels;
+using GovUk.Education.ManageCourses.Ui;
 
 namespace GovUk.Education.ManageCourses.Ui.Controllers
 {

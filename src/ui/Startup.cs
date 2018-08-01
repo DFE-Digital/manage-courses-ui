@@ -14,6 +14,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
+using GovUk.Education.ManageCourses.Ui;
 
 namespace GovUk.Education.ManageCourses.Ui
 {

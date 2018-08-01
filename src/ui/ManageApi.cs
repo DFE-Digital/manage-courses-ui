@@ -28,6 +28,7 @@ namespace GovUk.Education.ManageCourses.Ui
                 throw new Exception("Failed to get course data from " + _apiClient.BaseUrl, ex);
             }
         }
+
         public async Task<IEnumerable<UserOrganisation>> GetOrganisations()
         {
             var orgs = await _apiClient.Organisations_GetAsync();
