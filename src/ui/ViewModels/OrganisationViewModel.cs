@@ -10,7 +10,7 @@ namespace GovUk.Education.ManageCourses.Ui.ViewModels
     [Display(Name = "Website")]
     public string DomainName { get; set; }
 
-    [Display(Name = "About the training provider")]
+    [Display(Name = "About the provider (optional)")]
     public string AboutTrainingProvider { get; set; }
 
     [Display(Name = "Training with a disability")]
