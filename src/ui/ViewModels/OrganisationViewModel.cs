@@ -4,7 +4,7 @@ namespace GovUk.Education.ManageCourses.Ui.ViewModels
 {
   public class OrganisationViewModel : TabbedViewModel
   {
-    [Display(Name = "Train with us")]
+    [Display(Name = "Training with you")]
     public string TrainWithUs { get; set; }
 
     [Display(Name = "Website")]
@@ -13,7 +13,7 @@ namespace GovUk.Education.ManageCourses.Ui.ViewModels
     [Display(Name = "About the training provider")]
     public string AboutTrainingProvider { get; set; }
 
-    [Display(Name = "Train with disability")]
+    [Display(Name = "Training with a disability")]
     public string TrainWithDisability { get; set; }
   }
 }
