@@ -97,7 +97,7 @@ namespace GovUk.Education.ManageCourses.Ui
             services.AddSingleton(serviceProvider =>
             {
                 var manageCoursesApiClientConfiguration = serviceProvider.GetService<IManageCoursesApiClientConfiguration>();
-                var manageCoursesApiClient = new ManageCoursesApiClient(manageCoursesApiClientConfiguration);
+                var manageCoursesApiClient = new ManageCoursesApiClient(manageCoursesApiClientConfiguration, new System.Net.Http.HttpClient());
                 var config = serviceProvider.GetService<ManageCoursesConfig>();
                 manageCoursesApiClient.BaseUrl = config.ApiUrl;
                 return manageCoursesApiClient;

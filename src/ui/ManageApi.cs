@@ -1,10 +1,11 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Dynamic;
 using System.Linq;
 using System.Threading.Tasks;
+using GovUk.Education.ManageCourses.ApiClient;
 
-namespace GovUk.Education.ManageCourses.ApiClient
+namespace GovUk.Education.ManageCourses.Ui
 {
     public class ManageApi : IManageApi
     {
