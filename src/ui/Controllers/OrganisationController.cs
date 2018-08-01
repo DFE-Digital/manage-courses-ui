@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
-using GovUk.Education.ManageCourses.ApiClient;
+using GovUk.Education.ManageCourses.Ui;
 using GovUk.Education.ManageCourses.Ui.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using GovUk.Education.ManageCourses.Ui.Helpers;
+using GovUk.Education.ManageCourses.ApiClient;
 
 namespace GovUk.Education.ManageCourses.Ui.Controllers
 {
@@ -20,7 +21,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             _manageApi = manageApi;
         }
 
-        [Route("{ucasCode}/courses")]        
+        [Route("{ucasCode}/courses")]
         public async Task<IActionResult> Courses(string ucasCode)
         {
             var courses = await _manageApi.GetCoursesByOrganisation(ucasCode);
@@ -59,7 +60,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
         {
             var tabViewModel = await GetTabViewModelAsync(ucasCode, "request-access");
             var model = new RequestAccessViewModel { TabViewModel = tabViewModel };
-            
+
             return View(model);
         }
 

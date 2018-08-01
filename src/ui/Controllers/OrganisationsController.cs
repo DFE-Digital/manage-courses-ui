@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using GovUk.Education.ManageCourses.ApiClient;
+using GovUk.Education.ManageCourses.Ui;
 using GovUk.Education.ManageCourses.Ui.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

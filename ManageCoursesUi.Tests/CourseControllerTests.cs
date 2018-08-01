@@ -8,6 +8,7 @@ using ManageCoursesUi.Tests.Helpers;
 using Microsoft.AspNetCore.Mvc;
 using NUnit.Framework;
 using Moq;
+using GovUk.Education.ManageCourses.Ui;
 
 namespace ManageCoursesUi.Tests
 {
@@ -26,7 +27,7 @@ namespace ManageCoursesUi.Tests
 
             var controller = new CourseController(manageApi.Object);
             var result = await controller.Variants(TestHelper.InstitutionCode, TestHelper.AccreditedProviderId, TestHelper.TargetedUcasCode);
-            
+
             Assert.IsInstanceOf(typeof(ViewResult), result);
 
             Assert.IsTrue((result as ViewResult)?.Model is FromUcasViewModel model &&
@@ -38,7 +39,7 @@ namespace ManageCoursesUi.Tests
         [TestCase(EnumDataType.SingleVariantNoMatch)]
         [TestCase(EnumDataType.MultiVariantNoMatch)]
         public void TestController_Variants_should_return_exception(EnumDataType type)
-        {        
+        {
             var manageApi = new Mock<IManageApi>();
             var testData = TestHelper.GetTestData(type, null, null);
 
