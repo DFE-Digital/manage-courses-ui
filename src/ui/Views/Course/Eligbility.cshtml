@@ -1,0 +1,62 @@
+@model CourseRequirementsEligbilityViewModel
+
+@{
+  Layout = "_Layout";
+  var qualifications = ViewData.ModelState["Qualifications"] != null && ViewData.ModelState["Qualifications"].Errors.Any();
+  var personal_qualities = ViewData.ModelState["PersonalQualities"] != null && ViewData.ModelState["PersonalQualities"].Errors.Any();
+  var other_requirements = ViewData.ModelState["OtherRequirements"] != null && ViewData.ModelState["OtherRequirements"].Errors.Any();
+}
+
+<a href="@Url.Action("Variants", "Organisations")" class="govuk-back-link">Back</a>
+
+<main role="main" class="govuk-main-wrapper" id="main-content">
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <h1 class="govuk-heading-xl">Requirements and eligibility</h1>
+      @Html.Partial("ErrorSummary")
+      @using (Html.BeginForm("Eligibility", "Course", FormMethod.Post)) {
+        <h2 class="govuk-heading-l">Qualifications needed</h2>
+        <p class="govuk-body">State the minimum academic qualifications needed for this course, in addition to the basic national requirements.</p>
+
+        <div id="Qualifications-wrapper" class="govuk-form-group @(qualifications ? " govuk-form-group--error " : " ")">
+          @Html.LabelFor(m => m.Qualifications, new { @class="govuk-label govuk-!-font-weight-bold" })
+          @if (qualifications) {
+            @Html.ValidationMessageFor(m => m.Qualifications, "", new { @class="govuk-error-message" })
+          }
+          @Html.TextAreaFor(m => m.Qualifications, new { @class="govuk-textarea", rows = 10})
+        </div>
+        <hr class="govuk-section-break govuk-section-break--l">
+        <h2 class="govuk-heading-l">Personal qualities</h2>
+        <p class="govuk-body">Tell applicants about the skills and motivation you’re looking for (eg experience with children, a genuine passion
+          for teaching, or a talent for public speaking).</p>
+
+        <div id="PersonalQualities-wrapper" class="govuk-form-group @(personal_qualities ? " govuk-form-group--error " : " ")">
+          @Html.LabelFor(m => m.PersonalQualities, new { @class="govuk-label govuk-!-font-weight-bold" })
+          @if (personal_qualities) {
+            @Html.ValidationMessageFor(m => m.PersonalQualities, "", new { @class="govuk-error-message" })
+          }
+          @Html.TextAreaFor(m => m.PersonalQualities, new { @class= "govuk-textarea", rows = 10})
+        </div>
+        <hr class="govuk-section-break govuk-section-break--l">
+        <h2 class="govuk-heading-l">Other requirements</h2>
+        <p class="govuk-body">If applicants need any non-academic qualifications or documents, list them here (eg criminal record checks, or relevant
+          work experience).</p>
+        <div id="OtherRequirements-wrapper" class="govuk-form-group @(other_requirements ? " govuk-form-group--error " : " ")">
+          @Html.LabelFor(m => m.OtherRequirements, new { @class="govuk-label govuk-!-font-weight-bold" })
+          @if (other_requirements) {
+            @Html.ValidationMessageFor(m => m.OtherRequirements, "", new { @class="govuk-error-message" })
+          }
+          @Html.TextAreaFor(m => m.OtherRequirements, new { @class= "govuk-textarea", rows = 10})
+        </div>
+
+        <div class="govuk-form">
+          <input type="submit" class="govuk-button" value="Save">
+        </div>
+
+        <p class="govuk-body">
+          <a href="/course/the-university-of-reading/36W2" class="govuk-link">Cancel changes</a>
+        </p>
+      }
+    </div>
+  </div>
+</main>

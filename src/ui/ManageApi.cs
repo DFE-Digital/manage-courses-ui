@@ -49,5 +49,10 @@ namespace GovUk.Education.ManageCourses.Ui
         {
             return new Organisation();
         }
+
+        public async Task<Course> GetCourseDetails(string ucasCode)
+        {
+            return new Course();
+        }
     }
 }
