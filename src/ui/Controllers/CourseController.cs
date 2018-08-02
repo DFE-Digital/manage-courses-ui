@@ -100,6 +100,53 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             return View(viewModel);
         }
 
+        [HttpGet]
+        [Route("{instCode}/course/{accreditingProviderId=self}/{ucasCode}/about")]
+        public async Task<ViewResult> About(string instCode, string accreditingProviderId, string ucasCode)
+        {
+            var course = await _manageApi.GetCourseDetails(ucasCode);
+            var model = new CourseAboutViewModel
+            {
+                AboutCourse = course.AboutCourse,
+                InterviewProcess = course.InterviewProcess,
+                SchoolPlacement = course.SchoolPlacement
+            };
+
+            return View(model);
+        }
+
+        [HttpGet]
+        [Route("{instCode}/course/{accreditingProviderId=self}/{ucasCode}/fees-and-length")]
+        public async Task<ViewResult> Fees(string instCode, string accreditingProviderId, string ucasCode)
+        {
+            var course = await _manageApi.GetCourseDetails(ucasCode);
+            var model = new CourseFeesLengthViewModel
+            {
+                CourseLength = course.CourseLength,
+                CourseFees = course.CourseFees,
+                InternationalCourseFees = course.InternationalCourseFees,
+                FeeDetails = course.FeeDetails,
+                FinancialSupport = course.FinancialSupport
+            };
+
+            return View(model);
+        }
+
+        [HttpGet]
+        [Route("{instCode}/course/{accreditingProviderId=self}/{ucasCode}/requirements")]
+        public async Task<ViewResult> Eligbility(string instCode, string accreditingProviderId, string ucasCode)
+        {
+            var course = await _manageApi.GetCourseDetails(ucasCode);
+            var model = new CourseRequirementsEligbilityViewModel
+            {
+                Qualifications = course.Qualifications,
+                PersonalQualities = course.PersonalQualities,
+                OtherRequirements = course.OtherRequirements
+            };
+
+            return View(model);
+        }
+
         private void Validate(string instCode, string accreditingProviderId, string ucasCode)
         {
             if (string.IsNullOrEmpty(instCode)) { throw new ArgumentNullException(instCode, "instCode cannot be null or empty"); }

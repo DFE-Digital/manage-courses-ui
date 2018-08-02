@@ -39,5 +39,11 @@ namespace GovUk.Education.ManageCourses.Ui
         {
             await _apiClient.AccessRequest_IndexAsync(accessRequest);
         }
+
+        public async Task<Course> GetCourseDetails(string ucasCode)
+        {
+            return new Course();
+        }
+
     }
 }
