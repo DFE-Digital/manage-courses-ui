@@ -1,12 +1,13 @@
 ﻿using System;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
+using GovUk.Education.ManageCourses.ApiClient;
 using GovUk.Education.ManageCourses.Ui;
+using GovUk.Education.ManageCourses.Ui.Helpers;
 using GovUk.Education.ManageCourses.Ui.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using GovUk.Education.ManageCourses.Ui.Helpers;
-using GovUk.Education.ManageCourses.ApiClient;
 
 namespace GovUk.Education.ManageCourses.Ui.Controllers
 {
@@ -27,8 +28,8 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             var courses = await _manageApi.GetCoursesByOrganisation(ucasCode);
             var tabViewModel = await GetTabViewModelAsync(ucasCode, "courses");
             var variants = courses.ProviderCourses
-                    .SelectMany(pc => pc.CourseDetails)
-                    .SelectMany(cd => cd.Variants);
+                .SelectMany(pc => pc.CourseDetails)
+                .SelectMany(cd => cd.Variants);
 
             var model = new CourseListViewModel
             {
@@ -40,7 +41,8 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             return View(model);
         }
 
-        private async Task<TabViewModel> GetTabViewModelAsync(string ucasCode, string currentTab) {
+        private async Task<TabViewModel> GetTabViewModelAsync(string ucasCode, string currentTab)
+        {
             var orgs = await _manageApi.GetOrganisations();
             var organisationName = orgs.FirstOrDefault(o => ucasCode.Equals(o.UcasCode, StringComparison.InvariantCultureIgnoreCase))?.OrganisationName;
             var result = new TabViewModel
@@ -58,14 +60,24 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
         [Route("{ucasCode}/about")]
         public async Task<ViewResult> About(string ucasCode)
         {
-            var organisation = await _manageApi.GetOrganisationDetails(ucasCode);
+            var organisation = await _manageApi.GetEnrichmentOrganisation(ucasCode);
             var tabViewModel = await GetTabViewModelAsync(ucasCode, "about");
-            var model = new OrganisationViewModel {
+            var aboutTrainingProviders = organisation.Content.AboutTrainingProviders
+                .Select(x => new TrainingProviderViewModel
+                {
+                    InstitutionName = x.InstitutionName,
+                    InstitutionCode = x.InstitutionCode,
+                    Description = x.Description
+                })
+                .ToList();
+
+            var model = new OrganisationViewModel
+            {
                 TabViewModel = tabViewModel,
-                TrainWithUs = organisation.TrainWithUs,
-                DomainName = organisation.DomainName,
-                AboutTrainingProvider = organisation.AboutTrainingProvider,
-                TrainWithDisability = organisation.TrainWithDisability
+                TrainWithUs = organisation.Content.TrainWithUs,
+                DomainName = organisation.Content.DomainName,
+                AboutTrainingProviders = aboutTrainingProviders,
+                TrainWithDisability = organisation.Content.TrainWithDisability
             };
 
             return View(model);
@@ -75,13 +87,23 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
         [Route("{ucasCode}/about")]
         public async Task<ActionResult> AboutPost(string ucasCode, OrganisationViewModel model)
         {
-            await _manageApi.SaveOrganisationDetails(new Organisation()
-            {
-                TrainWithUs = model.TrainWithUs,
-                DomainName = model.DomainName,
-                AboutTrainingProvider = model.AboutTrainingProvider,
-                TrainWithDisability = model.TrainWithDisability
-            });
+            var organisation = await _manageApi.GetEnrichmentOrganisation(ucasCode);
+
+            var aboutTrainingProviders = new ObservableCollection<TrainingProvider>(
+                model.AboutTrainingProviders.Select(x => new TrainingProvider
+                {
+                    InstitutionName = x.InstitutionName,
+                    InstitutionCode = x.InstitutionCode,
+                    Description = x.Description
+                })
+            );
+
+            organisation.Content.TrainWithUs = model.TrainWithUs;
+            organisation.Content.DomainName = model.DomainName;
+            organisation.Content.AboutTrainingProviders = aboutTrainingProviders;
+            organisation.Content.TrainWithDisability = model.TrainWithDisability;
+
+            await _manageApi.SaveEnrichmentOrganisation(organisation);
 
             return new RedirectToActionResult("About", "Organisation", new { ucasCode });
         }

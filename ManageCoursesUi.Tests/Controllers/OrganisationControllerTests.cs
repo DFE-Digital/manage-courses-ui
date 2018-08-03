@@ -3,16 +3,15 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Text;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ViewFeatures;
-using NUnit.Framework;
-using Moq;
-
-using GovUk.Education.ManageCourses.Ui.Helpers;
-using GovUk.Education.ManageCourses.Ui.ViewModels;
-using GovUk.Education.ManageCourses.Ui.Controllers;
 using GovUk.Education.ManageCourses.ApiClient;
 using GovUk.Education.ManageCourses.Ui;
+using GovUk.Education.ManageCourses.Ui.Controllers;
+using GovUk.Education.ManageCourses.Ui.Helpers;
+using GovUk.Education.ManageCourses.Ui.ViewModels;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using Moq;
+using NUnit.Framework;
 
 namespace ManageCoursesUi.Tests
 {
@@ -75,10 +74,13 @@ namespace ManageCoursesUi.Tests
             var organisationName = "organisationName";
             var currentTab = "request-access";
 
-            var orgs = new List<UserOrganisation> {
-                 new UserOrganisation {
+            var orgs = new List<UserOrganisation>
+            {
+                new UserOrganisation
+                {
                     UcasCode = ucasCode,
-                    OrganisationName = organisationName }
+                    OrganisationName = organisationName
+                }
             };
 
             var apiMock = new Mock<IManageApi>();
@@ -109,10 +111,13 @@ namespace ManageCoursesUi.Tests
             var organisationName = "organisationName";
             var currentTab = "request-access";
 
-            var orgs = new List<UserOrganisation> {
-                 new UserOrganisation {
+            var orgs = new List<UserOrganisation>
+            {
+                new UserOrganisation
+                {
                     UcasCode = ucasCode,
-                    OrganisationName = organisationName }
+                    OrganisationName = organisationName
+                }
             };
 
             var apiMock = new Mock<IManageApi>();
@@ -163,7 +168,6 @@ namespace ManageCoursesUi.Tests
             Assert.AreEqual("RequestAccess", actionResult.ActionName);
             Assert.AreEqual("Organisation", actionResult.ControllerName);
             Assert.AreEqual(ucasCode, actionResult.RouteValues[ucasCode]);
-
         }
 
         [Test]
@@ -174,14 +178,22 @@ namespace ManageCoursesUi.Tests
             var currentTab = "about";
             var domainName = "DomainName";
 
-            var orgs = new List<UserOrganisation> {
-                        new UserOrganisation {
-                            UcasCode = ucasCode,
-                            OrganisationName = organisationName }
-                    };
+            var orgs = new List<UserOrganisation>
+            {
+                new UserOrganisation
+                {
+                    UcasCode = ucasCode,
+                    OrganisationName = organisationName
+                }
+            };
 
-            var organisation = new Organisation(){
-                DomainName = "DomainName"
+            var organisation = new EnrichmentOrganisationModel()
+            {
+                Content = new EnrichmentOrganisationContent
+                {
+                    DomainName = domainName,
+                    AboutTrainingProviders = new ObservableCollection<TrainingProvider>()
+                }
             };
 
             var apiMock = new Mock<IManageApi>();
@@ -189,7 +201,7 @@ namespace ManageCoursesUi.Tests
             apiMock.Setup(x => x.GetOrganisations())
                 .ReturnsAsync(orgs);
 
-            apiMock.Setup(x => x.GetOrganisationDetails(ucasCode))
+            apiMock.Setup(x => x.GetEnrichmentOrganisation(ucasCode))
                 .ReturnsAsync(organisation);
 
             var controller = new OrganisationController(apiMock.Object);
@@ -213,16 +225,30 @@ namespace ManageCoursesUi.Tests
         public async Task AboutPost()
         {
             var ucasCode = "ucasCode";
-            var viewModel = new OrganisationViewModel{ DomainName = "DomainName" };
+            var viewModel = new OrganisationViewModel {
+                DomainName = "DomainName",
+                AboutTrainingProviders = new List<TrainingProviderViewModel>()
+            };
 
             var apiMock = new Mock<IManageApi>();
+            var organisation = new EnrichmentOrganisationModel()
+            {
+                Content = new EnrichmentOrganisationContent
+                {
+                    DomainName = "domainName 2"
+                }
+            };
+
+            apiMock.Setup(x => x.GetEnrichmentOrganisation(ucasCode))
+                .ReturnsAsync(organisation);
 
             var controller = new OrganisationController(apiMock.Object);
 
             var result = await controller.AboutPost(ucasCode, viewModel);
 
             apiMock.Verify(x => x.GetOrganisations(), Times.Never);
-            apiMock.Verify(x => x.SaveOrganisationDetails(It.IsAny<Organisation>()), Times.Once);
+
+            apiMock.Verify(x => x.SaveEnrichmentOrganisation(It.IsAny<EnrichmentOrganisationModel>()), Times.Once);
 
             var actionResult = result as RedirectToActionResult;
 

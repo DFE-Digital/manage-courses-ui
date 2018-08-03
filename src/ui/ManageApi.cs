@@ -40,14 +40,15 @@ namespace GovUk.Education.ManageCourses.Ui
             await _apiClient.AccessRequest_IndexAsync(accessRequest);
         }
 
-        public async Task SaveOrganisationDetails(Organisation organisation)
+        public async Task SaveEnrichmentOrganisation(EnrichmentOrganisationModel organisation)
         {
             return;
         }
 
-        public async Task<Organisation> GetOrganisationDetails(string ucasCode)
+        public async Task<EnrichmentOrganisationModel> GetEnrichmentOrganisation(string ucasCode)
         {
-            return new Organisation();
+            var result = await _apiClient.Enrichment_GetOrganisationAsync(ucasCode);
+            return result;
         }
     }
 }

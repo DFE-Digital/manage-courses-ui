@@ -37,15 +37,18 @@
           }
           @Html.TextBoxFor(m => m.DomainName, new { @class= "govuk-input"})
         </div>
-        <h2 class="govuk-heading-l">About your accrediting provider</h2>
-        <p class="govuk-body">Describe advantages and special features of your accrediting provider. You must be specific and factual with any claims you make, and support them with evidence.</p>
-        <div id="AboutTrainingProvider-wrapper" class="govuk-form-group @(about_training_provider ? "govuk-form-group--error" : " ")">
-          @Html.LabelFor(m => m.AboutTrainingProvider, new { @class="govuk-label govuk-!-font-weight-bold" })
-          @if (about_training_provider) {
-            @Html.ValidationMessageFor(m => m.AboutTrainingProvider, "", new { @class="govuk-error-message" })
+
+        @if(Model.AboutTrainingProviders.Any()) {
+          <h2 class="govuk-heading-l">About your accrediting provider</h2>
+          <p class="govuk-body">Describe advantages and special features of your accrediting provider. You must be specific and factual with any claims you make, and support them with evidence.</p>
+
+          @for(int i=0; i< Model.AboutTrainingProviders.Count; i++) {
+            <input type="hidden" asp-for="@Model.AboutTrainingProviders[i].InstitutionCode"></input>
+            <label class="govuk-label govuk-!-font-weight-bold" asp-for="@Model.AboutTrainingProviders[i].Description">@Model.AboutTrainingProviders[i].InstitutionName (optional)</label>
+            <textarea class="govuk-textarea" rows="10" asp-for="@Model.AboutTrainingProviders[i].Description"></textarea>
           }
-          @Html.TextAreaFor(m => m.AboutTrainingProvider, new { @class= "govuk-textarea", rows = 10})
-        </div>
+        }
+
         <h2 class="govuk-heading-l">Training with a disability</h2>
         <p class="govuk-body">Here you should summarise the accessibility of your course. Bear in mind the range of disabilities that applicants may have (eg dyslexia, or physical, hearing and visual impairments). If accessibility varies between schools or other sites, give details. You could also offer examples of how you’ve accommodated candidates with particular accessibility needs.</p>
         <div id="TrainWithDisability-wrapper" class="govuk-form-group @(train_with_disability ? "govuk-form-group--error" : "")">

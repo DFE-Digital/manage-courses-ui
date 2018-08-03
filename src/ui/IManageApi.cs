@@ -13,18 +13,7 @@ namespace GovUk.Education.ManageCourses.Ui
         Task<OrganisationCourses> GetCoursesByOrganisation(string ucasCode);
         Task<IEnumerable<UserOrganisation>> GetOrganisations();
         Task LogAccessRequest(AccessRequest accessRequest);
-        Task SaveOrganisationDetails(Organisation organisation);
-        Task<Organisation> GetOrganisationDetails(string ucasCode);
-    }
-
-    public class Organisation
-    {
-        public string TrainWithUs { get; set; }
-
-        public string DomainName { get; set; }
-
-        public string AboutTrainingProvider { get; set; }
-
-        public string TrainWithDisability { get; set; }
+        Task SaveEnrichmentOrganisation(EnrichmentOrganisationModel organisation);
+        Task<EnrichmentOrganisationModel> GetEnrichmentOrganisation(string ucasCode);
     }
 }

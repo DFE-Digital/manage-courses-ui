@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace GovUk.Education.ManageCourses.Ui.ViewModels
@@ -11,7 +12,7 @@ namespace GovUk.Education.ManageCourses.Ui.ViewModels
     public string DomainName { get; set; }
 
     [Display(Name = "About the provider (optional)")]
-    public string AboutTrainingProvider { get; set; }
+    public List<TrainingProviderViewModel> AboutTrainingProviders { get; set; }
 
     [Display(Name = "Training with a disability")]
     public string TrainWithDisability { get; set; }
