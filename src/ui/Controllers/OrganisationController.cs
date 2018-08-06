@@ -73,6 +73,8 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
 
             var model = new OrganisationViewModel
             {
+                Id = organisation.Id,
+                InstitutionCode = organisation.InstitutionCode,
                 TabViewModel = tabViewModel,
                 TrainWithUs = organisation.Content.TrainWithUs,
                 DomainName = organisation.Content.DomainName,

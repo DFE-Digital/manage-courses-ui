@@ -5,6 +5,10 @@ namespace GovUk.Education.ManageCourses.Ui.ViewModels
 {
   public class OrganisationViewModel : TabbedViewModel
   {
+    public int Id { get; set; }
+
+    public string InstitutionCode { get; set; }
+
     [Display(Name = "Training with you")]
     public string TrainWithUs { get; set; }
 
