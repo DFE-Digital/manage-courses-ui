@@ -31,7 +31,7 @@ namespace GovUk.Education.ManageCourses.Ui
 
         public async Task<IEnumerable<UserOrganisation>> GetOrganisations()
         {
-            var orgs = await _apiClient.Organisations_GetAsync();
+            var orgs = await _apiClient.Organisations_GetAllAsync();
             return orgs;
         }
 
