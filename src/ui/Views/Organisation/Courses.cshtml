@@ -21,10 +21,9 @@
         <table class="ucas-info-table govuk-table">
           <thead class="govuk-table__head">
             <tr class="govuk-table__row">
+              <th class="govuk-table__header ucas-info-table__code-col" scope="col">Code</th>
               <th class="govuk-table__header ucas-info-table__subject-col" scope="col">Subject</th>
-              <th class="govuk-table__header ucas-info-table__code-col" scope="col">UCAS code</th>
               <th class="govuk-table__header ucas-info-table__type-col" scope="col">Type</th>
-              <th class="govuk-table__header ucas-info-table__link-col" scope="col"></th>
             </tr>
           </thead>
           <tbody class="govuk-table__body">
@@ -33,12 +32,11 @@
               foreach (var variant in course.Variants)
               {
                 <tr class="govuk-table__row">
-                  <td class="govuk-table__cell">@course.CourseTitle</td>
                   <td class="govuk-table__cell">@variant.UcasCode</td>
-                  <td class="govuk-table__cell">@variant.GetCourseVariantType()</td>
-                  <td class="govuk-table__cell ucas-info-table__link">
-                    <a href="@Url.Action("variants", "course", new { instCode = Model.Courses.UcasCode, accreditingProviderId = providerCourse.AccreditingProviderId, ucasCode = variant.UcasCode })" class="govuk-link">View course</a>
+                  <td class="govuk-table__cell">
+                    <a href="@Url.Action("variants", "course", new { instCode = Model.Courses.UcasCode, accreditingProviderId = providerCourse.AccreditingProviderId, ucasCode = variant.UcasCode })" class="govuk-link">@course.CourseTitle</a>
                   </td>
+                  <td class="govuk-table__cell">@variant.GetCourseVariantType()</td>
                 </tr>
               }
             }
