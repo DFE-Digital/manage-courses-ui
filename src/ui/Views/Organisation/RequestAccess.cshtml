@@ -16,48 +16,47 @@
         <p class="govuk-body">You can request a DfE Sign-in account for others who manage your courses.</p>
       </div>
       <h2 class="govuk-heading-m">Request an account for:</h2>
-      @using (Html.BeginForm("RequestAccess", "Organisation", FormMethod.Post))
-      {
+      <form asp-controller="Organisation" asp-action="RequestAccess" method="post">
         @Html.Partial("ErrorSummary")
         <div id="FirstName-wrapper" class="govuk-form-group @(fnv ? "govuk-form-group--error" : "")">
-          @Html.LabelFor(m => m.FirstName, new { @class="govuk-label" })
+          <label asp-for="FirstName" class="govuk-label">First name</label>
           @if (fnv) {
-            @Html.ValidationMessageFor(m => m.FirstName, "", new { @class="govuk-error-message" })
+            <span asp-validation-for="FirstName" class="govuk-error-message"></span>
           }
-          @Html.TextBoxFor(m => m.FirstName, new { @class= "govuk-input govuk-!-width-one-half" })
+          <input asp-for="FirstName" class="govuk-input govuk-!-width-one-half" />
         </div>
         <div id="LastName-wrapper" class="govuk-form-group @(lnv ? "govuk-form-group--error" : "")">
-          @Html.LabelFor(m => m.LastName, new { @class="govuk-label" })
+          <label asp-for="LastName" class="govuk-label">Last name</label>
           @if (lnv) {
-            @Html.ValidationMessageFor(m => m.LastName, "", new { @class="govuk-error-message" })
+            <span asp-validation-for="LastName" class="govuk-error-message"></span>
           }
-          @Html.TextBoxFor(m => m.LastName, new { @class="govuk-input govuk-!-width-one-half" })
+          <input asp-for="LastName" class="govuk-input govuk-!-width-one-half" />
         </div>
         <div id="EmailAddress-wrapper" class="govuk-form-group @(eav ? " govuk-form-group--error " : " ")">
-          @Html.LabelFor(m => m.EmailAddress, new { @class="govuk-label" })
+          <label asp-for="EmailAddress" class="govuk-label">Email address</label>
           @if (eav) {
-            @Html.ValidationMessageFor(m => m.EmailAddress, "", new { @class="govuk-error-message" })
+            <span asp-validation-for="EmailAddress" class="govuk-error-message"></span>
           }
-          @Html.TextBoxFor(m => m.EmailAddress, new { @class="govuk-input govuk-!-width-one-half" })
+          <input asp-for="EmailAddress" class="govuk-input govuk-!-width-one-half" />
         </div>
         <div id="Organisation-wrapper" class="govuk-form-group @(ov ? "govuk-form-group--error" : "")">
-          @Html.LabelFor(m => m.Organisation, new { @class="govuk-label" })
+          <label asp-for="Organisation" class="govuk-label">Thier organisation</label>
           @if (ov) {
-            @Html.ValidationMessageFor(m => m.Organisation, "", new { @class="govuk-error-message" })
+            <span asp-validation-for="Organisation" class="govuk-error-message"></span>
           }
-          @Html.TextBoxFor(m => m.Organisation, new { @class="govuk-input govuk-!-width-one-half" })
+          <input asp-for="Organisation" class="govuk-input govuk-!-width-one-half" />
         </div>
         <div id="Reason-wrapper" class="govuk-form-group @(rv ? "govuk-form-group--error" : "")">
-          @Html.LabelFor(m => m.Reason, new { @class="govuk-label" })
+          <label asp-for="Reason" class="govuk-label">Reason they need access</label>
           @if (rv) {
-            @Html.ValidationMessageFor(m => m.Reason, "", new { @class="govuk-error-message" })
+            <span asp-validation-for="Reason" class="govuk-error-message"></span>
           }
-          @Html.TextAreaFor(m => m.Reason, new { @class="govuk-textarea govuk-!-width-two-thirds" })
+          <textarea asp-for="Reason" class="govuk-textarea govuk-!-width-two-thirds"></textarea>
         </div>
         <div class="form-group">
           <input type="submit" class="govuk-button" value="Request access" />
         </div>
-      }
+      </form>
     </div>
   </div>
 </section>
