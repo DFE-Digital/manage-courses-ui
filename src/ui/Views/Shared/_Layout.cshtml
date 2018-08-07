@@ -25,7 +25,13 @@
     {
         <!-- Global site tag (gtag.js) - Google Analytics -->
         <script async src="https://www.googletagmanager.com/gtag/js?id=UA-112932657-2"></script>
-        <script src="~/scripts/analytics-config.js"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+
+            gtag('config', 'UA-112932657-2');
+        </script>
     }
 }
 
@@ -38,7 +44,7 @@
                 @if (User.Identity.IsAuthenticated)
                 {
                     <li class="govuk-header__navigation-item">
-                        <a class="govuk-header__link" asp-controller="Auth" asp-action="Logout">Sign out</a> 
+                        <a class="govuk-header__link" asp-controller="Auth" asp-action="Logout">Sign out</a>
                         <a class="govuk-header__link--profile"  href="@profileUrl">@name</a>
                     </li>
                 }
