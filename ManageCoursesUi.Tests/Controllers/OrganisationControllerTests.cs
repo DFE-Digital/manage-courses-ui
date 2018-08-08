@@ -26,16 +26,17 @@ namespace ManageCoursesUi.Tests
             var organisationName = "organisationName";
             var currentTab = "courses";
             // Todo: fix this ObservableCollection.
-            var orgCourses = new OrganisationCourses
+            var instCourses = new InstitutionCourses
             {
-                UcasCode = ucasCode,
-                ProviderCourses = new ObservableCollection<ProviderCourse>
-                { new ProviderCourse
-                { CourseDetails = new ObservableCollection<CourseDetail>
-                { new CourseDetail
-                { Variants = new ObservableCollection<CourseVariant>
-                { new CourseVariant
-                { UcasCode = ucasCode } } } } } }
+                InstitutionCode = ucasCode,
+                InstitutionName = organisationName,
+                Courses = new ObservableCollection<Course>
+                {
+                    new Course
+                    {
+                        InstCode = ucasCode
+                    }
+                }
             };
             var orgs = new List<UserOrganisation> {
                 new UserOrganisation(), new UserOrganisation {
@@ -44,11 +45,9 @@ namespace ManageCoursesUi.Tests
             };
 
             var apiMock = new Mock<IManageApi>();
-            apiMock.Setup(x => x.GetCoursesByOrganisation(ucasCode))
-                .ReturnsAsync(orgCourses);
+            apiMock.Setup(x => x.GetCoursesByOrganisation(ucasCode)).ReturnsAsync(instCourses);
 
-            apiMock.Setup(x => x.GetOrganisations())
-                .ReturnsAsync(orgs);
+            apiMock.Setup(x => x.GetOrganisations()).ReturnsAsync(orgs);
 
             var controller = new OrganisationController(apiMock.Object);
 
@@ -58,8 +57,9 @@ namespace ManageCoursesUi.Tests
 
             Assert.IsNotNull(viewResult);
             var model = viewResult.ViewData.Model as CourseListViewModel;
-            Assert.AreEqual(orgCourses, model.Courses);
-            Assert.AreEqual(1, model.TotalCount);
+
+            Assert.NotNull(model);
+            Assert.AreEqual(1, model.Providers.Count);
 
             var tabViewModel = model.TabViewModel;
             Assert.AreEqual(currentTab, tabViewModel.CurrentTab);

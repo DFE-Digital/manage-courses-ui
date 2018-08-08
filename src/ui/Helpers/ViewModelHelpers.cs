@@ -9,6 +9,15 @@ namespace GovUk.Education.ManageCourses.Ui.Helpers
 {
     public static class ViewModelHelpers
     {
+        public static string GetCourseVariantType(this Course course)
+        {
+            var result = string.IsNullOrWhiteSpace(course.ProfpostFlag) ? "QTS " : "PGCE with QTS ";
+
+            result += course.StudyMode.Equals("F", StringComparison.InvariantCultureIgnoreCase) ? "full time" : "part time";
+            result += course.ProgramType.Equals("SS", StringComparison.InvariantCultureIgnoreCase) ? " with salary" : "";
+
+            return result;
+        }
         public static string GetCourseVariantType(this CourseVariant courseVariant)
         {
             var result = string.IsNullOrWhiteSpace(courseVariant.ProfPostFlag) ? "QTS " : "PGCE with QTS ";

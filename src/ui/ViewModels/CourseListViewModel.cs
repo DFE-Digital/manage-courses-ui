@@ -8,7 +8,9 @@ namespace GovUk.Education.ManageCourses.Ui.ViewModels
 {
     public class CourseListViewModel : TabbedViewModel
     {
-        public OrganisationCourses Courses { get; set; }
-        public int TotalCount { get; set; }
+        public string InstitutionName { get; set; }
+        public string InstitutionId { get; set; }
+
+        public List<Provider> Providers { get; set; }
     }
 }
