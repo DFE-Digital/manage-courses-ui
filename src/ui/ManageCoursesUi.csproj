@@ -24,7 +24,7 @@
   <Import Condition="Exists('$(ProjectDir)dev.targets')" Project="$(ProjectDir)dev.targets" />
   
   <ItemGroup Condition="Exists('$(ProjectDir)dev.targets')==false">
-    <PackageReference Include="GovUk.Education.ManageCourses.ApiClient" Version="0.1.1.*" />
+    <PackageReference Include="GovUk.Education.ManageCourses.ApiClient" Version="1.1.0" />
   </ItemGroup>
 
   <!--<Target Name="Grunt" Condition="'$(Configuration)'=='Release'" BeforeTargets="AfterBuild">
