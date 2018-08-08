@@ -40,7 +40,7 @@
           <input asp-for="EmailAddress" class="govuk-input govuk-!-width-one-half" />
         </div>
         <div id="Organisation-wrapper" class="govuk-form-group @(ov ? "govuk-form-group--error" : "")">
-          <label asp-for="Organisation" class="govuk-label">Thier organisation</label>
+          <label asp-for="Organisation" class="govuk-label">Their organisation</label>
           @if (ov) {
             <span asp-validation-for="Organisation" class="govuk-error-message"></span>
           }
