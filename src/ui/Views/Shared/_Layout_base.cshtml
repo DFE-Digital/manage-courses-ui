@@ -32,7 +32,7 @@
     <script>
         document.body.className = ((document.body.className) ? document.body.className + ' js-enabled' : 'js-enabled');
     </script>
-    
+
     @RenderSection("bodyStart", required: false)
 
     <a href="#main-content" class="govuk-skip-link">@(ViewData["skipLinkMessage"] ?? "Skip to main content")</a>
@@ -77,7 +77,7 @@
     </header>
 
     @RenderSection("afterHeader", required: false)
-    
+
     <div class="govuk-width-container">
         @RenderBody()
     </div>
@@ -111,8 +111,7 @@
 
     <div id="global-app-error" class="app-error hidden"></div>
 
-    <script src="~/scripts/all.js"></script>
-    <script src="~/scripts/cookie-bar.js"></script>
+    <script src="~/scripts/application.js" asp-append-version="true"></script>
     <script>window.GOVUKFrontend.initAll()</script>
 
     @RenderSection("bodyEnd", required: false)

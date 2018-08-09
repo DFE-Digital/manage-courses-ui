@@ -9,6 +9,7 @@ const clean = require('gulp-clean');
 const sass = require('gulp-sass');
 const sourcemaps = require('gulp-sourcemaps');
 const watch = require('gulp-watch');
+const concat = require('gulp-concat');
 
 gulp.task('clean', function () {
   return gulp.src(configPaths.public + '/**/*', {
@@ -42,8 +43,12 @@ gulp.task('copy-images', function () {
 });
 
 gulp.task('copy-scripts', function () {
-  return gulp.src([configPaths.nodeModules + 'all.js', configPaths.assets + 'Javascript/*'])
-    .pipe(gulp.dest(configPaths.public + '/scripts/'))
+  return gulp.src([configPaths.nodeModules + 'all.js',
+                   configPaths.assets + 'Javascript/*'])
+    .pipe(sourcemaps.init())
+    .pipe(concat('application.js'))
+    .pipe(sourcemaps.write())
+    .pipe(gulp.dest(configPaths.public + '/scripts/'));
 });
 
 gulp.task('generate-assets', function (done) {
