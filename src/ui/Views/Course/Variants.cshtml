@@ -6,7 +6,7 @@
     var link = "mailto:becomingateacher@digital.education.gov.uk?subject=Problem%20with%20course%20" + Model.Course.ProgrammeCode;
 }
 
-<a href="@Url.Action("Courses", "Organisation", new {ucasCode = Model.Course.UcasCode})" class="govuk-back-link">Back</a>  
+<a href="@Url.Action("Courses", "Organisation", new {ucasCode = Model.Course.UcasCode})" class="govuk-back-link">Back</a>
 
 <main role="main" class="govuk-main-wrapper" id="main-content">
     <h1 class="govuk-heading-xl">
@@ -52,8 +52,10 @@
             <dd>@Model.Course.GetStudyMode()</dd>
         }
         @if (!string.IsNullOrEmpty(@Model.Course.GetAgeRange())) {
-            <dt>Age range:</dt>
-            <dd>@Model.Course.GetAgeRange()</dd>
+            <!--
+              <dt>Age range:</dt>
+              <dd>@Model.Course.GetAgeRange()</dd>
+            -->
         }
         @if (!string.IsNullOrEmpty(@Model.Course.GetQualification())) {
             <dt>Qualification:</dt>
