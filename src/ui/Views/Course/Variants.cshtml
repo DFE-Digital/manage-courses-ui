@@ -51,12 +51,6 @@
             <dt>Mode of study:</dt>
             <dd>@Model.Course.GetStudyMode()</dd>
         }
-        @if (!string.IsNullOrEmpty(@Model.Course.GetAgeRange())) {
-            <!--
-              <dt>Age range:</dt>
-              <dd>@Model.Course.GetAgeRange()</dd>
-            -->
-        }
         @if (!string.IsNullOrEmpty(@Model.Course.GetQualification())) {
             <dt>Qualification:</dt>
             <dd>@Model.Course.GetQualification()</dd>
