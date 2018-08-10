@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using GovUk.Education.ManageCourses.ApiClient;
 using GovUk.Education.ManageCourses.Ui.Controllers;
@@ -22,8 +24,20 @@ namespace ManageCoursesUi.Tests
         {
             var manageApi = new Mock<IManageApi>();
             var testData = TestHelper.GetTestData(type, null, null);
+            var testOrgs = new List<UserOrganisation>
+            {
+                new UserOrganisation
+                {
+                    OrganisationId = testData.InstitutionCode,
+                    OrganisationName = testData.InstitutionName,
+                    UcasCode = TestHelper.InstitutionCode,
+                    TotalCourses = testData.Courses.Count
+                }
+            };
 
-            manageApi.Setup(x => x.GetCoursesByOrganisation(It.IsAny<string>())).ReturnsAsync(testData);
+            var testCourse = testData.Courses.FirstOrDefault(x => x.Name == TestHelper.TargetedCourseTitle);
+            manageApi.Setup(x => x.GetOrganisations()).ReturnsAsync(testOrgs);
+            manageApi.Setup(x => x.GetCourseByUcasCode(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(testCourse);
 
             var controller = new CourseController(manageApi.Object);
             var result = await controller.Variants(TestHelper.InstitutionCode, TestHelper.AccreditedProviderId, TestHelper.TargetedUcasCode);
@@ -43,30 +57,48 @@ namespace ManageCoursesUi.Tests
             var manageApi = new Mock<IManageApi>();
             var testData = TestHelper.GetTestData(type, null, null);
 
-            manageApi.Setup(x => x.GetCoursesByOrganisation(It.IsAny<string>())).ReturnsAsync(testData);
+            var testOrgs = new List<UserOrganisation>
+            {
+                new UserOrganisation
+                {
+                    OrganisationId = testData.InstitutionCode,
+                    OrganisationName = testData.InstitutionName,
+                    UcasCode = "123",
+                    TotalCourses = testData.Courses.Count
+                }
+            };
+
+            var testCourse = testData.Courses.FirstOrDefault(x => x.Name == TestHelper.TargetedCourseTitle); ;
+            manageApi.Setup(x => x.GetOrganisations()).ReturnsAsync(testOrgs);
+            manageApi.Setup(x => x.GetCourseByUcasCode(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(testCourse);
 
             var controller = new CourseController(manageApi.Object);
 
             Assert.ThrowsAsync<InvalidOperationException>(async () => await controller.Variants(TestHelper.InstitutionCode, TestHelper.AccreditedProviderId, TestHelper.TargetedUcasCode));
         }
         [Test]
-        [TestCase("2AT", "xxx", "xxx")]
-        [TestCase("2AT", "self", "xxx")]
-        [TestCase("2AT", "xxx", "35L6")]
-        [TestCase("xxx", "xxx", "xxx")]
-        [TestCase("xxx", "xxx", "35L6")]
-        [TestCase("xxx", "self", "xxx")]
-        [TestCase("xxx", "self", "35L6")]
-        public async Task TestController_Variants_with_incorrect_parameters_should_return_note_found_status(string institutionCode, string accreditedProviderId, string ucasCode)
+        public async Task TestController_should_return_not_found_status()
         {
             var manageApi = new Mock<IManageApi>();
             var testData = TestHelper.GetTestData(EnumDataType.SingleVariantOneMatch, "123", "provider Name");
 
-            manageApi.Setup(x => x.GetCoursesByOrganisation("2AT")).ReturnsAsync(testData);
+            var testOrgs = new List<UserOrganisation>
+            {
+                new UserOrganisation
+                {
+                    OrganisationId = testData.InstitutionCode,
+                    OrganisationName = testData.InstitutionName,
+                    UcasCode = TestHelper.InstitutionCode,
+                    TotalCourses = testData.Courses.Count
+                }
+            };
+            
+            manageApi.Setup(x => x.GetOrganisations()).ReturnsAsync(testOrgs);
+            manageApi.Setup(x => x.GetCourseByUcasCode(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync((Course) null);
 
             var controller = new CourseController(manageApi.Object);
 
-            var result = await controller.Variants(institutionCode, accreditedProviderId, ucasCode);
+            var result = await controller.Variants(TestHelper.InstitutionCode, TestHelper.AccreditedProviderId, TestHelper.TargetedUcasCode);
 
             Assert.NotNull(result);
             Assert.IsInstanceOf(typeof(NotFoundResult), result);
@@ -83,19 +115,58 @@ namespace ManageCoursesUi.Tests
             var manageApi = new Mock<IManageApi>();
             var testData = TestHelper.GetTestData(EnumDataType.SingleVariantOneMatch, null, null);
 
-            manageApi.Setup(x => x.GetCoursesByOrganisation(It.IsAny<string>())).ReturnsAsync(testData);
+            var testOrgs = new List<UserOrganisation>
+            {
+                new UserOrganisation
+                {
+                    OrganisationId = testData.InstitutionCode,
+                    OrganisationName = testData.InstitutionName,
+                    UcasCode = TestHelper.InstitutionCode,
+                    TotalCourses = testData.Courses.Count
+                }
+            };
+
+            var testCourse = testData.Courses.FirstOrDefault(x => x.Name == TestHelper.TargetedCourseTitle);
+            manageApi.Setup(x => x.GetOrganisations()).ReturnsAsync(testOrgs);
+            manageApi.Setup(x => x.GetCourseByUcasCode(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(testCourse);
 
             var controller = new CourseController(manageApi.Object);
             Assert.ThrowsAsync<ArgumentNullException>(async () => await controller.Variants(institutionCode, accreditedProviderId, ucasCode));
         }
         [Test]
-        public void TestController_Variants__with_api_exception_should_return_exception()
+        public void TestController_with_api_exception_on_first_call_should_return_exception()
         {
             var manageApi = new Mock<IManageApi>();
 
-            manageApi.Setup(x => x.GetCoursesByOrganisation(It.IsAny<string>())).ThrowsAsync(new Exception());
+            manageApi.Setup(x => x.GetOrganisations()).ThrowsAsync(new Exception());
 
             var controller = new CourseController(manageApi.Object);
+ 
+            Assert.ThrowsAsync<Exception>(async () => await controller.Variants(TestHelper.InstitutionCode, TestHelper.AccreditedProviderId, TestHelper.TargetedUcasCode));
+        }
+        [Test]
+        [TestCase(EnumDataType.SingleVariantOneMatch)]
+        [TestCase(EnumDataType.MultiVariantOneMatch)]
+        public void TestController_with_api_exception_on_second_call_should_return_exception(EnumDataType type)
+        {
+            var manageApi = new Mock<IManageApi>();
+            var testData = TestHelper.GetTestData(type, null, null);
+            var testOrgs = new List<UserOrganisation>
+            {
+                new UserOrganisation
+                {
+                    OrganisationId = testData.InstitutionCode,
+                    OrganisationName = testData.InstitutionName,
+                    UcasCode = TestHelper.InstitutionCode,
+                    TotalCourses = testData.Courses.Count
+                }
+            };
+
+            manageApi.Setup(x => x.GetOrganisations()).ReturnsAsync(testOrgs);
+            manageApi.Setup(x => x.GetCourseByUcasCode(It.IsAny<string>(), It.IsAny<string>())).ThrowsAsync(new Exception());
+
+            var controller = new CourseController(manageApi.Object);
+
             Assert.ThrowsAsync<Exception>(async () => await controller.Variants(TestHelper.InstitutionCode, TestHelper.AccreditedProviderId, TestHelper.TargetedUcasCode));
         }
     }

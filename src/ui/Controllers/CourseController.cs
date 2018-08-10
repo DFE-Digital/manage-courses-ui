@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using GovUk.Education.ManageCourses.ApiClient;
 using GovUk.Education.ManageCourses.Ui.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -26,41 +27,46 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
         {
             Validate(instCode, accreditingProviderId, ucasCode);
 
-            var course = await _manageApi.GetCoursesByOrganisation(instCode);
+            var orgsList = await _manageApi.GetOrganisations();
+            var userOrganisations = orgsList.ToList();
+            var multipleOrganisations = userOrganisations.Count() > 1;
+            var org = userOrganisations.ToList().FirstOrDefault(x => instCode.ToLower() == x.UcasCode.ToLower());
+
+            if (org == null) { throw new InvalidOperationException($"Organisation with code '{ucasCode}' not found"); }
+
+            var course = await _manageApi.GetCourseByUcasCode(instCode, ucasCode);
+
             if (course == null) return NotFound();
 
-            var providerCourse = "self".Equals(accreditingProviderId, StringComparison.InvariantCultureIgnoreCase)
-                ? course.ProviderCourses.SingleOrDefault(c => String.IsNullOrEmpty(c.AccreditingProviderId))
-                : course.ProviderCourses
-                    .SingleOrDefault(c => c.AccreditingProviderId.Equals(accreditingProviderId, StringComparison.InvariantCultureIgnoreCase));
+            var viewModel = LoadViewModel(org, course, multipleOrganisations);
 
-            if (providerCourse == null) { return NotFound(); }
+            return View(viewModel);
+        }
 
-            var courseDetail = providerCourse.CourseDetails.SingleOrDefault(c => c.Variants.Any(v => ucasCode.Equals(v.UcasCode, StringComparison.InvariantCultureIgnoreCase)));
+        private void Validate(string instCode, string accreditingProviderId, string ucasCode)
+        {
+            if (string.IsNullOrEmpty(instCode)) { throw new ArgumentNullException(instCode, "instCode cannot be null or empty"); }
+            if (string.IsNullOrEmpty(accreditingProviderId)) { throw new ArgumentNullException(accreditingProviderId, "accreditingProviderId cannot be null or empty"); }
+            if (string.IsNullOrEmpty(ucasCode)) { throw new ArgumentNullException(ucasCode, "ucasCode cannot be null or empty"); }
+        }
 
-            if (courseDetail == null) { throw new InvalidOperationException($"Course variant with ucas code '{ucasCode}' not found"); }
-
-            var variant = courseDetail.Variants.SingleOrDefault(v => ucasCode.Equals(v.UcasCode, StringComparison.InvariantCultureIgnoreCase));
-
-            if (variant == null) { throw new Exception("Unexpected error: variant should not be null"); }
-
-            var subjects = variant.Subjects.Any() ? variant.Subjects.Aggregate((current, next) => current + ", " + next) : "";
-
+        private FromUcasViewModel LoadViewModel(UserOrganisation org, Course course, bool multipleOrganisations)
+        {
             var courseVariant =
                 new CourseVariantViewModel
                 {
-                    Name = courseDetail.CourseTitle,
-                    Type = variant.GetCourseVariantType(),
-                    Accrediting = providerCourse.AccreditingProviderName,
-                    ProviderCode = providerCourse.AccreditingProviderId,
-                    ProgrammeCode = variant.CourseCode,
-                    UcasCode = course.UcasCode,
-                    AgeRange = courseDetail.AgeRange,
-                    Route = variant.ProgramType,
-                    Qualifications = variant.ProfPostFlag,
-                    StudyMode = variant.StudyMode,
-                    Subjects = subjects,
-                    Schools = variant.Campuses.Select(campus =>
+                    Name = course.Name,
+                    Type = course.GetCourseVariantType(),
+                    Accrediting = course.AccreditingProviderName,
+                    ProviderCode = course.AccreditingProviderId,
+                    ProgrammeCode = course.CourseCode,
+                    UcasCode = course.InstCode,
+                    AgeRange = course.AgeRange,
+                    Route = course.ProgramType,
+                    Qualifications = course.ProfpostFlag,
+                    StudyMode = course.StudyMode,
+                    Subjects = course.Subjects,
+                    Schools = course.Schools.Select(campus =>
                     {
                         var addressLines = (new List<string>()
                         {
@@ -77,34 +83,25 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
 
                         return new SchoolViewModel
                         {
-                            ApplicationsAcceptedFrom = campus.CourseOpenDate,
+                            ApplicationsAcceptedFrom = campus.ApplicationsAcceptedFrom,
                             Code = campus.Code,
-                            LocationName = campus.Name,
+                            LocationName = campus.LocationName,
                             Address = address
                         };
                     })
                 };
 
-            var orgs = await _manageApi.GetOrganisations();
 
             var viewModel = new FromUcasViewModel
             {
-                OrganisationName = course.OrganisationName,
-                OrganisationId = course.OrganisationId,
-                MultipleOrganisations = orgs.Count() > 1,
-                CourseTitle = courseDetail.CourseTitle,
-                AccreditingProviderId = providerCourse.AccreditingProviderId,
+                OrganisationName = org.OrganisationName,
+                OrganisationId = org.OrganisationId,                
+                CourseTitle = course.Name,
+                AccreditingProviderId = course.AccreditingProviderId,
+                MultipleOrganisations = multipleOrganisations,
                 Course = courseVariant
             };
-
-            return View(viewModel);
-        }
-
-        private void Validate(string instCode, string accreditingProviderId, string ucasCode)
-        {
-            if (string.IsNullOrEmpty(instCode)) { throw new ArgumentNullException(instCode, "instCode cannot be null or empty"); }
-            if (string.IsNullOrEmpty(accreditingProviderId)) { throw new ArgumentNullException(accreditingProviderId, "accreditingProviderId cannot be null or empty"); }
-            if (string.IsNullOrEmpty(ucasCode)) { throw new ArgumentNullException(ucasCode, "ucasCode cannot be null or empty"); }
+            return viewModel;
         }
     }
 }
