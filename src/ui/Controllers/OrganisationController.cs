@@ -63,7 +63,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
         public async Task<ViewResult> About(string ucasCode)
         {
             var ucasData = (await _manageApi.GetCoursesByOrganisation(ucasCode));
-            var organisation = await _manageApi.GetEnrichmentOrganisation(ucasCode);
+            var enrichmentModel = (await _manageApi.GetEnrichmentOrganisation(ucasCode)).EnrichmentModel;
 
             var aboutAccreditingTrainingProviders = ucasData.ProviderCourses
                 .Where(x =>
@@ -74,46 +74,48 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
                 {
                     InstitutionName = x.AccreditingProviderName,
                     InstitutionCode = x.AccreditingProviderId,
-                    Description = organisation.Content.AboutTrainingProviders.FirstOrDefault(TrainingProviderMatchesProviderCourse(x))?.Description ?? ""
+                    Description = enrichmentModel.AccreditingProviderEnrichments.FirstOrDefault(TrainingProviderMatchesProviderCourse(x))?.Description ?? ""
                 }).ToList();
 
             var tabViewModel = await GetTabViewModelAsync(ucasCode, "about");
 
             var model = new OrganisationViewModel
             {
-                InstitutionCode = organisation.InstitutionCode,
+                InstitutionCode = ucasCode,
                 TabViewModel = tabViewModel,
-                TrainWithUs = organisation.Content.TrainWithUs,
+                TrainWithUs = enrichmentModel.TrainWithUs,
                 AboutTrainingProviders = aboutAccreditingTrainingProviders,
-                TrainWithDisability = organisation.Content.TrainWithDisability
+                TrainWithDisability = enrichmentModel.TrainWithDisability
             };
 
             return View(model);
         }
 
-        private static Func<TrainingProvider, bool> TrainingProviderMatchesProviderCourse(ProviderCourse x)
+        private static Func<AccreditingProviderEnrichment, bool> TrainingProviderMatchesProviderCourse(ProviderCourse x)
         {
-            return y => String.Equals(x.AccreditingProviderId, y.InstitutionCode, StringComparison.InvariantCultureIgnoreCase);
+            return y => String.Equals(x.AccreditingProviderId,
+            y.UcasInstitutionCode, StringComparison.InvariantCultureIgnoreCase);
         }
 
         [HttpPost]
         [Route("{ucasCode}/about")]
         public async Task<ActionResult> AboutPost(string ucasCode, OrganisationViewModel model)
         {
-            var organisationContent = (await _manageApi.GetEnrichmentOrganisation(ucasCode)).Content;
+            var enrichmentModel = (await _manageApi.GetEnrichmentOrganisation(ucasCode)).EnrichmentModel;
 
-            var aboutTrainingProviders = new ObservableCollection<TrainingProvider>(
-                model.AboutTrainingProviders.Select(x => new TrainingProvider
+            var aboutTrainingProviders = new ObservableCollection<AccreditingProviderEnrichment>(
+                model.AboutTrainingProviders.Select(x => new AccreditingProviderEnrichment
                 {
-                    InstitutionCode = x.InstitutionCode,
+                    UcasInstitutionCode = x.InstitutionCode,
                     Description = x.Description
-                }));            
+                }));
 
-            organisationContent.TrainWithUs = model.TrainWithUs;
-            organisationContent.AboutTrainingProviders = aboutTrainingProviders;
-            organisationContent.TrainWithDisability = model.TrainWithDisability;
+            enrichmentModel.TrainWithUs = model.TrainWithUs;
+            enrichmentModel.AccreditingProviderEnrichments = aboutTrainingProviders;
+            enrichmentModel.TrainWithDisability = model.TrainWithDisability;
 
-            await _manageApi.SaveEnrichmentOrganisation(ucasCode, organisationContent);
+            var postModel = new UcasInstitutionEnrichmentPostModel { EnrichmentModel = enrichmentModel };
+            await _manageApi.SaveEnrichmentOrganisation(ucasCode, postModel);
 
             return new RedirectToActionResult("About", "Organisation", new { ucasCode });
         }
@@ -142,15 +144,15 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             await _manageApi.LogAccessRequest(new AccessRequest()
             {
                 FirstName = model.FirstName,
-                LastName = model.LastName,
-                EmailAddress = model.EmailAddress,
-                Organisation = model.Organisation,
-                Reason = model.Reason,
+                    LastName = model.LastName,
+                    EmailAddress = model.EmailAddress,
+                    Organisation = model.Organisation,
+                    Reason = model.Reason,
             });
 
             this.TempData.Add("RequestAccess_To_Name", $"{model.FirstName} {model.LastName}");
 
-            return new RedirectToActionResult("RequestAccess","Organisation", new {ucasCode });
+            return new RedirectToActionResult("RequestAccess", "Organisation", new { ucasCode });
         }
     }
 }

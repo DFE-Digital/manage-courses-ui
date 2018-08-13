@@ -13,7 +13,7 @@ namespace GovUk.Education.ManageCourses.Ui
         Task<OrganisationCourses> GetCoursesByOrganisation(string ucasCode);
         Task<IEnumerable<UserOrganisation>> GetOrganisations();
         Task LogAccessRequest(AccessRequest accessRequest);
-        Task<EnrichmentOrganisationModel>  SaveEnrichmentOrganisation(EnrichmentOrganisationModel organisation);
-        Task<EnrichmentOrganisationModel> GetEnrichmentOrganisation(string ucasCode);
+        Task  SaveEnrichmentOrganisation(string institutionCode, UcasInstitutionEnrichmentPostModel organisation);
+        Task<UcasInstitutionEnrichmentGetModel> GetEnrichmentOrganisation(string ucasCode);
     }
 }
