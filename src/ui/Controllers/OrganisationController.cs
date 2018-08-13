@@ -27,24 +27,43 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
         [Route("{ucasCode}/courses")]
         public async Task<IActionResult> Courses(string ucasCode)
         {
-            var courses = await _manageApi.GetCoursesByOrganisation(ucasCode);
+            var institutionCourses = await _manageApi.GetCoursesByOrganisation(ucasCode);
             var tabViewModel = await GetTabViewModelAsync(ucasCode, "courses");
-            var variants = courses.ProviderCourses
-                .SelectMany(pc => pc.CourseDetails)
-                .SelectMany(cd => cd.Variants);
+            var providers = GetProviders(institutionCourses);
 
             var model = new CourseListViewModel
             {
-                Courses = courses,
-                TotalCount = variants.Count(),
+                InstitutionName = institutionCourses.InstitutionName,
+                InstitutionId = institutionCourses.InstitutionCode,
+                Providers = providers,
                 TabViewModel = tabViewModel
             };
 
             return View(model);
         }
 
-        private async Task<TabViewModel> GetTabViewModelAsync(string ucasCode, string currentTab)
+        private List<Provider> GetProviders(InstitutionCourses institutionCourses)
         {
+            var providerNames = institutionCourses.Courses.Select(x => x.AccreditingProviderName).Distinct().ToList();
+            var providers = new List<Provider>();
+            foreach (var providerName in providerNames)
+            {
+                var providerCourses = institutionCourses.Courses.Where(x => x.AccreditingProviderName == providerName).ToList();
+                var providerId = providerCourses.Select(x => x.AccreditingProviderId).Distinct().SingleOrDefault();//should all be the same
+
+                var provider = new Provider
+                {
+                    ProviderId = providerId,
+                    ProviderName = providerName,
+                    Courses = providerCourses,
+                    TotalCount = providerCourses.Count
+                };
+                providers.Add(provider);
+            }
+
+            return providers;
+        }
+        private async Task<TabViewModel> GetTabViewModelAsync(string ucasCode, string currentTab) {
             var orgs = await _manageApi.GetOrganisations();
             var organisationName = orgs.FirstOrDefault(o => ucasCode.Equals(o.UcasCode, StringComparison.InvariantCultureIgnoreCase))?.OrganisationName;
             var result = new TabViewModel
@@ -65,11 +84,11 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             var ucasData = (await _manageApi.GetCoursesByOrganisation(ucasCode));
             var enrichmentModel = (await _manageApi.GetEnrichmentOrganisation(ucasCode)).EnrichmentModel;
 
-            var aboutAccreditingTrainingProviders = ucasData.ProviderCourses
+            var aboutAccreditingTrainingProviders = ucasData.Courses
                 .Where(x =>
                     false == string.Equals(x.AccreditingProviderId, ucasCode, StringComparison.InvariantCultureIgnoreCase) &&
                     false == string.IsNullOrWhiteSpace(x.AccreditingProviderId))
-                .Distinct(new ProviderCourseIdComparer())
+                .Distinct(new AccreditingProviderIdComparer())
                 .Select(x => new TrainingProviderViewModel()
                 {
                     InstitutionName = x.AccreditingProviderName,
@@ -91,7 +110,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             return View(model);
         }
 
-        private static Func<AccreditingProviderEnrichment, bool> TrainingProviderMatchesProviderCourse(ProviderCourse x)
+        private static Func<AccreditingProviderEnrichment, bool> TrainingProviderMatchesProviderCourse(Course x)
         {
             return y => String.Equals(x.AccreditingProviderId,
             y.UcasInstitutionCode, StringComparison.InvariantCultureIgnoreCase);

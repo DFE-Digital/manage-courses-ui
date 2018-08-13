@@ -7,14 +7,14 @@ namespace GovUk.Education.ManageCourses.Ui.Utilities
     ///<summary>
     ///  Considers two providers equal if the ID (AKA the UCAS Code) are equivalent.
     ///</summary>
-    public class ProviderCourseIdComparer : IEqualityComparer<ProviderCourse>
+    public class AccreditingProviderIdComparer : IEqualityComparer<Course>
     {
-        public bool Equals(ProviderCourse x, ProviderCourse y)
+        public bool Equals(Course x, Course y)
         {
             return string.Equals(x.AccreditingProviderId, y.AccreditingProviderId, StringComparison.InvariantCultureIgnoreCase);
         }
 
-        public int GetHashCode(ProviderCourse obj)
+        public int GetHashCode(Course obj)
         {
             return obj.AccreditingProviderId.ToLowerInvariant().GetHashCode();
         }

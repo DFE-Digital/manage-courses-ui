@@ -21,7 +21,7 @@ namespace ManageCoursesUi.Tests.Helpers
 
         private static string _courseTitles = "Maths,Chemistry,Biology,Music,Languages";
 
-        public static OrganisationCourses GetTestData(EnumDataType dataType, string accreditedProviderId, string accreditedProviderName)
+        public static InstitutionCourses GetTestData(EnumDataType dataType, string accreditedProviderId, string accreditedProviderName)
         {
             return GenerateData(dataType, accreditedProviderId, accreditedProviderName);
         }
@@ -34,22 +34,24 @@ namespace ManageCoursesUi.Tests.Helpers
         /// <param name="accreditedProviderId">used to setup the providerCourse object</param>
         /// <param name="accreditedProviderName">used to setup the providerCourse object</param>
         /// <returns></returns>
-        private static OrganisationCourses GenerateData(EnumDataType dataType, string accreditedProviderId, string accreditedProviderName)
+        private static InstitutionCourses GenerateData(EnumDataType dataType, string accreditedProviderId, string accreditedProviderName)
         {
-            var testData = new OrganisationCourses
+            var testData = new InstitutionCourses
             {
-                OrganisationId = OrganisationId,
-                OrganisationName = OrganisationName,
-                UcasCode = TargetedUcasCode,
-                ProviderCourses = new ObservableCollection<ProviderCourse>
-                {
-                    new ProviderCourse
-                    {
-                        AccreditingProviderId = accreditedProviderId,
-                        AccreditingProviderName = accreditedProviderName,
-                        CourseDetails = new ObservableCollection<CourseDetail>(GenerateCourseDetails(dataType))
-                    }
-                }
+                InstitutionCode = OrganisationId,
+                InstitutionName = OrganisationName,
+                Courses = new ObservableCollection<Course>(GenerateCourseDetails(dataType))
+                    
+                //UcasCode = TargetedUcasCode,
+                //ProviderCourses = new ObservableCollection<ProviderCourse>
+                //{
+                //    new ProviderCourse
+                //    {
+                //        AccreditingProviderId = accreditedProviderId,
+                //        AccreditingProviderName = accreditedProviderName,
+                //        CourseDetails = new ObservableCollection<CourseDetail>(GenerateCourseDetails(dataType))
+                //    }
+                //}
             };
 
             return testData;
@@ -59,9 +61,9 @@ namespace ManageCoursesUi.Tests.Helpers
         /// </summary>
         /// <param name="type">The type of test data that needs to be generated</param>
         /// <returns></returns>
-        private static List<CourseDetail> GenerateCourseDetails(EnumDataType type)
+        private static List<Course> GenerateCourseDetails(EnumDataType type)
         {
-            var listToReturn = new List<CourseDetail>();            
+            var listToReturn = new List<Course>();            
             int variantCount;
             bool happyPath;
             switch (type)
@@ -91,14 +93,7 @@ namespace ManageCoursesUi.Tests.Helpers
 
             foreach (var courseTitle in _courseTitles.Split(","))
             {
-                listToReturn.Add(
-                    new CourseDetail
-                    {
-                        AgeRange = "S",
-                        CourseTitle = courseTitle,
-                        Variants = new ObservableCollection<CourseVariant>(GenerateCourseVariants(variantCount, (courseTitle == TargetedCourseTitle && happyPath), courseTitle))
-                    }
-                );
+                listToReturn.AddRange(GenerateCourseVariants(variantCount, (courseTitle == TargetedCourseTitle && happyPath), courseTitle));
             }
 
             return listToReturn;
@@ -111,9 +106,9 @@ namespace ManageCoursesUi.Tests.Helpers
         /// <param name="happyPath">If true it sets the Ucas code to the targeted ucas code for one variant</param>
         /// <param name="courseTitle">For the variant course name</param>
         /// <returns></returns>
-        private static List<CourseVariant> GenerateCourseVariants(int count, bool happyPath, string courseTitle)
+        private static List<Course> GenerateCourseVariants(int count, bool happyPath, string courseTitle)
         {
-            var listToReturn = new List<CourseVariant>();
+            var listToReturn = new List<Course>();
 
             for (var counter = 1; counter <= count; counter++)
             {                
@@ -128,26 +123,21 @@ namespace ManageCoursesUi.Tests.Helpers
                     ucasCode += counter;
                 }
                 listToReturn.Add(
-                    new CourseVariant
+                    new Course
                     {
                         StudyMode = "F",
-                        ProfPostFlag = "",
+                        ProfpostFlag = "",
                         ProgramType = "SC",
-                        Subjects = new ObservableCollection<string>
-                        {
-                            courseTitle,
-                            "Secondary"
-                        },
+                        Subjects = courseTitle + ",Secondary",
                         CourseCode = ucasCode,
                         Name = courseTitle,
-                        UcasCode = ucasCode,
-                        Campuses = new ObservableCollection<Campus>
+                        InstCode = ucasCode,
+                        Schools = new ObservableCollection<School>
                         {
-                            new Campus
+                            new School
                             {
-                                CourseOpenDate = "2018-10-16 00:00:00",
+                                ApplicationsAcceptedFrom = "2018-10-16 00:00:00",
                                 Code = TargetedUcasCode,
-                                Name = courseTitle,
                                 Address1 = "address1",
                                 Address2 = "address2",
                                 Address3 = "address3",

@@ -2,47 +2,59 @@
 
 @{
   Layout = "Shared/_TabViewLayout";
-  ViewBag.Title = Model.Courses.OrganisationName;
+  ViewBag.Title = Model.InstitutionName;
 }
 
-    <section class="govuk-tabs__panel--without-border">
-      <h2 class="govuk-heading-l">Courses</h2>
+<section class="govuk-tabs__panel--without-border">
+  <h2 class="govuk-heading-l">Check your courses</h2>
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <p class="govuk-body">
+        Check that your course information is correct. If there are any problems, you should <a href="mailto:becomingateacher@digital.education.gov.uk?subject=Publish%20teacher%20training%20courses%20problem">contact the Becoming a Teacher team</a> to let us know.
+      </p>
+      <p class="govuk-body">
+        To make any changes, for now you’ll still need to use UCAS web-link. Changes on UCAS will normally show here within one working day.
+      </p>
+      <p class="govuk-body">
+        Soon you’ll be able to add extra content to tell applicants more about you and your courses. <a href="https://afdebatmanageui.blob.core.windows.net/public-assets/How%20to%20prepare%20the%20rest%20of%20your%20course%20information.pdf">Find out more about this here</a>.
+      </p>
+      <p class="govuk-body">
+        In the future, you’ll be able to edit all course information here.
+      </p>
+    </div>
+  </div>
 
-      @foreach (var providerCourse in Model.Courses.ProviderCourses)
+  @foreach (var provider in Model.Providers)
+  {
+    if (!string.IsNullOrWhiteSpace(provider.ProviderId))
+    {
+      <h3 class="govuk-heading-m">
+        <span class="govuk-caption-m">Accrediting provider</span>
+        @provider.ProviderName
+      </h3>
+    }
+
+    <table class="ucas-info-table govuk-table">
+      <thead class="govuk-table__head">
+      <tr class="govuk-table__row">
+        <th class="govuk-table__header ucas-info-table__code-col" scope="col">Code</th>
+        <th class="govuk-table__header ucas-info-table__subject-col" scope="col">Subject</th>
+        <th class="govuk-table__header ucas-info-table__type-col" scope="col">Type</th>
+      </tr>
+      </thead>
+      <tbody class="govuk-table__body">
+      @foreach (var course in provider.Courses)
       {
-        if (!string.IsNullOrWhiteSpace(providerCourse.AccreditingProviderId))
-        {
-          <h3 class="govuk-heading-m">
-            <span class="govuk-caption-m">Accrediting provider</span>
-            @providerCourse.AccreditingProviderName
-          </h3>
-        }
+        <tr class="govuk-table__row">
+          <td class="govuk-table__cell">@course.CourseCode</td>
 
-        <table class="ucas-info-table govuk-table">
-          <thead class="govuk-table__head">
-            <tr class="govuk-table__row">
-              <th class="govuk-table__header ucas-info-table__subject-col" scope="col">Subject</th>
-              <th class="govuk-table__header ucas-info-table__code-col" scope="col">UCAS code</th>
-              <th class="govuk-table__header ucas-info-table__type-col" scope="col">Type</th>
-              <th class="govuk-table__header ucas-info-table__link-col" scope="col"></th>
-            </tr>
-          </thead>
-          <tbody class="govuk-table__body">
-            @foreach (var course in providerCourse.CourseDetails)
-            {
-              foreach (var variant in course.Variants)
-              {
-                <tr class="govuk-table__row">
-                  <td class="govuk-table__cell">@course.CourseTitle</td>
-                  <td class="govuk-table__cell">@variant.UcasCode</td>
-                  <td class="govuk-table__cell">@variant.GetCourseVariantType()</td>
-                  <td class="govuk-table__cell ucas-info-table__link">
-                    <a href="@Url.Action("variants", "course", new { instCode = Model.Courses.UcasCode, accreditingProviderId = providerCourse.AccreditingProviderId, ucasCode = variant.UcasCode })" class="govuk-link">View course</a>
-                  </td>
-                </tr>
-              }
-            }
-          </tbody>
-        </table>
+          <td class="govuk-table__cell">
+            <a href="@Url.Action("variants", "course", new {instCode = Model.InstitutionId, accreditingProviderId = course.AccreditingProviderId, ucasCode = course.CourseCode})" class="govuk-link">@course.Name</a>
+          </td>
+          <td class="govuk-table__cell">@course.GetCourseVariantType()</td>
+        </tr>
       }
-    </section>
+      </tbody>
+    </table>
+  }
+</section>

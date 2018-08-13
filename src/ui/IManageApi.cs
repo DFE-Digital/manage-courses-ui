@@ -10,8 +10,10 @@ namespace GovUk.Education.ManageCourses.Ui
 {
     public interface IManageApi
     {
-        Task<OrganisationCourses> GetCoursesByOrganisation(string ucasCode);
+        Task<InstitutionCourses> GetCoursesByOrganisation(string ucasCode);
+        Task<Course> GetCourseByUcasCode(string instCode, string ucasCode);
         Task<IEnumerable<UserOrganisation>> GetOrganisations();
+        Task<UserOrganisation> GetOrganisation(string instCode);
         Task LogAccessRequest(AccessRequest accessRequest);
         Task  SaveEnrichmentOrganisation(string institutionCode, UcasInstitutionEnrichmentPostModel organisation);
         Task<UcasInstitutionEnrichmentGetModel> GetEnrichmentOrganisation(string ucasCode);
