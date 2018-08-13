@@ -32,13 +32,6 @@
           }
           @Html.TextAreaFor(m => m.TrainWithUs, new { @class= "govuk-textarea", rows = 15})
         </div>
-        <div id="DomainName-wrapper" class="govuk-form-group @(domain ? "govuk-form-group--error" : " ")">
-          @Html.LabelFor(m => m.DomainName, new { @class="govuk-label" })
-          @if (domain) {
-            @Html.ValidationMessageFor(m => m.DomainName, "", new { @class="govuk-error-message" })
-          }
-          @Html.TextBoxFor(m => m.DomainName, new { @class= "govuk-input"})
-        </div>
 
         @if(Model.AboutTrainingProviders.Any()) {
           <h2 class="govuk-heading-l">About your accrediting provider</h2>

@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using GovUk.Education.ManageCourses.ApiClient;
 using GovUk.Education.ManageCourses.Ui;
 using GovUk.Education.ManageCourses.Ui.Helpers;
+using GovUk.Education.ManageCourses.Ui.Utilities;
 using GovUk.Education.ManageCourses.Ui.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -60,52 +62,58 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
         [Route("{ucasCode}/about")]
         public async Task<ViewResult> About(string ucasCode)
         {
+            var ucasData = (await _manageApi.GetCoursesByOrganisation(ucasCode));
             var organisation = await _manageApi.GetEnrichmentOrganisation(ucasCode);
-            var tabViewModel = await GetTabViewModelAsync(ucasCode, "about");
-            var aboutTrainingProviders = organisation.Content.AboutTrainingProviders
-                .Select(x => new TrainingProviderViewModel
+
+            var aboutAccreditingTrainingProviders = ucasData.ProviderCourses
+                .Where(x =>
+                    false == string.Equals(x.AccreditingProviderId, ucasCode, StringComparison.InvariantCultureIgnoreCase) &&
+                    false == string.IsNullOrWhiteSpace(x.AccreditingProviderId))
+                .Distinct(new ProviderCourseIdComparer())
+                .Select(x => new TrainingProviderViewModel()
                 {
-                    InstitutionName = x.InstitutionName,
-                    InstitutionCode = x.InstitutionCode,
-                    Description = x.Description
-                })
-                .ToList();
+                    InstitutionName = x.AccreditingProviderName,
+                    InstitutionCode = x.AccreditingProviderId,
+                    Description = organisation.Content.AboutTrainingProviders.FirstOrDefault(TrainingProviderMatchesProviderCourse(x))?.Description ?? ""
+                }).ToList();
+
+            var tabViewModel = await GetTabViewModelAsync(ucasCode, "about");
 
             var model = new OrganisationViewModel
             {
-                Id = organisation.Id,
                 InstitutionCode = organisation.InstitutionCode,
                 TabViewModel = tabViewModel,
                 TrainWithUs = organisation.Content.TrainWithUs,
-                DomainName = organisation.Content.DomainName,
-                AboutTrainingProviders = aboutTrainingProviders,
+                AboutTrainingProviders = aboutAccreditingTrainingProviders,
                 TrainWithDisability = organisation.Content.TrainWithDisability
             };
 
             return View(model);
         }
 
+        private static Func<TrainingProvider, bool> TrainingProviderMatchesProviderCourse(ProviderCourse x)
+        {
+            return y => String.Equals(x.AccreditingProviderId, y.InstitutionCode, StringComparison.InvariantCultureIgnoreCase);
+        }
+
         [HttpPost]
         [Route("{ucasCode}/about")]
         public async Task<ActionResult> AboutPost(string ucasCode, OrganisationViewModel model)
         {
-            var organisation = await _manageApi.GetEnrichmentOrganisation(ucasCode);
+            var organisationContent = (await _manageApi.GetEnrichmentOrganisation(ucasCode)).Content;
 
             var aboutTrainingProviders = new ObservableCollection<TrainingProvider>(
                 model.AboutTrainingProviders.Select(x => new TrainingProvider
                 {
-                    InstitutionName = x.InstitutionName,
                     InstitutionCode = x.InstitutionCode,
                     Description = x.Description
-                })
-            );
+                }));            
 
-            organisation.Content.TrainWithUs = model.TrainWithUs;
-            organisation.Content.DomainName = model.DomainName;
-            organisation.Content.AboutTrainingProviders = aboutTrainingProviders;
-            organisation.Content.TrainWithDisability = model.TrainWithDisability;
+            organisationContent.TrainWithUs = model.TrainWithUs;
+            organisationContent.AboutTrainingProviders = aboutTrainingProviders;
+            organisationContent.TrainWithDisability = model.TrainWithDisability;
 
-            await _manageApi.SaveEnrichmentOrganisation(organisation);
+            await _manageApi.SaveEnrichmentOrganisation(ucasCode, organisationContent);
 
             return new RedirectToActionResult("About", "Organisation", new { ucasCode });
         }
