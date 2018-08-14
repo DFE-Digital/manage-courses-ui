@@ -15,7 +15,6 @@
       <h2 class="govuk-heading-l">About your organisation</h2>
       @using (Html.BeginForm("About", "Organisation", FormMethod.Post))
       {
-        <input type="hidden" asp-for="@Model.Id"></input>
         <input type="hidden" asp-for="@Model.InstitutionCode"></input>
         @Html.Partial("ErrorSummary")
         <p class="govuk-body">This is your chance to tell applicants why they should choose to train with you. You could describe any advantages and special

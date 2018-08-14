@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using GovUk.Education.ManageCourses.ApiClient;
@@ -31,16 +32,20 @@ namespace ManageCoursesUi.Tests
                 InstitutionName = organisationName,
                 Courses = new ObservableCollection<Course>
                 {
-                    new Course
-                    {
-                        InstCode = ucasCode
-                    }
+                new Course
+                {
+                InstCode = ucasCode
+                }
                 }
             };
-            var orgs = new List<UserOrganisation> {
-                new UserOrganisation(), new UserOrganisation {
-                    UcasCode = ucasCode,
-                    OrganisationName = organisationName }
+            var orgs = new List<UserOrganisation>
+            {
+                new UserOrganisation(),
+                new UserOrganisation
+                {
+                UcasCode = ucasCode,
+                OrganisationName = organisationName
+                }
             };
 
             var apiMock = new Mock<IManageApi>();
@@ -78,8 +83,8 @@ namespace ManageCoursesUi.Tests
             {
                 new UserOrganisation
                 {
-                    UcasCode = ucasCode,
-                    OrganisationName = organisationName
+                UcasCode = ucasCode,
+                OrganisationName = organisationName
                 }
             };
 
@@ -115,8 +120,8 @@ namespace ManageCoursesUi.Tests
             {
                 new UserOrganisation
                 {
-                    UcasCode = ucasCode,
-                    OrganisationName = organisationName
+                UcasCode = ucasCode,
+                OrganisationName = organisationName
                 }
             };
 
@@ -175,34 +180,58 @@ namespace ManageCoursesUi.Tests
         {
             var ucasCode = "ucasCode";
             var organisationName = "OrganisationName";
-            var currentTab = "about";
-            var domainName = "DomainName";
 
-            var orgs = new List<UserOrganisation>
+            var userOrganisations = new List<UserOrganisation>
             {
                 new UserOrganisation
                 {
-                    UcasCode = ucasCode,
-                    OrganisationName = organisationName
+                UcasCode = ucasCode,
+                OrganisationName = organisationName
                 }
             };
 
-            var organisation = new EnrichmentOrganisationModel()
+            var currentTab = "about";
+            var trainWithUs = "TrainWithUs";
+            var trainWithDisability = "TrainWithDisability";
+
+            var description = "Description";
+            var institutionName = "InstitutionName";
+            var institutionCourses = new InstitutionCourses
             {
-                Content = new EnrichmentOrganisationContent
+                Courses = new ObservableCollection<Course>
                 {
-                    DomainName = domainName,
-                    AboutTrainingProviders = new ObservableCollection<TrainingProvider>()
+                new Course { },
+                new Course { AccreditingProviderId = ucasCode.ToUpperInvariant() },
+                new Course { AccreditingProviderId = ucasCode.ToLowerInvariant() },
+                new Course { AccreditingProviderId = ucasCode },
+                new Course { AccreditingProviderId = ucasCode + 1, AccreditingProviderName = institutionName },
+                new Course { AccreditingProviderId = ucasCode + 2 },
+                }
+            };
+
+            var ucasInstitutionEnrichmentGetModel = new UcasInstitutionEnrichmentGetModel()
+            {
+                EnrichmentModel = new InstitutionEnrichmentModel
+                {
+                AccreditingProviderEnrichments = new ObservableCollection<AccreditingProviderEnrichment>
+                {
+                new AccreditingProviderEnrichment { UcasInstitutionCode = ucasCode + 2, Description = description }
+                },
+                TrainWithUs = trainWithUs,
+                TrainWithDisability = trainWithDisability
                 }
             };
 
             var apiMock = new Mock<IManageApi>();
 
             apiMock.Setup(x => x.GetOrganisations())
-                .ReturnsAsync(orgs);
+                .ReturnsAsync(userOrganisations);
+
+            apiMock.Setup(x => x.GetCoursesByOrganisation(ucasCode))
+                .ReturnsAsync(institutionCourses);
 
             apiMock.Setup(x => x.GetEnrichmentOrganisation(ucasCode))
-                .ReturnsAsync(organisation);
+                .ReturnsAsync(ucasInstitutionEnrichmentGetModel);
 
             var controller = new OrganisationController(apiMock.Object);
 
@@ -217,7 +246,11 @@ namespace ManageCoursesUi.Tests
             Assert.AreEqual(currentTab, tabViewModel.CurrentTab);
             Assert.AreEqual(organisationName, tabViewModel.OrganisationName);
             Assert.AreEqual(ucasCode, tabViewModel.UcasCode);
-            Assert.AreEqual(domainName, organisationViewModel.DomainName);
+            Assert.AreEqual(trainWithUs, organisationViewModel.TrainWithUs);
+            Assert.AreEqual(2, organisationViewModel.AboutTrainingProviders.Count);
+            Assert.AreEqual(description, organisationViewModel.AboutTrainingProviders.First(x => x.InstitutionCode == ucasCode + 2).Description);
+            Assert.AreEqual(institutionName, organisationViewModel.AboutTrainingProviders.First(x => x.InstitutionCode == ucasCode + 1).InstitutionName);
+            Assert.AreEqual(trainWithDisability, organisationViewModel.TrainWithDisability);
             Assert.IsFalse(tabViewModel.MultipleOrganisations);
         }
 
@@ -225,30 +258,29 @@ namespace ManageCoursesUi.Tests
         public async Task AboutPost()
         {
             var ucasCode = "ucasCode";
-            var viewModel = new OrganisationViewModel {
-                DomainName = "DomainName",
+            var viewModel = new OrganisationViewModel
+            {
                 AboutTrainingProviders = new List<TrainingProviderViewModel>()
             };
 
             var apiMock = new Mock<IManageApi>();
-            var organisation = new EnrichmentOrganisationModel()
+
+            var enrichmentModel = new InstitutionEnrichmentModel
+            { };
+
+            var ucasInstitutionEnrichmentGetModel = new UcasInstitutionEnrichmentGetModel()
             {
-                Content = new EnrichmentOrganisationContent
-                {
-                    DomainName = "domainName 2"
-                }
+                EnrichmentModel = enrichmentModel
             };
 
             apiMock.Setup(x => x.GetEnrichmentOrganisation(ucasCode))
-                .ReturnsAsync(organisation);
+                .ReturnsAsync(ucasInstitutionEnrichmentGetModel);
 
             var controller = new OrganisationController(apiMock.Object);
 
             var result = await controller.AboutPost(ucasCode, viewModel);
 
-            apiMock.Verify(x => x.GetOrganisations(), Times.Never);
-
-            apiMock.Verify(x => x.SaveEnrichmentOrganisation(It.IsAny<EnrichmentOrganisationModel>()), Times.Once);
+            apiMock.Verify(x => x.SaveEnrichmentOrganisation(ucasCode, It.IsAny<UcasInstitutionEnrichmentPostModel>()), Times.Once);
 
             var actionResult = result as RedirectToActionResult;
 
