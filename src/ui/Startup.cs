@@ -65,7 +65,7 @@ namespace GovUk.Education.ManageCourses.Ui
                         var timeElapsed = now.Subtract(x.Properties.IssuedUtc.Value);
                         var timeRemaining = x.Properties.ExpiresUtc.Value.Subtract(now);
 
-                        if (timeElapsed > timeRemaining)
+                        if (timeElapsed > timeRemaining) 
                         {
                             var identity = (ClaimsIdentity)x.Principal.Identity;
                             var accessTokenClaim = identity.FindFirst("access_token");
@@ -85,7 +85,7 @@ namespace GovUk.Education.ManageCourses.Ui
                             var tokenEndpoint = Configuration["auth:oidc:tokenEndpoint"];
 
                             var client = new TokenClient(tokenEndpoint, clientId, clientSecret);
-                            var response = await client.RequestRefreshTokenAsync(refreshToken);
+                            var response = await client.RequestRefreshTokenAsync(refreshToken, new {client_secret = clientSecret});
 
                             if (!response.IsError)
                             {
@@ -154,6 +154,12 @@ namespace GovUk.Education.ManageCourses.Ui
                 options.DisableTelemetry = true;
                 options.Events = new OpenIdConnectEvents
                 {
+                    OnRedirectToIdentityProvider = context =>
+                    {
+                        context.ProtocolMessage.Prompt = "consent";                        
+                        return Task.CompletedTask;
+                    },
+
                     // that event is called after the OIDC middleware received the auhorisation code,
                     // redeemed it for an access token and a refresh token,
                     // and validated the identity token
@@ -172,7 +178,7 @@ namespace GovUk.Education.ManageCourses.Ui
 
                         // align expiration of the cookie with expiration of the
                         // access token
-                        var accessToken = new JwtSecurityToken(x.TokenEndpointResponse.AccessToken);
+                        var accessToken = new JwtSecurityToken(x.TokenEndpointResponse.IdToken);
                         x.Properties.ExpiresUtc = accessToken.ValidTo;
 
                         return Task.CompletedTask;
