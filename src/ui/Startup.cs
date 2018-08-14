@@ -46,13 +46,19 @@ namespace GovUk.Education.ManageCourses.Ui
             {
                 options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
                 options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;                
-                
+                options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
+
             }).AddCookie(options =>
             {
                 options.ExpireTimeSpan = TimeSpan.FromMinutes(120);
                 options.Events = new CookieAuthenticationEvents
                 {
+
+                    // refer to
+                    //  https://github.com/mderriey/TokenRenewal
+                    //  https://stackoverflow.com/questions/40032851/how-to-handle-expired-access-token-in-asp-net-core-using-refresh-token-with-open
+                    // for more details
+
                     // this event is fired everytime the cookie has been validated by the cookie middleware,
                     // so basically during every authenticated request
                     // the decryption of the cookie has already happened so we have access to the user claims
@@ -65,7 +71,7 @@ namespace GovUk.Education.ManageCourses.Ui
                         var timeElapsed = now.Subtract(x.Properties.IssuedUtc.Value);
                         var timeRemaining = x.Properties.ExpiresUtc.Value.Subtract(now);
 
-                        if (timeElapsed > timeRemaining) 
+                        if (timeElapsed > timeRemaining)
                         {
                             var identity = (ClaimsIdentity)x.Principal.Identity;
                             var accessTokenClaim = identity.FindFirst("access_token");
@@ -127,7 +133,7 @@ namespace GovUk.Education.ManageCourses.Ui
                 // using this property would align the expiration of the cookie
                 // with the expiration of the identity token
                 // UseTokenLifetime = true;
-                    
+
                 options.Scope.Clear();
                 options.Scope.Add("openid");
                 options.Scope.Add("email");
@@ -156,7 +162,7 @@ namespace GovUk.Education.ManageCourses.Ui
                 {
                     OnRedirectToIdentityProvider = context =>
                     {
-                        context.ProtocolMessage.Prompt = "consent";                        
+                        context.ProtocolMessage.Prompt = "consent";
                         return Task.CompletedTask;
                     },
 
