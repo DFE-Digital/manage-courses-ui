@@ -13,8 +13,7 @@
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
       <h2 class="govuk-heading-l">About your organisation</h2>
-      @using (Html.BeginForm("About", "Organisation", FormMethod.Post))
-      {
+      <form asp-controller="Organisation" asp-action="About" method="post">
         <input type="hidden" asp-for="@Model.InstitutionCode"></input>
         @Html.Partial("ErrorSummary")
         <p class="govuk-body">This is your chance to tell applicants why they should choose to train with you. You could describe any advantages and special
@@ -25,20 +24,22 @@
           <li> do say “the Times Educational Supplement ranked our students as 4th happiest in the country”</li>
         </ul>
         <div id="TrainWithUs-wrapper" class="govuk-form-group @(train_with_us ? "govuk-form-group--error" : " ")">
-          @Html.LabelFor(m => m.TrainWithUs, new { @class="govuk-label govuk-!-font-weight-bold" })
+          <label asp-for="TrainWithUs" class="govuk-label govuk-!-font-weight-bold">Training with you</label>
           @if (train_with_us) {
-            @Html.ValidationMessageFor(m => m.TrainWithUs, "", new { @class="govuk-error-message" })
+            <span asp-validation-for="TrainWithUs" class="govuk-error-message"></span>
           }
-          @Html.TextAreaFor(m => m.TrainWithUs, new { @class= "govuk-textarea", rows = 15})
+          <textarea asp-for="TrainWithUs" class="govuk-textarea" rows="15"></textarea>
         </div>
 
         @if(Model.AboutTrainingProviders.Any()) {
           <h2 class="govuk-heading-l">About your accrediting provider</h2>
           <p class="govuk-body">Describe advantages and special features of your accrediting provider. You must be specific and factual with any claims you make, and support them with evidence.</p>
 
-          @for(int i=0; i< Model.AboutTrainingProviders.Count; i++) {
+          @for(int i = 0; i < Model.AboutTrainingProviders.Count; i++) {
             <input type="hidden" asp-for="@Model.AboutTrainingProviders[i].InstitutionCode"></input>
-            <label class="govuk-label govuk-!-font-weight-bold" asp-for="@Model.AboutTrainingProviders[i].Description">@Model.AboutTrainingProviders[i].InstitutionName (optional)</label>
+            <label class="govuk-label govuk-!-font-weight-bold" asp-for="@Model.AboutTrainingProviders[i].Description">
+              @Model.AboutTrainingProviders[i].InstitutionName (optional)
+            </label>
             <textarea class="govuk-textarea" rows="10" asp-for="@Model.AboutTrainingProviders[i].Description"></textarea>
           }
         }
@@ -46,11 +47,11 @@
         <h2 class="govuk-heading-l">Training with a disability</h2>
         <p class="govuk-body">Here you should summarise the accessibility of your course. Bear in mind the range of disabilities that applicants may have (eg dyslexia, or physical, hearing and visual impairments). If accessibility varies between schools or other sites, give details. You could also offer examples of how you’ve accommodated candidates with particular accessibility needs.</p>
         <div id="TrainWithDisability-wrapper" class="govuk-form-group @(train_with_disability ? "govuk-form-group--error" : "")">
-          @Html.LabelFor(m => m.TrainWithDisability, new { @class="govuk-label govuk-!-font-weight-bold" })
+          <label asp-for="TrainWithDisability" class="govuk-label govuk-!-font-weight-bold">Training with a disability</label>
           @if (train_with_disability) {
             @Html.ValidationMessageFor(m => m.TrainWithDisability, "", new { @class="govuk-error-message" })
           }
-          @Html.TextAreaFor(m => m.TrainWithDisability, new { @class= "govuk-textarea", rows = 15})
+          <textarea asp-for="TrainWithDisability" class="govuk-textarea" rows="15"></textarea>
         </div>
         <div class="form-group">
           <input type="submit" class="govuk-button" value="Save" />
@@ -58,7 +59,7 @@
         <div class="form-group">
           <a href="@Url.Action("About", "Organisation")" class="govuk-link">Cancel changes</a>
         </div>
-      }
+      </form>
     </div>
   </div>
 </section>
