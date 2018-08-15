@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
     <UserSecretsId>manage-courses-ui-config</UserSecretsId>
@@ -19,7 +19,7 @@
   </ItemGroup>
   <Import Condition="Exists('$(ProjectDir)dev.targets')" Project="$(ProjectDir)dev.targets" />
   <ItemGroup Condition="Exists('$(ProjectDir)dev.targets')==false">
-    <PackageReference Include="GovUk.Education.ManageCourses.ApiClient" Version="0.4.0" />
+    <PackageReference Include="GovUk.Education.ManageCourses.ApiClient" Version="0.4.1" />
   </ItemGroup>
   <!--<Target Name="Grunt" Condition="'$(Configuration)'=='Release'" BeforeTargets="AfterBuild">
     <Exec Command="npm install" />
