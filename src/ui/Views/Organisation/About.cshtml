@@ -28,7 +28,7 @@
           @if (train_with_us) {
             <span asp-validation-for="TrainWithUs" class="govuk-error-message"></span>
           }
-          <textarea asp-for="TrainWithUs" class="govuk-textarea" rows="15"></textarea>
+          <textarea asp-for="TrainWithUs" class="govuk-textarea" rows="15" maxlength="250"></textarea>
         </div>
 
         @if(Model.AboutTrainingProviders.Any()) {
@@ -40,7 +40,7 @@
             <label class="govuk-label govuk-!-font-weight-bold" asp-for="@Model.AboutTrainingProviders[i].Description">
               @Model.AboutTrainingProviders[i].InstitutionName (optional)
             </label>
-            <textarea class="govuk-textarea" rows="10" asp-for="@Model.AboutTrainingProviders[i].Description"></textarea>
+            <textarea class="govuk-textarea" rows="10" asp-for="@Model.AboutTrainingProviders[i].Description" maxlength="100"></textarea>
           }
         }
 
@@ -57,7 +57,7 @@
           @if (train_with_disability) {
             @Html.ValidationMessageFor(m => m.TrainWithDisability, "", new { @class="govuk-error-message" })
           }
-          <textarea asp-for="TrainWithDisability" class="govuk-textarea" rows="15"></textarea>
+          <textarea asp-for="TrainWithDisability" class="govuk-textarea" rows="15" maxlength="250"></textarea>
         </div>
         <div class="form-group">
           <input type="submit" class="govuk-button" value="Save" />
@@ -69,10 +69,24 @@
     </div>
     <div class="govuk-grid-column-one-third">
       <aside class="related">
+        <!-- Intial state -->
+        <p class="govuk-body">You need to complete and publish this information.</p>
+
+        <!-- Content has been saved but not published -->
         <p class="govuk-body">You have unpublished changes.</p>
+
+        <!-- Content have been published -->
+        <p class="govuk-body">Last published on XXX</p>
+
+        <!-- Content have been published and you've saved more changes that arent yet published-->
+        <p class="govuk-body">Last published on XXX</p>
+        <p class="govuk-body">You have unpublished changes.</p>
+
         <hr class="related__section-break">
         <h4 class="govuk-heading-m">Publish</h4>
         <p class="govuk-body">New information will show on all @Model.TabViewModel.OrganisationName courses.</p>
+
+        <!-- Should only show when content has been saved and is not published -->
         <form asp-controller="Organisation" asp-action="Publish" method="post">
           <input type="submit" class="govuk-button" value="Publish" />
         </form>
