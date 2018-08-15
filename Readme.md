@@ -43,6 +43,7 @@ You will need to set the app settings (prefered to be store as `user-secrets`):
 * **ApiConnection:url** - the location of your [manage-courses-api](https://github.com/DFE-Digital/manage-courses-api) deployment. You can use a local one or perhaps [the one in the Dev Environment](https://manage-courses-ui-bat-development.e4ff.pro-eu-west-1.openshiftapps.com) if you are lazy
 * **DFE_SIGNIN_CLIENT_SECRET** - the client secret of your oath server
 * **auth:oidc:metadataAddress** - the .well-known config URL of your oauth server, if you don't want to use the default sandbox one
+* **auth:oidc:tokenEndpoint** - the /token endpoint as specified in the .well-known config URL of your oauth server
 
 You may also set the following optional ones:
 

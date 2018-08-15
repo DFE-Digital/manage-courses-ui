@@ -15,5 +15,7 @@ namespace GovUk.Education.ManageCourses.Ui
         Task<IEnumerable<UserOrganisation>> GetOrganisations();
         Task<UserOrganisation> GetOrganisation(string instCode);
         Task LogAccessRequest(AccessRequest accessRequest);
+        Task  SaveEnrichmentOrganisation(string institutionCode, UcasInstitutionEnrichmentPostModel organisation);
+        Task<UcasInstitutionEnrichmentGetModel> GetEnrichmentOrganisation(string ucasCode);
     }
 }
