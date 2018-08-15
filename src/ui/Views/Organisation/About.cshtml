@@ -87,6 +87,10 @@
         <p class="govuk-body">New information will show on all @Model.TabViewModel.OrganisationName courses.</p>
 
         <!-- Should only show when content has been saved and is not published -->
+        <p class="govuk-body">You have unpublished changes.</p>
+        <hr class="related__section-break">
+        <h4 class="govuk-heading-m">Publish</h4>
+        <p class="govuk-body">New information will show on all @Model.TabViewModel.OrganisationName courses.</p>
         <form asp-controller="Organisation" asp-action="Publish" method="post">
           <input type="submit" class="govuk-button" value="Publish" />
         </form>

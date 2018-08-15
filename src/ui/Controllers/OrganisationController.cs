@@ -119,6 +119,15 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             return new RedirectToActionResult("About", "Organisation", new { ucasCode });
         }
 
+        [HttpPost]
+        [Route("{ucasCode}/publish")]
+        public async Task<ActionResult> Publish(string ucasCode, OrganisationViewModel model)
+        {
+            // put some real code here to actually "publish" org enrichment
+
+            return new RedirectToActionResult("About", "Organisation", new { ucasCode });
+        }
+
         [HttpGet]
         [Route("{ucasCode}/request-access")]
         public async Task<ViewResult> RequestAccess(string ucasCode)
