@@ -23,12 +23,12 @@
           <li>don’t say “our students are some of the happiest in the country”</li>
           <li> do say “the Times Educational Supplement ranked our students as 4th happiest in the country”</li>
         </ul>
-        <div id="TrainWithUs-wrapper" class="govuk-form-group @(train_with_us ? "govuk-form-group--error" : " ")">
+        <div id="TrainWithUs-wrapper" class="govuk-form-group govuk-character-count @(train_with_us ? "govuk-form-group--error" : " ")" data-module="character-count" data-maxwords="250">
           <label asp-for="TrainWithUs" class="govuk-label govuk-!-font-weight-bold">Training with you</label>
           @if (train_with_us) {
             <span asp-validation-for="TrainWithUs" class="govuk-error-message"></span>
           }
-          <textarea asp-for="TrainWithUs" class="govuk-textarea" rows="15" maxlength="250"></textarea>
+          <textarea asp-for="TrainWithUs" class="govuk-textarea js-character-count" rows="15" data-module="character-count"></textarea>
         </div>
 
         @if(Model.AboutTrainingProviders.Any()) {
@@ -36,11 +36,13 @@
           <p class="govuk-body">Describe advantages and special features of your accrediting provider. You must be specific and factual with any claims you make, and support them with evidence.</p>
 
           @for(int i = 0; i < Model.AboutTrainingProviders.Count; i++) {
-            <input type="hidden" asp-for="@Model.AboutTrainingProviders[i].InstitutionCode"></input>
-            <label class="govuk-label govuk-!-font-weight-bold" asp-for="@Model.AboutTrainingProviders[i].Description">
-              @Model.AboutTrainingProviders[i].InstitutionName (optional)
-            </label>
-            <textarea class="govuk-textarea" rows="10" asp-for="@Model.AboutTrainingProviders[i].Description" maxlength="100"></textarea>
+            <div id="AboutTrainingProviders-wrapper" class="govuk-form-group govuk-character-count"  data-module="character-count" data-maxwords="100">
+              <input type="hidden" asp-for="@Model.AboutTrainingProviders[i].InstitutionCode"></input>
+              <label class="govuk-label govuk-!-font-weight-bold" asp-for="@Model.AboutTrainingProviders[i].Description">
+                @Model.AboutTrainingProviders[i].InstitutionName (optional)
+              </label>
+              <textarea class="govuk-textarea js-character-count" rows="10" asp-for="@Model.AboutTrainingProviders[i].Description"></textarea>
+            </div>
           }
         }
 
@@ -57,7 +59,7 @@
           @if (train_with_disability) {
             @Html.ValidationMessageFor(m => m.TrainWithDisability, "", new { @class="govuk-error-message" })
           }
-          <textarea asp-for="TrainWithDisability" class="govuk-textarea" rows="15" maxlength="250"></textarea>
+          <textarea asp-for="TrainWithDisability" class="govuk-textarea js-character-count" rows="15"></textarea>
         </div>
         <div class="form-group">
           <input type="submit" class="govuk-button" value="Save" />
@@ -101,3 +103,37 @@
     </div>
   </div>
 </section>
+
+<script>
+    var $textAreas = document.querySelectorAll('textarea')
+    Array.prototype.forEach.call($textAreas, function ($textAreas) {
+        var simplemde = new SimpleMDE({
+            element: $textAreas,
+            autoDownloadFontAwesome: true,
+            autosave: {
+                enabled: true,
+                delay: 1000,
+                uniqueId: $textAreas.id
+            },
+            spellChecker: false,
+            forceSync: true,
+            styleSelectedText: false,
+            status: [ {
+                className: "trigger",
+                onUpdate: function(el) {
+                    // Make GOV char count work
+                    $textAreas.blur();
+                }
+            }],
+            toolbar: [
+                "ordered-list",
+                "|",
+                "unordered-list",
+                "|",
+                "link",
+                "|",
+                "preview"
+            ]
+        });
+    });
+</script>

@@ -6,6 +6,7 @@ $govuk-global-styles: true;
 @import "node_modules/govuk-frontend/all";
 @import "components/cookie-banner";
 @import "components/related";
+@import "components/character-count";
 @import "patterns/course-parts";
 @import "patterns/success-summary";
 @import "patterns/definition-list";
