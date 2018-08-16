@@ -5,3 +5,4 @@ node_modules
 *.tmp
 .vs
 dev.targets
+src/ui/wwwroot/*
