@@ -1,0 +1,19 @@
+@{
+  var type = (string)TempData.Get("MessageType");
+  var title = (string)TempData.Get("MessageTitle");
+  var body = (string)TempData.Get("MessageBody");
+}
+
+@if (type != null)
+{
+  <div class="govuk-@type-summary" role="alert">
+    <h3 class="govuk-heading-m govuk-@type-summary__title">@title</h3>
+
+    @if (body != null)
+    {
+      <div class="govuk-@type-summary__body">
+        <p clas="govuk-body">@body</p>
+      </div>
+    }
+  </div>
+}

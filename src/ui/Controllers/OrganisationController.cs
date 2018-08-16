@@ -97,6 +97,9 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
 
             await _manageApi.SaveEnrichmentOrganisation(ucasCode, postModel);
 
+            TempData["MessageType"] = "success";
+            TempData["MessageTitle"] =  "Your changes have been saved";
+
             return new RedirectToActionResult("About", "Organisation", new { ucasCode });
         }
 
