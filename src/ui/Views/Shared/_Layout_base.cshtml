@@ -45,7 +45,7 @@
 
     <a href="#main-content" class="govuk-skip-link">@(ViewData["skipLinkMessage"] ?? "Skip to main content")</a>
 
-    <div class="app-cookie-banner js-cookie-banner">
+    <div class="app-cookie-banner" data-module="cookie-message">
         @if (IsSectionDefined("cookieMessage")) {
             RenderSection("cookieMessage");
         }
