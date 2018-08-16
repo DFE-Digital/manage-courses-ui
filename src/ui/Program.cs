@@ -1,10 +1,18 @@
-﻿using System.Net;
+﻿using System;
+using System.IO;
+using System.Net;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
+using Serilog;
 
 namespace GovUk.Education.ManageCourses.Ui {
     public class Program {
         public static void Main (string[] args) {
+            Log.Logger = new LoggerConfiguration()
+                .ReadFrom.Configuration(LoggerConfiguration)
+                .CreateLogger();
+
             BuildWebHost (args).Run ();
         }
 
@@ -44,6 +52,7 @@ namespace GovUk.Education.ManageCourses.Ui {
                     }
                 })
                 .UseStartup<Startup> ()
+                .UseSerilog()
                 .Build ();
 
             // else {
@@ -53,5 +62,12 @@ namespace GovUk.Education.ManageCourses.Ui {
             //         .Build ();
             // }
         }
+        
+        private static IConfiguration LoggerConfiguration { get; } = new ConfigurationBuilder()
+            .SetBasePath(Directory.GetCurrentDirectory())
+            .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+            .AddJsonFile($"appsettings.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Production"}.json", optional: true)
+            .AddEnvironmentVariables()
+            .Build();
     }
 }
