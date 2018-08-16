@@ -23,13 +23,6 @@ In the repository root, run:
 ```
 dotnet restore
 cd src\ui
-npm install
-npm run-script generate
-npm run-script watch (if making SASS changes)
-```
-
-Open new terminal window/tab
-```
 dotnet run
 ```
 
@@ -88,13 +81,6 @@ Once you're up and running, navigate to https://localhost:44364. Your browser wi
 ## Coding
 
 This repo can be worked on both Visual Studio 2017 [see IIS Express (Windows-only](###iis-Express-(windows-only)) & Visual Studio Code.
-
-### Asset pipeline
-
-* See https://docs.microsoft.com/en-us/aspnet/core/client-side/using-gulp?view=aspnetcore-2.1 for how gulp is used.
-* To get visual studio to download the node dependencies open the package.json file and save it. Take a look at the output window (select "Bower/npm" in the output dropdown).
-* Once you've done that you can right-click gulpfile.js in solution explorer and open "Task Runner Explorer" to see that it's been understood.
-* Run a build and it should generate all the files needed under folder wwwroot.
 
 ### IIS Express (Windows-only)
 
