@@ -18,6 +18,7 @@ using GovUk.Education.ManageCourses.Ui;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using IdentityModel.Client;
+using Microsoft.AspNetCore.SpaServices.Webpack;
 
 namespace GovUk.Education.ManageCourses.Ui
 {
@@ -216,6 +217,10 @@ namespace GovUk.Education.ManageCourses.Ui
             {
                 app.UseBrowserLink();
                 app.UseDeveloperExceptionPage();
+                app.UseWebpackDevMiddleware(new WebpackDevMiddlewareOptions
+                {
+                    HotModuleReplacement = true
+                });
             }
             else
             {
