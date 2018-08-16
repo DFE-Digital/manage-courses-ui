@@ -1,12 +1,19 @@
-@if (ViewBag.Messages != null)
+@{
+  var type = (string)TempData.Get("MessageType");
+  var title = (string)TempData.Get("MessageTitle");
+  var body = (string)TempData.Get("MessageBody");
+}
+
+@if (type != null)
 {
-  @foreach (var msg in ViewBag.Messages)
-  {
-    <div class="govuk-@msg.AlertType-summary" role="alert">
-      <h3 class="govuk-heading-m govuk-@msg.AlertType-summary__title">@msg.AlertTitle</h3>
-      <div class="govuk-@msg.AlertType-summary__body">
-        <p clas="govuk-body">@msg.AlertMessage</p>
+  <div class="govuk-@type-summary" role="alert">
+    <h3 class="govuk-heading-m govuk-@type-summary__title">@title</h3>
+
+    @if (body != null)
+    {
+      <div class="govuk-@type-summary__body">
+        <p clas="govuk-body">@body</p>
       </div>
-    </div>
-  }
+    }
+  </div>
 }
