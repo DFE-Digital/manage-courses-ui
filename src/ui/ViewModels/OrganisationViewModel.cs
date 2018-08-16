@@ -1,5 +1,7 @@
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using GovUk.Education.ManageCourses.Ui.ViewModels.Enums;
 
 namespace GovUk.Education.ManageCourses.Ui.ViewModels
 {
@@ -21,5 +23,9 @@ namespace GovUk.Education.ManageCourses.Ui.ViewModels
         // TODO: Get this working
         //[Required(ErrorMessage = "Give details about training with a disability")]
         public string TrainWithDisability { get; set; }
+
+        public DateTime? LastPublishedDateTimeUtc { get; set; }
+
+        public Status Status { get; set; }
     }
 }

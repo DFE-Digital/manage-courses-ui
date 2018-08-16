@@ -3,10 +3,10 @@
 @{
   Layout = "Shared/_TabViewLayout";
   ViewBag.Title = Model.TabViewModel.OrganisationName;
-  var domain = ViewData.ModelState["DomainName"] != null && ViewData.ModelState["DomainName"].Errors.Any();
   var train_with_us = ViewData.ModelState["TrainWithUs"] != null && ViewData.ModelState["TrainWithUs"].Errors.Any();
   var about_training_provider = ViewData.ModelState["AboutTrainingProvider"] != null && ViewData.ModelState["AboutTrainingProvider"].Errors.Any();
   var train_with_disability = ViewData.ModelState["TrainWithDisability"] != null && ViewData.ModelState["TrainWithDisability"].Errors.Any();
+  var workflowStatus = Model.GetWorkflowStatus();
 }
 
 <section class="govuk-tabs__panel--without-border">
@@ -70,36 +70,49 @@
       </form>
     </div>
     <div class="govuk-grid-column-one-third">
+
       <aside class="related">
-        <!-- Intial state -->
-        <p class="govuk-body">You need to complete and publish this information.</p>
+        @switch(workflowStatus)
+        {
+          case WorkflowStatus.Blank :
+            <p class="govuk-body">You need to complete and publish this information.</p>
 
-        <!-- Content has been saved but not published -->
-        <p class="govuk-body">You have unpublished changes.</p>
+            break;
+          case WorkflowStatus.InitialDraft :
+            <p class="govuk-body">You have unpublished changes.</p>
 
-        <!-- Content have been published -->
-        <p class="govuk-body">Last published on XXX</p>
+            <hr class="related__section-break">
+            <h4 class="govuk-heading-m">Publish</h4>
+            <p class="govuk-body">New information will show on all @Model.TabViewModel.OrganisationName courses.</p>
+            <form asp-controller="Organisation" asp-action="Publish" method="post">
+              <input type="submit" class="govuk-button" value="Publish" />
+            </form>
+            break;
+          case WorkflowStatus.Published :
+            <p class="govuk-body">Last published on @Model.LastPublishedDateTimeUtc.DateString()</p>
 
-        <!-- Content have been published and you've saved more changes that arent yet published-->
-        <p class="govuk-body">Last published on XXX</p>
-        <p class="govuk-body">You have unpublished changes.</p>
+            break;
+          case WorkflowStatus.SubsequenceDraft :
+            <p class="govuk-body">Last published on @Model.LastPublishedDateTimeUtc.DateString()</p>
+            <p class="govuk-body">You have unpublished changes.</p>
 
-        <hr class="related__section-break">
-        <h4 class="govuk-heading-m">Publish</h4>
-        <p class="govuk-body">New information will show on all @Model.TabViewModel.OrganisationName courses.</p>
+            <hr class="related__section-break">
+            <h4 class="govuk-heading-m">Publish</h4>
+            <p class="govuk-body">New information will show on all @Model.TabViewModel.OrganisationName courses.</p>
 
-        <!-- Should only show when content has been saved and is not published -->
-        <p class="govuk-body">You have unpublished changes.</p>
-
-        <hr class="related__section-break">
-        <h4 class="govuk-heading-m">Publish</h4>
-        <p class="govuk-body">New information will show on all @Model.TabViewModel.OrganisationName courses.</p>
-
-        <!-- Should only show when content has been saved and is not published -->
-        <form asp-controller="Organisation" asp-action="Publish" method="post">
-          <input type="submit" class="govuk-button" value="Publish" />
-        </form>
+            <form asp-controller="Organisation" asp-action="Publish" method="post">
+              <input type="submit" class="govuk-button" value="Publish" />
+            </form>
+            break;
+          case WorkflowStatus.BlankSubsequenceDraft :
+            <p class="govuk-body">Last published on @Model.LastPublishedDateTimeUtc.DateString()</p>
+            <p class="govuk-body">You need to complete and publish this information.</p>
+            break;
+          default:
+            break;
+        }
       </aside>
+
     </div>
   </div>
 </section>

@@ -121,7 +121,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
 
         [HttpPost]
         [Route("{ucasCode}/publish")]
-        public async Task<ActionResult> Publish(string ucasCode, OrganisationViewModel model)
+        public async Task<ActionResult> Publish(string ucasCode)
         {
             // put some real code here to actually "publish" org enrichment
 
