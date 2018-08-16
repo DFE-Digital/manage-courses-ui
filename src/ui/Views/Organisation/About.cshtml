@@ -103,37 +103,3 @@
     </div>
   </div>
 </section>
-
-<script>
-    var $textAreas = document.querySelectorAll('textarea')
-    Array.prototype.forEach.call($textAreas, function ($textAreas) {
-        var simplemde = new SimpleMDE({
-            element: $textAreas,
-            autoDownloadFontAwesome: true,
-            autosave: {
-                enabled: true,
-                delay: 1000,
-                uniqueId: $textAreas.id
-            },
-            spellChecker: false,
-            forceSync: true,
-            styleSelectedText: false,
-            status: [ {
-                className: "trigger",
-                onUpdate: function(el) {
-                    // Make GOV char count work
-                    $textAreas.blur();
-                }
-            }],
-            toolbar: [
-                "ordered-list",
-                "|",
-                "unordered-list",
-                "|",
-                "link",
-                "|",
-                "preview"
-            ]
-        });
-    });
-</script>
