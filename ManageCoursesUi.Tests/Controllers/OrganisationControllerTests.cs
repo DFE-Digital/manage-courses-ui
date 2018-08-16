@@ -278,6 +278,8 @@ namespace ManageCoursesUi.Tests
 
             var controller = new OrganisationController(apiMock.Object);
 
+            controller.TempData = new Mock<ITempDataDictionary>().Object;
+
             var result = await controller.AboutPost(ucasCode, viewModel);
 
             apiMock.Verify(x => x.SaveEnrichmentOrganisation(ucasCode, It.IsAny<UcasInstitutionEnrichmentPostModel>()), Times.Once);
