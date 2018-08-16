@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using GovUk.Education.ManageCourses.ApiClient;
 using GovUk.Education.ManageCourses.Ui.ViewModels;
 using GovUk.Education.ManageCourses.Ui;
+using System.Collections.Generic;
 
 namespace GovUk.Education.ManageCourses.Ui.Controllers
 {
@@ -22,8 +23,24 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
         // GET: Home
         [Authorize]
         public async Task<ActionResult> Index()
-        {
-            var orgs = await _manageApi.GetOrganisations();
+        {            
+            IEnumerable<UserOrganisation> orgs;
+            
+            try
+            {
+                orgs = await _manageApi.GetOrganisations();
+            }
+            catch (SwaggerException e)
+            {
+                if (e.StatusCode == 401)
+                {
+                    return StatusCode(401);
+                }
+                else
+                {
+                    throw;
+                }
+            }
 
             var userOrganisations = orgs.ToList();
             if (userOrganisations.Count() == 1)
@@ -36,7 +53,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
                 return this.RedirectToAction("Index", "Organisations");
             }
 
-            throw new Exception("No organisations returned from API for this user");
+            return StatusCode(401);
         }
     }
 }
