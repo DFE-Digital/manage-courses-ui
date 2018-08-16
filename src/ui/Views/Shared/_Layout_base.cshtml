@@ -32,7 +32,7 @@
     <script>
         document.body.className = ((document.body.className) ? document.body.className + ' js-enabled' : 'js-enabled');
     </script>
-    
+
     @RenderSection("bodyStart", required: false)
 
     <a href="#main-content" class="govuk-skip-link">@(ViewData["skipLinkMessage"] ?? "Skip to main content")</a>
@@ -77,8 +77,9 @@
     </header>
 
     @RenderSection("afterHeader", required: false)
-    
+
     <div class="govuk-width-container">
+        <partial name="_Alerts" />
         @RenderBody()
     </div>
 

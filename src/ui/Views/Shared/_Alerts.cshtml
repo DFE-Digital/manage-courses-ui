@@ -1,0 +1,12 @@
+@if (ViewBag.Messages != null)
+{
+  @foreach (var msg in ViewBag.Messages)
+  {
+    <div class="govuk-@msg.AlertType-summary" role="alert">
+      <h3 class="govuk-heading-m govuk-@msg.AlertType-summary__title">@msg.AlertTitle</h3>
+      <div class="govuk-@msg.AlertType-summary__body">
+        <p clas="govuk-body">@msg.AlertMessage</p>
+      </div>
+    </div>
+  }
+}
