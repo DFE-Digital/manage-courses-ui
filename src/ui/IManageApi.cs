@@ -5,7 +5,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using GovUk.Education.ManageCourses.ApiClient;
 
-
 namespace GovUk.Education.ManageCourses.Ui
 {
     public interface IManageApi
@@ -15,7 +14,8 @@ namespace GovUk.Education.ManageCourses.Ui
         Task<IEnumerable<UserOrganisation>> GetOrganisations();
         Task<UserOrganisation> GetOrganisation(string instCode);
         Task LogAccessRequest(AccessRequest accessRequest);
-        Task  SaveEnrichmentOrganisation(string institutionCode, UcasInstitutionEnrichmentPostModel organisation);
+        Task SaveEnrichmentOrganisation(string institutionCode, UcasInstitutionEnrichmentPostModel organisation);
         Task<UcasInstitutionEnrichmentGetModel> GetEnrichmentOrganisation(string ucasCode);
+        Task<bool> PublishEnrichmentOrganisation(string ucasCode);
     }
 }

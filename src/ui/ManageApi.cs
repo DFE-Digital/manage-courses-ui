@@ -75,5 +75,12 @@ namespace GovUk.Education.ManageCourses.Ui
             var result = await _apiClient.Enrichment_GetInstitutionAsync(ucasCode);
             return result;
         }
+
+        public async Task<bool> PublishEnrichmentOrganisation(string ucasCode)
+        {
+            var result = await _apiClient.Enrichment_PublishInstitutionAsync(ucasCode);
+
+            return result;
+        }
     }
 }

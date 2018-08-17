@@ -7,7 +7,7 @@
     var errorViewPage = "";
     switch (statusCode)
     {
-        case 401: 
+        case 401:
             errorViewPage = "Unauthorized";
             break;
         case 403:
@@ -15,6 +15,9 @@
             break;
         case 404:
             errorViewPage = "NotFound";
+            break;
+        case 500:
+            errorViewPage = "ServerError";
             break;
         default:
             errorViewPage = "ServerError";
