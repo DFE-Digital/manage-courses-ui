@@ -89,11 +89,11 @@
             </form>
             break;
           case WorkflowStatus.Published :
-            <p class="govuk-body">Last published on @Model.LastPublishedDateTimeUtc.DateString()</p>
+            <p class="govuk-body">Last published on @Model.LastPublishedTimestampUtc.DateString()</p>
 
             break;
           case WorkflowStatus.SubsequenceDraft :
-            <p class="govuk-body">Last published on @Model.LastPublishedDateTimeUtc.DateString()</p>
+            <p class="govuk-body">Last published on @Model.LastPublishedTimestampUtc.DateString()</p>
             <p class="govuk-body">You have unpublished changes.</p>
 
             <hr class="related__section-break">
@@ -105,7 +105,7 @@
             </form>
             break;
           case WorkflowStatus.BlankSubsequenceDraft :
-            <p class="govuk-body">Last published on @Model.LastPublishedDateTimeUtc.DateString()</p>
+            <p class="govuk-body">Last published on @Model.LastPublishedTimestampUtc.DateString()</p>
             <p class="govuk-body">You need to complete and publish this information.</p>
             break;
           default:

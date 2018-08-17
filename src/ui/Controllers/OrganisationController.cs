@@ -78,7 +78,9 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
                 TabViewModel = tabViewModel,
                 TrainWithUs = enrichmentModel.TrainWithUs,
                 AboutTrainingProviders = aboutAccreditingTrainingProviders,
-                TrainWithDisability = enrichmentModel.TrainWithDisability
+                TrainWithDisability = enrichmentModel.TrainWithDisability,
+                LastPublishedTimestampUtc = ucasInstitutionEnrichmentGetModel.LastPublishedTimestampUtc,
+                Status = ucasInstitutionEnrichmentGetModel.Status
             };
 
             return View(model);

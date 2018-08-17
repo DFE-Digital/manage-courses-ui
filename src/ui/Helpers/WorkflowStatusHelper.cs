@@ -1,3 +1,5 @@
+using System;
+using GovUk.Education.ManageCourses.ApiClient;
 using GovUk.Education.ManageCourses.Ui.ViewModels;
 using GovUk.Education.ManageCourses.Ui.ViewModels.Enums;
 
@@ -8,9 +10,9 @@ namespace GovUk.Education.ManageCourses.Ui.Helpers
         public static WorkflowStatus GetWorkflowStatus(this OrganisationViewModel model)
         {
             var result = WorkflowStatus.Blank;
-            if (model.Status == Status.Draft)
+            if (model.Status == EnumStatus.Draft)
             {
-                var hasLastPublishedDateTimeUtc = model.LastPublishedDateTimeUtc.HasValue;
+                var hasLastPublishedDateTimeUtc = model.LastPublishedTimestampUtc.HasValue && model.LastPublishedTimestampUtc > DateTime.MinValue;
                 var isBlank = string.IsNullOrWhiteSpace(model.TrainWithUs) || string.IsNullOrWhiteSpace(model.TrainWithDisability);
 
                 if (hasLastPublishedDateTimeUtc)

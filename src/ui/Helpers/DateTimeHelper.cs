@@ -8,7 +8,7 @@ namespace GovUk.Education.ManageCourses.Ui.Helpers
         {
             var result = "";
 
-            if (date.HasValue)
+            if (date.HasValue && date > DateTime.MinValue)
             {
                 result = date.Value.ToString("dd MMMM yyyy");
             }
