@@ -73,6 +73,9 @@ namespace GovUk.Education.ManageCourses.Ui
         public async Task<UcasInstitutionEnrichmentGetModel> GetEnrichmentOrganisation(string ucasCode)
         {
             var result = await _apiClient.Enrichment_GetInstitutionAsync(ucasCode);
+
+            result = result ?? new UcasInstitutionEnrichmentGetModel { EnrichmentModel = new InstitutionEnrichmentModel() };
+
             return result;
         }
 
