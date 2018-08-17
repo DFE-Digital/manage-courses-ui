@@ -17,7 +17,7 @@ namespace GovUk.Education.ManageCourses.Ui.Helpers
 
                 if (hasLastPublishedDateTimeUtc)
                 {
-                    result = isBlank ? WorkflowStatus.BlankSubsequenceDraft : WorkflowStatus.SubsequenceDraft;
+                    result = isBlank ? WorkflowStatus.BlankSubsequentDraft : WorkflowStatus.SubsequentDraft;
                 }
                 else
                 {

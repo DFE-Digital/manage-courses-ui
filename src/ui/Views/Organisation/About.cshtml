@@ -78,6 +78,14 @@
           case WorkflowStatus.Blank :
             <p class="govuk-body">You need to complete and publish this information.</p>
 
+            <hr class="related__section-break">
+            <h4 class="govuk-heading-m">Publish</h4>
+            <p class="govuk-body">New information will show on all @Model.TabViewModel.OrganisationName courses.</p>
+
+            <form asp-controller="Organisation" asp-action="about" method="post">
+              <input type="submit" class="govuk-button" value="Publish" />
+              <input type="hidden" asp-for="@Model.PublishOrganisation" value="true"></input>
+            </form>
             break;
           case WorkflowStatus.InitialDraft :
             <p class="govuk-body">You have unpublished changes.</p>
@@ -85,6 +93,7 @@
             <hr class="related__section-break">
             <h4 class="govuk-heading-m">Publish</h4>
             <p class="govuk-body">New information will show on all @Model.TabViewModel.OrganisationName courses.</p>
+
             <form asp-controller="Organisation" asp-action="about" method="post">
               <input type="submit" class="govuk-button" value="Publish" />
               <input type="hidden" asp-for="@Model.PublishOrganisation" value="true"></input>
@@ -94,7 +103,7 @@
             <p class="govuk-body">Last published on @Model.LastPublishedTimestampUtc.DateString()</p>
 
             break;
-          case WorkflowStatus.SubsequenceDraft :
+          case WorkflowStatus.SubsequentDraft :
             <p class="govuk-body">Last published on @Model.LastPublishedTimestampUtc.DateString()</p>
             <p class="govuk-body">You have unpublished changes.</p>
 
@@ -107,9 +116,18 @@
               <input type="submit" class="govuk-button" value="Publish" />
             </form>
             break;
-          case WorkflowStatus.BlankSubsequenceDraft :
+          case WorkflowStatus.BlankSubsequentDraft :
             <p class="govuk-body">Last published on @Model.LastPublishedTimestampUtc.DateString()</p>
             <p class="govuk-body">You need to complete and publish this information.</p>
+
+            <hr class="related__section-break">
+            <h4 class="govuk-heading-m">Publish</h4>
+            <p class="govuk-body">New information will show on all @Model.TabViewModel.OrganisationName courses.</p>
+
+            <form asp-controller="Organisation" asp-action="about" method="post">
+              <input type="hidden" asp-for="@Model.PublishOrganisation" value="true"></input>
+              <input type="submit" class="govuk-button" value="Publish" />
+            </form>
             break;
           default:
             break;

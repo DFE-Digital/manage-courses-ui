@@ -61,7 +61,7 @@ namespace ManageCoursesUi.Workflow
         }
 
         [Test]
-        public void GetWorkflowStatus_SubsequenceDraft()
+        public void GetWorkflowStatus_SubsequentDraft()
         {
             var model = new OrganisationViewModel
             {
@@ -73,11 +73,11 @@ namespace ManageCoursesUi.Workflow
 
             var status = model.GetWorkflowStatus();
 
-            Assert.AreEqual(status, WorkflowStatus.SubsequenceDraft);
+            Assert.AreEqual(status, WorkflowStatus.SubsequentDraft);
         }
 
                 [Test]
-        public void GetWorkflowStatus_BlankSubsequenceDraft()
+        public void GetWorkflowStatus_BlankSubsequentDraft()
         {
             var model = new OrganisationViewModel
             {
@@ -89,10 +89,7 @@ namespace ManageCoursesUi.Workflow
 
             var status = model.GetWorkflowStatus();
 
-            Assert.AreEqual(status, WorkflowStatus.BlankSubsequenceDraft);
+            Assert.AreEqual(status, WorkflowStatus.BlankSubsequentDraft);
         }
-        /*
-        BlankSubsequenceDraft
-        */
     }
 }

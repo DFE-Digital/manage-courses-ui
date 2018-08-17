@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Dynamic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -74,7 +75,7 @@ namespace GovUk.Education.ManageCourses.Ui
         {
             var result = await _apiClient.Enrichment_GetInstitutionAsync(ucasCode);
 
-            result = result ?? new UcasInstitutionEnrichmentGetModel { EnrichmentModel = new InstitutionEnrichmentModel() };
+            result = result ?? new UcasInstitutionEnrichmentGetModel { EnrichmentModel = new InstitutionEnrichmentModel() { AccreditingProviderEnrichments = new ObservableCollection<AccreditingProviderEnrichment>() } };
 
             return result;
         }

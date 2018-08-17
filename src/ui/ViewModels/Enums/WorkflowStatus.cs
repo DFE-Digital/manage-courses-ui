@@ -5,7 +5,7 @@ namespace GovUk.Education.ManageCourses.Ui.ViewModels.Enums
         Blank,
         InitialDraft,
         Published,
-        SubsequenceDraft,
-        BlankSubsequenceDraft
+        SubsequentDraft,
+        BlankSubsequentDraft
     }
 }
