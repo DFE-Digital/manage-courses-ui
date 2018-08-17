@@ -208,9 +208,11 @@ namespace ManageCoursesUi.Tests
                 new Course { AccreditingProviderId = ucasCode + 2 },
                 }
             };
-
+            var now = DateTime.Now;
             var ucasInstitutionEnrichmentGetModel = new UcasInstitutionEnrichmentGetModel()
             {
+                LastPublishedTimestampUtc = now,
+                Status = EnumStatus.Published,
                 EnrichmentModel = new InstitutionEnrichmentModel
                 {
                 AccreditingProviderEnrichments = new ObservableCollection<AccreditingProviderEnrichment>
@@ -252,6 +254,8 @@ namespace ManageCoursesUi.Tests
             Assert.AreEqual(institutionName, organisationViewModel.AboutTrainingProviders.First(x => x.InstitutionCode == ucasCode + 1).InstitutionName);
             Assert.AreEqual(trainWithDisability, organisationViewModel.TrainWithDisability);
             Assert.IsFalse(tabViewModel.MultipleOrganisations);
+            Assert.AreEqual(now, organisationViewModel.LastPublishedTimestampUtc);
+            Assert.AreEqual(EnumStatus.Published, organisationViewModel.Status);
         }
 
         [Test]
@@ -286,8 +290,7 @@ namespace ManageCoursesUi.Tests
 
             var apiMock = new Mock<IManageApi>();
 
-            var enrichmentModel = new InstitutionEnrichmentModel
-            { };
+            var enrichmentModel = new InstitutionEnrichmentModel { };
 
             var ucasInstitutionEnrichmentGetModel = new UcasInstitutionEnrichmentGetModel()
             {
