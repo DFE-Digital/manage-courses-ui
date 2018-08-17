@@ -55,7 +55,8 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             }
             
             var ucasData = (await _manageApi.GetCoursesByOrganisation(ucasCode));
-            var enrichmentModel = (await _manageApi.GetEnrichmentOrganisation(ucasCode)).EnrichmentModel;
+            var ucasInstitutionEnrichmentGetModel = await _manageApi.GetEnrichmentOrganisation(ucasCode);
+            var enrichmentModel = ucasInstitutionEnrichmentGetModel.EnrichmentModel;
 
             var aboutAccreditingTrainingProviders = ucasData.Courses
                 .Where(x =>
