@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text.RegularExpressions;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -38,50 +39,33 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
                 InstitutionName = institutionCourses.InstitutionName,
                 InstitutionId = institutionCourses.InstitutionCode,
                 Providers = providers,
-                TabViewModel = tabViewModel,
+                TabViewModel = tabViewModel
             };
 
             return View(model);
         }
 
-
         [HttpGet]
         [Route("{ucasCode}/about")]
         public async Task<IActionResult> About(string ucasCode)
         {
+
             if (!_featureFlags.ShowOrgEnrichment)
             {
                 return RedirectToAction("Courses", new { ucasCode = ucasCode});
             }
-            
-            var ucasData = (await _manageApi.GetCoursesByOrganisation(ucasCode));
-            var ucasInstitutionEnrichmentGetModel = await _manageApi.GetEnrichmentOrganisation(ucasCode);
-            var enrichmentModel = ucasInstitutionEnrichmentGetModel.EnrichmentModel;
 
-            var aboutAccreditingTrainingProviders = ucasData.Courses
-                .Where(x =>
-                    false == string.Equals(x.AccreditingProviderId, ucasCode, StringComparison.InvariantCultureIgnoreCase) &&
-                    false == string.IsNullOrWhiteSpace(x.AccreditingProviderId))
-                .Distinct(new AccreditingProviderIdComparer())
-                .Select(x => new TrainingProviderViewModel()
-                {
-                    InstitutionName = x.AccreditingProviderName,
-                    InstitutionCode = x.AccreditingProviderId,
-                    Description = enrichmentModel.AccreditingProviderEnrichments.FirstOrDefault(TrainingProviderMatchesProviderCourse(x))?.Description ?? ""
-                }).ToList();
+            var ucasInstitutionEnrichmentGetModel = await _manageApi.GetEnrichmentOrganisation(ucasCode);
 
             var tabViewModel = await GetTabViewModelAsync(ucasCode, "about");
 
-            var model = new OrganisationViewModel
-            {
-                InstitutionCode = ucasCode,
-                TabViewModel = tabViewModel,
-                TrainWithUs = enrichmentModel.TrainWithUs,
-                AboutTrainingProviders = aboutAccreditingTrainingProviders,
-                TrainWithDisability = enrichmentModel.TrainWithDisability,
-                LastPublishedTimestampUtc = ucasInstitutionEnrichmentGetModel.LastPublishedTimestampUtc,
-                Status = ucasInstitutionEnrichmentGetModel.Status
-            };
+            var enrichmentModel = ucasInstitutionEnrichmentGetModel.EnrichmentModel;
+            var aboutAccreditingTrainingProviders = await GetTrainingProviderViewModels(ucasCode, enrichmentModel);
+
+            var model = GetOrganisationViewModel(ucasCode, ucasInstitutionEnrichmentGetModel);
+
+            model.TabViewModel = tabViewModel;
+            model.AboutTrainingProviders = aboutAccreditingTrainingProviders;
 
             return View(model);
         }
@@ -90,45 +74,18 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
         [Route("{ucasCode}/about")]
         public async Task<ActionResult> AboutPost(string ucasCode, OrganisationViewModel model)
         {
-            var enrichmentModel = (await _manageApi.GetEnrichmentOrganisation(ucasCode)).EnrichmentModel;
+            var ucasInstitutionEnrichmentGetModel = await _manageApi.GetEnrichmentOrganisation(ucasCode);
 
-            var aboutTrainingProviders = new ObservableCollection<AccreditingProviderEnrichment>(
-                model.AboutTrainingProviders.Select(x => new AccreditingProviderEnrichment
-                {
-                    UcasInstitutionCode = x.InstitutionCode,
-                    Description = x.Description
-                }));
-
-            enrichmentModel.TrainWithUs = model.TrainWithUs;
-            enrichmentModel.AccreditingProviderEnrichments = aboutTrainingProviders;
-            enrichmentModel.TrainWithDisability = model.TrainWithDisability;
-
-            var postModel = new UcasInstitutionEnrichmentPostModel { EnrichmentModel = enrichmentModel };
-
-            await _manageApi.SaveEnrichmentOrganisation(ucasCode, postModel);
-
-            TempData["MessageType"] = "success";
-            TempData["MessageTitle"] =  "Your changes have been saved";
-
-            return new RedirectToActionResult("About", "Organisation", new { ucasCode });
-        }
-
-        [HttpPost]
-        [Route("{ucasCode}/publish")]
-        public async Task<ActionResult> Publish(string ucasCode, OrganisationViewModel model)
-        {
-            // put some real code here to actually "publish" org enrichment
-
-            return new RedirectToActionResult("About", "Organisation", new { ucasCode });
-        }
-
-        [HttpPost]
-        [Route("{ucasCode}/publish")]
-        public async Task<ActionResult> Publish(string ucasCode)
-        {
-            // put some real code here to actually "publish" org enrichment
-
-            return new RedirectToActionResult("About", "Organisation", new { ucasCode });
+            if (model.PublishOrganisation)
+            {
+                var result = await PublishOrgansation(ucasInstitutionEnrichmentGetModel, model, ucasCode);
+                return result;
+            }
+            else
+            {
+                var result = await SaveOrgansation(ucasInstitutionEnrichmentGetModel, model, ucasCode);
+                return result;
+            }
         }
 
         [HttpGet]
@@ -166,20 +123,153 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             return new RedirectToActionResult("RequestAccess", "Organisation", new { ucasCode });
         }
 
+        private async Task<List<TrainingProviderViewModel>> GetTrainingProviderViewModels(string ucasCode, InstitutionEnrichmentModel enrichmentModel, OrganisationViewModel model = null)
+        {
+            var ucasData = await _manageApi.GetCoursesByOrganisation(ucasCode);
+
+            var accreditingProviders = ucasData.Courses
+                .Where(x =>
+                    false == string.Equals(x.AccreditingProviderId, ucasCode, StringComparison.InvariantCultureIgnoreCase) &&
+                    false == string.IsNullOrWhiteSpace(x.AccreditingProviderId))
+                .Distinct(new AccreditingProviderIdComparer()).ToList();
+            var accreditingProviderEnrichments = enrichmentModel.AccreditingProviderEnrichments;
+
+            var result = accreditingProviders.Select(x =>
+
+            {
+                var description = accreditingProviderEnrichments.FirstOrDefault(TrainingProviderMatchesProviderCourse(x))?.Description ?? "";
+
+                if (model != null) {
+
+                    var aboutTrainingProviders = (model.AboutTrainingProviders ?? new List<TrainingProviderViewModel>());
+
+                    description = aboutTrainingProviders.FirstOrDefault(
+                        atp => (atp.InstitutionCode.Equals( x.AccreditingProviderId, StringComparison.InvariantCultureIgnoreCase)))?.Description ?? description;
+                }
+
+                var tpvm = new TrainingProviderViewModel()
+                {
+                    InstitutionName = x.AccreditingProviderName,
+                    InstitutionCode = x.AccreditingProviderId,
+                    Description = description
+                };
+
+                return tpvm;
+            })
+
+            .ToList();
+
+            return result;
+        }
+
+        private OrganisationViewModel GetOrganisationViewModel(string ucasCode, UcasInstitutionEnrichmentGetModel ucasInstitutionEnrichmentGetModel)
+        {
+            var enrichmentModel = ucasInstitutionEnrichmentGetModel.EnrichmentModel;
+
+            var result = new OrganisationViewModel
+            {
+                InstitutionCode = ucasCode,
+                TrainWithUs = enrichmentModel.TrainWithUs,
+                TrainWithDisability = enrichmentModel.TrainWithDisability,
+                LastPublishedTimestampUtc = ucasInstitutionEnrichmentGetModel.LastPublishedTimestampUtc,
+                Status = ucasInstitutionEnrichmentGetModel.Status,
+                PublishOrganisation = false
+            };
+
+            return result;
+        }
+
+        private async Task<ActionResult> PublishOrgansation(UcasInstitutionEnrichmentGetModel ucasInstitutionEnrichmentGetModel, OrganisationViewModel model, string ucasCode)
+        {
+            model = GetOrganisationViewModel(ucasCode, ucasInstitutionEnrichmentGetModel);
+
+            var enrichmentModel = ucasInstitutionEnrichmentGetModel.EnrichmentModel;
+            var aboutAccreditingTrainingProviders = await GetTrainingProviderViewModels(ucasCode, enrichmentModel, model);
+
+            model.AboutTrainingProviders = aboutAccreditingTrainingProviders;
+
+            // The model that is sent is always going to invalid as it is always empty
+            // Therefore fetch from api and map it across to validate it.
+            ValidateModel(model);
+
+            if (!ModelState.IsValid)
+            {
+                var tabViewModel = await GetTabViewModelAsync(ucasCode, "about");
+                model.TabViewModel = tabViewModel;
+
+                return View("about", model);
+            }
+            else
+            {
+                var result = await _manageApi.PublishEnrichmentOrganisation(ucasCode);
+
+                if (result)
+                {
+                    return RedirectToAction("About", new { ucasCode });
+                }
+                else
+                {
+                    // This is a no ops, there should not be any viable valid reason that api rejects, hence dead end.
+                    return RedirectToAction("Index", "Error", new { statusCode = 500 });
+                }
+            }
+        }
+        private async Task<ActionResult> SaveOrgansation(UcasInstitutionEnrichmentGetModel ucasInstitutionEnrichmentGetModel, OrganisationViewModel model, string ucasCode)
+        {
+
+            var enrichmentModel = ucasInstitutionEnrichmentGetModel.EnrichmentModel;
+            var aboutAccreditingTrainingProviders = await GetTrainingProviderViewModels(ucasCode, enrichmentModel, model);
+
+            model.AboutTrainingProviders = aboutAccreditingTrainingProviders;
+
+            // The validation that needs to occurs are word count only on saving
+            ValidateModel(model);
+
+            if (!ModelState.IsValid)
+            {
+                var tabViewModel = await GetTabViewModelAsync(ucasCode, "about");
+                model.TabViewModel = tabViewModel;
+
+                return View("about", model);
+            }
+            else
+            {
+                var aboutTrainingProviders = new ObservableCollection<AccreditingProviderEnrichment>(
+                    model.AboutTrainingProviders.Select(x => new AccreditingProviderEnrichment
+                    {
+                        UcasInstitutionCode = x.InstitutionCode,
+                        Description = x.Description
+                    }));
+
+                enrichmentModel.TrainWithUs = model.TrainWithUs;
+                enrichmentModel.AccreditingProviderEnrichments = aboutTrainingProviders;
+                enrichmentModel.TrainWithDisability = model.TrainWithDisability;
+
+                var postModel = new UcasInstitutionEnrichmentPostModel { EnrichmentModel = enrichmentModel };
+
+                await _manageApi.SaveEnrichmentOrganisation(ucasCode, postModel);
+
+                TempData["MessageType"] = "success";
+                TempData["MessageTitle"] = "Your changes have been saved";
+
+                return RedirectToAction("About", "Organisation", new { ucasCode });
+            }
+        }
+
         private static Func<AccreditingProviderEnrichment, bool> TrainingProviderMatchesProviderCourse(Course x)
         {
             return y => String.Equals(x.AccreditingProviderId,
-            y.UcasInstitutionCode, StringComparison.InvariantCultureIgnoreCase);
+                y.UcasInstitutionCode, StringComparison.InvariantCultureIgnoreCase);
         }
 
-                private List<Provider> GetProviders(InstitutionCourses institutionCourses)
+        private List<Provider> GetProviders(InstitutionCourses institutionCourses)
         {
             var providerNames = institutionCourses.Courses.Select(x => x.AccreditingProviderName).Distinct().ToList();
             var providers = new List<Provider>();
             foreach (var providerName in providerNames)
             {
                 var providerCourses = institutionCourses.Courses.Where(x => x.AccreditingProviderName == providerName).ToList();
-                var providerId = providerCourses.Select(x => x.AccreditingProviderId).Distinct().SingleOrDefault();//should all be the same
+                var providerId = providerCourses.Select(x => x.AccreditingProviderId).Distinct().SingleOrDefault(); //should all be the same
 
                 var provider = new Provider
                 {
@@ -194,7 +284,8 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             return providers;
         }
 
-        private async Task<TabViewModel> GetTabViewModelAsync(string ucasCode, string currentTab) {
+        private async Task<TabViewModel> GetTabViewModelAsync(string ucasCode, string currentTab)
+        {
             var orgs = await _manageApi.GetOrganisations();
             var organisationName = orgs.FirstOrDefault(o => ucasCode.Equals(o.UcasCode, StringComparison.InvariantCultureIgnoreCase))?.OrganisationName;
             var result = new TabViewModel
@@ -207,6 +298,27 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             };
 
             return result;
+        }
+        public void ValidateModel(OrganisationViewModel model) {
+            ModelState.Clear();
+            TryValidateModel(model);
+            for (int i = 0; i < model.AboutTrainingProviders.Count; i++)
+            {
+                var trainingProvider = model.AboutTrainingProviders[i];
+
+                if (!string.IsNullOrWhiteSpace(trainingProvider.Description))
+                {
+                    var regex = new Regex(trainingProvider.ValidationRegex, RegexOptions.Compiled);
+
+                    var match = regex.Match(trainingProvider.Description);
+
+                    if (!match.Success)
+                    {
+                        var key = $"AboutTrainingProviders_{i}__Description";
+                        ModelState.AddModelError(key, trainingProvider.ValidationMessage);
+                    }
+                }
+            }
         }
     }
 }
