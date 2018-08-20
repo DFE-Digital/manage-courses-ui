@@ -15,13 +15,13 @@ namespace GovUk.Education.ManageCourses.Ui.ViewModels
 
         public string InstitutionCode { get; set; }
 
-        [RegularExpression(@"^\s*(\S+\s+|\S+$){0,250}$", ErrorMessage = "Too many words")]
+        [RegularExpression(@"^\s*(\S+\s+|\S+$){0,250}$", ErrorMessage = "Reduce the wordcount for details about training with you")]
         [Required(ErrorMessage = "Give details about training with you")]
         public string TrainWithUs { get; set; }
 
         public List<TrainingProviderViewModel> AboutTrainingProviders { get; set; }
 
-        [RegularExpression(@"^\s*(\S+\s+|\S+$){0,250}$", ErrorMessage = "Too many words")]
+        [RegularExpression(@"^\s*(\S+\s+|\S+$){0,250}$", ErrorMessage = "Reduce the wordcount for details about training with a disability")]
         [Required(ErrorMessage = "Give details about training with a disability")]
         public string TrainWithDisability { get; set; }
 

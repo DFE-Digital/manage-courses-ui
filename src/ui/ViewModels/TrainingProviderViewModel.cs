@@ -7,7 +7,7 @@ namespace GovUk.Education.ManageCourses.Ui.ViewModels
     public string InstitutionName { get; set; }
     public string InstitutionCode { get; set; }
 
-    [RegularExpression(@"^\s*(\S+\s+|\S+$){0,100}$", ErrorMessage = "Too many words")]
+    [RegularExpression(@"^\s*(\S+\s+|\S+$){0,100}$", ErrorMessage = "Reduce the wordcount for accrediting provider")]
     public string Description { get; set; }
   }
 }
