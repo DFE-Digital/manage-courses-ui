@@ -13,7 +13,7 @@
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
       <h2 class="govuk-heading-l">About your organisation</h2>
-      <form asp-controller="Organisation" asp-action="About" method="post">
+      <form asp-controller="Organisation" asp-action="About" method="post" data-module="form">
         <input type="hidden" asp-for="@Model.PublishOrganisation" value="false"></input>
         <input type="hidden" asp-for="@Model.InstitutionCode"></input>
         @Html.Partial("ErrorSummary")
