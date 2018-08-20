@@ -193,6 +193,7 @@ namespace GovUk.Education.ManageCourses.Ui
                 };
             });
 
+            services.AddSingleton<IFeatureFlags>(x => new FeatureFlags(Configuration.GetSection("features")));
             services.AddSingleton<IManageCoursesApiClientConfiguration, ManageCoursesApiClientConfiguration>();
             services.AddScoped(provider => AnalyticsPolicy.FromEnv());
             services.AddScoped<AnalyticsAttribute>();

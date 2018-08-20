@@ -37,11 +37,13 @@
                 Courses
             </a>
         </li>
-        <li class="govuk-tabs__list-item">
-            <a class="govuk-tabs__tab" href="@Url.Action("About", "Organisation")" aria-selected="@isAboutTab.ToString().ToLower()">
-                About your organisation
-            </a>
-        </li>
+        @if(viewModel.ShowAboutTab) {
+            <li class="govuk-tabs__list-item">
+                <a class="govuk-tabs__tab" href="@Url.Action("About", "Organisation")" aria-selected="@isAboutTab.ToString().ToLower()">
+                    About your organisation
+                </a>
+            </li>
+        }
         <li class="govuk-tabs__list-item">
             <a class="govuk-tabs__tab" href="@Url.Action("RequestAccess", "Organisation", modelValues)" aria-selected="@isRequestAccessTab.ToString().ToLower()">
                 Request access for someone else

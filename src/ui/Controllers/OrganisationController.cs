@@ -18,10 +18,12 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
     public class OrganisationController : CommonAttributesControllerBase
     {
         private readonly IManageApi _manageApi;
+        private readonly IFeatureFlags _featureFlags;
 
-        public OrganisationController(IManageApi manageApi)
+        public OrganisationController(IManageApi manageApi, IFeatureFlags featureFlags)
         {
             _manageApi = manageApi;
+            _featureFlags = featureFlags;
         }
 
         [Route("{ucasCode}/courses")]
@@ -36,7 +38,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
                 InstitutionName = institutionCourses.InstitutionName,
                 InstitutionId = institutionCourses.InstitutionCode,
                 Providers = providers,
-                TabViewModel = tabViewModel
+                TabViewModel = tabViewModel,
             };
 
             return View(model);
@@ -45,8 +47,13 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
 
         [HttpGet]
         [Route("{ucasCode}/about")]
-        public async Task<ViewResult> About(string ucasCode)
+        public async Task<IActionResult> About(string ucasCode)
         {
+            if (!_featureFlags.ShowOrgEnrichment)
+            {
+                return RedirectToAction("Courses", new { ucasCode = ucasCode});
+            }
+            
             var ucasData = (await _manageApi.GetCoursesByOrganisation(ucasCode));
             var enrichmentModel = (await _manageApi.GetEnrichmentOrganisation(ucasCode)).EnrichmentModel;
 
@@ -174,7 +181,8 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
                 CurrentTab = currentTab,
                 MultipleOrganisations = orgs.Count() > 1,
                 OrganisationName = organisationName,
-                UcasCode = ucasCode
+                UcasCode = ucasCode,
+                ShowAboutTab = _featureFlags.ShowOrgEnrichment
             };
 
             return result;

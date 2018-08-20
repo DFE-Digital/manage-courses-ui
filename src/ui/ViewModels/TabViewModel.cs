@@ -12,5 +12,6 @@ namespace GovUk.Education.ManageCourses.Ui.ViewModels
         public string OrganisationName { get; set; }
         public string CurrentTab { get; set; }
         public string UcasCode { get; set; }
+        public bool ShowAboutTab { get; set; }
     }
 }
