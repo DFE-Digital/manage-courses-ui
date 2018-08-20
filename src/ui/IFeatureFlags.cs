@@ -12,7 +12,7 @@ namespace GovUk.Education.ManageCourses.Ui
     {
         private readonly IConfigurationSection _config;
 
-        private const string FEATURE_ORG_ENRICHMENT = "FEATURE_ORG_ENRICHEMENT";
+        private const string FEATURE_ORG_ENRICHMENT = "FEATURE_ORG_ENRICHMENT";
 
         public FeatureFlags(IConfigurationSection config)
         {
