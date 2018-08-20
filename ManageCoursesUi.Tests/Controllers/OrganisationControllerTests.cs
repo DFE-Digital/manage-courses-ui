@@ -305,7 +305,6 @@ namespace ManageCoursesUi.Tests
             apiMock.Setup(x => x.GetCoursesByOrganisation(ucasCode))
                 .ReturnsAsync(institutionCourses);
 
-
             var enrichmentModel = new InstitutionEnrichmentModel { AccreditingProviderEnrichments = new ObservableCollection<AccreditingProviderEnrichment> { } };
 
             var ucasInstitutionEnrichmentGetModel = new UcasInstitutionEnrichmentGetModel()
