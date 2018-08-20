@@ -16,7 +16,7 @@
       <form asp-controller="Organisation" asp-action="About" method="post" data-module="form">
         <input type="hidden" asp-for="@Model.PublishOrganisation" value="false"></input>
         <input type="hidden" asp-for="@Model.InstitutionCode"></input>
-        @Html.Partial("ErrorSummary")
+        @Html.Partial("Shared/ErrorSummary")
         <p class="govuk-body">This is your chance to tell applicants why they should choose to train with you. You could describe any advantages and special
         features of you as a training provider.</p>
         <p class="govuk-body">You must be specific and factual with any claims you make, and support them with evidence. For example:</p>
@@ -38,15 +38,22 @@
           <h2 class="govuk-heading-l">About your accrediting provider</h2>
           <p class="govuk-body">Describe advantages and special features of your accrediting provider. You must be specific and factual with any claims you make, and support them with evidence.</p>
 
-          @for(int i = 0; i < Model.AboutTrainingProviders.Count; i++) {
+          @for (int i = 0; i < Model.AboutTrainingProviders.Count; i++) {
+              var aboutTrainingProviderKey = "AboutTrainingProviders_"+i+"__Description";
+              var hasErrored = ViewData.ModelState[aboutTrainingProviderKey] != null && ViewData.ModelState[aboutTrainingProviderKey].Errors.Any();
             <div class="govuk-character-count" data-module="character-count" data-maxwords="100">
-              <div id="AboutTrainingProviders-wrapper" class="govuk-form-group">
-                <input type="hidden" asp-for="@Model.AboutTrainingProviders[i].InstitutionCode"></input>
-                <label class="govuk-label govuk-!-font-weight-bold" asp-for="@Model.AboutTrainingProviders[i].Description">
-                  @Model.AboutTrainingProviders[i].InstitutionName (optional)
-                </label>
-                <textarea class="govuk-textarea js-character-count" rows="10" asp-for="@Model.AboutTrainingProviders[i].Description"></textarea>
-              </div>
+                <div id="@aboutTrainingProviderKey-wrapper" class="govuk-form-group @(hasErrored ? "govuk-form-group--error" : " ")">
+                    <input type="hidden" asp-for="@Model.AboutTrainingProviders[i].InstitutionCode" />
+                    <input type="hidden" asp-for="@Model.AboutTrainingProviders[i].InstitutionName" />
+                    <label class="govuk-label govuk-!-font-weight-bold" asp-for="@Model.AboutTrainingProviders[i].Description">
+                        @Model.AboutTrainingProviders[i].InstitutionName (optional)
+                    </label>
+                    @if (hasErrored)
+                    {
+                        <span asp-validation-for="@Model.AboutTrainingProviders[i].Description" class="govuk-error-message">@Model.AboutTrainingProviders[i].ValidationMessage</span>
+                    }
+                    <textarea class="govuk-textarea js-character-count" rows="10" asp-for="@Model.AboutTrainingProviders[i].Description"></textarea>
+                </div>
             </div>
           }
         }

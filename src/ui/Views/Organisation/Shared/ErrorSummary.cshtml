@@ -1,0 +1,61 @@
+﻿@using Microsoft.AspNetCore.Mvc.ModelBinding;
+@using System.Linq;
+
+
+@if (!@ViewContext.ModelState.IsValid)
+{
+    var metadatas = this.ViewData.ModelExplorer.Properties.Select(x => x.Metadata).ToList();
+
+    var modelStateKeys = this.ViewContext.ModelState.Keys;
+
+    var modelState = new Dictionary<string, ModelStateEntry>();
+
+    foreach (var metadata in metadatas)
+    {
+        var propertyName = metadata.PropertyName;
+
+        if (metadata.IsCollectionType && metadata.IsComplexType)
+        {
+            var modelStateKeysCollections = modelStateKeys.Where(msk => msk.StartsWith(propertyName + "_"));
+
+            foreach (var itemKey in modelStateKeysCollections)
+            {
+
+                var failed = this.ViewContext.ModelState[itemKey];
+                if (failed.ValidationState == ModelValidationState.Invalid)
+                {
+                    modelState.Add(itemKey, failed);
+                }
+            }
+        }
+        else
+        {
+            if (this.ViewContext.ModelState.ContainsKey(propertyName) && this.ViewContext.ModelState[propertyName].ValidationState == ModelValidationState.Invalid)
+            {
+                modelState.Add(propertyName, this.ViewContext.ModelState[propertyName]);
+            }
+        }
+    }
+
+
+
+
+<div class="govuk-error-summary" role="alert" aria-labelledby="error-summary-heading" tabindex="-1">
+        <h2 class="govuk-heading-m govuk-error-summary__title" id="error-summary-heading">
+            You&#8217;ll need to correct some information.
+        </h2>
+        <div class="govuk-error-summary__body">
+            <ul class="govuk-list govuk-error-summary__list">
+
+                @foreach (var state in modelState)
+                {
+                    foreach (var error in state.Value.Errors)
+                    {
+                                    <li><a href="#@state.Key-wrapper">@error.ErrorMessage</a></li>
+                    }
+                }
+
+            </ul>
+        </div>
+    </div>
+}
