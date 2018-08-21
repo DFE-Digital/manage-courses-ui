@@ -14,7 +14,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace GovUk.Education.ManageCourses.Ui.Controllers
 {
-    [Authorize(Policy = "AcceptedTerms")]
+    [Authorize]
     [Route("[controller]")]
     public class OrganisationController : CommonAttributesControllerBase
     {

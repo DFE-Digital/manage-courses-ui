@@ -5,6 +5,7 @@ using System.Dynamic;
 using System.Linq;
 using System.Threading.Tasks;
 using GovUk.Education.ManageCourses.ApiClient;
+using GovUk.Education.ManageCourses.Ui.ViewModels;
 
 namespace GovUk.Education.ManageCourses.Ui
 {
@@ -64,6 +65,11 @@ namespace GovUk.Education.ManageCourses.Ui
         public async Task LogAccessRequest(AccessRequest accessRequest)
         {
             await _apiClient.AccessRequest_IndexAsync(accessRequest);
+        }
+
+        public async Task LogAcceptTerms(AcceptTermsViewModel acceptTermsViewModel)
+        {
+        //await _apiClient.AcceptTerms_IndexAsync(acceptTerms);
         }
 
         public async Task SaveEnrichmentOrganisation(string institutionCode, UcasInstitutionEnrichmentPostModel organisation)

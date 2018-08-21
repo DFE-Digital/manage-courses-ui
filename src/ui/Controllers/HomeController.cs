@@ -75,20 +75,32 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
         [HttpGet("accept-terms")]
         public IActionResult AcceptTerms()
         {
-            return View();
+            return View(new AcceptTermsViewModel());
         }
 
-        [Authorize(Policy = "AcceptedTerms")] // => [AgreedTermsAuthorize()]
-        [HttpGet("Example")]
-        public IActionResult Example()
-        {
-            return View();
-        }
+        // [Authorize(Policy = "AcceptedTerms")] // => [AgreedTermsAuthorize()]
+        // [HttpGet("Example")]
+        // public IActionResult Example()
+        // {
+        //     return View();
+        // }
 
         [Authorize]
         [HttpPost("accept-terms")]
-        public ActionResult AcceptTermsPost(AcceptTermsViewModel model)
+        public async Task<ActionResult> Post(AcceptTermsViewModel model)
         {
+
+            if (!ModelState.IsValid)
+            {
+                return View("AcceptTerms", model);
+            }
+
+            await _manageApi.LogAcceptTerms(new AcceptTermsViewModel()
+            {
+                TermsAccepted = model.TermsAccepted,
+            });
+            return new RedirectResult("/");
+
             // Example of accessing claims
             //         var name = "";
             // if (this.User.Identity.IsAuthenticated)
