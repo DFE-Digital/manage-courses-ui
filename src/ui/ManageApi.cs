@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Dynamic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -73,6 +74,16 @@ namespace GovUk.Education.ManageCourses.Ui
         public async Task<UcasInstitutionEnrichmentGetModel> GetEnrichmentOrganisation(string ucasCode)
         {
             var result = await _apiClient.Enrichment_GetInstitutionAsync(ucasCode);
+
+            result = result ?? new UcasInstitutionEnrichmentGetModel { EnrichmentModel = new InstitutionEnrichmentModel() { AccreditingProviderEnrichments = new ObservableCollection<AccreditingProviderEnrichment>() } };
+
+            return result;
+        }
+
+        public async Task<bool> PublishEnrichmentOrganisation(string ucasCode)
+        {
+            var result = await _apiClient.Enrichment_PublishInstitutionAsync(ucasCode);
+
             return result;
         }
     }
