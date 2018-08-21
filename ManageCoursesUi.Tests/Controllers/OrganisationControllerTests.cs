@@ -528,7 +528,7 @@ namespace ManageCoursesUi.Tests
 
             apiMock.Setup(x => x.PublishEnrichmentOrganisation(ucasCode))
                 .ReturnsAsync(true);
-            var controller = new OrganisationControllerMockedValidation(apiMock.Object);
+            var controller = new OrganisationControllerMockedValidation(apiMock.Object, GetFeatureFlagMock().Object);
 
             var result = await controller.AboutPost(ucasCode, viewModel);
 
