@@ -51,6 +51,7 @@ namespace GovUk.Education.ManageCourses.Ui {
                         });
                     }
                 })
+                .UseApplicationInsights()
                 .UseStartup<Startup> ()
                 .UseSerilog()
                 .Build ();
