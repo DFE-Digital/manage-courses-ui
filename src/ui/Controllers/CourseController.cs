@@ -11,7 +11,7 @@ using GovUk.Education.ManageCourses.Ui.Helpers;
 
 namespace GovUk.Education.ManageCourses.Ui.Controllers
 {
-    [Authorize]
+    [Authorize(Policy = "AcceptedTerms")]
     [Route("organisation")]
     public class CourseController : CommonAttributesControllerBase
     {

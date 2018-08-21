@@ -1,5 +1,6 @@
+@model AcceptTermsViewModel
 @{
-  ViewBag.Title = $"Terms agreement";
+  ViewBag.Title = $"Accept Terms and Conditions";
 }
 
 <main role="main" class="govuk-main-wrapper" id="main-content">
@@ -13,13 +14,13 @@
         <li>is not offensive, inappropriate or discriminatory</li>
         <li>belongs to you</li>
       </ul>
-      <p>Read our full <a href="">terms and conditions</a>.</p>
+      <p>Read our full <a href="@Url.Action("AcceptTerms", "Home")">terms and conditions</a>.</p>
       <hr class="govuk-footer__section-break">
-      <form asp-controller="Organisation" asp-action="terms" method="post">
+      <form asp-controller="Home" asp-action="accept-terms" method="post">
         <div class="govuk-form-group">
           <div class="govuk-checkboxes">
             <div class="govuk-checkboxes__item">
-              <input asp-for="Terms" class="govuk-checkboxes__input" type="checkbox">
+              <input asp-for="TermsAccepted" class="govuk-checkboxes__input" type="checkbox" />
               <label class="govuk-label govuk-checkboxes__label" for="waste-1">
                 I agree to the terms and conditions
               </label>

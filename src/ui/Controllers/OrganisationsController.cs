@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace GovUk.Education.ManageCourses.Ui.Controllers
 {
-    [Authorize]
+    [Authorize(Policy = "AcceptedTerms")]
     [Route("organisations")]
     public class OrganisationsController : CommonAttributesControllerBase
     {
