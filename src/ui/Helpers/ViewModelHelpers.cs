@@ -13,8 +13,8 @@ namespace GovUk.Education.ManageCourses.Ui.Helpers
         {
             var result = string.IsNullOrWhiteSpace(course.ProfpostFlag) ? "QTS " : "PGCE with QTS ";
 
-            result += course.StudyMode.Equals("F", StringComparison.InvariantCultureIgnoreCase) ? "full time" : "part time";
-            result += course.ProgramType.Equals("SS", StringComparison.InvariantCultureIgnoreCase) ? " with salary" : "";
+            result += course.StudyMode.ToLower().Equals("f", StringComparison.InvariantCultureIgnoreCase) ? "full time" : "part time";
+            result += course.ProgramType.ToLower().Equals("ss", StringComparison.InvariantCultureIgnoreCase) ? " with salary" : "";
 
             return result;
         }
@@ -46,7 +46,7 @@ namespace GovUk.Education.ManageCourses.Ui.Helpers
                 case "r":
                     result = "Running";
                     break;
-                case "e":
+                case "n":
                     result = "New";
                     break;
                 case "s":
@@ -55,16 +55,6 @@ namespace GovUk.Education.ManageCourses.Ui.Helpers
             }
             return result;
         }
-        public static string GetCourseVariantType(this CourseVariant courseVariant)
-        {
-            var result = string.IsNullOrWhiteSpace(courseVariant.ProfPostFlag) ? "QTS " : "PGCE with QTS ";
-
-            result += courseVariant.StudyMode.Equals("F", StringComparison.InvariantCultureIgnoreCase) ? "full time" : "part time";
-            result += courseVariant.ProgramType.Equals("SS", StringComparison.InvariantCultureIgnoreCase) ? " with salary" : "";
-
-            return result;
-        }
-
         public static string GetRoute(this CourseVariantViewModel viewModel)
         {
             var result = "";
