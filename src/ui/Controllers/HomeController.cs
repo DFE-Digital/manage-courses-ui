@@ -82,15 +82,12 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
         [HttpPost("accept-terms")]
         public async Task<ActionResult> Post(AcceptTermsViewModel model)
         {
-            if (!ModelState.IsValid)
+            if (!ModelState.IsValid || model.TermsAccepted == false)
             {
                 return View("AcceptTerms", model);
             }
 
-            await _manageApi.LogAcceptTerms(new AcceptTermsViewModel()
-            {
-                TermsAccepted = model.TermsAccepted,
-            });
+            await _manageApi.LogAcceptTerms();
 
             return new RedirectResult("/");
         }
