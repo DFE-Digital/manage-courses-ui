@@ -18,6 +18,43 @@ namespace GovUk.Education.ManageCourses.Ui.Helpers
 
             return result;
         }
+        public static string GetCourseStatus(this Course course)
+        {
+            var result = "";
+            if ((course.Schools.Any(s => s.Status.ToLower() == "n")) && (course.Schools.All(s => s.Status != "r")))
+            {
+                result = "New-not yet running";
+            }
+            if (course.Schools.Any(s => s.Status.ToLower() == "r"))
+            {
+                result = "Running";
+            }
+            if (course.Schools.Any(s => s.Status.ToLower() == "d") || course.Schools.Any(s => s.Status.ToLower() == "s") && string.IsNullOrEmpty(result))
+            {
+                result = "Not running";
+            }
+            return result;
+        }
+        public static string GetSchoolStatus(this SchoolViewModel school)
+        {
+            var result = "";
+            switch (school.Status.ToLower())
+            {
+                case "d":
+                    result = "Discontinued";
+                    break;
+                case "r":
+                    result = "Running";
+                    break;
+                case "e":
+                    result = "New";
+                    break;
+                case "s":
+                    result = "Suspended";
+                    break;
+            }
+            return result;
+        }
         public static string GetCourseVariantType(this CourseVariant courseVariant)
         {
             var result = string.IsNullOrWhiteSpace(courseVariant.ProfPostFlag) ? "QTS " : "PGCE with QTS ";

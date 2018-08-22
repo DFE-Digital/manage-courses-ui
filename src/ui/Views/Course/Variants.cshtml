@@ -27,6 +27,10 @@
             <dt>Name:</dt>
             <dd>@Model.Course.Name</dd>
         }
+        @if (!string.IsNullOrEmpty(@Model.Course.Status)) {
+          <dt>Status:</dt>
+          <dd>@Model.Course.Status</dd>
+        }
         @if (!string.IsNullOrEmpty(@Model.Course.UcasCode)) {
             <dt>Training provider code:</dt>
             <dd>@Model.Course.UcasCode</dd>
@@ -60,26 +64,28 @@
     <h3 class="govuk-heading-m">Training locations</h3>
     <table class="govuk-table">
         <thead class="govuk-table__head">
-            <tr class="govuk-table__row">
-                <th class="govuk-table__header" scope="col">Location name</th>
-                <th class="govuk-table__header" scope="col">Address</th>
-                <th class="govuk-table__header" scope="col">Code</th>
-                @*<th class="govuk-table__header" scope="col">Full time vacancies</th>
-                    <th class="govuk-table__header" scope="col">Part time vacancies</th>*@
-                <th class="govuk-table__header" scope="col">Applications accepted from</th>
-            </tr>
+          <tr class="govuk-table__row">
+            <th class="govuk-table__header" scope="col">Location name</th>
+            <th class="govuk-table__header" scope="col">Address</th>
+            <th class="govuk-table__header" scope="col">Status</th>
+            <th class="govuk-table__header" scope="col">Code</th>
+            @*<th class="govuk-table__header" scope="col">Full time vacancies</th>
+    <th class="govuk-table__header" scope="col">Part time vacancies</th>*@
+            <th class="govuk-table__header" scope="col">Applications accepted from</th>
+          </tr>
         </thead>
         <tbody class="govuk-table__body">
             @foreach (var school in Model.Course.Schools)
             {
-                <tr class="govuk-table__row">
-                    <td class="govuk-table__cell">@school.LocationName</td>
-                    <td class="govuk-table__cell">@school.Address</td>
-                    <td class="govuk-table__cell">@school.Code</td>
-                    @*<td class="govuk-table__cell">Vacancies</td>
-                        <td class="govuk-table__cell">Not applicable</td>*@
-                    <td class="govuk-table__cell">@school.ApplicationsAcceptedFrom</td>
-                </tr>
+          <tr class="govuk-table__row">
+            <td class="govuk-table__cell">@school.LocationName</td>
+            <td class="govuk-table__cell">@school.Address</td>
+            <td class="govuk-table__cell">@school.GetSchoolStatus()</td>
+            <td class="govuk-table__cell">@school.Code</td>
+            @*<td class="govuk-table__cell">Vacancies</td>
+    <td class="govuk-table__cell">Not applicable</td>*@
+            <td class="govuk-table__cell">@school.ApplicationsAcceptedFrom</td>
+          </tr>
             }
         </tbody>
     </table>

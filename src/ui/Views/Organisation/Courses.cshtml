@@ -36,11 +36,12 @@
 
     <table class="ucas-info-table govuk-table">
       <thead class="govuk-table__head">
-      <tr class="govuk-table__row">
-        <th class="govuk-table__header ucas-info-table__code-col" scope="col">Code</th>
-        <th class="govuk-table__header ucas-info-table__subject-col" scope="col">Subject</th>
-        <th class="govuk-table__header ucas-info-table__type-col" scope="col">Type</th>
-      </tr>
+        <tr class="govuk-table__row">
+          <th class="govuk-table__header ucas-info-table__code-col" scope="col">Code</th>
+          <th class="govuk-table__header ucas-info-table__subject-col" scope="col">Subject</th>
+          <th class="govuk-table__header ucas-info-table__type-col" scope="col">Type</th>
+          <th class="govuk-table__header ucas-info-table__type-col" scope="col">Status</th>
+        </tr>
       </thead>
       <tbody class="govuk-table__body">
       @foreach (var course in provider.Courses)
@@ -52,6 +53,7 @@
             <a href="@Url.Action("variants", "course", new {instCode = Model.InstitutionId, accreditingProviderId = course.AccreditingProviderId, ucasCode = course.CourseCode})" class="govuk-link">@course.Name</a>
           </td>
           <td class="govuk-table__cell">@course.GetCourseVariantType()</td>
+          <td class="govuk-table__cell">@course.GetCourseStatus()</td>
         </tr>
       }
       </tbody>

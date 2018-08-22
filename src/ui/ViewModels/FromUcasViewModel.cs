@@ -27,6 +27,7 @@ namespace GovUk.Education.ManageCourses.Ui.ViewModels
         public string Qualifications { get; set; }
         public string StudyMode { get; set; }
         public string Regions { get; set; }
+        public string Status { get; set; }
         public IEnumerable<SchoolViewModel> Schools { get; set; }
 
     }
@@ -36,6 +37,7 @@ namespace GovUk.Education.ManageCourses.Ui.ViewModels
         public string LocationName { get; set; }
         public string Address { get; set; }
         public string Code { get; set; }
+        public string Status { get; set; }
         public string FullTimeVacancies { get; set; }
         public string PartTimeVacancies { get; set; }
 

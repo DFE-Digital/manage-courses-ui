@@ -66,6 +66,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
                     Qualifications = course.ProfpostFlag,
                     StudyMode = course.StudyMode,
                     Subjects = course.Subjects,
+                    Status = course.GetCourseStatus(),
                     Schools = course.Schools.Select(campus =>
                     {
                         var addressLines = (new List<string>()
@@ -86,7 +87,8 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
                             ApplicationsAcceptedFrom = campus.ApplicationsAcceptedFrom,
                             Code = campus.Code,
                             LocationName = campus.LocationName,
-                            Address = address
+                            Address = address,
+                            Status = campus.Status,
                         };
                     })
                 };
