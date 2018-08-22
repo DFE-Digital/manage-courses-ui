@@ -18,6 +18,7 @@ namespace GovUk.Education.ManageCourses.Ui
             _apiClient = apiClient;
         }
 
+        // Do not handled any exception let it thro as it should be handled by McExceptionFilter or startup configuration.
         public async Task<UserOrganisation> GetOrganisation(string instCode)
         {
             var courses = await _apiClient.Organisations_GetAsync(instCode);
