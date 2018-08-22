@@ -9,7 +9,7 @@ namespace GovUk.Education.ManageCourses.Ui.ViewModels
 {
   public class AcceptTermsViewModel
   {
-    [Required(ErrorMessage = "Please agree to the terms and conditions before continuing")]
+    [Range(typeof(bool), "true", "true", ErrorMessage = "Please agree to the terms and conditions before continuing")]
     public bool TermsAccepted { get; set; }
   }
 }
