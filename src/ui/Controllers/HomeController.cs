@@ -80,7 +80,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
 
         [Authorize]
         [HttpPost("accept-terms")]
-        public async Task<ActionResult> Post(AcceptTermsViewModel model)
+        public async Task<IActionResult> AcceptTermsPost(AcceptTermsViewModel model)
         {
             if (!ModelState.IsValid || model.TermsAccepted == false)
             {
