@@ -18,10 +18,6 @@ namespace ManageCoursesUi.Tests
     {
         private McExceptionFilter sut;
 
-        private readonly Mock<HttpRequest> mockRequest = new Mock<HttpRequest>();
-        private readonly Mock<ActionContext> mockContext = new Mock<ActionContext>();
-        private readonly Mock<HttpResponse> mockResponse = new Mock<HttpResponse>();
-
         [SetUp]
         public void SetUp()
         {
