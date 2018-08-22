@@ -20,40 +20,20 @@ namespace GovUk.Education.ManageCourses.Ui
 
         public async Task<UserOrganisation> GetOrganisation(string instCode)
         {
-            try
-            {
-                var courses = await _apiClient.Organisations_GetAsync(instCode);
-                return courses;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Failed to get courses data from " + _apiClient.BaseUrl, ex);
-            }
+            var courses = await _apiClient.Organisations_GetAsync(instCode);
+            return courses;
         }
 
         public async Task<InstitutionCourses> GetCoursesByOrganisation(string instCode)
         {
-            try
-            {
-                var courses = await _apiClient.Courses_GetAllAsync(instCode);
-                return courses;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Failed to get courses data from " + _apiClient.BaseUrl, ex);
-            }
+            var courses = await _apiClient.Courses_GetAllAsync(instCode);
+            return courses;
         }
         public async Task<Course> GetCourseByUcasCode(string instCode, string ucasCode)
         {
-            try
-            {
-                var course = await _apiClient.Courses_GetAsync(instCode, ucasCode);
-                return course;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Failed to get course data from " + _apiClient.BaseUrl, ex);
-            }
+            var course = await _apiClient.Courses_GetAsync(instCode, ucasCode);
+            return course;
+
         }
 
         public async Task<IEnumerable<UserOrganisation>> GetOrganisations()
@@ -69,7 +49,7 @@ namespace GovUk.Education.ManageCourses.Ui
 
         public async Task LogAcceptTerms(AcceptTermsViewModel acceptTermsViewModel)
         {
-        //await _apiClient.AcceptTerms_IndexAsync(acceptTerms);
+            //await _apiClient.AcceptTerms_IndexAsync(acceptTerms);
         }
 
         public async Task SaveEnrichmentOrganisation(string institutionCode, UcasInstitutionEnrichmentPostModel organisation)
