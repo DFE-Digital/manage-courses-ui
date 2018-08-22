@@ -78,18 +78,10 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             return View(new AcceptTermsViewModel());
         }
 
-        // [Authorize(Policy = "AcceptedTerms")] // => [AgreedTermsAuthorize()]
-        // [HttpGet("Example")]
-        // public IActionResult Example()
-        // {
-        //     return View();
-        // }
-
         [Authorize]
         [HttpPost("accept-terms")]
         public async Task<ActionResult> Post(AcceptTermsViewModel model)
         {
-
             if (!ModelState.IsValid)
             {
                 return View("AcceptTerms", model);
@@ -99,28 +91,8 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             {
                 TermsAccepted = model.TermsAccepted,
             });
+
             return new RedirectResult("/");
-
-            // Example of accessing claims
-            //         var name = "";
-            // if (this.User.Identity.IsAuthenticated)
-            // {
-            //     var given_name = User.Claims.FirstOrDefault(c => c.Type == "given_name")?.Value;
-            //     var family_name = User.Claims.FirstOrDefault(c => c.Type == "family_name")?.Value;
-            //     name = $"{given_name} {family_name}";
-            // }
-
-            // var identity =  this.User.Identity;
-            // identity.claims.addOrUpdate("agreed_terms", "");
-
-            // await HttpContext.ChallengeAsync(new AuthenticationProperties() { identity =identity,  RedirectUri = returnUrl });
-
-            // await HttpContext.AuthenticateAsync(new AuthenticationProperties() { RedirectUri = returnUrl });
-
-            // redirect to home
-
-            // else struck on this view
-            // return View();
         }
     }
 }
