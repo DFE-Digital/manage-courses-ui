@@ -19,30 +19,30 @@ namespace ManageCoursesUi.Tests
         private Mock<IManageApi> mockApi;
 
         [SetUp]
-        public void SetUp() 
+        public void SetUp()
         {
             mockApi = new Mock<IManageApi>();
-            sut = new HomeController(mockApi.Object); 
-        } 
+            sut = new HomeController(mockApi.Object);
+        }
 
         [Test]
         public void Index_IfNoOrgs_Returns401()
         {
             mockApi.Setup(x => x.GetOrganisations())
                 .Returns(Task.FromResult((IEnumerable<UserOrganisation>) new List<UserOrganisation>()));
-            
+
             var res = sut.Index().Result;
 
             Assert.IsTrue(res is StatusCodeResult);
             Assert.AreEqual(401, (res as StatusCodeResult).StatusCode);
         }
-        
+
         [Test]
         public void Index_IfApiThrows401_Returns401()
         {
             mockApi.Setup(x => x.GetOrganisations())
                 .ThrowsAsync(new SwaggerException("uh-oh...", 401, "", new Dictionary<string, IEnumerable<string>>(), new Exception("inner")));
-            
+
             var res = sut.Index().Result;
 
             Assert.IsTrue(res is StatusCodeResult);
@@ -56,7 +56,7 @@ namespace ManageCoursesUi.Tests
 
             Assert.IsNotNull(res);
             var acceptTermsViewModel = res.ViewData.Model as AcceptTermsViewModel;
-            
+
             Assert.IsNotNull(acceptTermsViewModel);
         }
 
@@ -82,27 +82,5 @@ namespace ManageCoursesUi.Tests
             Assert.IsNotNull(res);
             Assert.AreEqual("/",res.Url);
         }
-
-        //        [Authorize]
-        //[HttpGet("accept-terms")]
-        //public IActionResult AcceptTerms()
-        //{
-        //    return View(new AcceptTermsViewModel());
-        //}
-
-        //[Authorize]
-        //[HttpPost("accept-terms")]
-        //public async Task<ActionResult> Post(AcceptTermsViewModel model)
-        //{
-        //    if (!ModelState.IsValid || model.TermsAccepted == false)
-        //    {
-        //        return View("AcceptTerms", model);
-        //    }
-
-        //    await _manageApi.LogAcceptTerms();
-
-        //    return new RedirectResult("/");
-        //}
-
     }
 }
