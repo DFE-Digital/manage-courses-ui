@@ -15,6 +15,13 @@ It should be [12 factor](https://12factor.net/), notably config from environment
 * Access to a running instance of [manage-courses-api](https://github.com/DFE-Digital/manage-courses-api), e.g. [the dev one](https://manage-courses-ui-bat-development.e4ff.pro-eu-west-1.openshiftapps.com)
 * Access to an oauth server. To use the DfE Sign-in sandbox environment, ask the team for the current client secret, or get it from the DfE single sign-in project by emailing [DfE.SIGNIN@education.gov.uk](mailto:DfE.SIGNIN@education.gov.uk)
 
+## Logging
+
+Serilog has been configured to spit logs out to both the console
+(for `dotnet run` testing & development locally) and Application Insights.
+
+Set the `APPINSIGHTS_INSTRUMENTATIONKEY` environment variable to tell Serilog the application insights key.
+
 # Build and run in dotnet core
 
 ## Build
