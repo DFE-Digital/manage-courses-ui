@@ -73,12 +73,12 @@
           <li>how much time candidates spend in each school</li>
         </ul>
         <div class="govuk-character-count" data-module="character-count" data-maxwords="350">
-          <div id="SchoolPlacement-wrapper" class="govuk-form-group @(school_placement ? " govuk-form-group--error " : " ")">
-            <label asp-for="SchoolPlacement" class="govuk-label govuk-!-font-weight-bold">How school placements work</label>
+          <div id="HowSchoolPlacementsWork-wrapper" class="govuk-form-group @(school_placement ? " govuk-form-group--error " : " ")">
+            <label asp-for="HowSchoolPlacementsWork" class="govuk-label govuk-!-font-weight-bold">How school placements work</label>
             @if (school_placement) {
-              <span asp-validation-for="SchoolPlacement" class="govuk-error-message"></span>
+              <span asp-validation-for="HowSchoolPlacementsWork" class="govuk-error-message"></span>
             }
-            <textarea asp-for="SchoolPlacement" class="govuk-textarea js-character-count" rows="10" data-module="character-count"></textarea>
+            <textarea asp-for="HowSchoolPlacementsWork" class="govuk-textarea js-character-count" rows="10" data-module="character-count"></textarea>
           </div>
         </div>
       </div>

@@ -53,7 +53,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             {
                 AboutCourse = course.EnrichmentModel.AboutCourse,
                 InterviewProcess = course.EnrichmentModel.InterviewProcess,
-                SchoolPlacement = course.EnrichmentModel.HowSchoolPlacementsWork
+                HowSchoolPlacementsWork = course.EnrichmentModel.HowSchoolPlacementsWork
             };
             return View(model);
         }
@@ -126,7 +126,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             {
                 AboutCourse = ucasCourseEnrichmentGetModel.EnrichmentModel.AboutCourse,
                 InterviewProcess = ucasCourseEnrichmentGetModel.EnrichmentModel.InterviewProcess,
-                SchoolPlacement = ucasCourseEnrichmentGetModel.EnrichmentModel.HowSchoolPlacementsWork
+                HowSchoolPlacementsWork = ucasCourseEnrichmentGetModel.EnrichmentModel.HowSchoolPlacementsWork
             };
 
             return result;
