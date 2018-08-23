@@ -81,6 +81,22 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             return View(model);
         }
 
+        [HttpPost]
+        [Route("{instCode}/course/{accreditingProviderId=self}/{ucasCode}/about")]
+        public async Task<IActionResult> AboutPost(string instCode, string accreditingProviderId, string ucasCode, AboutCourseEnrichmentViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                var routeData = GetCourseRouteDataViewModel(instCode, accreditingProviderId, ucasCode);
+                model.RouteData = routeData;
+                return View("About", model);
+            }
+
+            TempData["MessageType"] = "success";
+            TempData["MessageTitle"] = "Your changes have been saved";
+
+            return RedirectToAction("Variants", new { instCode, accreditingProviderId, ucasCode });
+        }
         private void Validate(string instCode, string accreditingProviderId, string ucasCode)
         {
             if (string.IsNullOrEmpty(instCode)) { throw new ArgumentNullException(instCode, "instCode cannot be null or empty"); }
@@ -162,8 +178,8 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             return new CourseRouteDataViewModel
             {
                 InstCode = instCode,
-                AccreditingProviderId = accreditingProviderId,
-                UcasCode = ucasCode
+                    AccreditingProviderId = accreditingProviderId,
+                    UcasCode = ucasCode
             };
         }
     }
