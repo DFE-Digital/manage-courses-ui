@@ -39,7 +39,10 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             if (course == null) return NotFound();
 
             var ucasCourseEnrichmentGetModel = await _manageApi.GetEnrichmentCourse(instCode, ucasCode);
-            var viewModel = LoadViewModel(org, course, multipleOrganisations, ucasCourseEnrichmentGetModel);
+
+            var routeData = GetCourseRouteDataViewModel(instCode, accreditingProviderId, ucasCode);
+
+            var viewModel = LoadViewModel(org, course, multipleOrganisations, ucasCourseEnrichmentGetModel, routeData);
 
             return View(viewModel);
         }
@@ -49,11 +52,14 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
         public async Task<IActionResult> About(string instCode, string accreditingProviderId, string ucasCode)
         {
             var course = await _manageApi.GetEnrichmentCourse(instCode, ucasCode);
-            var model = new CourseAboutViewModel
+            var routeData = GetCourseRouteDataViewModel(instCode, accreditingProviderId, ucasCode);
+
+            var model = new AboutCourseEnrichmentViewModel
             {
                 AboutCourse = course.EnrichmentModel.AboutCourse,
                 InterviewProcess = course.EnrichmentModel.InterviewProcess,
-                HowSchoolPlacementsWork = course.EnrichmentModel.HowSchoolPlacementsWork
+                HowSchoolPlacementsWork = course.EnrichmentModel.HowSchoolPlacementsWork,
+                RouteData = routeData
             };
             return View(model);
         }
@@ -65,7 +71,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             if (string.IsNullOrEmpty(ucasCode)) { throw new ArgumentNullException(ucasCode, "ucasCode cannot be null or empty"); }
         }
 
-        private FromUcasViewModel LoadViewModel(UserOrganisation org, Course course, bool multipleOrganisations, UcasCourseEnrichmentGetModel ucasCourseEnrichmentGetModel)
+        private FromUcasViewModel LoadViewModel(UserOrganisation org, Course course, bool multipleOrganisations, UcasCourseEnrichmentGetModel ucasCourseEnrichmentGetModel, CourseRouteDataViewModel routeData)
         {
             var courseVariant =
                 new CourseVariantViewModel
@@ -115,7 +121,8 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
                 AccreditingProviderId = course.AccreditingProviderId,
                 MultipleOrganisations = multipleOrganisations,
                 Course = courseVariant,
-                CourseEnrichment = courseEnrichmentViewModel
+                CourseEnrichment = courseEnrichmentViewModel,
+                RouteData = routeData
             };
             return viewModel;
         }
@@ -131,6 +138,16 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
 
             return result;
 
+        }
+
+        private CourseRouteDataViewModel GetCourseRouteDataViewModel(string instCode, string accreditingProviderId, string ucasCode)
+        {
+            return new CourseRouteDataViewModel
+            {
+                InstCode = instCode,
+                AccreditingProviderId = accreditingProviderId,
+                UcasCode = ucasCode
+            };
         }
     }
 }

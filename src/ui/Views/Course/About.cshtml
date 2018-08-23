@@ -1,12 +1,12 @@
-@model CourseAboutViewModel
+@model AboutCourseEnrichmentViewModel
  @{
   Layout = "_Layout";
   var about_course = ViewData.ModelState["AboutCourse"] != null && ViewData.ModelState["AboutCourse"].Errors.Any();
   var interview_process = ViewData.ModelState["InterviewProcess"] != null && ViewData.ModelState["InterviewProcess"].Errors.Any();
-  var school_placement = ViewData.ModelState["SchoolPlacement"] != null && ViewData.ModelState["SchoolPlacement"].Errors.Any();
+  var school_placement = ViewData.ModelState["HowSchoolPlacementsWork"] != null && ViewData.ModelState["HowSchoolPlacementsWork"].Errors.Any();
 }
 
-<a href="#" class="govuk-back-link">Back</a>
+<a href="@Url.Action("Variants", "Course", new { Model.RouteData.UcasCode, Model.RouteData.InstCode, Model.RouteData.AccreditingProviderId })" class="govuk-back-link">Back</a>
 
  <main role="main" class="govuk-main-wrapper" id="main-content">
   <form asp-controller="Course" asp-action="About" method="post" data-module="form">
@@ -87,7 +87,7 @@
       <input type="submit" class="govuk-button" value="Save">
     </div>
      <p class="govuk-body">
-      <a href="#" class "govuk-link">Cancel changes</a>
+      <a href="@Url.Action("Variants", "Course", new { Model.RouteData.UcasCode, Model.RouteData.InstCode, Model.RouteData.AccreditingProviderId })" class "govuk-link">Cancel changes</a>
     </p>
   </form>
 </main>
