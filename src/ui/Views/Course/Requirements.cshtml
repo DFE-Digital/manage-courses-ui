@@ -6,7 +6,7 @@
   var other_requirements = ViewData.ModelState["OtherRequirements"] != null && ViewData.ModelState["OtherRequirements"].Errors.Any();
 }
 
-<a href="@Url.Action("Variants", "Course", new { Model.RouteData.UcasCode, Model.RouteData.InstCode, Model.RouteData.AccreditingProviderId })" class="govuk-back-link">Back</a>
+<a href="@Url.Action("Variants", "Course", Model.RouteData)" class="govuk-back-link">Back</a>
 
  <main role="main" class="govuk-main-wrapper" id="main-content">
   <form asp-controller="Course" asp-action="About" method="post" data-module="form">
@@ -63,7 +63,7 @@
       <input type="submit" class="govuk-button" value="Save">
     </div>
      <p class="govuk-body">
-      <a href="@Url.Action("Variants", "Course", new { Model.RouteData.UcasCode, Model.RouteData.InstCode, Model.RouteData.AccreditingProviderId })" class "govuk-link">Cancel changes</a>
+      <a href="@Url.Action("Variants", "Course", Model.RouteData)" class "govuk-link">Cancel changes</a>
     </p>
   </form>
 </main>
