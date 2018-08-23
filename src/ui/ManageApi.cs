@@ -5,6 +5,7 @@ using System.Dynamic;
 using System.Linq;
 using System.Threading.Tasks;
 using GovUk.Education.ManageCourses.ApiClient;
+using GovUk.Education.ManageCourses.Ui.ViewModels;
 
 namespace GovUk.Education.ManageCourses.Ui
 {
@@ -17,42 +18,23 @@ namespace GovUk.Education.ManageCourses.Ui
             _apiClient = apiClient;
         }
 
+        // Do not handled any exception let it thro as it should be handled by McExceptionFilter or startup configuration.
         public async Task<UserOrganisation> GetOrganisation(string instCode)
         {
-            try
-            {
-                var courses = await _apiClient.Organisations_GetAsync(instCode);
-                return courses;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Failed to get courses data from " + _apiClient.BaseUrl, ex);
-            }
+            var courses = await _apiClient.Organisations_GetAsync(instCode);
+            return courses;
         }
 
         public async Task<InstitutionCourses> GetCoursesByOrganisation(string instCode)
         {
-            try
-            {
-                var courses = await _apiClient.Courses_GetAllAsync(instCode);
-                return courses;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Failed to get courses data from " + _apiClient.BaseUrl, ex);
-            }
+            var courses = await _apiClient.Courses_GetAllAsync(instCode);
+            return courses;
         }
         public async Task<Course> GetCourseByUcasCode(string instCode, string ucasCode)
         {
-            try
-            {
-                var course = await _apiClient.Courses_GetAsync(instCode, ucasCode);
-                return course;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Failed to get course data from " + _apiClient.BaseUrl, ex);
-            }
+            var course = await _apiClient.Courses_GetAsync(instCode, ucasCode);
+            return course;
+
         }
 
         public async Task<IEnumerable<UserOrganisation>> GetOrganisations()
@@ -64,6 +46,11 @@ namespace GovUk.Education.ManageCourses.Ui
         public async Task LogAccessRequest(AccessRequest accessRequest)
         {
             await _apiClient.AccessRequest_IndexAsync(accessRequest);
+        }
+
+        public async Task LogAcceptTerms()
+        {
+            await _apiClient.AcceptTerms_IndexAsync();
         }
 
         public async Task SaveEnrichmentOrganisation(string institutionCode, UcasInstitutionEnrichmentPostModel organisation)

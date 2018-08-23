@@ -95,7 +95,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             var viewModel = new FromUcasViewModel
             {
                 OrganisationName = org.OrganisationName,
-                OrganisationId = org.OrganisationId,                
+                OrganisationId = org.OrganisationId,
                 CourseTitle = course.Name,
                 AccreditingProviderId = course.AccreditingProviderId,
                 MultipleOrganisations = multipleOrganisations,
