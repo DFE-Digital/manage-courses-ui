@@ -24,7 +24,7 @@
   </ItemGroup>
   <Import Condition="Exists('$(ProjectDir)dev.targets')" Project="$(ProjectDir)dev.targets" />
   <ItemGroup Condition="Exists('$(ProjectDir)dev.targets')==false">
-    <PackageReference Include="GovUk.Education.ManageCourses.ApiClient" Version="0.5.0-Status-for-course" />
+    <PackageReference Include="GovUk.Education.ManageCourses.ApiClient" Version="0.7.0-Status-for-course" />
   </ItemGroup>
   <Target Name="Webpack" BeforeTargets="AfterBuild">
     <Exec Command="npm install" />
