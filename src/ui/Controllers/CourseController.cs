@@ -64,6 +64,23 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             return View(model);
         }
 
+        [HttpGet]
+        [Route("{instCode}/course/{accreditingProviderId=self}/{ucasCode}/requirements")]
+        public async Task<IActionResult> Requirements(string instCode, string accreditingProviderId, string ucasCode)
+        {
+            var course = await _manageApi.GetEnrichmentCourse(instCode, ucasCode);
+            var routeData = GetCourseRouteDataViewModel(instCode, accreditingProviderId, ucasCode);
+
+            var model = new CourseRequirementsEnrichmentViewModel
+            {
+                Qualifications = course.EnrichmentModel.Qualifications,
+                PersonalQualities = course.EnrichmentModel.PersonalQualities,
+                OtherRequirements = course.EnrichmentModel.OtherRequirements,
+                RouteData = routeData
+            };
+            return View(model);
+        }
+
         private void Validate(string instCode, string accreditingProviderId, string ucasCode)
         {
             if (string.IsNullOrEmpty(instCode)) { throw new ArgumentNullException(instCode, "instCode cannot be null or empty"); }

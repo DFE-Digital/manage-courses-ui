@@ -1,0 +1,69 @@
+@model CourseRequirementsEnrichmentViewModel
+@{
+  Layout = "_Layout";
+  var qualifications = ViewData.ModelState["Qualifications"] != null && ViewData.ModelState["Qualifications"].Errors.Any();
+  var personal_qualities = ViewData.ModelState["PersonalQualities"] != null && ViewData.ModelState["PersonalQualities"].Errors.Any();
+  var other_requirements = ViewData.ModelState["OtherRequirements"] != null && ViewData.ModelState["OtherRequirements"].Errors.Any();
+}
+
+<a href="@Url.Action("Variants", "Course", new { Model.RouteData.UcasCode, Model.RouteData.InstCode, Model.RouteData.AccreditingProviderId })" class="govuk-back-link">Back</a>
+
+ <main role="main" class="govuk-main-wrapper" id="main-content">
+  <form asp-controller="Course" asp-action="About" method="post" data-module="form">
+    <div class="govuk-grid-row">
+      <div class="govuk-grid-column-two-thirds">
+        <h1 class="govuk-heading-xl">Requirements and eligibility</h1>
+        @Html.Partial("ErrorSummary")
+        <h3 class="govuk-heading-l">Qualifications needed</h3>
+        <p class="govuk-body">State the minimum academic qualifications needed for this course, in addition to the basic national requirements.</p>
+        <div class="govuk-character-count" data-module="character-count" data-maxwords="100">
+          <div id="Qualifications-wrapper" class="govuk-form-group @(qualifications ? " govuk-form-group--error " : " ")">
+            <label asp-for="Qualifications" class="govuk-label govuk-!-font-weight-bold">Qualifications needed</label>
+            @if (qualifications) {
+              <span asp-validation-for="Qualifications" class="govuk-error-message"></span>
+            }
+            <textarea asp-for="Qualifications" class="govuk-textarea js-character-count" rows="10" data-module="character-count"></textarea>
+          </div>
+        </div>
+      </div>
+    </div>
+    <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible">
+    <div class="govuk-grid-row">
+      <div class="govuk-grid-column-two-thirds">
+        <h3 class="govuk-heading-l">Personal qualities</h3>
+        <p class="govuk-body">Tell applicants about the skills and motivation you’re looking for (eg experience with children, a genuine passion for teaching, or a talent for public speaking).</p>
+        <div class="govuk-character-count" data-module="character-count" data-maxwords="100">
+          <div id="PersonalQualities-wrapper" class="govuk-form-group @(personal_qualities ? " govuk-form-group--error " : " ")">
+            <label asp-for="PersonalQualities" class="govuk-label govuk-!-font-weight-bold">Personal qualities (optional)</label>
+            @if (personal_qualities) {
+              <span asp-validation-for="PersonalQualities" class="govuk-error-message"></span>
+            }
+            <textarea asp-for="PersonalQualities" class="govuk-textarea js-character-count" rows="10" data-module="character-count"></textarea>
+          </div>
+        </div>
+      </div>
+    </div>
+    <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible">
+    <div class="govuk-grid-row">
+      <div class="govuk-grid-column-two-thirds">
+        <h3 class="govuk-heading-l">Other requirements</h3>
+        <p>If applicants need any non-academic qualifications or documents, list them here (eg criminal record checks, or relevant work experience).</p>
+        <div class="govuk-character-count" data-module="character-count" data-maxwords="100">
+          <div id="OtherRequirements-wrapper" class="govuk-form-group @(other_requirements ? " govuk-form-group--error " : " ")">
+            <label asp-for="OtherRequirements" class="govuk-label govuk-!-font-weight-bold">Other requirements (optional)</label>
+            @if (other_requirements) {
+              <span asp-validation-for="OtherRequirements" class="govuk-error-message"></span>
+            }
+            <textarea asp-for="OtherRequirements" class="govuk-textarea js-character-count" rows="10" data-module="character-count"></textarea>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="govuk-form">
+      <input type="submit" class="govuk-button" value="Save">
+    </div>
+     <p class="govuk-body">
+      <a href="@Url.Action("Variants", "Course", new { Model.RouteData.UcasCode, Model.RouteData.InstCode, Model.RouteData.AccreditingProviderId })" class "govuk-link">Cancel changes</a>
+    </p>
+  </form>
+</main>
