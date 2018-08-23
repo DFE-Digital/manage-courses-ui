@@ -1,8 +1,8 @@
 ﻿using System;
-using System.Text.RegularExpressions;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using GovUk.Education.ManageCourses.ApiClient;
 using GovUk.Education.ManageCourses.Ui;
@@ -52,7 +52,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
 
             if (!_featureFlags.ShowOrgEnrichment)
             {
-                return RedirectToAction("Courses", new { ucasCode = ucasCode});
+                return RedirectToAction("Courses", new { ucasCode = ucasCode });
             }
 
             var ucasInstitutionEnrichmentGetModel = await _manageApi.GetEnrichmentOrganisation(ucasCode);
@@ -136,28 +136,29 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
 
             var result = accreditingProviders.Select(x =>
 
-            {
-                var description = accreditingProviderEnrichments.FirstOrDefault(TrainingProviderMatchesProviderCourse(x))?.Description ?? "";
+                    {
+                        var description = accreditingProviderEnrichments.FirstOrDefault(TrainingProviderMatchesProviderCourse(x))?.Description ?? "";
 
-                if (model != null) {
+                        if (model != null)
+                        {
 
-                    var aboutTrainingProviders = (model.AboutTrainingProviders ?? new List<TrainingProviderViewModel>());
+                            var aboutTrainingProviders = (model.AboutTrainingProviders ?? new List<TrainingProviderViewModel>());
 
-                    description = aboutTrainingProviders.FirstOrDefault(
-                        atp => (atp.InstitutionCode.Equals( x.AccreditingProviderId, StringComparison.InvariantCultureIgnoreCase)))?.Description ?? description;
-                }
+                            description = aboutTrainingProviders.FirstOrDefault(
+                                atp =>(atp.InstitutionCode.Equals(x.AccreditingProviderId, StringComparison.InvariantCultureIgnoreCase)))?.Description ?? description;
+                        }
 
-                var tpvm = new TrainingProviderViewModel()
-                {
-                    InstitutionName = x.AccreditingProviderName,
-                    InstitutionCode = x.AccreditingProviderId,
-                    Description = description
-                };
+                        var tpvm = new TrainingProviderViewModel()
+                        {
+                            InstitutionName = x.AccreditingProviderName,
+                            InstitutionCode = x.AccreditingProviderId,
+                            Description = description
+                        };
 
-                return tpvm;
-            })
+                        return tpvm;
+                    })
 
-            .ToList();
+                .ToList();
 
             return result;
         }
@@ -190,7 +191,9 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
 
             // The model that is sent is always going to invalid as it is always empty
             // Therefore fetch from api and map it across to validate it.
-            ValidateModel(model);
+
+            var wordCountValidationOnly = false;
+            ValidateModel(model, wordCountValidationOnly);
 
             if (!ModelState.IsValid)
             {
@@ -223,7 +226,8 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             model.AboutTrainingProviders = aboutAccreditingTrainingProviders;
 
             // The validation that needs to occurs are word count only on saving
-            ValidateModel(model);
+            var wordCountValidationOnly = true;
+            ValidateModel(model, wordCountValidationOnly);
 
             if (!ModelState.IsValid)
             {
@@ -238,7 +242,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
                     model.AboutTrainingProviders.Select(x => new AccreditingProviderEnrichment
                     {
                         UcasInstitutionCode = x.InstitutionCode,
-                        Description = x.Description
+                            Description = x.Description
                     }));
 
                 enrichmentModel.TrainWithUs = model.TrainWithUs;
@@ -299,9 +303,21 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
 
             return result;
         }
-        public void ValidateModel(OrganisationViewModel model) {
+
+        public void ValidateModel(OrganisationViewModel model, bool wordCountValidationOnly)
+        {
             ModelState.Clear();
-            TryValidateModel(model);
+
+            if (wordCountValidationOnly)
+            {
+                var wordCountValidationModel = new WordCountOrganisationViewModel(model);
+                TryValidateModel(wordCountValidationModel);
+            }
+            else
+            {
+                TryValidateModel(model);
+            }
+
             for (int i = 0; i < model.AboutTrainingProviders.Count; i++)
             {
                 var trainingProvider = model.AboutTrainingProviders[i];

@@ -1,108 +1,47 @@
-﻿// Document list pattern
-
-// Spacing to the left of the task list
-$course-parts-indent: 35px;
-
 .course-parts {
-  margin-top: govuk-spacing(2);
+  @include govuk-responsive-margin(9, "bottom");
 
-  @include govuk-media-query($from: tablet) {
-    margin-top: (govuk-spacing(2) * 1.5);
+  &__item {
+    @include govuk-responsive-margin(8, "top");
+    border-top: 1px solid $govuk-border-colour;
+    padding-top: govuk-spacing(6);
+    position: relative;
+
+    &:first-of-type {
+      margin-top: 0;
+    }
   }
-}
 
-.course-parts-section {
-    display: table;
-    @include govuk-font($size: 19);
-    margin-bottom: 15px;
-    padding-bottom: (govuk-spacing(2) / 6);
-}
-
-.course-parts-items {
-    margin-bottom: govuk-spacing(2);
-
-    @include govuk-media-query($from: tablet) {
-        margin-bottom: (govuk-spacing(2) * 2);
-    }
-}
-
-.course-parts-item {
-    padding-top: govuk-spacing(2);
-    padding-bottom: govuk-spacing(2);
-    @include govuk-clearfix;
-}
-
-.course-parts-item:first-child {
-    border-top: 1px solid $govuk-input-border-colour;
-}
-
-.course-part-task {
+  &__title {
+    @include govuk-text-colour;
+    @include govuk-font($size: 24, $weight: bold);
     @include govuk-grid-column(two-thirds);
-    float: left;
-    @include govuk-font($size: 24);
-    margin: 0;
-}
+    @include govuk-responsive-margin(6, "bottom");
+    display: block;
+    margin-top: 0;
+  }
 
-.course-part-task-action {
-    float: right;
-    margin-right: 0;
-    padding-top: 3px;
-}
+  &__action {
+    @extend %govuk-link;
+    @include govuk-font($size: 19);
+    position: absolute;
+    right: 0;
+    top: 1.5em;
+  }
 
-.course-part-tasks {
-    margin-top: 60px;
+  &__fields {
+    @include govuk-clearfix;
 
-    @include govuk-media-query($from: desktop) {
-        display: table;
-        width: 100%;
+    &__label {
+      @include govuk-font($size: 19, $weight: bold);
+      @include govuk-responsive-margin(1, "bottom");
     }
 
-    > * {
-        position: relative;
-
-        @include govuk-media-query($from: desktop) {
-            display: table-row;
-        }
-
-        > * {
-            display: block;
-
-            @include govuk-media-query($from: desktop) {
-                display: table-cell;
-                padding: em(12, 19) em(20, 19) em(9, 19) 0; // copied from Elements' td padding
-                margin: 0;
-            }
-        }
-
-        @include govuk-media-query($from: desktop) {
-            &:first-child > * {
-                padding-top: 0;
-            }
-        }
+    &__value {
+      @include govuk-font($size: 19, $weight: normal);
+      @include govuk-responsive-margin(4, "bottom");
+      color: $govuk-secondary-text-colour;
+      margin-left: 0;
     }
-
-    .course-part-label {
-        float: none;
-        display: block;
-        font-weight: bold;
-        padding-bottom: 5px;
-        // @include media(desktop) {
-        //   width: 30%;
-        // }
-    }
-
-    > *:first-child .course-part-label {
-        margin-top: 0;
-    }
-
-    .course-part-value {
-        float: none;
-        display: block;
-        padding: 0;
-        margin-bottom: 10px;
-
-        &--empty {
-            color: govuk-colour("grey-1");
-        }
-    }
+  }
 }

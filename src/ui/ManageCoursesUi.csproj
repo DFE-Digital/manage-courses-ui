@@ -15,6 +15,7 @@
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.4.1" />
     <PackageReference Include="Serilog.AspNetCore" Version="2.1.1" />
     <PackageReference Include="Serilog.Settings.Configuration" Version="2.6.1" />
+    <PackageReference Include="Serilog.Sinks.ApplicationInsights" Version="2.6.0" />
     <PackageReference Include="Serilog.Sinks.Console" Version="3.1.1" />
     <PackageReference Include="Serilog.Sinks.Trace" Version="2.1.0" />
   </ItemGroup>
@@ -24,7 +25,7 @@
   </ItemGroup>
   <Import Condition="Exists('$(ProjectDir)dev.targets')" Project="$(ProjectDir)dev.targets" />
   <ItemGroup Condition="Exists('$(ProjectDir)dev.targets')==false">
-    <PackageReference Include="GovUk.Education.ManageCourses.ApiClient" Version="0.7.0-Status-for-course" />
+    <PackageReference Include="GovUk.Education.ManageCourses.ApiClient" Version="0.6.0" />
   </ItemGroup>
   <Target Name="Webpack" BeforeTargets="AfterBuild">
     <Exec Command="npm install" />

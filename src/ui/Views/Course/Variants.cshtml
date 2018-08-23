@@ -1,96 +1,81 @@
 ﻿@model FromUcasViewModel
 
 @{
-    Layout = "_Layout";
-    ViewBag.Title = Model.Course.Name;
-    var link = "mailto:becomingateacher@digital.education.gov.uk?subject=Problem%20with%20course%20" + Model.Course.ProgrammeCode;
+  Layout = "_Layout";
+  ViewBag.Title = Model.Course.Name;
+  var link = "mailto:becomingateacher@digital.education.gov.uk?subject=Problem%20with%20course%20" + Model.Course.ProgrammeCode;
 }
 
 <a href="@Url.Action("Courses", "Organisation", new {ucasCode = Model.Course.UcasCode})" class="govuk-back-link">Back</a>
 
 <main role="main" class="govuk-main-wrapper" id="main-content">
-    <h1 class="govuk-heading-xl">
-        <span class="govuk-caption-xl">@Model.Course.Type</span>
-        @Model.Course.Name (@Model.Course.ProgrammeCode)
-    </h1>
+  <h1 class="govuk-heading-xl">
+    <span class="govuk-caption-xl">@Model.Course.Type</span>
+    @Model.Course.Name (@Model.Course.ProgrammeCode)
+  </h1>
 
-    <div class="govuk-grid-row">
-        <div class="govuk-grid-column-two-thirds">
-            <p class="govuk-body-l">
-                Information imported from UCAS for course @Model.Course.ProgrammeCode.
-            </p>
-        </div>
-    </div>
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <div class="course-parts">
+        <div class="course-parts__item">
+          <h3 class="course-parts__title">Information from UCAS</h3>
 
-    <dl class="govuk-list govuk-list--description">
-        @if (!string.IsNullOrEmpty(@Model.Course.Name)) {
-            <dt>Name:</dt>
-            <dd>@Model.Course.Name</dd>
-        }
-        @if (!string.IsNullOrEmpty(@Model.Course.Status)) {
-          <dt>Status:</dt>
-          <dd>@Model.Course.Status</dd>
-        }
-        @if (!string.IsNullOrEmpty(@Model.Course.UcasCode)) {
-            <dt>Training provider code:</dt>
-            <dd>@Model.Course.UcasCode</dd>
-        }
-        @if (!string.IsNullOrEmpty(@Model.Course.ProgrammeCode)) {
-            <dt>Training programme code:</dt>
-            <dd>@Model.Course.ProgrammeCode</dd>
-        }
-        @if (!string.IsNullOrEmpty(@Model.Course.Accrediting)) {
-            <dt>Accrediting provider:</dt>
-            <dd>@Model.Course.Accrediting</dd>
-        }
-        @if (!string.IsNullOrEmpty(@Model.Course.GetRoute())) {
-            <dt>Route:</dt>
-            <dd>@Model.Course.GetRoute()</dd>
-        }
-        @if (!string.IsNullOrEmpty(@Model.Course.Subjects)) {
-            <dt>Subjects:</dt>
-            <dd>@Model.Course.Subjects</dd>
-        }
-        @if (!string.IsNullOrEmpty(@Model.Course.GetStudyMode())) {
-            <dt>Mode of study:</dt>
-            <dd>@Model.Course.GetStudyMode()</dd>
-        }
-        @if (!string.IsNullOrEmpty(@Model.Course.GetQualification())) {
-            <dt>Qualification:</dt>
-            <dd>@Model.Course.GetQualification()</dd>
-        }
-    </dl>
-
-    <h3 class="govuk-heading-m">Training locations</h3>
-    <table class="govuk-table">
-        <thead class="govuk-table__head">
-          <tr class="govuk-table__row">
-            <th class="govuk-table__header" scope="col">Location name</th>
-            <th class="govuk-table__header" scope="col">Address</th>
-            <th class="govuk-table__header" scope="col">Status</th>
-            <th class="govuk-table__header" scope="col">Code</th>
-            @*<th class="govuk-table__header" scope="col">Full time vacancies</th>
-    <th class="govuk-table__header" scope="col">Part time vacancies</th>*@
-            <th class="govuk-table__header" scope="col">Applications accepted from</th>
-          </tr>
-        </thead>
-        <tbody class="govuk-table__body">
-            @foreach (var school in Model.Course.Schools)
-            {
-          <tr class="govuk-table__row">
-            <td class="govuk-table__cell">@school.LocationName</td>
-            <td class="govuk-table__cell">@school.Address</td>
-            <td class="govuk-table__cell">@school.GetSchoolStatus()</td>
-            <td class="govuk-table__cell">@school.Code</td>
-            @*<td class="govuk-table__cell">Vacancies</td>
-    <td class="govuk-table__cell">Not applicable</td>*@
-            <td class="govuk-table__cell">@school.ApplicationsAcceptedFrom</td>
-          </tr>
+          <dl class="govuk-list govuk-list--description">
+            @if (!string.IsNullOrEmpty(@Model.Course.Name)) {
+              <dt>Name:</dt>
+              <dd>@Model.Course.Name</dd>
             }
-        </tbody>
-    </table>
-
-    <p>
+            @if (!string.IsNullOrEmpty(@Model.Course.UcasCode)) {
+              <dt>Training provider code:</dt>
+              <dd>@Model.Course.UcasCode</dd>
+            }
+            @if (!string.IsNullOrEmpty(@Model.Course.ProgrammeCode)) {
+              <dt>Training programme code:</dt>
+              <dd>@Model.Course.ProgrammeCode</dd>
+            }
+            @if (!string.IsNullOrEmpty(@Model.Course.Accrediting)) {
+              <dt>Accredited provider:</dt>
+              <dd>@Model.Course.Accrediting</dd>
+            }
+            @if (!string.IsNullOrEmpty(@Model.Course.GetRoute())) {
+              <dt>Route:</dt>
+              <dd>@Model.Course.GetRoute()</dd>
+            }
+            @if (!string.IsNullOrEmpty(@Model.Course.Subjects)) {
+              <dt>Subjects:</dt>
+              <dd>@Model.Course.Subjects</dd>
+            }
+            @if (!string.IsNullOrEmpty(@Model.Course.GetStudyMode())) {
+              <dt>Mode of study:</dt>
+              <dd>@Model.Course.GetStudyMode()</dd>
+            }
+            @if (!string.IsNullOrEmpty(@Model.Course.GetQualification())) {
+              <dt>Qualification:</dt>
+              <dd>@Model.Course.GetQualification()</dd>
+            }
+          </dl>
+        </div>
+        <div class="course-parts__item">
+          <h3 class="course-parts__title">Training locations</h3>
+          @foreach (var school in Model.Course.Schools)
+          {
+            <h4 class="govuk-heading-s">@school.LocationName (Code: @school.Code)</h4>
+            <dl class="govuk-list govuk-list--description">
+              @if (!string.IsNullOrEmpty(@school.Address)) {
+                <dt>Address:</dt>
+                <dd>@school.Address</dd>
+              }
+              @if (!string.IsNullOrEmpty(@school.ApplicationsAcceptedFrom)) {
+                <dt>Apply from:</dt>
+                <dd>@school.ApplicationsAcceptedFrom</dd>
+              }
+            </dl>
+          }
+        </div>
+      </div>
+      <p class="govuk-body">
         <a href="@link" class="govuk-link">Contact the Becoming a Teacher team to report a problem</a>
-    </p>
+      </p>
+    </div>
+  </div>
 </main>

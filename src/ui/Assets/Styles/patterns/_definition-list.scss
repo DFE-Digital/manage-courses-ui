@@ -1,26 +1,34 @@
 %govuk-list--description {
-    @include govuk-clearfix;
+  @include govuk-clearfix;
 }
 
 %govuk-list--description > dt {
-    @include govuk-font($size: 19, $weight: normal);
-    vertical-align: top;
+  @include govuk-font($size: 19, $weight: normal);
+  vertical-align: top;
 
-    @include mq ($from: desktop) {
-        float: left;
-        width: 33.33%;
-    }
+  @include mq ($from: tablet) {
+    float: left;
+    width: 33.33%;
+  }
+
+  @include mq ($from: desktop) {
+    width: 40%;
+  }
 }
 
 %govuk-list--description > dd {
-    margin-left: 0;
-   
-    @include mq ($from: desktop) {
-        float: left;
-        width: 66.66%;
-    }
+  margin-left: 0;
+
+  @include mq ($from: tablet) {
+    float: left;
+    width: 66.66%;
+  }
+
+  @include mq ($from: tablet) {
+    width: 60%;
+  }
 }
 
 .govuk-list--description {
-    @extend %govuk-list--description;
+  @extend %govuk-list--description;
 }
