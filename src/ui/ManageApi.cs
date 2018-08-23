@@ -74,9 +74,11 @@ namespace GovUk.Education.ManageCourses.Ui
             return result;
         }
 
-        public async Task<CourseEnrichment> GetCourseDetails(string instCode, string ucasCode)
+        public async Task<UcasCourseEnrichmentGetModel> GetEnrichmentCourse(string instCode, string ucasCode)
         {
-            return new CourseEnrichment();
+            var result = await _apiClient.Enrichment_GetCourseAsync(instCode, ucasCode);
+
+            return result;
         }
     }
 }

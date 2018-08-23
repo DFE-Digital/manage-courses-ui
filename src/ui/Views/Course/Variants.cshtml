@@ -4,6 +4,8 @@
   Layout = "_Layout";
   ViewBag.Title = Model.Course.Name;
   var link = "mailto:becomingateacher@digital.education.gov.uk?subject=Problem%20with%20course%20" + Model.Course.ProgrammeCode;
+
+  var courseEnrichment = Model.CourseEnrichment;
 }
 
 <a href="@Url.Action("Courses", "Organisation", new {ucasCode = Model.Course.UcasCode})" class="govuk-back-link">Back</a>
@@ -64,19 +66,19 @@
                 About this course
             </dt>
             <dd class="course-parts__fields__value">
-                TODO: show truncated content or show 'This field is empty'
+                @courseEnrichment.AboutCourse.DisplayText()
             </dd>
             <dt class="course-parts__fields__label">
                 Interview process (optional)
             </dt>
             <dd class="course-parts__fields__value">
-                TODO: show truncated content or show 'This field is empty'
+                @courseEnrichment.InterviewProcess.DisplayText()
             </dd>
             <dt class="course-parts__fields__label">
                 How school placements work
             </dt>
             <dd class="course-parts__fields__value">
-                TODO: show truncated content or show 'This field is empty'
+                @courseEnrichment.SchoolPlacement.DisplayText()
             </dd>
           </dl>
         </div>

@@ -1,13 +1,13 @@
 ﻿using System;
-using System.Linq;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using GovUk.Education.ManageCourses.ApiClient;
+using GovUk.Education.ManageCourses.Ui;
+using GovUk.Education.ManageCourses.Ui.Helpers;
 using GovUk.Education.ManageCourses.Ui.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using GovUk.Education.ManageCourses.Ui;
-using GovUk.Education.ManageCourses.Ui.Helpers;
 
 namespace GovUk.Education.ManageCourses.Ui.Controllers
 {
@@ -38,7 +38,8 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
 
             if (course == null) return NotFound();
 
-            var viewModel = LoadViewModel(org, course, multipleOrganisations);
+            var ucasCourseEnrichmentGetModel = await _manageApi.GetEnrichmentCourse(instCode, ucasCode);
+            var viewModel = LoadViewModel(org, course, multipleOrganisations, ucasCourseEnrichmentGetModel);
 
             return View(viewModel);
         }
@@ -47,12 +48,12 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
         [Route("{instCode}/course/{accreditingProviderId=self}/{ucasCode}/about")]
         public async Task<IActionResult> About(string instCode, string accreditingProviderId, string ucasCode)
         {
-            var course = await _manageApi.GetCourseDetails(instCode, ucasCode);
+            var course = await _manageApi.GetEnrichmentCourse(instCode, ucasCode);
             var model = new CourseAboutViewModel
             {
-                AboutCourse = course.AboutCourse,
-                InterviewProcess = course.InterviewProcess,
-                SchoolPlacement = course.SchoolPlacement
+                AboutCourse = course.EnrichmentModel.AboutCourse,
+                InterviewProcess = course.EnrichmentModel.InterviewProcess,
+                SchoolPlacement = course.EnrichmentModel.HowSchoolPlacementsWork
             };
             return View(model);
         }
@@ -64,48 +65,48 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             if (string.IsNullOrEmpty(ucasCode)) { throw new ArgumentNullException(ucasCode, "ucasCode cannot be null or empty"); }
         }
 
-        private FromUcasViewModel LoadViewModel(UserOrganisation org, Course course, bool multipleOrganisations)
+        private FromUcasViewModel LoadViewModel(UserOrganisation org, Course course, bool multipleOrganisations, UcasCourseEnrichmentGetModel ucasCourseEnrichmentGetModel)
         {
             var courseVariant =
                 new CourseVariantViewModel
                 {
                     Name = course.Name,
-                    Type = course.GetCourseVariantType(),
-                    Accrediting = course.AccreditingProviderName,
-                    ProviderCode = course.AccreditingProviderId,
-                    ProgrammeCode = course.CourseCode,
-                    UcasCode = course.InstCode,
-                    AgeRange = course.AgeRange,
-                    Route = course.ProgramType,
-                    Qualifications = course.ProfpostFlag,
-                    StudyMode = course.StudyMode,
-                    Subjects = course.Subjects,
-                    Schools = course.Schools.Select(campus =>
-                    {
-                        var addressLines = (new List<string>()
+                        Type = course.GetCourseVariantType(),
+                        Accrediting = course.AccreditingProviderName,
+                        ProviderCode = course.AccreditingProviderId,
+                        ProgrammeCode = course.CourseCode,
+                        UcasCode = course.InstCode,
+                        AgeRange = course.AgeRange,
+                        Route = course.ProgramType,
+                        Qualifications = course.ProfpostFlag,
+                        StudyMode = course.StudyMode,
+                        Subjects = course.Subjects,
+                        Schools = course.Schools.Select(campus =>
                         {
-                            campus.Address1,
-                            campus.Address2,
-                            campus.Address3,
-                            campus.Address4,
-                            campus.PostCode
+                            var addressLines = (new List<string>()
+                                {
+                                    campus.Address1,
+                                        campus.Address2,
+                                        campus.Address3,
+                                        campus.Address4,
+                                        campus.PostCode
+                                })
+                                .Where(line => !String.IsNullOrEmpty(line));
+
+                            var address = addressLines.Count() > 0 ? addressLines.Where(line => !String.IsNullOrEmpty(line))
+                                .Aggregate((current, next) => current + ", " + next) : "";
+
+                            return new SchoolViewModel
+                            {
+                                ApplicationsAcceptedFrom = campus.ApplicationsAcceptedFrom,
+                                    Code = campus.Code,
+                                    LocationName = campus.LocationName,
+                                    Address = address
+                            };
                         })
-                        .Where(line => !String.IsNullOrEmpty(line));
-
-                        var address = addressLines.Count() > 0 ? addressLines.Where(line => !String.IsNullOrEmpty(line))
-                            .Aggregate((current, next) => current + ", " + next) : "";
-
-                        return new SchoolViewModel
-                        {
-                            ApplicationsAcceptedFrom = campus.ApplicationsAcceptedFrom,
-                            Code = campus.Code,
-                            LocationName = campus.LocationName,
-                            Address = address
-                        };
-                    })
                 };
 
-
+            var courseEnrichmentViewModel = GetCourseEnrichmentViewModel(ucasCourseEnrichmentGetModel);
             var viewModel = new FromUcasViewModel
             {
                 OrganisationName = org.OrganisationName,
@@ -113,9 +114,23 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
                 CourseTitle = course.Name,
                 AccreditingProviderId = course.AccreditingProviderId,
                 MultipleOrganisations = multipleOrganisations,
-                Course = courseVariant
+                Course = courseVariant,
+                CourseEnrichment = courseEnrichmentViewModel
             };
             return viewModel;
+        }
+
+        private CourseEnrichmentViewModel GetCourseEnrichmentViewModel(UcasCourseEnrichmentGetModel ucasCourseEnrichmentGetModel)
+        {
+            var result = new CourseEnrichmentViewModel()
+            {
+                AboutCourse = ucasCourseEnrichmentGetModel.EnrichmentModel.AboutCourse,
+                InterviewProcess = ucasCourseEnrichmentGetModel.EnrichmentModel.InterviewProcess,
+                SchoolPlacement = ucasCourseEnrichmentGetModel.EnrichmentModel.HowSchoolPlacementsWork
+            };
+
+            return result;
+
         }
     }
 }
