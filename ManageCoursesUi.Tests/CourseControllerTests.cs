@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using GovUk.Education.ManageCourses.ApiClient;
+using GovUk.Education.ManageCourses.Ui;
 using GovUk.Education.ManageCourses.Ui.Controllers;
 using GovUk.Education.ManageCourses.Ui.ViewModels;
 using ManageCoursesUi.Tests.Enums;
 using ManageCoursesUi.Tests.Helpers;
 using Microsoft.AspNetCore.Mvc;
-using NUnit.Framework;
 using Moq;
-using GovUk.Education.ManageCourses.Ui;
+using NUnit.Framework;
 
 namespace ManageCoursesUi.Tests
 {
@@ -28,27 +28,42 @@ namespace ManageCoursesUi.Tests
             {
                 new UserOrganisation
                 {
-                    OrganisationId = testData.InstitutionCode,
-                    OrganisationName = testData.InstitutionName,
-                    UcasCode = TestHelper.InstitutionCode,
-                    TotalCourses = testData.Courses.Count
+                OrganisationId = testData.InstitutionCode,
+                OrganisationName = testData.InstitutionName,
+                UcasCode = TestHelper.InstitutionCode,
+                TotalCourses = testData.Courses.Count
                 }
             };
 
             var testCourse = testData.Courses.FirstOrDefault(x => x.Name == TestHelper.TargetedCourseTitle);
+
+            var ucasCourseEnrichmentGetModel = new UcasCourseEnrichmentGetModel { EnrichmentModel = new CourseEnrichmentModel { AboutCourse = "AboutCourse", InterviewProcess = "InterviewProcess", HowSchoolPlacementsWork = "HowSchoolPlacementsWork" } };
+
             manageApi.Setup(x => x.GetOrganisations()).ReturnsAsync(testOrgs);
-            manageApi.Setup(x => x.GetCourseByUcasCode(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(testCourse);
+            manageApi.Setup(x => x.GetCourseByUcasCode(TestHelper.InstitutionCode, TestHelper.TargetedUcasCode)).ReturnsAsync(testCourse);
+
+            manageApi.Setup(x => x.GetEnrichmentCourse(TestHelper.InstitutionCode, TestHelper.TargetedUcasCode)).ReturnsAsync(ucasCourseEnrichmentGetModel);
 
             var controller = new CourseController(manageApi.Object);
             var result = await controller.Variants(TestHelper.InstitutionCode, TestHelper.AccreditedProviderId, TestHelper.TargetedUcasCode);
 
-            Assert.IsInstanceOf(typeof(ViewResult), result);
+            var viewResult = result as ViewResult;
+            Assert.IsNotNull(viewResult);
 
-            Assert.IsTrue((result as ViewResult)?.Model is FromUcasViewModel model &&
-                          model.CourseTitle == TestHelper.TargetedCourseTitle &&
-                          model.OrganisationId == TestHelper.OrganisationId &&
-                          model.OrganisationName == TestHelper.OrganisationName);
+            var model = viewResult.Model as FromUcasViewModel;
+
+            Assert.IsNotNull(model);
+            Assert.IsInstanceOf(typeof(ViewResult), result);
+            Assert.AreEqual(TestHelper.TargetedCourseTitle, model.CourseTitle);
+            Assert.AreEqual(TestHelper.OrganisationId, model.OrganisationId);
+
+            Assert.AreEqual(TestHelper.OrganisationName, model.OrganisationName);
+
+            Assert.AreEqual(TestHelper.InstitutionCode, model.RouteData.InstCode);
+            Assert.AreEqual(TestHelper.AccreditedProviderId, model.RouteData.AccreditingProviderId);
+            Assert.AreEqual(TestHelper.TargetedUcasCode, model.RouteData.UcasCode);
         }
+
         [Test]
         [TestCase(EnumDataType.SingleVariantNoMatch)]
         [TestCase(EnumDataType.MultiVariantNoMatch)]
@@ -61,21 +76,22 @@ namespace ManageCoursesUi.Tests
             {
                 new UserOrganisation
                 {
-                    OrganisationId = testData.InstitutionCode,
-                    OrganisationName = testData.InstitutionName,
-                    UcasCode = "123",
-                    TotalCourses = testData.Courses.Count
+                OrganisationId = testData.InstitutionCode,
+                OrganisationName = testData.InstitutionName,
+                UcasCode = "123",
+                TotalCourses = testData.Courses.Count
                 }
             };
 
-            var testCourse = testData.Courses.FirstOrDefault(x => x.Name == TestHelper.TargetedCourseTitle); ;
+            var testCourse = testData.Courses.FirstOrDefault(x => x.Name == TestHelper.TargetedCourseTitle);;
             manageApi.Setup(x => x.GetOrganisations()).ReturnsAsync(testOrgs);
             manageApi.Setup(x => x.GetCourseByUcasCode(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(testCourse);
 
             var controller = new CourseController(manageApi.Object);
 
-            Assert.ThrowsAsync<InvalidOperationException>(async () => await controller.Variants(TestHelper.InstitutionCode, TestHelper.AccreditedProviderId, TestHelper.TargetedUcasCode));
+            Assert.ThrowsAsync<InvalidOperationException>(async() => await controller.Variants(TestHelper.InstitutionCode, TestHelper.AccreditedProviderId, TestHelper.TargetedUcasCode));
         }
+
         [Test]
         public async Task TestController_should_return_not_found_status()
         {
@@ -86,13 +102,13 @@ namespace ManageCoursesUi.Tests
             {
                 new UserOrganisation
                 {
-                    OrganisationId = testData.InstitutionCode,
-                    OrganisationName = testData.InstitutionName,
-                    UcasCode = TestHelper.InstitutionCode,
-                    TotalCourses = testData.Courses.Count
+                OrganisationId = testData.InstitutionCode,
+                OrganisationName = testData.InstitutionName,
+                UcasCode = TestHelper.InstitutionCode,
+                TotalCourses = testData.Courses.Count
                 }
             };
-            
+
             manageApi.Setup(x => x.GetOrganisations()).ReturnsAsync(testOrgs);
             manageApi.Setup(x => x.GetCourseByUcasCode(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync((Course) null);
 
@@ -103,6 +119,7 @@ namespace ManageCoursesUi.Tests
             Assert.NotNull(result);
             Assert.IsInstanceOf(typeof(NotFoundResult), result);
         }
+
         [Test]
         [TestCase("", "xxx", "xxx")]
         [TestCase(null, "self", "35L6")]
@@ -119,10 +136,10 @@ namespace ManageCoursesUi.Tests
             {
                 new UserOrganisation
                 {
-                    OrganisationId = testData.InstitutionCode,
-                    OrganisationName = testData.InstitutionName,
-                    UcasCode = TestHelper.InstitutionCode,
-                    TotalCourses = testData.Courses.Count
+                OrganisationId = testData.InstitutionCode,
+                OrganisationName = testData.InstitutionName,
+                UcasCode = TestHelper.InstitutionCode,
+                TotalCourses = testData.Courses.Count
                 }
             };
 
@@ -131,8 +148,9 @@ namespace ManageCoursesUi.Tests
             manageApi.Setup(x => x.GetCourseByUcasCode(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(testCourse);
 
             var controller = new CourseController(manageApi.Object);
-            Assert.ThrowsAsync<ArgumentNullException>(async () => await controller.Variants(institutionCode, accreditedProviderId, ucasCode));
+            Assert.ThrowsAsync<ArgumentNullException>(async() => await controller.Variants(institutionCode, accreditedProviderId, ucasCode));
         }
+
         [Test]
         public void TestController_with_api_exception_on_first_call_should_return_exception()
         {
@@ -141,9 +159,10 @@ namespace ManageCoursesUi.Tests
             manageApi.Setup(x => x.GetOrganisations()).ThrowsAsync(new Exception());
 
             var controller = new CourseController(manageApi.Object);
- 
-            Assert.ThrowsAsync<Exception>(async () => await controller.Variants(TestHelper.InstitutionCode, TestHelper.AccreditedProviderId, TestHelper.TargetedUcasCode));
+
+            Assert.ThrowsAsync<Exception>(async() => await controller.Variants(TestHelper.InstitutionCode, TestHelper.AccreditedProviderId, TestHelper.TargetedUcasCode));
         }
+
         [Test]
         [TestCase(EnumDataType.SingleVariantOneMatch)]
         [TestCase(EnumDataType.MultiVariantOneMatch)]
@@ -155,10 +174,10 @@ namespace ManageCoursesUi.Tests
             {
                 new UserOrganisation
                 {
-                    OrganisationId = testData.InstitutionCode,
-                    OrganisationName = testData.InstitutionName,
-                    UcasCode = TestHelper.InstitutionCode,
-                    TotalCourses = testData.Courses.Count
+                OrganisationId = testData.InstitutionCode,
+                OrganisationName = testData.InstitutionName,
+                UcasCode = TestHelper.InstitutionCode,
+                TotalCourses = testData.Courses.Count
                 }
             };
 
@@ -167,7 +186,7 @@ namespace ManageCoursesUi.Tests
 
             var controller = new CourseController(manageApi.Object);
 
-            Assert.ThrowsAsync<Exception>(async () => await controller.Variants(TestHelper.InstitutionCode, TestHelper.AccreditedProviderId, TestHelper.TargetedUcasCode));
+            Assert.ThrowsAsync<Exception>(async() => await controller.Variants(TestHelper.InstitutionCode, TestHelper.AccreditedProviderId, TestHelper.TargetedUcasCode));
         }
     }
 }
