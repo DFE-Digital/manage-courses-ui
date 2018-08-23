@@ -9,4 +9,11 @@ namespace GovUk.Education.ManageCourses.Ui.ViewModels
         public string UcasCode { get; set; }
         public IEnumerable<SubjectViewModel> Subjects { get; set; }
     }
+
+    public class CourseAboutViewModel
+    {
+        public string AboutCourse { get; set; }
+        public string InterviewProcess { get; set; }
+        public string SchoolPlacement { get; set; }
+    }
 }

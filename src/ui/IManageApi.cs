@@ -19,5 +19,14 @@ namespace GovUk.Education.ManageCourses.Ui
         Task SaveEnrichmentOrganisation(string institutionCode, UcasInstitutionEnrichmentPostModel organisation);
         Task<UcasInstitutionEnrichmentGetModel> GetEnrichmentOrganisation(string ucasCode);
         Task<bool> PublishEnrichmentOrganisation(string ucasCode);
+        Task<CourseEnrichment> GetCourseDetails(string instCode, string ucasCode);
+    }
+
+    public class CourseEnrichment
+    {
+        public string AccreditingProviderId { get; set; }
+        public string AboutCourse { get; set; }
+        public string InterviewProcess { get; set; }
+        public string SchoolPlacement { get; set; }
     }
 }

@@ -55,6 +55,32 @@
             }
           </dl>
         </div>
+
+        <div class="course-parts__item">
+          <h3 class="course-parts__title">About this course</h3>
+          <a class="course-parts__action" href="@Url.Action("About", "Course", new { ucasCode = Model.Course.UcasCode })">Edit</a>
+          <dl class="course-parts__fields">
+            <dt class="course-parts__fields__label">
+                About this course
+            </dt>
+            <dd class="course-parts__fields__value">
+                TODO: show truncated content or show 'This field is empty'
+            </dd>
+            <dt class="course-parts__fields__label">
+                Interview process (optional)
+            </dt>
+            <dd class="course-parts__fields__value">
+                TODO: show truncated content or show 'This field is empty'
+            </dd>
+            <dt class="course-parts__fields__label">
+                How school placements work
+            </dt>
+            <dd class="course-parts__fields__value">
+                TODO: show truncated content or show 'This field is empty'
+            </dd>
+          </dl>
+        </div>
+
         <div class="course-parts__item">
           <h3 class="course-parts__title">Training locations</h3>
           @foreach (var school in Model.Course.Schools)

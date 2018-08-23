@@ -1,0 +1,93 @@
+@model CourseAboutViewModel
+ @{
+  Layout = "_Layout";
+  var about_course = ViewData.ModelState["AboutCourse"] != null && ViewData.ModelState["AboutCourse"].Errors.Any();
+  var interview_process = ViewData.ModelState["InterviewProcess"] != null && ViewData.ModelState["InterviewProcess"].Errors.Any();
+  var school_placement = ViewData.ModelState["SchoolPlacement"] != null && ViewData.ModelState["SchoolPlacement"].Errors.Any();
+}
+
+<a href="#" class="govuk-back-link">Back</a>
+
+ <main role="main" class="govuk-main-wrapper" id="main-content">
+  <form asp-controller="Course" asp-action="About" method="post" data-module="form">
+    <div class="govuk-grid-row">
+      <div class="govuk-grid-column-two-thirds">
+        <h1 class="govuk-heading-xl">About this course</h1>
+        @Html.Partial("ErrorSummary")
+         <p class="govuk-body">Give applicants a short description of the course.</p>
+        <p class="govuk-body">You could include:</p>
+        <ul class="govuk-list govuk-list--bullet">
+          <li>an overview of what candidates are taught</li>
+          <li>how much time they’ll spend training in school</li>
+          <li>how they’ll be assessed</li>
+          <li>the workload (eg how many essays per term?)</li>
+          <li>any other locations they’ll need to go to (eg will they also have to attend classes at an accrediting provider?)</li>
+          <li>information about the prestige of the course (eg league-table rankings)</li>
+        </ul>
+        <p class="govuk-body">If you offer different courses in the same subject, be clear about how this course differs from the others (eg amount of time spent in school, course structure). This will help the applicant decide which course best suits them.</p>
+        <div class="govuk-character-count" data-module="character-count" data-maxwords="400">
+          <div id="AboutCourse-wrapper" class="govuk-form-group @(about_course ? " govuk-form-group--error " : " ")">
+            <label asp-for="AboutCourse" class="govuk-label govuk-!-font-weight-bold">About this course</label>
+            @if (about_course) {
+              <span asp-validation-for="AboutCourse" class="govuk-error-message"></span>
+            }
+            <textarea asp-for="AboutCourse" class="govuk-textarea js-character-count" rows="15" data-module="character-count"></textarea>
+          </div>
+        </div>
+      </div>
+    </div>
+    <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible">
+    <div class="govuk-grid-row">
+      <div class="govuk-grid-column-two-thirds">
+        <h3 class="govuk-heading-l">Interview process</h3>
+        <p class="govuk-body">Give applicants a summary of the interview process.</p>
+         <p class="govuk-body">This could include:</p>
+        <ul class="govuk-list govuk-list--bullet">
+          <li>who’ll be interviewing them</li>
+          <li>how many interviews they’ll need to attend</li>
+          <li>details of any tests they’ll need to sit</li>
+        </ul>
+        <div class="govuk-character-count" data-module="character-count" data-maxwords="250">
+          <div id="InterviewProcess-wrapper" class="govuk-form-group @(interview_process ? " govuk-form-group--error " : " ")">
+            <label asp-for="InterviewProcess" class="govuk-label govuk-!-font-weight-bold">Interview process (optional)</label>
+            @if (interview_process) {
+              <span asp-validation-for="InterviewProcess" class="govuk-error-message"></span>
+            }
+            <textarea asp-for="InterviewProcess" class="govuk-textarea js-character-count" rows="10" data-module="character-count"></textarea>
+          </div>
+        </div>
+      </div>
+    </div>
+    <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible">
+    <div class="govuk-grid-row">
+      <div class="govuk-grid-column-two-thirds">
+        <h3 class="govuk-heading-l">How school placements work</h3>
+        <p>Tell applicants more about the schools they’ll be teaching in.</p>
+        <p>You could include:</p>
+        <ul class="govuk-list govuk-list--bullet">
+          <li>how the candidate’s schools are selected</li>
+          <li>the average distance candidates have to travel from home to school</li>
+          <li>the age ranges they’ll be teaching (eg 11 to 16 or 11 to 18)</li>
+          <li>how many schools you partner with in total</li>
+          <li>the number of placements a candidate will have</li>
+          <li>how much time candidates spend in each school</li>
+        </ul>
+        <div class="govuk-character-count" data-module="character-count" data-maxwords="350">
+          <div id="SchoolPlacement-wrapper" class="govuk-form-group @(school_placement ? " govuk-form-group--error " : " ")">
+            <label asp-for="SchoolPlacement" class="govuk-label govuk-!-font-weight-bold">How school placements work</label>
+            @if (school_placement) {
+              <span asp-validation-for="SchoolPlacement" class="govuk-error-message"></span>
+            }
+            <textarea asp-for="SchoolPlacement" class="govuk-textarea js-character-count" rows="10" data-module="character-count"></textarea>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="govuk-form">
+      <input type="submit" class="govuk-button" value="Save">
+    </div>
+     <p class="govuk-body">
+      <a href="#" class "govuk-link">Cancel changes</a>
+    </p>
+  </form>
+</main>
