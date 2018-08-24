@@ -8,10 +8,10 @@
 
 <a href="@Url.Action("Variants", "Course", Model.RouteData)" class="govuk-back-link">Back</a>
 
- <main role="main" class="govuk-main-wrapper" id="main-content">
-  <form asp-controller="Course" asp-action="About" method="post" data-module="form">
-    <div class="govuk-grid-row">
-      <div class="govuk-grid-column-two-thirds">
+<main role="main" class="govuk-main-wrapper" id="main-content">
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <form asp-controller="Course" asp-action="About" method="post" data-module="form">
         <h1 class="govuk-heading-xl">About this course</h1>
         @Html.Partial("ErrorSummary")
          <p class="govuk-body">Give applicants a short description of the course.</p>
@@ -34,11 +34,7 @@
             <textarea asp-for="AboutCourse" class="govuk-textarea js-character-count" rows="15" data-module="character-count"></textarea>
           </div>
         </div>
-      </div>
-    </div>
-    <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible">
-    <div class="govuk-grid-row">
-      <div class="govuk-grid-column-two-thirds">
+        <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible">
         <h3 class="govuk-heading-l">Interview process</h3>
         <p class="govuk-body">Give applicants a summary of the interview process.</p>
          <p class="govuk-body">This could include:</p>
@@ -56,11 +52,7 @@
             <textarea asp-for="InterviewProcess" class="govuk-textarea js-character-count" rows="10" data-module="character-count"></textarea>
           </div>
         </div>
-      </div>
-    </div>
-    <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible">
-    <div class="govuk-grid-row">
-      <div class="govuk-grid-column-two-thirds">
+        <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible">
         <h3 class="govuk-heading-l">How school placements work</h3>
         <p>Tell applicants more about the schools they’ll be teaching in.</p>
         <p>You could include:</p>
@@ -81,13 +73,18 @@
             <textarea asp-for="HowSchoolPlacementsWork" class="govuk-textarea js-character-count" rows="10" data-module="character-count"></textarea>
           </div>
         </div>
-      </div>
+        <div class="govuk-form">
+          <input type="submit" class="govuk-button" value="Save">
+        </div>
+         <p class="govuk-body">
+          <a href="@Url.Action("Variants", "Course", Model.RouteData)" class "govuk-link">Cancel changes</a>
+        </p>
+      </form>
     </div>
-    <div class="govuk-form">
-      <input type="submit" class="govuk-button" value="Save">
+    <div class="govuk-grid-column-one-third">
+      <aside class="related">
+        @Html.Partial("FormattingAdvice")
+      </aside>
     </div>
-     <p class="govuk-body">
-      <a href="@Url.Action("Variants", "Course", Model.RouteData)" class "govuk-link">Cancel changes</a>
-    </p>
-  </form>
+  </div>
 </main>

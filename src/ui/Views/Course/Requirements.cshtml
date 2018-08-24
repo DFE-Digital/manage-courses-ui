@@ -8,10 +8,10 @@
 
 <a href="@Url.Action("Variants", "Course", Model.RouteData)" class="govuk-back-link">Back</a>
 
- <main role="main" class="govuk-main-wrapper" id="main-content">
-  <form asp-controller="Course" asp-action="Requirements" method="post" data-module="form">
-    <div class="govuk-grid-row">
-      <div class="govuk-grid-column-two-thirds">
+<main role="main" class="govuk-main-wrapper" id="main-content">
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <form asp-controller="Course" asp-action="Requirements" method="post" data-module="form">
         <h1 class="govuk-heading-xl">Requirements and eligibility</h1>
         @Html.Partial("ErrorSummary")
         <h3 class="govuk-heading-l">Qualifications needed</h3>
@@ -25,11 +25,7 @@
             <textarea asp-for="Qualifications" class="govuk-textarea js-character-count" rows="10" data-module="character-count"></textarea>
           </div>
         </div>
-      </div>
-    </div>
-    <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible">
-    <div class="govuk-grid-row">
-      <div class="govuk-grid-column-two-thirds">
+        <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible">
         <h3 class="govuk-heading-l">Personal qualities</h3>
         <p class="govuk-body">Tell applicants about the skills and motivation you’re looking for (eg experience with children, a genuine passion for teaching, or a talent for public speaking).</p>
         <div class="govuk-character-count" data-module="character-count" data-maxwords="100">
@@ -41,11 +37,7 @@
             <textarea asp-for="PersonalQualities" class="govuk-textarea js-character-count" rows="10" data-module="character-count"></textarea>
           </div>
         </div>
-      </div>
-    </div>
-    <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible">
-    <div class="govuk-grid-row">
-      <div class="govuk-grid-column-two-thirds">
+        <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible">
         <h3 class="govuk-heading-l">Other requirements</h3>
         <p>If applicants need any non-academic qualifications or documents, list them here (eg criminal record checks, or relevant work experience).</p>
         <div class="govuk-character-count" data-module="character-count" data-maxwords="100">
@@ -57,13 +49,18 @@
             <textarea asp-for="OtherRequirements" class="govuk-textarea js-character-count" rows="10" data-module="character-count"></textarea>
           </div>
         </div>
-      </div>
+        <div class="govuk-form">
+          <input type="submit" class="govuk-button" value="Save">
+        </div>
+         <p class="govuk-body">
+          <a href="@Url.Action("Variants", "Course", Model.RouteData)" class "govuk-link">Cancel changes</a>
+        </p>
+      </form>
     </div>
-    <div class="govuk-form">
-      <input type="submit" class="govuk-button" value="Save">
+    <div class="govuk-grid-column-one-third">
+      <aside class="related">
+        @Html.Partial("FormattingAdvice")
+      </aside>
     </div>
-     <p class="govuk-body">
-      <a href="@Url.Action("Variants", "Course", Model.RouteData)" class "govuk-link">Cancel changes</a>
-    </p>
-  </form>
+  </div>
 </main>
