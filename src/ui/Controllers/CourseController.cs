@@ -221,11 +221,17 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
 
         private CourseEnrichmentViewModel GetCourseEnrichmentViewModel(UcasCourseEnrichmentGetModel ucasCourseEnrichmentGetModel)
         {
+            var enrichmentModel = ucasCourseEnrichmentGetModel.EnrichmentModel;
             var result = new CourseEnrichmentViewModel()
             {
-                AboutCourse = ucasCourseEnrichmentGetModel.EnrichmentModel.AboutCourse,
-                InterviewProcess = ucasCourseEnrichmentGetModel.EnrichmentModel.InterviewProcess,
-                HowSchoolPlacementsWork = ucasCourseEnrichmentGetModel.EnrichmentModel.HowSchoolPlacementsWork
+                AboutCourse = enrichmentModel.AboutCourse,
+                InterviewProcess = enrichmentModel.InterviewProcess,
+                HowSchoolPlacementsWork = enrichmentModel.HowSchoolPlacementsWork,
+
+                Qualifications = enrichmentModel.Qualifications,
+                PersonalQualities = enrichmentModel.PersonalQualities,
+                OtherRequirements = enrichmentModel.OtherRequirements,
+
             };
 
             return result;
