@@ -56,13 +56,13 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             var routeData = GetCourseRouteDataViewModel(instCode, accreditingProviderId, ucasCode);
             var courseInfo = new CourseInfoViewModel { ProgrammeCode = courseDetails.CourseCode, Name = courseDetails.Name };
 
-            var enrichmentModel = ucasCourseEnrichmentGetModel.EnrichmentModel;
+            var enrichmentModel = ucasCourseEnrichmentGetModel?.EnrichmentModel ?? new CourseEnrichmentModel();
 
             var model = new AboutCourseEnrichmentViewModel
             {
-                AboutCourse = enrichmentModel.AboutCourse,
-                InterviewProcess = enrichmentModel.InterviewProcess,
-                HowSchoolPlacementsWork = enrichmentModel.HowSchoolPlacementsWork,
+                AboutCourse = enrichmentModel?.AboutCourse,
+                InterviewProcess = enrichmentModel?.InterviewProcess,
+                HowSchoolPlacementsWork = enrichmentModel?.HowSchoolPlacementsWork,
                 RouteData = routeData,
                 CourseInfo = courseInfo
             };
@@ -153,7 +153,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
         {
             var course = await _manageApi.GetEnrichmentCourse(instCode, ucasCode);
 
-            var enrichmentModel = course.EnrichmentModel;
+            var enrichmentModel = course?.EnrichmentModel ?? new CourseEnrichmentModel();
             MapEnrichment(enrichmentModel, viewModel);
 
             await _manageApi.SaveEnrichmentCourse(instCode, ucasCode, enrichmentModel);
@@ -222,8 +222,13 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             return viewModel;
         }
 
-        private CourseEnrichmentViewModel GetCourseEnrichmentViewModel(UcasCourseEnrichmentGetModel ucasCourseEnrichmentGetModel)
+        private static CourseEnrichmentViewModel GetCourseEnrichmentViewModel(UcasCourseEnrichmentGetModel ucasCourseEnrichmentGetModel)
         {
+            if (ucasCourseEnrichmentGetModel == null)
+            {
+                return null;
+            }
+
             var enrichmentModel = ucasCourseEnrichmentGetModel.EnrichmentModel;
             var result = new CourseEnrichmentViewModel()
             {
@@ -238,7 +243,6 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             };
 
             return result;
-
         }
 
         private CourseRouteDataViewModel GetCourseRouteDataViewModel(string instCode, string accreditingProviderId, string ucasCode)
