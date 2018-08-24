@@ -104,6 +104,25 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             return View(model);
         }
 
+        [HttpPost]
+        [Route("{instCode}/course/{accreditingProviderId=self}/{ucasCode}/requirements")]
+        public async Task<IActionResult> RequirementsPost(string instCode, string accreditingProviderId, string ucasCode, CourseRequirementsEnrichmentViewModel viewModel)
+        {
+            if (!ModelState.IsValid)
+            {
+                var routeData = GetCourseRouteDataViewModel(instCode, accreditingProviderId, ucasCode);
+                viewModel.RouteData = routeData;
+                return View("Requirements", viewModel);
+            }
+
+            await SaveEnrichment(instCode, ucasCode, viewModel);
+
+            TempData.Add("MessageType", "success");
+            TempData.Add("MessageTitle", "Your changes have been saved");
+
+            return RedirectToAction("Variants", new { instCode, accreditingProviderId, ucasCode });
+        }
+
         private void MapEnrichment(CourseEnrichmentModel enrichmentModel, ICourseEnrichmentViewModel viewModel)
         {
             var aboutCourseEnrichmentViewModel = viewModel as AboutCourseEnrichmentViewModel;
@@ -113,6 +132,15 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
                 enrichmentModel.AboutCourse = aboutCourseEnrichmentViewModel.AboutCourse;
                 enrichmentModel.InterviewProcess = aboutCourseEnrichmentViewModel.InterviewProcess;
                 enrichmentModel.HowSchoolPlacementsWork = aboutCourseEnrichmentViewModel.HowSchoolPlacementsWork;
+            }
+
+            var courseRequirementsEnrichmentViewModel = viewModel as CourseRequirementsEnrichmentViewModel;
+
+            if (courseRequirementsEnrichmentViewModel != null)
+            {
+                enrichmentModel.Qualifications = courseRequirementsEnrichmentViewModel.Qualifications;
+                enrichmentModel.PersonalQualities = courseRequirementsEnrichmentViewModel.PersonalQualities;
+                enrichmentModel.OtherRequirements = courseRequirementsEnrichmentViewModel.OtherRequirements;
             }
         }
 

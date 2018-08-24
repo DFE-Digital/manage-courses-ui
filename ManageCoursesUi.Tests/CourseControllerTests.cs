@@ -9,9 +9,9 @@ using GovUk.Education.ManageCourses.Ui.ViewModels;
 using ManageCoursesUi.Tests.Enums;
 using ManageCoursesUi.Tests.Helpers;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Moq;
 using NUnit.Framework;
-using Microsoft.AspNetCore.Mvc.ViewFeatures;
 
 namespace ManageCoursesUi.Tests
 {
@@ -289,11 +289,124 @@ namespace ManageCoursesUi.Tests
             manageApi.Verify(x => x.SaveEnrichmentCourse(TestHelper.InstitutionCode, TestHelper.TargetedUcasCode, It.Is<CourseEnrichmentModel>(c => Check(c, viewModel))), Times.Once());
         }
 
-        private bool Check(CourseEnrichmentModel model, AboutCourseEnrichmentViewModel viewModel)
+        [Test]
+        public async Task Requirements()
         {
-            return viewModel.AboutCourse == model.AboutCourse &&
-                viewModel.InterviewProcess == model.InterviewProcess &&
-                viewModel.HowSchoolPlacementsWork == model.HowSchoolPlacementsWork;
+            var manageApi = new Mock<IManageApi>();
+
+            var enrichmentModel = new CourseEnrichmentModel { Qualifications = "Qualifications", PersonalQualities = "PersonalQualities", OtherRequirements = "OtherRequirements" };
+            var ucasCourseEnrichmentGetModel = new UcasCourseEnrichmentGetModel { EnrichmentModel = enrichmentModel };
+
+            manageApi.Setup(x => x.GetEnrichmentCourse(TestHelper.InstitutionCode, TestHelper.TargetedUcasCode)).ReturnsAsync(ucasCourseEnrichmentGetModel);
+
+            var controller = new CourseController(manageApi.Object);
+            var result = await controller.Requirements(TestHelper.InstitutionCode, TestHelper.AccreditedProviderId, TestHelper.TargetedUcasCode);
+
+            var viewResult = result as ViewResult;
+            Assert.IsNotNull(viewResult);
+
+            var model = viewResult.Model as CourseRequirementsEnrichmentViewModel;
+
+            Assert.IsNotNull(model);
+
+            Assert.AreEqual(TestHelper.InstitutionCode, model.RouteData.InstCode);
+            Assert.AreEqual(TestHelper.AccreditedProviderId, model.RouteData.AccreditingProviderId);
+            Assert.AreEqual(TestHelper.TargetedUcasCode, model.RouteData.UcasCode);
+
+            Assert.AreEqual(enrichmentModel.Qualifications, model.Qualifications);
+            Assert.AreEqual(enrichmentModel.PersonalQualities, model.PersonalQualities);
+            Assert.AreEqual(enrichmentModel.OtherRequirements, model.OtherRequirements);
+        }
+
+        [Test]
+        public async Task RequirementsPost_Invalid()
+        {
+            var manageApi = new Mock<IManageApi>();
+
+            var viewModel = new CourseRequirementsEnrichmentViewModel { Qualifications = "Qualifications", PersonalQualities = "PersonalQualities", OtherRequirements = "OtherRequirements" };
+
+            var controller = new CourseController(manageApi.Object);
+
+            controller.ModelState.AddModelError("you", "failed");
+
+            var result = await controller.RequirementsPost(TestHelper.InstitutionCode, TestHelper.AccreditedProviderId, TestHelper.TargetedUcasCode, viewModel);
+
+            var viewResult = result as ViewResult;
+            Assert.IsNotNull(viewResult);
+            Assert.AreEqual("Requirements", viewResult.ViewName);
+
+            var model = viewResult.Model as CourseRequirementsEnrichmentViewModel;
+
+            Assert.IsNotNull(model);
+
+            Assert.AreEqual(TestHelper.InstitutionCode, model.RouteData.InstCode);
+            Assert.AreEqual(TestHelper.AccreditedProviderId, model.RouteData.AccreditingProviderId);
+            Assert.AreEqual(TestHelper.TargetedUcasCode, model.RouteData.UcasCode);
+
+            Assert.AreEqual(viewModel.Qualifications, model.Qualifications);
+            Assert.AreEqual(viewModel.PersonalQualities, model.PersonalQualities);
+            Assert.AreEqual(viewModel.OtherRequirements, model.OtherRequirements);
+        }
+
+        [Test]
+        public async Task RequirementsPost()
+        {
+            var manageApi = new Mock<IManageApi>();
+
+            var viewModel = new CourseRequirementsEnrichmentViewModel { Qualifications = "Qualifications", PersonalQualities = "PersonalQualities", OtherRequirements = "OtherRequirements" };
+
+            var enrichmentModel = new CourseEnrichmentModel { Qualifications = "", PersonalQualities = "", OtherRequirements = "" };
+            var ucasCourseEnrichmentGetModel = new UcasCourseEnrichmentGetModel { EnrichmentModel = enrichmentModel };
+
+            manageApi.Setup(x => x.GetEnrichmentCourse(TestHelper.InstitutionCode, TestHelper.TargetedUcasCode)).ReturnsAsync(ucasCourseEnrichmentGetModel);
+
+            var tempDataMock = new Mock<ITempDataDictionary>();
+
+            var controller = new CourseController(manageApi.Object);
+            controller.TempData = tempDataMock.Object;
+            var result = await controller.RequirementsPost(TestHelper.InstitutionCode, TestHelper.AccreditedProviderId, TestHelper.TargetedUcasCode, viewModel);
+
+            var redirectToActionResult = result as RedirectToActionResult;
+            Assert.IsNotNull(redirectToActionResult);
+            Assert.AreEqual("Variants", redirectToActionResult.ActionName);
+
+            var tempData = controller.TempData;
+
+            tempDataMock.Verify(x => x.Add("MessageType", "success"), Times.Once);
+            tempDataMock.Verify(x => x.Add("MessageTitle", "Your changes have been saved"), Times.Once);
+
+            var routeValues = redirectToActionResult.RouteValues;
+
+            Assert.AreEqual(TestHelper.InstitutionCode, routeValues["instCode"]);
+            Assert.AreEqual(TestHelper.AccreditedProviderId, routeValues["accreditingProviderId"]);
+            Assert.AreEqual(TestHelper.TargetedUcasCode, routeValues["ucasCode"]);
+
+            manageApi.Verify(x => x.SaveEnrichmentCourse(TestHelper.InstitutionCode, TestHelper.TargetedUcasCode, It.Is<CourseEnrichmentModel>(c => Check(c, viewModel))), Times.Once());
+        }
+
+        private bool Check(CourseEnrichmentModel model, ICourseEnrichmentViewModel viewModel)
+        {
+            var result = false;
+            var aboutCourseEnrichmentViewModel = viewModel as AboutCourseEnrichmentViewModel;
+
+            if (aboutCourseEnrichmentViewModel != null)
+            {
+                result = aboutCourseEnrichmentViewModel.AboutCourse == model.AboutCourse &&
+                    aboutCourseEnrichmentViewModel.InterviewProcess == model.InterviewProcess &&
+                    aboutCourseEnrichmentViewModel.HowSchoolPlacementsWork == model.HowSchoolPlacementsWork;
+            }
+
+            var courseRequirementsEnrichmentViewModel = viewModel as CourseRequirementsEnrichmentViewModel;
+
+            if (courseRequirementsEnrichmentViewModel != null)
+            {
+                result =
+                    model.Qualifications == courseRequirementsEnrichmentViewModel.Qualifications &&
+                    model.PersonalQualities == courseRequirementsEnrichmentViewModel.PersonalQualities &&
+                    model.OtherRequirements == courseRequirementsEnrichmentViewModel.OtherRequirements;
+            }
+
+            return result;
         }
     }
 }
