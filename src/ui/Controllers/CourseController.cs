@@ -54,13 +54,13 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             var course = await _manageApi.GetEnrichmentCourse(instCode, ucasCode);
             var routeData = GetCourseRouteDataViewModel(instCode, accreditingProviderId, ucasCode);
 
-            var enrichmentModel = course.EnrichmentModel;
+            var enrichmentModel = course?.EnrichmentModel;
 
             var model = new AboutCourseEnrichmentViewModel
             {
-                AboutCourse = enrichmentModel.AboutCourse,
-                InterviewProcess = enrichmentModel.InterviewProcess,
-                HowSchoolPlacementsWork = enrichmentModel.HowSchoolPlacementsWork,
+                AboutCourse = enrichmentModel?.AboutCourse,
+                InterviewProcess = enrichmentModel?.InterviewProcess,
+                HowSchoolPlacementsWork = enrichmentModel?.HowSchoolPlacementsWork,
                 RouteData = routeData
             };
             return View(model);
