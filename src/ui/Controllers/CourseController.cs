@@ -51,17 +51,20 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
         [Route("{instCode}/course/{accreditingProviderId=self}/{ucasCode}/about")]
         public async Task<IActionResult> About(string instCode, string accreditingProviderId, string ucasCode)
         {
-            var course = await _manageApi.GetEnrichmentCourse(instCode, ucasCode);
+            var courseDetails = await _manageApi.GetCourseByUcasCode(instCode, ucasCode);
+            var ucasCourseEnrichmentGetModel = await _manageApi.GetEnrichmentCourse(instCode, ucasCode);
             var routeData = GetCourseRouteDataViewModel(instCode, accreditingProviderId, ucasCode);
+            var courseInfo = new CourseInfoViewModel { ProgrammeCode = courseDetails.CourseCode, Name = courseDetails.Name };
 
-            var enrichmentModel = course.EnrichmentModel;
+            var enrichmentModel = ucasCourseEnrichmentGetModel.EnrichmentModel;
 
             var model = new AboutCourseEnrichmentViewModel
             {
                 AboutCourse = enrichmentModel.AboutCourse,
                 InterviewProcess = enrichmentModel.InterviewProcess,
                 HowSchoolPlacementsWork = enrichmentModel.HowSchoolPlacementsWork,
-                RouteData = routeData
+                RouteData = routeData,
+                CourseInfo = courseInfo
             };
             return View(model);
         }

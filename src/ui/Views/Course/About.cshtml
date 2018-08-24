@@ -12,7 +12,10 @@
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
       <form asp-controller="Course" asp-action="About" method="post" data-module="form">
-        <h1 class="govuk-heading-xl">About this course</h1>
+        <h1 class="govuk-heading-xl">
+          <span class="govuk-caption-xl">@Model.CourseInfo.Name (@Model.CourseInfo.ProgrammeCode)</span>
+          About this course
+        </h1>
         @Html.Partial("ErrorSummary")
          <p class="govuk-body">Give applicants a short description of the course.</p>
         <p class="govuk-body">You could include:</p>
