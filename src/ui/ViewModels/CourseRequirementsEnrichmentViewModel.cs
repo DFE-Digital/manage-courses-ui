@@ -15,5 +15,7 @@ namespace GovUk.Education.ManageCourses.Ui.ViewModels
         public string OtherRequirements { get; set; }
 
         public CourseRouteDataViewModel RouteData { get; set; }
+
+        public CourseInfoViewModel CourseInfo { get; set; }
     }
 }
