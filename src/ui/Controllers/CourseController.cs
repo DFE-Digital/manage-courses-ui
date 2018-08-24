@@ -79,8 +79,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
 
             await SaveEnrichment(instCode, ucasCode, viewModel);
 
-            TempData.Add("MessageType", "success");
-            TempData.Add("MessageTitle", "Your changes have been saved");
+            SetSucessMessage();
 
             return RedirectToAction("Variants", new { instCode, accreditingProviderId, ucasCode });
         }
@@ -116,13 +115,16 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             }
 
             await SaveEnrichment(instCode, ucasCode, viewModel);
-
-            TempData.Add("MessageType", "success");
-            TempData.Add("MessageTitle", "Your changes have been saved");
+            SetSucessMessage();
 
             return RedirectToAction("Variants", new { instCode, accreditingProviderId, ucasCode });
         }
 
+        private void SetSucessMessage()
+        {
+            TempData.Add("MessageType", "success");
+            TempData.Add("MessageTitle", "Your changes have been saved");
+        }
         private void MapEnrichment(CourseEnrichmentModel enrichmentModel, ICourseEnrichmentViewModel viewModel)
         {
             var aboutCourseEnrichmentViewModel = viewModel as AboutCourseEnrichmentViewModel;
