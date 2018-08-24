@@ -54,14 +54,35 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             var course = await _manageApi.GetEnrichmentCourse(instCode, ucasCode);
             var routeData = GetCourseRouteDataViewModel(instCode, accreditingProviderId, ucasCode);
 
+            var enrichmentModel = course.EnrichmentModel;
+
             var model = new AboutCourseEnrichmentViewModel
             {
-                AboutCourse = course.EnrichmentModel.AboutCourse,
-                InterviewProcess = course.EnrichmentModel.InterviewProcess,
-                HowSchoolPlacementsWork = course.EnrichmentModel.HowSchoolPlacementsWork,
+                AboutCourse = enrichmentModel.AboutCourse,
+                InterviewProcess = enrichmentModel.InterviewProcess,
+                HowSchoolPlacementsWork = enrichmentModel.HowSchoolPlacementsWork,
                 RouteData = routeData
             };
             return View(model);
+        }
+
+        [HttpPost]
+        [Route("{instCode}/course/{accreditingProviderId=self}/{ucasCode}/about")]
+        public async Task<IActionResult> AboutPost(string instCode, string accreditingProviderId, string ucasCode, AboutCourseEnrichmentViewModel viewModel)
+        {
+            if (!ModelState.IsValid)
+            {
+                var routeData = GetCourseRouteDataViewModel(instCode, accreditingProviderId, ucasCode);
+                viewModel.RouteData = routeData;
+                return View("About", viewModel);
+            }
+
+            await SaveEnrichment(instCode, ucasCode, viewModel);
+
+            TempData.Add("MessageType", "success");
+            TempData.Add("MessageTitle", "Your changes have been saved");
+
+            return RedirectToAction("Variants", new { instCode, accreditingProviderId, ucasCode });
         }
 
         [HttpGet]
@@ -71,31 +92,39 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             var course = await _manageApi.GetEnrichmentCourse(instCode, ucasCode);
             var routeData = GetCourseRouteDataViewModel(instCode, accreditingProviderId, ucasCode);
 
+            var enrichmentModel = course.EnrichmentModel;
             var model = new CourseRequirementsEnrichmentViewModel
             {
-                Qualifications = course.EnrichmentModel.Qualifications,
-                PersonalQualities = course.EnrichmentModel.PersonalQualities,
-                OtherRequirements = course.EnrichmentModel.OtherRequirements,
+                Qualifications = enrichmentModel.Qualifications,
+                PersonalQualities = enrichmentModel.PersonalQualities,
+                OtherRequirements = enrichmentModel.OtherRequirements,
                 RouteData = routeData
             };
+
             return View(model);
         }
 
-        [HttpPost]
-        [Route("{instCode}/course/{accreditingProviderId=self}/{ucasCode}/about")]
-        public async Task<IActionResult> AboutPost(string instCode, string accreditingProviderId, string ucasCode, AboutCourseEnrichmentViewModel model)
+        private void MapEnrichment(CourseEnrichmentModel enrichmentModel, ICourseEnrichmentViewModel viewModel)
         {
-            if (!ModelState.IsValid)
+            var aboutCourseEnrichmentViewModel = viewModel as AboutCourseEnrichmentViewModel;
+
+            if (aboutCourseEnrichmentViewModel != null)
             {
-                var routeData = GetCourseRouteDataViewModel(instCode, accreditingProviderId, ucasCode);
-                model.RouteData = routeData;
-                return View("About", model);
+                enrichmentModel.AboutCourse = aboutCourseEnrichmentViewModel.AboutCourse;
+                enrichmentModel.InterviewProcess = aboutCourseEnrichmentViewModel.InterviewProcess;
+                enrichmentModel.HowSchoolPlacementsWork = aboutCourseEnrichmentViewModel.HowSchoolPlacementsWork;
             }
+        }
 
-            TempData["MessageType"] = "success";
-            TempData["MessageTitle"] = "Your changes have been saved";
+        private async Task SaveEnrichment(string instCode, string ucasCode, ICourseEnrichmentViewModel viewModel)
+        {
+            var course = await _manageApi.GetEnrichmentCourse(instCode, ucasCode);
 
-            return RedirectToAction("Variants", new { instCode, accreditingProviderId, ucasCode });
+            var enrichmentModel = course.EnrichmentModel;
+            MapEnrichment(enrichmentModel, viewModel);
+
+            await _manageApi.SaveEnrichmentCourse(instCode, ucasCode, enrichmentModel);
+
         }
         private void Validate(string instCode, string accreditingProviderId, string ucasCode)
         {

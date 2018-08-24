@@ -11,6 +11,7 @@ using ManageCoursesUi.Tests.Helpers;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using NUnit.Framework;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 
 namespace ManageCoursesUi.Tests
 {
@@ -37,7 +38,8 @@ namespace ManageCoursesUi.Tests
 
             var testCourse = testData.Courses.FirstOrDefault(x => x.Name == TestHelper.TargetedCourseTitle);
 
-            var ucasCourseEnrichmentGetModel = new UcasCourseEnrichmentGetModel { EnrichmentModel = new CourseEnrichmentModel { AboutCourse = "AboutCourse", InterviewProcess = "InterviewProcess", HowSchoolPlacementsWork = "HowSchoolPlacementsWork" } };
+            var enrichmentModel = new CourseEnrichmentModel { AboutCourse = "AboutCourse", InterviewProcess = "InterviewProcess", HowSchoolPlacementsWork = "HowSchoolPlacementsWork" };
+            var ucasCourseEnrichmentGetModel = new UcasCourseEnrichmentGetModel { EnrichmentModel = enrichmentModel };
 
             manageApi.Setup(x => x.GetOrganisations()).ReturnsAsync(testOrgs);
             manageApi.Setup(x => x.GetCourseByUcasCode(TestHelper.InstitutionCode, TestHelper.TargetedUcasCode)).ReturnsAsync(testCourse);
@@ -53,7 +55,6 @@ namespace ManageCoursesUi.Tests
             var model = viewResult.Model as FromUcasViewModel;
 
             Assert.IsNotNull(model);
-            Assert.IsInstanceOf(typeof(ViewResult), result);
             Assert.AreEqual(TestHelper.TargetedCourseTitle, model.CourseTitle);
             Assert.AreEqual(TestHelper.OrganisationId, model.OrganisationId);
 
@@ -62,6 +63,10 @@ namespace ManageCoursesUi.Tests
             Assert.AreEqual(TestHelper.InstitutionCode, model.RouteData.InstCode);
             Assert.AreEqual(TestHelper.AccreditedProviderId, model.RouteData.AccreditingProviderId);
             Assert.AreEqual(TestHelper.TargetedUcasCode, model.RouteData.UcasCode);
+
+            Assert.AreEqual(enrichmentModel.AboutCourse, model.CourseEnrichment.AboutCourse);
+            Assert.AreEqual(enrichmentModel.InterviewProcess, model.CourseEnrichment.InterviewProcess);
+            Assert.AreEqual(enrichmentModel.HowSchoolPlacementsWork, model.CourseEnrichment.HowSchoolPlacementsWork);
         }
 
         [Test]
@@ -83,7 +88,7 @@ namespace ManageCoursesUi.Tests
                 }
             };
 
-            var testCourse = testData.Courses.FirstOrDefault(x => x.Name == TestHelper.TargetedCourseTitle);;
+            var testCourse = testData.Courses.FirstOrDefault(x => x.Name == TestHelper.TargetedCourseTitle);
             manageApi.Setup(x => x.GetOrganisations()).ReturnsAsync(testOrgs);
             manageApi.Setup(x => x.GetCourseByUcasCode(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(testCourse);
 
@@ -187,6 +192,108 @@ namespace ManageCoursesUi.Tests
             var controller = new CourseController(manageApi.Object);
 
             Assert.ThrowsAsync<Exception>(async() => await controller.Variants(TestHelper.InstitutionCode, TestHelper.AccreditedProviderId, TestHelper.TargetedUcasCode));
+        }
+
+        [Test]
+        public async Task About()
+        {
+            var manageApi = new Mock<IManageApi>();
+
+            var enrichmentModel = new CourseEnrichmentModel { AboutCourse = "AboutCourse", InterviewProcess = "InterviewProcess", HowSchoolPlacementsWork = "HowSchoolPlacementsWork" };
+            var ucasCourseEnrichmentGetModel = new UcasCourseEnrichmentGetModel { EnrichmentModel = enrichmentModel };
+
+            manageApi.Setup(x => x.GetEnrichmentCourse(TestHelper.InstitutionCode, TestHelper.TargetedUcasCode)).ReturnsAsync(ucasCourseEnrichmentGetModel);
+
+            var controller = new CourseController(manageApi.Object);
+            var result = await controller.About(TestHelper.InstitutionCode, TestHelper.AccreditedProviderId, TestHelper.TargetedUcasCode);
+
+            var viewResult = result as ViewResult;
+            Assert.IsNotNull(viewResult);
+
+            var model = viewResult.Model as AboutCourseEnrichmentViewModel;
+
+            Assert.IsNotNull(model);
+
+            Assert.AreEqual(TestHelper.InstitutionCode, model.RouteData.InstCode);
+            Assert.AreEqual(TestHelper.AccreditedProviderId, model.RouteData.AccreditingProviderId);
+            Assert.AreEqual(TestHelper.TargetedUcasCode, model.RouteData.UcasCode);
+
+            Assert.AreEqual(enrichmentModel.AboutCourse, model.AboutCourse);
+            Assert.AreEqual(enrichmentModel.InterviewProcess, model.InterviewProcess);
+            Assert.AreEqual(enrichmentModel.HowSchoolPlacementsWork, model.HowSchoolPlacementsWork);
+        }
+
+        [Test]
+        public async Task AboutPost_Invalid()
+        {
+            var manageApi = new Mock<IManageApi>();
+
+            var viewModel = new AboutCourseEnrichmentViewModel { AboutCourse = "AboutCourse", InterviewProcess = "InterviewProcess", HowSchoolPlacementsWork = "HowSchoolPlacementsWork" };
+
+            var controller = new CourseController(manageApi.Object);
+
+            controller.ModelState.AddModelError("you", "failed");
+
+            var result = await controller.AboutPost(TestHelper.InstitutionCode, TestHelper.AccreditedProviderId, TestHelper.TargetedUcasCode, viewModel);
+
+            var viewResult = result as ViewResult;
+            Assert.IsNotNull(viewResult);
+            Assert.AreEqual("About", viewResult.ViewName);
+
+            var model = viewResult.Model as AboutCourseEnrichmentViewModel;
+
+            Assert.IsNotNull(model);
+
+            Assert.AreEqual(TestHelper.InstitutionCode, model.RouteData.InstCode);
+            Assert.AreEqual(TestHelper.AccreditedProviderId, model.RouteData.AccreditingProviderId);
+            Assert.AreEqual(TestHelper.TargetedUcasCode, model.RouteData.UcasCode);
+
+            Assert.AreEqual(viewModel.AboutCourse, model.AboutCourse);
+            Assert.AreEqual(viewModel.InterviewProcess, model.InterviewProcess);
+            Assert.AreEqual(viewModel.HowSchoolPlacementsWork, model.HowSchoolPlacementsWork);
+        }
+
+        [Test]
+        public async Task AboutPost()
+        {
+            var manageApi = new Mock<IManageApi>();
+
+            var viewModel = new AboutCourseEnrichmentViewModel { AboutCourse = "AboutCourse", InterviewProcess = "InterviewProcess", HowSchoolPlacementsWork = "HowSchoolPlacementsWork" };
+
+            var enrichmentModel = new CourseEnrichmentModel { AboutCourse = "", InterviewProcess = "", HowSchoolPlacementsWork = "" };
+            var ucasCourseEnrichmentGetModel = new UcasCourseEnrichmentGetModel { EnrichmentModel = enrichmentModel };
+
+            manageApi.Setup(x => x.GetEnrichmentCourse(TestHelper.InstitutionCode, TestHelper.TargetedUcasCode)).ReturnsAsync(ucasCourseEnrichmentGetModel);
+
+            var tempDataMock = new Mock<ITempDataDictionary>();
+
+            var controller = new CourseController(manageApi.Object);
+            controller.TempData = tempDataMock.Object;
+            var result = await controller.AboutPost(TestHelper.InstitutionCode, TestHelper.AccreditedProviderId, TestHelper.TargetedUcasCode, viewModel);
+
+            var redirectToActionResult = result as RedirectToActionResult;
+            Assert.IsNotNull(redirectToActionResult);
+            Assert.AreEqual("Variants", redirectToActionResult.ActionName);
+
+            var tempData = controller.TempData;
+
+            tempDataMock.Verify(x => x.Add("MessageType", "success"), Times.Once);
+            tempDataMock.Verify(x => x.Add("MessageTitle", "Your changes have been saved"), Times.Once);
+
+            var routeValues = redirectToActionResult.RouteValues;
+
+            Assert.AreEqual(TestHelper.InstitutionCode, routeValues["instCode"]);
+            Assert.AreEqual(TestHelper.AccreditedProviderId, routeValues["accreditingProviderId"]);
+            Assert.AreEqual(TestHelper.TargetedUcasCode, routeValues["ucasCode"]);
+
+            manageApi.Verify(x => x.SaveEnrichmentCourse(TestHelper.InstitutionCode, TestHelper.TargetedUcasCode, It.Is<CourseEnrichmentModel>(c => Check(c, viewModel))), Times.Once());
+        }
+
+        private bool Check(CourseEnrichmentModel model, AboutCourseEnrichmentViewModel viewModel)
+        {
+            return viewModel.AboutCourse == model.AboutCourse &&
+                viewModel.InterviewProcess == model.InterviewProcess &&
+                viewModel.HowSchoolPlacementsWork == model.HowSchoolPlacementsWork;
         }
     }
 }
