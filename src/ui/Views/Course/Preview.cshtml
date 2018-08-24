@@ -1,0 +1,7 @@
+@model CourseReferenceViewModel
+ @{
+  Layout = "_Layout";
+}
+
+<!-- This is a dependency from SearchAndCompareUi.Shared -->
+@await Component.InvokeAsync("CourseDetails", new { providerCode = Model.InstCode, courseCode = Model.CourseCode });

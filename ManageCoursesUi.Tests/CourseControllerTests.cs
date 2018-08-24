@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using GovUk.Education.ManageCourses.ApiClient;
 using GovUk.Education.ManageCourses.Ui;
 using GovUk.Education.ManageCourses.Ui.Controllers;
+using GovUk.Education.ManageCourses.Ui.Services;
 using GovUk.Education.ManageCourses.Ui.ViewModels;
 using ManageCoursesUi.Tests.Enums;
 using ManageCoursesUi.Tests.Helpers;
@@ -46,7 +47,7 @@ namespace ManageCoursesUi.Tests
 
             manageApi.Setup(x => x.GetEnrichmentCourse(TestHelper.InstitutionCode, TestHelper.TargetedUcasCode)).ReturnsAsync(ucasCourseEnrichmentGetModel);
 
-            var controller = new CourseController(manageApi.Object);
+            var controller = new CourseController(manageApi.Object, new SearchAndCompareUrlService(""));
             var result = await controller.Variants(TestHelper.InstitutionCode, TestHelper.AccreditedProviderId, TestHelper.TargetedUcasCode);
 
             var viewResult = result as ViewResult;
@@ -92,7 +93,7 @@ namespace ManageCoursesUi.Tests
             manageApi.Setup(x => x.GetOrganisations()).ReturnsAsync(testOrgs);
             manageApi.Setup(x => x.GetCourseByUcasCode(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(testCourse);
 
-            var controller = new CourseController(manageApi.Object);
+            var controller = new CourseController(manageApi.Object, new SearchAndCompareUrlService(""));
 
             Assert.ThrowsAsync<InvalidOperationException>(async() => await controller.Variants(TestHelper.InstitutionCode, TestHelper.AccreditedProviderId, TestHelper.TargetedUcasCode));
         }
@@ -117,7 +118,7 @@ namespace ManageCoursesUi.Tests
             manageApi.Setup(x => x.GetOrganisations()).ReturnsAsync(testOrgs);
             manageApi.Setup(x => x.GetCourseByUcasCode(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync((Course) null);
 
-            var controller = new CourseController(manageApi.Object);
+            var controller = new CourseController(manageApi.Object, new SearchAndCompareUrlService(""));
 
             var result = await controller.Variants(TestHelper.InstitutionCode, TestHelper.AccreditedProviderId, TestHelper.TargetedUcasCode);
 
@@ -152,7 +153,7 @@ namespace ManageCoursesUi.Tests
             manageApi.Setup(x => x.GetOrganisations()).ReturnsAsync(testOrgs);
             manageApi.Setup(x => x.GetCourseByUcasCode(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(testCourse);
 
-            var controller = new CourseController(manageApi.Object);
+            var controller = new CourseController(manageApi.Object, new SearchAndCompareUrlService(""));
             Assert.ThrowsAsync<ArgumentNullException>(async() => await controller.Variants(institutionCode, accreditedProviderId, ucasCode));
         }
 
@@ -163,7 +164,7 @@ namespace ManageCoursesUi.Tests
 
             manageApi.Setup(x => x.GetOrganisations()).ThrowsAsync(new Exception());
 
-            var controller = new CourseController(manageApi.Object);
+            var controller = new CourseController(manageApi.Object, new SearchAndCompareUrlService(""));
 
             Assert.ThrowsAsync<Exception>(async() => await controller.Variants(TestHelper.InstitutionCode, TestHelper.AccreditedProviderId, TestHelper.TargetedUcasCode));
         }
@@ -189,7 +190,7 @@ namespace ManageCoursesUi.Tests
             manageApi.Setup(x => x.GetOrganisations()).ReturnsAsync(testOrgs);
             manageApi.Setup(x => x.GetCourseByUcasCode(It.IsAny<string>(), It.IsAny<string>())).ThrowsAsync(new Exception());
 
-            var controller = new CourseController(manageApi.Object);
+            var controller = new CourseController(manageApi.Object, new SearchAndCompareUrlService(""));
 
             Assert.ThrowsAsync<Exception>(async() => await controller.Variants(TestHelper.InstitutionCode, TestHelper.AccreditedProviderId, TestHelper.TargetedUcasCode));
         }
@@ -204,7 +205,7 @@ namespace ManageCoursesUi.Tests
 
             manageApi.Setup(x => x.GetEnrichmentCourse(TestHelper.InstitutionCode, TestHelper.TargetedUcasCode)).ReturnsAsync(ucasCourseEnrichmentGetModel);
 
-            var controller = new CourseController(manageApi.Object);
+            var controller = new CourseController(manageApi.Object, new SearchAndCompareUrlService(""));
             var result = await controller.About(TestHelper.InstitutionCode, TestHelper.AccreditedProviderId, TestHelper.TargetedUcasCode);
 
             var viewResult = result as ViewResult;
@@ -230,7 +231,7 @@ namespace ManageCoursesUi.Tests
 
             var viewModel = new AboutCourseEnrichmentViewModel { AboutCourse = "AboutCourse", InterviewProcess = "InterviewProcess", HowSchoolPlacementsWork = "HowSchoolPlacementsWork" };
 
-            var controller = new CourseController(manageApi.Object);
+            var controller = new CourseController(manageApi.Object, new SearchAndCompareUrlService(""));
 
             controller.ModelState.AddModelError("you", "failed");
 
@@ -267,7 +268,7 @@ namespace ManageCoursesUi.Tests
 
             var tempDataMock = new Mock<ITempDataDictionary>();
 
-            var controller = new CourseController(manageApi.Object);
+            var controller = new CourseController(manageApi.Object, new SearchAndCompareUrlService(""));
             controller.TempData = tempDataMock.Object;
             var result = await controller.AboutPost(TestHelper.InstitutionCode, TestHelper.AccreditedProviderId, TestHelper.TargetedUcasCode, viewModel);
 
@@ -299,7 +300,7 @@ namespace ManageCoursesUi.Tests
 
             manageApi.Setup(x => x.GetEnrichmentCourse(TestHelper.InstitutionCode, TestHelper.TargetedUcasCode)).ReturnsAsync(ucasCourseEnrichmentGetModel);
 
-            var controller = new CourseController(manageApi.Object);
+            var controller = new CourseController(manageApi.Object, new SearchAndCompareUrlService(""));
             var result = await controller.Requirements(TestHelper.InstitutionCode, TestHelper.AccreditedProviderId, TestHelper.TargetedUcasCode);
 
             var viewResult = result as ViewResult;
@@ -325,7 +326,7 @@ namespace ManageCoursesUi.Tests
 
             var viewModel = new CourseRequirementsEnrichmentViewModel { Qualifications = "Qualifications", PersonalQualities = "PersonalQualities", OtherRequirements = "OtherRequirements" };
 
-            var controller = new CourseController(manageApi.Object);
+            var controller = new CourseController(manageApi.Object, new SearchAndCompareUrlService(""));
 
             controller.ModelState.AddModelError("you", "failed");
 
@@ -362,7 +363,7 @@ namespace ManageCoursesUi.Tests
 
             var tempDataMock = new Mock<ITempDataDictionary>();
 
-            var controller = new CourseController(manageApi.Object);
+            var controller = new CourseController(manageApi.Object, new SearchAndCompareUrlService(""));
             controller.TempData = tempDataMock.Object;
             var result = await controller.RequirementsPost(TestHelper.InstitutionCode, TestHelper.AccreditedProviderId, TestHelper.TargetedUcasCode, viewModel);
 

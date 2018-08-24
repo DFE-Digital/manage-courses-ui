@@ -1,0 +1,23 @@
+@import "node_modules/govuk-frontend/components/tag/tag";
+@import "node_modules/govuk-frontend/helpers/colour";
+
+.govuk-tag__empty
+{
+    @extend .govuk-tag;
+    background: govuk-colour("white");
+    color: govuk-colour("grey-1");
+    border: 2px solid govuk-colour("grey-2");
+    margin-top: -1px;
+}
+
+.govuk-tag__draft
+{
+    @extend .govuk-tag;
+    background: govuk-colour("orange");
+}
+
+.govuk-tag__published
+{
+    @extend .govuk-tag;
+    background: #00823b //$govuk-button-colour;
+}

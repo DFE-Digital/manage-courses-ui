@@ -6,6 +6,8 @@ namespace GovUk.Education.ManageCourses.Ui
     public interface IFeatureFlags 
     {
         bool ShowOrgEnrichment { get; }
+        bool ShowCoursePreview { get; }
+        bool ShowCoursePublish { get; }
     }
 
     public class FeatureFlags : IFeatureFlags
@@ -13,6 +15,8 @@ namespace GovUk.Education.ManageCourses.Ui
         private readonly IConfigurationSection _config;
 
         private const string FEATURE_ORG_ENRICHMENT = "FEATURE_ORG_ENRICHMENT";
+        private const string FEATURE_COURSE_PREVIEW = "FEATURE_COURSE_PREVIEW";
+        private const string FEATURE_COURSE_PUBLISH = "FEATURE_COURSE_PUBLISH";
 
         public FeatureFlags(IConfigurationSection config)
         {
@@ -20,6 +24,10 @@ namespace GovUk.Education.ManageCourses.Ui
         } 
 
         public bool ShowOrgEnrichment => ShouldShow(FEATURE_ORG_ENRICHMENT);
+
+        public bool ShowCoursePreview => ShouldShow(FEATURE_COURSE_PREVIEW);
+
+        public bool ShowCoursePublish => ShouldShow(FEATURE_COURSE_PUBLISH);
 
         private bool ShouldShow(string key) => _config.GetValue(key, false);
     }

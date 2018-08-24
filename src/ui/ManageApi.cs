@@ -84,5 +84,12 @@ namespace GovUk.Education.ManageCourses.Ui
         {
             await _apiClient.Enrichment_SaveCourseAsync(instCode, ucasCode, course);
         }
+        
+        public async Task<bool> PublishEnrichmentCourse(string ucasCode, string courseCode)
+        {
+            await _apiClient.Enrichment_PublishCourseAsync(ucasCode, courseCode);
+
+            return true;
+        }
     }
 }
