@@ -42,9 +42,9 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
 
             if (viewModel.Course.Status.Equals("Running", StringComparison.InvariantCultureIgnoreCase))
                 return View(viewModel);
-            
+
             //setup the alert message box for non running courses
-            this.TempData.Add("MessageType", "success");
+            this.TempData.Add("MessageType", "notice");
             this.TempData.Add("MessageTitle",
                 viewModel.Course.Status.Equals("Not running", StringComparison.InvariantCultureIgnoreCase)
                     ? "This course is not running."
