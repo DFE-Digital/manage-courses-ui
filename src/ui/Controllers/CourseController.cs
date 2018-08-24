@@ -75,8 +75,11 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
         {
             if (!ModelState.IsValid)
             {
+                var courseDetails = await _manageApi.GetCourseByUcasCode(instCode, ucasCode);
+                var courseInfo = new CourseInfoViewModel { ProgrammeCode = courseDetails.CourseCode, Name = courseDetails.Name };
                 var routeData = GetCourseRouteDataViewModel(instCode, accreditingProviderId, ucasCode);
                 viewModel.RouteData = routeData;
+                viewModel.CourseInfo = courseInfo;
                 return View("About", viewModel);
             }
 
@@ -116,8 +119,11 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
         {
             if (!ModelState.IsValid)
             {
+                var courseDetails = await _manageApi.GetCourseByUcasCode(instCode, ucasCode);
+                var courseInfo = new CourseInfoViewModel { ProgrammeCode = courseDetails.CourseCode, Name = courseDetails.Name };
                 var routeData = GetCourseRouteDataViewModel(instCode, accreditingProviderId, ucasCode);
                 viewModel.RouteData = routeData;
+                viewModel.CourseInfo = courseInfo;
                 return View("Requirements", viewModel);
             }
 
