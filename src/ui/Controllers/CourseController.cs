@@ -150,7 +150,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
         {
             var course = await _manageApi.GetEnrichmentCourse(instCode, ucasCode);
 
-            var enrichmentModel = course.EnrichmentModel;
+            var enrichmentModel = course?.EnrichmentModel ?? new CourseEnrichmentModel();
             MapEnrichment(enrichmentModel, viewModel);
 
             await _manageApi.SaveEnrichmentCourse(instCode, ucasCode, enrichmentModel);
