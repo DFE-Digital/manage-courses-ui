@@ -12,14 +12,14 @@ namespace ManageCoursesUi.Tests.Services
         public void GeneratesUrls()
         {
             var searchAndCompareUrlService = new SearchAndCompareUrlService("http://www.example.com");
-            searchAndCompareUrlService.GetCoursePageUri("aBc", "DeF").Should().Be(new Uri("http://www.example.com/aBc/DeF"));
+            searchAndCompareUrlService.GetCoursePageUri("aBc", "DeF").Should().Be(new Uri("http://www.example.com/course/aBc/DeF"));
         }
 
         [Test]
         public void EscapesUriStuff()
         {            
             var searchAndCompareUrlService = new SearchAndCompareUrlService("http://www.example.com");
-            searchAndCompareUrlService.GetCoursePageUri(" / ", "%").Should().Be(new Uri("http://blueberries.com"));
+            searchAndCompareUrlService.GetCoursePageUri(" / ", "%").Should().Be(new Uri("http://www.example.com/course/ %2F /%25"));
         }
 
     }

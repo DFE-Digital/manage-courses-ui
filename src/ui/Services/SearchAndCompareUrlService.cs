@@ -13,7 +13,7 @@ namespace GovUk.Education.ManageCourses.Ui.Services
 
         public Uri GetCoursePageUri(string instCode, string courseCode)
         {
-            return new Uri($"{searchAndComparBaseUrl}/course/{instCode}/{courseCode}");           
+            return new Uri($"{searchAndComparBaseUrl}/course/{Uri.EscapeDataString(instCode)}/{Uri.EscapeDataString(courseCode)}");           
         }
     }
 }
