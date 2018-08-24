@@ -219,8 +219,13 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             return viewModel;
         }
 
-        private CourseEnrichmentViewModel GetCourseEnrichmentViewModel(UcasCourseEnrichmentGetModel ucasCourseEnrichmentGetModel)
+        private static CourseEnrichmentViewModel GetCourseEnrichmentViewModel(UcasCourseEnrichmentGetModel ucasCourseEnrichmentGetModel)
         {
+            if (ucasCourseEnrichmentGetModel == null)
+            {
+                return null;
+            }
+
             var enrichmentModel = ucasCourseEnrichmentGetModel.EnrichmentModel;
             var result = new CourseEnrichmentViewModel()
             {
@@ -235,7 +240,6 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             };
 
             return result;
-
         }
 
         private CourseRouteDataViewModel GetCourseRouteDataViewModel(string instCode, string accreditingProviderId, string ucasCode)
