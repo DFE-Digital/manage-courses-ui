@@ -26,7 +26,7 @@
         </ul>
         <p class="govuk-body">If you offer different courses in the same subject, be clear about how this course differs from the others (eg amount of time spent in school, course structure). This will help the applicant decide which course best suits them.</p>
         <div class="govuk-character-count" data-module="character-count" data-maxwords="400">
-          <div id="AboutCourse-wrapper" class="govuk-form-group @(about_course ? " govuk-form-group--error " : " ")">
+          <div id="AboutCourse-wrapper" class="@(about_course ? " govuk-form-group--error " : " ")">
             <label asp-for="AboutCourse" class="govuk-label govuk-!-font-weight-bold">About this course</label>
             @if (about_course) {
               <span asp-validation-for="AboutCourse" class="govuk-error-message"></span>
@@ -48,7 +48,7 @@
           <li>details of any tests they’ll need to sit</li>
         </ul>
         <div class="govuk-character-count" data-module="character-count" data-maxwords="250">
-          <div id="InterviewProcess-wrapper" class="govuk-form-group @(interview_process ? " govuk-form-group--error " : " ")">
+          <div id="InterviewProcess-wrapper" class="@(interview_process ? " govuk-form-group--error " : " ")">
             <label asp-for="InterviewProcess" class="govuk-label govuk-!-font-weight-bold">Interview process (optional)</label>
             @if (interview_process) {
               <span asp-validation-for="InterviewProcess" class="govuk-error-message"></span>

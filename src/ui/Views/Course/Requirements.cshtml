@@ -17,7 +17,7 @@
         <h3 class="govuk-heading-l">Qualifications needed</h3>
         <p class="govuk-body">State the minimum academic qualifications needed for this course, in addition to the basic national requirements.</p>
         <div class="govuk-character-count" data-module="character-count" data-maxwords="100">
-          <div id="Qualifications-wrapper" class="govuk-form-group @(qualifications ? " govuk-form-group--error " : " ")">
+          <div id="Qualifications-wrapper" class="@(qualifications ? " govuk-form-group--error " : " ")">
             <label asp-for="Qualifications" class="govuk-label govuk-!-font-weight-bold">Qualifications needed</label>
             @if (qualifications) {
               <span asp-validation-for="Qualifications" class="govuk-error-message"></span>
@@ -33,7 +33,7 @@
         <h3 class="govuk-heading-l">Personal qualities</h3>
         <p class="govuk-body">Tell applicants about the skills and motivation you’re looking for (eg experience with children, a genuine passion for teaching, or a talent for public speaking).</p>
         <div class="govuk-character-count" data-module="character-count" data-maxwords="100">
-          <div id="PersonalQualities-wrapper" class="govuk-form-group @(personal_qualities ? " govuk-form-group--error " : " ")">
+          <div id="PersonalQualities-wrapper" class="@(personal_qualities ? " govuk-form-group--error " : " ")">
             <label asp-for="PersonalQualities" class="govuk-label govuk-!-font-weight-bold">Personal qualities (optional)</label>
             @if (personal_qualities) {
               <span asp-validation-for="PersonalQualities" class="govuk-error-message"></span>
