@@ -40,6 +40,18 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
 
             var viewModel = LoadViewModel(org, course, multipleOrganisations);
 
+            if (viewModel.Course.Status.Equals("Running", StringComparison.InvariantCultureIgnoreCase))
+                return View(viewModel);
+            
+            //setup the alert message box for non running courses
+            this.TempData.Add("MessageType", "success");
+            this.TempData.Add("MessageTitle",
+                viewModel.Course.Status.Equals("Not running", StringComparison.InvariantCultureIgnoreCase)
+                    ? "This course is not running."
+                    : "This course is new and not yet running.");
+
+            this.TempData.Add("MessageBody", "It won't appear online. To publish it you need to set the status of at least one training location to \"running\" in UCAS");
+
             return View(viewModel);
         }
 

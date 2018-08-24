@@ -21,35 +21,55 @@
           <h3 class="course-parts__title">Information from UCAS</h3>
 
           <dl class="govuk-list govuk-list--description">
-            @if (!string.IsNullOrEmpty(@Model.Course.Name)) {
-              <dt>Name:</dt>
-              <dd>@Model.Course.Name</dd>
+            @if (Model.Course.Status.Equals("Running", StringComparison.InvariantCultureIgnoreCase))
+            {
+              if (!string.IsNullOrEmpty(@Model.Course.Name))
+              {
+                <dt>Name:</dt>
+                <dd>@Model.Course.Name</dd>
+              }
             }
-            @if (!string.IsNullOrEmpty(@Model.Course.UcasCode)) {
+            else
+            {
+              @Html.Partial("~/Views/Shared/_Alerts.cshtml")
+            }
+            @if (!string.IsNullOrEmpty(@Model.Course.Status))
+            {
+              <dt>Status:</dt>
+              <dd>@Model.Course.Status</dd>
+            }
+            @if (!string.IsNullOrEmpty(@Model.Course.UcasCode))
+            {
               <dt>Training provider code:</dt>
               <dd>@Model.Course.UcasCode</dd>
             }
-            @if (!string.IsNullOrEmpty(@Model.Course.ProgrammeCode)) {
+            @if (!string.IsNullOrEmpty(@Model.Course.ProgrammeCode))
+            {
               <dt>Training programme code:</dt>
               <dd>@Model.Course.ProgrammeCode</dd>
             }
-            @if (!string.IsNullOrEmpty(@Model.Course.Accrediting)) {
+            @if (!string.IsNullOrEmpty(@Model.Course.Accrediting))
+            {
               <dt>Accredited provider:</dt>
               <dd>@Model.Course.Accrediting</dd>
             }
-            @if (!string.IsNullOrEmpty(@Model.Course.GetRoute())) {
+            @if (!string.IsNullOrEmpty(@Model.Course.GetRoute()))
+            {
               <dt>Route:</dt>
               <dd>@Model.Course.GetRoute()</dd>
             }
-            @if (!string.IsNullOrEmpty(@Model.Course.Subjects)) {
+            @if (!string.IsNullOrEmpty(@Model.Course.Subjects))
+            {
               <dt>Subjects:</dt>
               <dd>@Model.Course.Subjects</dd>
             }
-            @if (!string.IsNullOrEmpty(@Model.Course.GetStudyMode())) {
+            @if (!string.IsNullOrEmpty(@Model.Course.GetStudyMode()))
+            {
               <dt>Mode of study:</dt>
               <dd>@Model.Course.GetStudyMode()</dd>
             }
-            @if (!string.IsNullOrEmpty(@Model.Course.GetQualification())) {
+            @if (!string.IsNullOrEmpty(@Model.Course.GetQualification()))
+            {
               <dt>Qualification:</dt>
               <dd>@Model.Course.GetQualification()</dd>
             }
@@ -61,11 +81,18 @@
           {
             <h4 class="govuk-heading-s">@school.LocationName (Code: @school.Code)</h4>
             <dl class="govuk-list govuk-list--description">
-              @if (!string.IsNullOrEmpty(@school.Address)) {
+              @if (!string.IsNullOrEmpty(@school.Address))
+              {
                 <dt>Address:</dt>
                 <dd>@school.Address</dd>
               }
-              @if (!string.IsNullOrEmpty(@school.ApplicationsAcceptedFrom)) {
+              @if (!string.IsNullOrEmpty(@school.Status))
+              {
+                <dt>Status:</dt>
+                <dd>@school.GetSchoolStatus()</dd>
+              }
+              @if (!string.IsNullOrEmpty(@school.ApplicationsAcceptedFrom))
+              {
                 <dt>Apply from:</dt>
                 <dd>@school.ApplicationsAcceptedFrom</dd>
               }
