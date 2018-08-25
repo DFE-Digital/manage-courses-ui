@@ -209,7 +209,7 @@ namespace GovUk.Education.ManageCourses.Ui
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddSingleton<ManageCoursesConfig, ManageCoursesConfig>();
             services.AddSingleton<IManageApi, ManageApi>();
-            services.AddScoped<ICourseDetailsService>(provider => new CourseDetailsService(provider.GetService<IManageApi>()));
+            services.AddScoped<ICourseDetailsService>(provider => new CourseDetailsService(provider.GetService<IManageApi>(), new CourseMapper()));
             services.AddSingleton(serviceProvider =>
             {
                 var manageCoursesApiClientConfiguration = serviceProvider.GetService<IManageCoursesApiClientConfiguration>();

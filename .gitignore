@@ -5,4 +5,6 @@ node_modules
 *.tmp
 .vs
 dev.targets
+dev-mc-api.targets
+dev-sc-shared.targets
 src/ui/wwwroot/*

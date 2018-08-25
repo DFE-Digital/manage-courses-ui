@@ -25,6 +25,12 @@ namespace GovUk.Education.ManageCourses.Ui
             return courses;
         }
 
+        public async Task<UcasInstitution> GetUcasInstitution(string instCode)
+        {
+            var inst = await _apiClient.Organisations_GetUcasInstitutionAsync(instCode);
+            return inst;
+        }
+
         public async Task<InstitutionCourses> GetCoursesByOrganisation(string instCode)
         {
             var courses = await _apiClient.Courses_GetAllAsync(instCode);
@@ -34,7 +40,6 @@ namespace GovUk.Education.ManageCourses.Ui
         {
             var course = await _apiClient.Courses_GetAsync(instCode, ucasCode);
             return course;
-
         }
 
         public async Task<IEnumerable<UserOrganisation>> GetOrganisations()

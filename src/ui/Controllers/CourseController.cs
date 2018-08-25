@@ -262,6 +262,10 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
 
         private CourseEnrichmentViewModel GetCourseEnrichmentViewModel(UcasCourseEnrichmentGetModel ucasCourseEnrichmentGetModel)
         {
+            if (ucasCourseEnrichmentGetModel == null)
+            {
+                return new CourseEnrichmentViewModel();
+            }
             var enrichmentModel = ucasCourseEnrichmentGetModel.EnrichmentModel;
             var result = new CourseEnrichmentViewModel()
             {

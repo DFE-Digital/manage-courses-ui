@@ -3,5 +3,9 @@
   Layout = "_Layout";
 }
 
-<!-- This is a dependency from SearchAndCompareUi.Shared -->
-@await Component.InvokeAsync("CourseDetails", new { providerCode = Model.InstCode, courseCode = Model.CourseCode });
+<!-- CourseDetails is a dependency from SearchAndCompareUi.Shared -->
+@await Component.InvokeAsync("CourseDetails", new { 
+  providerCode = Model.InstCode,
+  courseCode = Model.CourseCode,
+  preview = true,
+  aboutYourOrgLink = Url.Action("About", "Organisation", new { ucasCode = Model.InstCode }) })
