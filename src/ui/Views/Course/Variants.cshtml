@@ -33,10 +33,10 @@
                 <dd>@Model.Course.Name</dd>
               }
             }
-            else
+            @*else
             {
               @Html.Partial("~/Views/Shared/_Alerts.cshtml")
-            }
+            }*@
             @if (!string.IsNullOrEmpty(@Model.Course.Status))
             {
               <dt>Status:</dt>

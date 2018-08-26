@@ -43,7 +43,19 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             var routeData = GetCourseRouteDataViewModel(instCode, accreditingProviderId, ucasCode);
 
             var viewModel = LoadViewModel(org, course, multipleOrganisations, ucasCourseEnrichmentGetModel, routeData);
+            if (viewModel.Course.Status.Equals("Running", StringComparison.InvariantCultureIgnoreCase))
+                return View(viewModel);
 
+            //setup the alert message box for non running courses
+            this.TempData.Add("MessageType", "notice");
+            this.TempData.Add("MessageTitle",
+                viewModel.Course.Status.Equals("Not running", StringComparison.InvariantCultureIgnoreCase)
+                    ? "This course is not running."
+                    : "This course is new and not yet running.");
+
+            this.TempData.Add("MessageBody", "It won't appear online. To publish it you need to set the status of at least one training location to \"running\" in UCAS");
+
+            return View(viewModel);
             return View(viewModel);
         }
 
@@ -192,6 +204,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
                         Qualifications = course.ProfpostFlag,
                         StudyMode = course.StudyMode,
                         Subjects = course.Subjects,
+                        Status = course.GetCourseStatus(),
                         Schools = course.Schools.Select(campus =>
                         {
                             var addressLines = (new List<string>()
