@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Text;
+using FluentAssertions;
 using GovUk.Education.ManageCourses.ApiClient;
 using GovUk.Education.ManageCourses.Ui.Helpers;
 using GovUk.Education.ManageCourses.Ui.ViewModels;
@@ -40,7 +41,7 @@ namespace ManageCoursesUi.Tests
                 ProgramType = programType
             };
             var result = course.GetCourseVariantType();
-            Assert.IsTrue(result == expectedResult);
+            result.Should().Be(expectedResult);
         }
 
         [Test]
@@ -92,7 +93,7 @@ namespace ManageCoursesUi.Tests
                 Schools = new ObservableCollection<School>(schools)
             };
             var result = course.GetCourseStatus();
-            Assert.IsTrue(result == expectedResult);
+            result.Should().Be(expectedResult);
         }
         [Test]
         [TestCase("D", "Discontinued")]
@@ -108,7 +109,7 @@ namespace ManageCoursesUi.Tests
         {
             var schoolViewModel = new SchoolViewModel{Status = status};
             var result = schoolViewModel.GetSchoolStatus();
-            Assert.IsTrue(result == expectedResult);
+            result.Should().Be(expectedResult);
         }
 
         [Test]
@@ -125,7 +126,7 @@ namespace ManageCoursesUi.Tests
         {
             var courseVariantViewModel = new CourseVariantViewModel{Route = route};
             var result = courseVariantViewModel.GetRoute();
-            Assert.IsTrue(result == expectedResult);
+            result.Should().Be(expectedResult);
         }
         [Test]
         [TestCase("F", "Full time")]
@@ -137,7 +138,7 @@ namespace ManageCoursesUi.Tests
         {
             var courseVariantViewModel = new CourseVariantViewModel { StudyMode = studyMode };
             var result = courseVariantViewModel.GetStudyMode();
-            Assert.IsTrue(result == expectedResult);
+            result.Should().Be(expectedResult);
         }
         [Test]
         [TestCase("S", "Secondary (11+ years)")]
@@ -152,7 +153,7 @@ namespace ManageCoursesUi.Tests
         {
             var courseVariantViewModel = new CourseVariantViewModel { AgeRange = ageRange };
             var result = courseVariantViewModel.GetAgeRange();
-            Assert.IsTrue(result == expectedResult);
+            result.Should().Be(expectedResult);
         }
         [Test]
         [TestCase("PF", "Professional")]
@@ -167,7 +168,7 @@ namespace ManageCoursesUi.Tests
         {
             var courseVariantViewModel = new CourseVariantViewModel { Qualifications = qualification };
             var result = courseVariantViewModel.GetQualification();
-            Assert.IsTrue(result == expectedResult);
+            result.Should().Be(expectedResult);
         }        
     }
 }
