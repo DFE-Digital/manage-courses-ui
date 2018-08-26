@@ -42,6 +42,10 @@
       @include govuk-responsive-margin(4, "bottom");
       color: $govuk-secondary-text-colour;
       margin-left: 0;
+
+      &:last-of-type {
+        margin-bottom: 0;
+      }
     }
   }
 }

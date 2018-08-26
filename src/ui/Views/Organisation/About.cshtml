@@ -65,7 +65,7 @@
           <li>physical, hearing and visual impairments</li>
           <li>mental health conditions</li>
         </ul>
-        <p class="govuk-body">If accessibility varies between locations, give details. It’s also useful to candidates to know how you’ve accommodated others with specific access needs in the past.</p>
+        <p class="govuk-body">If accessibility varies between locations, give details. It’s also useful for applicants to know how you’ve accommodated others with specific access needs in the past.</p>
         <div class="govuk-character-count" data-module="character-count" data-maxwords="250">
           <div id="TrainWithDisability-wrapper" class="govuk-form-group @(train_with_disability ? "govuk-form-group--error" : "")">
             <label asp-for="TrainWithDisability" class="govuk-label govuk-!-font-weight-bold">Training with disabilities and other needs</label>
@@ -148,22 +148,7 @@
 
         <hr class="related__section-break">
 
-        <h4 class="govuk-heading-m">Formatting</h4>
-        <h5 class="govuk-heading-s related__heading-s">Links</h5>
-        <p class="govuk-body">Use square brackets [] around the link text and round brackets () around the link URL. Make sure there are no spaces between the brackets.</p>
-
-        <p class="govuk-body">For example:<br /> [GOV.UK](https://gov.uk/)</p>
-
-        <h5 class="govuk-heading-s related__heading-s">Lists</h5>
-        <p class="govuk-body">To create a bulleted list:</p>
-        <ul class="govuk-list govuk-list--bullet">
-          <li>use asterisks (*) to create a bullet point (hyphens also work)</li>
-          <li>make sure there is one space after the asterisk</li>
-          <li>leave 1 empty line space before the bullets start, and one after</li>
-        </ul>
-
-        <p class="govuk-body">For example:</p>
-        <p class="govuk-body">* list item 1<br/>* list item 2</p>
+        @Html.Partial("FormattingAdvice")
       </aside>
 
     </div>

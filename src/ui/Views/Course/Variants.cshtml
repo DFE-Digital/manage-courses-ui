@@ -4,9 +4,13 @@
   Layout = "_Layout";
   ViewBag.Title = Model.Course.Name;
   var link = "mailto:becomingateacher@digital.education.gov.uk?subject=Problem%20with%20course%20" + Model.Course.ProgrammeCode;
+
+  var courseEnrichment = Model.CourseEnrichment;
 }
 
 <a href="@Url.Action("Courses", "Organisation", new {ucasCode = Model.Course.UcasCode})" class="govuk-back-link">Back</a>
+
+@Html.Partial("~/Views/Shared/_Alerts.cshtml")
 
 <main role="main" class="govuk-main-wrapper" id="main-content">
   <h1 class="govuk-heading-xl">
@@ -75,6 +79,57 @@
             }
           </dl>
         </div>
+
+        <div class="course-parts__item">
+          <h3 class="course-parts__title">About this course</h3>
+          <a class="course-parts__action" href="@Url.Action("About", "Course", Model.RouteData)">Edit</a>
+          <dl class="course-parts__fields">
+            <dt class="course-parts__fields__label">
+                About this course
+            </dt>
+            <dd class="course-parts__fields__value">
+                @courseEnrichment?.AboutCourse.DisplayText()
+            </dd>
+            <dt class="course-parts__fields__label">
+                Interview process (optional)
+            </dt>
+            <dd class="course-parts__fields__value">
+                @courseEnrichment?.InterviewProcess.DisplayText()
+            </dd>
+            <dt class="course-parts__fields__label">
+                How school placements work
+            </dt>
+            <dd class="course-parts__fields__value">
+                @courseEnrichment?.HowSchoolPlacementsWork.DisplayText()
+            </dd>
+          </dl>
+        </div>
+
+        <div class="course-parts__item">
+          <h3 class="course-parts__title">Requirements and eligbility</h3>
+          <a class="course-parts__action" href="@Url.Action("Requirements", "Course", Model.RouteData)">Edit</a>
+          <dl class="course-parts__fields">
+            <dt class="course-parts__fields__label">
+              Qualifications needed
+            </dt>
+            <dd class="course-parts__fields__value">
+                @courseEnrichment?.Qualifications.DisplayText()
+            </dd>
+            <dt class="course-parts__fields__label">
+              Personal qualities (optional)
+            </dt>
+            <dd class="course-parts__fields__value">
+                @courseEnrichment?.PersonalQualities.DisplayText()
+            </dd>
+            <dt class="course-parts__fields__label">
+              Other requirements (optional)
+            </dt>
+            <dd class="course-parts__fields__value">
+                @courseEnrichment?.OtherRequirements.DisplayText()
+            </dd>
+          </dl>
+        </div>
+
         <div class="course-parts__item">
           <h3 class="course-parts__title">Training locations</h3>
           @foreach (var school in Model.Course.Schools)

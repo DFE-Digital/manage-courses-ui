@@ -11,6 +11,8 @@ namespace GovUk.Education.ManageCourses.Ui.ViewModels
         public string CourseTitle { get; set; }
         public string AccreditingProviderId { get; set; }
         public CourseVariantViewModel Course { get; set; }
+        public CourseEnrichmentViewModel CourseEnrichment { get; set; }
+        public CourseRouteDataViewModel RouteData { get; set; }
     }
 
     public class CourseVariantViewModel
@@ -54,4 +56,3 @@ namespace GovUk.Education.ManageCourses.Ui.ViewModels
         }
     }
 }
-
