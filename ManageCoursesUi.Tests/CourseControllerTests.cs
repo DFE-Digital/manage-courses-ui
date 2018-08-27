@@ -75,7 +75,7 @@ namespace ManageCoursesUi.Tests
         [Test]
         [TestCase(EnumDataType.SingleVariantNoMatch)]
         [TestCase(EnumDataType.MultiVariantNoMatch)]
-        public void TestController_Variants_should_return_exception(EnumDataType type)
+        public void TestController_Variants_should_return_not_found(EnumDataType type)
         {
             var manageApi = new Mock<IManageApi>();
             var testData = TestHelper.GetTestData(type, null, null);
@@ -97,7 +97,10 @@ namespace ManageCoursesUi.Tests
 
             var controller = new CourseController(manageApi.Object, new SearchAndCompareUrlService("http://www.example.com"), new MockFeatureFlags());
 
-            Assert.ThrowsAsync<InvalidOperationException>(async() => await controller.Variants(TestHelper.InstitutionCode, TestHelper.AccreditedProviderId, TestHelper.TargetedUcasCode));
+            var res = controller.Variants(TestHelper.InstitutionCode, TestHelper.AccreditedProviderId, TestHelper.TargetedUcasCode).Result;
+
+            Assert.That(res is NotFoundObjectResult);
+            Assert.AreEqual(404, (res as NotFoundObjectResult).StatusCode);
         }
 
         [Test]
