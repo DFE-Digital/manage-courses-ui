@@ -56,6 +56,25 @@ You may also set the following optional ones:
 * **ASPNET_ENVIRONMENT** - set to `Development`
 * **MANAGE_COURSES_API_Development_PORT** (optional) - the port to run locally on `Development` valid port number betweeen `49152 - 65535` otherwise it will use the default port `44364` if port is unset or port is invalid/out of bounds
 
+### Feature flags
+
+To turn on a hidden feature set a flag in `appsettings.json`
+
+    {
+      "features": {
+        "FEATURE_ORG_ENRICHMENT": "true"
+      }
+    }
+
+or user secrets secrets.json
+
+    dotnet user-secrets set features:FEATURE_ORG_ENRICHMENT true
+    dotnet run
+
+or a matching environment variable
+
+    set features__FEATURE_ORG_ENRICHMENT=true
+    dotnet run
 
 #### Notes
 

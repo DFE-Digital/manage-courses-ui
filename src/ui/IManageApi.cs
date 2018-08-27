@@ -23,5 +23,6 @@ namespace GovUk.Education.ManageCourses.Ui
         Task<bool> PublishEnrichmentCourse(string ucasCode, string courseCode);
         Task<UcasCourseEnrichmentGetModel> GetEnrichmentCourse(string instCode, string ucasCode);
         Task SaveEnrichmentCourse(string instCode, string ucasCode, CourseEnrichmentModel course);
+        Task SaveEnrichmentCourse(string instCode, string ucasCode, CourseEnrichmentModel course);
     }
 }
