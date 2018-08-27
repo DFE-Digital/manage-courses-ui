@@ -8,6 +8,7 @@ using GovUk.Education.ManageCourses.Ui.ViewModels;
 using GovUk.Education.SearchAndCompare.Domain.Models;
 using GovUk.Education.SearchAndCompare.Domain.Models.Enums;
 using GovUk.Education.SearchAndCompare.Domain.Models.Joins;
+using GovUk.Education.SearchAndCompare.UI.Shared.ViewComponents;
 
 namespace GovUk.Education.ManageCourses.Ui.Services
 {
@@ -120,52 +121,47 @@ namespace GovUk.Education.ManageCourses.Ui.Services
             mappedCourse.DescriptionSections = new Collection<CourseDescriptionSection>();
 
             mappedCourse.DescriptionSections.Add(new CourseDescriptionSection{
-                Name = "about this training programme",
+                Name = CourseDetailsSections.AboutTheCourse,
                 Text = courseEnrichmentModel.AboutCourse});
 
             mappedCourse.DescriptionSections.Add(new CourseDescriptionSection{
-                Name = "interview process",
-                Text = courseEnrichmentModel.AboutCourse});
+                Name = CourseDetailsSections.InterviewProcess,
+                Text = courseEnrichmentModel.InterviewProcess});
 
             mappedCourse.DescriptionSections.Add(new CourseDescriptionSection{
-                Name = "about fees",
-                Text = courseEnrichmentModel.FeeDetails});
-
-            var requirements = new List<string>();
-            if (!string.IsNullOrWhiteSpace(courseEnrichmentModel.Qualifications)) 
-            {
-                requirements.Add("==Qualifications==\n\n" + courseEnrichmentModel.Qualifications);
-            }
-            if (!string.IsNullOrWhiteSpace(courseEnrichmentModel.PersonalQualities))
-            {
-                requirements.Add("==Personal qualities==\n\n" + courseEnrichmentModel.PersonalQualities);
-            }            
-            if (!string.IsNullOrWhiteSpace(courseEnrichmentModel.OtherRequirements))
-            {
-                requirements.Add("==Other requirements==\n\n" + courseEnrichmentModel.OtherRequirements);
-            }
+                Name = CourseDetailsSections.AboutFees,
+                Text = courseEnrichmentModel.FeeDetails});            
 
             mappedCourse.DescriptionSections.Add(new CourseDescriptionSection{
-                Name = "entry requirements",
-                Text = String.Join("\n\n", requirements)
-            });
+                Name = CourseDetailsSections.EntryRequirementsQualifications,
+                Text = courseEnrichmentModel.Qualifications});
 
+            mappedCourse.DescriptionSections.Add(new CourseDescriptionSection{
+                Name = CourseDetailsSections.EntryRequirementsPersonalQualities,
+                Text = courseEnrichmentModel.PersonalQualities});
+
+            mappedCourse.DescriptionSections.Add(new CourseDescriptionSection{
+                Name = CourseDetailsSections.EntryRequirementsOther,
+                Text = courseEnrichmentModel.OtherRequirements});
+                
             
             mappedCourse.DescriptionSections.Add(new CourseDescriptionSection{
-                Name = "about school placements",
+                Name = CourseDetailsSections.AboutSchools,
                 Text = courseEnrichmentModel.HowSchoolPlacementsWork
             });
-
+            
             mappedCourse.DescriptionSections.Add(new CourseDescriptionSection{
-                Name = "about this training provider",
-                Text = String.Join("\n\n", new List<string> {
-                    orgEnrichmentModel.TrainWithUs,
-                    GetAccreditingProviderEnrichment(ucasCourseData.AccreditingProviderId, orgEnrichmentModel)
-                })
+                Name = CourseDetailsSections.AboutTheProvider,
+                Text = orgEnrichmentModel.TrainWithUs
+            });
+            
+            mappedCourse.DescriptionSections.Add(new CourseDescriptionSection{
+                Name = CourseDetailsSections.AboutTheAccreditingProvider,
+                Text = GetAccreditingProviderEnrichment(ucasCourseData.AccreditingProviderId, orgEnrichmentModel)
             });
 
             mappedCourse.DescriptionSections.Add(new CourseDescriptionSection {
-                Name = "training with disabilities",
+                Name = CourseDetailsSections.TrainWithDisabilities,
                 Text = orgEnrichmentModel.TrainWithDisability
             });
 
@@ -186,7 +182,7 @@ namespace GovUk.Education.ManageCourses.Ui.Services
                 return "";
             }
 
-            return "==About the accredited provider==\n\n" + enrichment.Description;
+            return enrichment.Description;
         }
 
         private string MapAddress(School school)
