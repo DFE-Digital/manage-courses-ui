@@ -49,10 +49,6 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
 
             var viewModel = LoadViewModel(org, course, multipleOrganisations, ucasCourseEnrichmentGetModel, routeData);
 
-            var routeData = GetCourseRouteDataViewModel(instCode, accreditingProviderId, ucasCode);
-
-            var viewModel = LoadViewModel(org, course, multipleOrganisations, ucasCourseEnrichmentGetModel, routeData);
-
             return View("Variants", viewModel);
         }
 
@@ -97,106 +93,6 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
                 CourseCode = ucasCode,
                 InstCode = instCode
             });
-        }
-        
-
-        [HttpGet]
-        [Route("{instCode}/course/{accreditingProviderId=self}/{ucasCode}/about")]
-        public async Task<IActionResult> About(string instCode, string accreditingProviderId, string ucasCode)
-        {
-            var course = await _manageApi.GetEnrichmentCourse(instCode, ucasCode);
-            var routeData = GetCourseRouteDataViewModel(instCode, accreditingProviderId, ucasCode);
-
-            var enrichmentModel = course.EnrichmentModel;
-
-            var model = new AboutCourseEnrichmentViewModel
-            {
-                AboutCourse = enrichmentModel.AboutCourse,
-                InterviewProcess = enrichmentModel.InterviewProcess,
-                HowSchoolPlacementsWork = enrichmentModel.HowSchoolPlacementsWork,
-                RouteData = routeData
-            };
-            return View(model);
-        }
-
-        [HttpPost]
-        [Route("{instCode}/course/{accreditingProviderId=self}/{ucasCode}/about")]
-        public async Task<IActionResult> AboutPost(string instCode, string accreditingProviderId, string ucasCode, AboutCourseEnrichmentViewModel viewModel)
-        {
-            if (!ModelState.IsValid)
-            {
-                var routeData = GetCourseRouteDataViewModel(instCode, accreditingProviderId, ucasCode);
-                viewModel.RouteData = routeData;
-                return View("About", viewModel);
-            }
-
-            await SaveEnrichment(instCode, ucasCode, viewModel);
-
-            SetSucessMessage();
-
-            return RedirectToAction("Variants", new { instCode, accreditingProviderId, ucasCode });
-        }
-
-        [HttpGet]
-        [Route("{instCode}/course/{accreditingProviderId=self}/{ucasCode}/requirements")]
-        public async Task<IActionResult> Requirements(string instCode, string accreditingProviderId, string ucasCode)
-        {
-            var course = await _manageApi.GetEnrichmentCourse(instCode, ucasCode);
-            var routeData = GetCourseRouteDataViewModel(instCode, accreditingProviderId, ucasCode);
-
-            var enrichmentModel = course.EnrichmentModel;
-            var model = new CourseRequirementsEnrichmentViewModel
-            {
-                Qualifications = enrichmentModel.Qualifications,
-                PersonalQualities = enrichmentModel.PersonalQualities,
-                OtherRequirements = enrichmentModel.OtherRequirements,
-                RouteData = routeData
-            };
-
-            return View(model);
-        }
-
-        [HttpPost]
-        [Route("{instCode}/course/{accreditingProviderId=self}/{ucasCode}/requirements")]
-        public async Task<IActionResult> RequirementsPost(string instCode, string accreditingProviderId, string ucasCode, CourseRequirementsEnrichmentViewModel viewModel)
-        {
-            if (!ModelState.IsValid)
-            {
-                var routeData = GetCourseRouteDataViewModel(instCode, accreditingProviderId, ucasCode);
-                viewModel.RouteData = routeData;
-                return View("Requirements", viewModel);
-            }
-
-            await SaveEnrichment(instCode, ucasCode, viewModel);
-            SetSucessMessage();
-
-            return RedirectToAction("Variants", new { instCode, accreditingProviderId, ucasCode });
-        }
-
-        private void SetSucessMessage(string message = null)
-        {
-            TempData.Add("MessageType", "success");
-            TempData.Add("MessageTitle", message ?? "Your changes have been saved");
-        }
-        private void MapEnrichment(CourseEnrichmentModel enrichmentModel, ICourseEnrichmentViewModel viewModel)
-        {
-            var aboutCourseEnrichmentViewModel = viewModel as AboutCourseEnrichmentViewModel;
-
-            if (aboutCourseEnrichmentViewModel != null)
-            {
-                enrichmentModel.AboutCourse = aboutCourseEnrichmentViewModel.AboutCourse;
-                enrichmentModel.InterviewProcess = aboutCourseEnrichmentViewModel.InterviewProcess;
-                enrichmentModel.HowSchoolPlacementsWork = aboutCourseEnrichmentViewModel.HowSchoolPlacementsWork;
-            }
-
-            var courseRequirementsEnrichmentViewModel = viewModel as CourseRequirementsEnrichmentViewModel;
-
-            if (courseRequirementsEnrichmentViewModel != null)
-            {
-                enrichmentModel.Qualifications = courseRequirementsEnrichmentViewModel.Qualifications;
-                enrichmentModel.PersonalQualities = courseRequirementsEnrichmentViewModel.PersonalQualities;
-                enrichmentModel.OtherRequirements = courseRequirementsEnrichmentViewModel.OtherRequirements;
-            }
         }
 
         [HttpGet]
@@ -285,10 +181,26 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             return RedirectToAction("Variants", new { instCode, accreditingProviderId, ucasCode });
         }
 
-        private void SetSucessMessage()
+        private async Task SaveEnrichment(string instCode, string ucasCode, ICourseEnrichmentViewModel viewModel)
+        {
+            var course = await _manageApi.GetEnrichmentCourse(instCode, ucasCode);
+
+            var enrichmentModel = course?.EnrichmentModel ?? new CourseEnrichmentModel();
+            MapEnrichment(enrichmentModel, viewModel);
+
+            await _manageApi.SaveEnrichmentCourse(instCode, ucasCode, enrichmentModel);
+
+        }
+        private void Validate(string instCode, string accreditingProviderId, string ucasCode)
+        {
+            if (string.IsNullOrEmpty(instCode)) { throw new ArgumentNullException(instCode, "instCode cannot be null or empty"); }
+            if (string.IsNullOrEmpty(accreditingProviderId)) { throw new ArgumentNullException(accreditingProviderId, "accreditingProviderId cannot be null or empty"); }
+            if (string.IsNullOrEmpty(ucasCode)) { throw new ArgumentNullException(ucasCode, "ucasCode cannot be null or empty"); }
+        }
+        private void SetSucessMessage(string message = null)
         {
             TempData.Add("MessageType", "success");
-            TempData.Add("MessageTitle", "Your changes have been saved");
+            TempData.Add("MessageTitle", message ?? "Your changes have been saved");
         }
         private void MapEnrichment(CourseEnrichmentModel enrichmentModel, ICourseEnrichmentViewModel viewModel)
         {
@@ -309,23 +221,6 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
                 enrichmentModel.PersonalQualities = courseRequirementsEnrichmentViewModel.PersonalQualities;
                 enrichmentModel.OtherRequirements = courseRequirementsEnrichmentViewModel.OtherRequirements;
             }
-        }
-
-        private async Task SaveEnrichment(string instCode, string ucasCode, ICourseEnrichmentViewModel viewModel)
-        {
-            var course = await _manageApi.GetEnrichmentCourse(instCode, ucasCode);
-
-            var enrichmentModel = course?.EnrichmentModel ?? new CourseEnrichmentModel();
-            MapEnrichment(enrichmentModel, viewModel);
-
-            await _manageApi.SaveEnrichmentCourse(instCode, ucasCode, enrichmentModel);
-
-        }
-        private void Validate(string instCode, string accreditingProviderId, string ucasCode)
-        {
-            if (string.IsNullOrEmpty(instCode)) { throw new ArgumentNullException(instCode, "instCode cannot be null or empty"); }
-            if (string.IsNullOrEmpty(accreditingProviderId)) { throw new ArgumentNullException(accreditingProviderId, "accreditingProviderId cannot be null or empty"); }
-            if (string.IsNullOrEmpty(ucasCode)) { throw new ArgumentNullException(ucasCode, "ucasCode cannot be null or empty"); }
         }
 
         private FromUcasViewModel LoadViewModel(UserOrganisation org, Course course, bool multipleOrganisations, UcasCourseEnrichmentGetModel ucasCourseEnrichmentGetModel, CourseRouteDataViewModel routeData)
