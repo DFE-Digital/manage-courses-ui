@@ -30,7 +30,7 @@
     <PackageReference Include="GovUk.Education.ManageCourses.ApiClient" Version="0.8.1-retrieve-ucas-inst" />
   </ItemGroup>
   <ItemGroup Condition="Exists('$(ProjectDir)dev-sc-shared.targets')==false">    
-    <PackageReference Include="GovUk.Education.SearchAndCompare.Ui.Shared" Version="0.1.0-extract-details-view.3" />
+    <PackageReference Include="GovUk.Education.SearchAndCompare.Ui.Shared" Version="0.1.0-extract-details-view.4" />
   </ItemGroup>
   <Target Name="Webpack" BeforeTargets="AfterBuild">
     <Exec Command="npm install" />

@@ -11,6 +11,7 @@
 <a href="@Url.Action("Courses", "Organisation", new {ucasCode = Model.Course.UcasCode})" class="govuk-back-link">Back</a>
 
 @Html.Partial("~/Views/Shared/_Alerts.cshtml")
+@Html.Partial("Shared/ErrorSummary.cshtml")
 
 <main role="main" class="govuk-main-wrapper" id="main-content">
   <h1 class="govuk-heading-xl">
@@ -64,19 +65,19 @@
           <h3 class="course-parts__title">About this course</h3>
           <a class="course-parts__action" href="@Url.Action("About", "Course", Model.RouteData)">Edit</a>
           <dl class="course-parts__fields">
-            <dt class="course-parts__fields__label">
+            <dt class="course-parts__fields__label" id="section-AboutCourse">
                 About this course
             </dt>
             <dd class="course-parts__fields__value">
                 @courseEnrichment.AboutCourse.DisplayText()
             </dd>
-            <dt class="course-parts__fields__label">
+            <dt class="course-parts__fields__label" id="section-InterviewProcess">
                 Interview process (optional)
             </dt>
             <dd class="course-parts__fields__value">
                 @courseEnrichment.InterviewProcess.DisplayText()
             </dd>
-            <dt class="course-parts__fields__label">
+            <dt class="course-parts__fields__label" id="section-HowSchoolPlacementsWork">
                 How school placements work
             </dt>
             <dd class="course-parts__fields__value">
@@ -89,19 +90,19 @@
           <h3 class="course-parts__title">Requirements and eligbility</h3>
           <a class="course-parts__action" href="@Url.Action("Requirements", "Course", Model.RouteData)">Edit</a>
           <dl class="course-parts__fields">
-            <dt class="course-parts__fields__label">
+            <dt class="course-parts__fields__label" id="section-Qualifications">
               Qualifications needed
             </dt>
             <dd class="course-parts__fields__value">
                 @courseEnrichment.Qualifications.DisplayText()
             </dd>
-            <dt class="course-parts__fields__label">
+            <dt class="course-parts__fields__label" id="section-PersonalQualities">
               Personal qualities (optional)
             </dt>
             <dd class="course-parts__fields__value">
                 @courseEnrichment.PersonalQualities.DisplayText()
             </dd>
-            <dt class="course-parts__fields__label">
+            <dt class="course-parts__fields__label"id="section-OtherRequirements">
               Other requirements (optional)
             </dt>
             <dd class="course-parts__fields__value">
@@ -186,7 +187,7 @@
               <h4 class="govuk-heading-m">Publish</h4>
               <p class="govuk-body">Publish your changes for applicants to see them.</p>
 
-              <form asp-controller="Course" asp-action="Publish" method="post">
+              <form asp-route="publish" method="post">
                 <input type="submit" class="govuk-button" value="Publish" />
               </form>
 

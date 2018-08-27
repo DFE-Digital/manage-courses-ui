@@ -37,7 +37,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             var multipleOrganisations = userOrganisations.Count() > 1;
             var org = userOrganisations.ToList().FirstOrDefault(x => instCode.ToLower() == x.UcasCode.ToLower());
 
-            if (org == null) { throw new InvalidOperationException($"Organisation with code '{ucasCode}' not found"); }
+            if (org == null) { return NotFound($"Organisation with code '{ucasCode}' not found"); }
 
             var course = await _manageApi.GetCourseByUcasCode(instCode, ucasCode);
 
@@ -49,26 +49,37 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
 
             var viewModel = LoadViewModel(org, course, multipleOrganisations, ucasCourseEnrichmentGetModel, routeData);
 
-            return View(viewModel);
+            return View("Variants", viewModel);
         }
 
         [HttpPost]
-        [Route("{instCode}/course/{accreditingProviderId=self}/{ucasCode}")]
+        [Route("{instCode}/course/{accreditingProviderId=self}/{ucasCode}", Name="publish")]
         public async Task<IActionResult> VariantsPublish(string instCode, string accreditingProviderId, string ucasCode)
         {
-            if(featureFlags.ShowCoursePublish)
+            if(!featureFlags.ShowCoursePublish)
             {
-                var result = await _manageApi.PublishEnrichmentCourse(instCode, ucasCode);
+                return RedirectToAction("Variants", new { instCode, accreditingProviderId, ucasCode });
+            }
+            var enrichment = await _manageApi.GetEnrichmentCourse(instCode, ucasCode);  
+            var enrichmentModel = GetCourseEnrichmentViewModel(enrichment);
+
+            ModelState.Clear();
+            TryValidateModel(enrichmentModel);
+
+            if (!ModelState.IsValid)
+            {
+                return await Variants(instCode, accreditingProviderId, ucasCode);
+            }               
+
+            var result = await _manageApi.PublishEnrichmentCourse(instCode, ucasCode);
                 
-                if (result) 
-                {
-                    SetSucessMessage("Your course has been published");
-                }
+            if (result) 
+            {
+                SetSucessMessage("Your course has been published");
             }
 
             return RedirectToAction("Variants", new { instCode, accreditingProviderId, ucasCode });
         }
-
         
         [Route("{instCode}/course/{accreditingProviderId=self}/{ucasCode}/preview")]
         public IActionResult Preview(string instCode, string accreditingProviderId, string ucasCode)
