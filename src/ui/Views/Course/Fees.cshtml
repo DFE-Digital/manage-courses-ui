@@ -29,18 +29,13 @@
             }
             <div class="govuk-radios">
               @{
-                var options = new Dictionary<CourseLength,string>()
-                {
-                  { CourseLength.OneYear, "One year" },
-                  { CourseLength.TwoYears, "Up to two years" },
-                  { CourseLength.Other, "Other" },
-                };
+                var options = CourseLengthHelper.Lookup;
 
                 foreach (var option in options){
                   var keyString = option.Key.ToString();
-                  var optionChecked = !string.IsNullOrWhiteSpace(Model.CourseLength) && keyString == Model.CourseLength;
+                  var optionChecked = Model.CourseLength.HasValue && option.Key == Model.CourseLength.Value;
                   <div class="govuk-radios__item">
-                    <input type="radio" id="@keyString" class="govuk-radios__input" asp-for="@Model.CourseLength" check="@optionChecked" value="@keyString" />
+                    <input type="radio" id="@keyString" class="govuk-radios__input" asp-for="@Model.CourseLength" check="@optionChecked" value="@option.Key" />
                     <label for="@keyString" class="govuk-label govuk-radios__label govuk-!-font-weight-bold">@option.Value</label>
                   </div>
                 }

@@ -1,11 +1,12 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using GovUk.Education.ManageCourses.Ui.ViewModels.Enums;
 
 namespace GovUk.Education.ManageCourses.Ui.ViewModels
 {
     public class CourseFeesEnrichmentViewModel : ICourseEnrichmentViewModel
     {
-        public string CourseLength { get; set; }
+        public CourseLength? CourseLength { get; set; }
         public string FeeUkEu { get; set; }
         public string FeeInternational { get; set; }
 

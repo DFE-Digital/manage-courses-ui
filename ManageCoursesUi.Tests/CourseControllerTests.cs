@@ -7,6 +7,7 @@ using GovUk.Education.ManageCourses.Ui;
 using GovUk.Education.ManageCourses.Ui.Controllers;
 using GovUk.Education.ManageCourses.Ui.Services;
 using GovUk.Education.ManageCourses.Ui.ViewModels;
+using GovUk.Education.ManageCourses.Ui.ViewModels.Enums;
 using ManageCoursesUi.Tests.Enums;
 using ManageCoursesUi.Tests.Helpers;
 using Microsoft.AspNetCore.Http;
@@ -505,7 +506,7 @@ namespace ManageCoursesUi.Tests
             var manageApi = new Mock<IManageApi>();
 
             var enrichmentModel = new CourseEnrichmentModel {
-                FeeUkEu = 123.45m, FeeInternational = 543.21m, FeeDetails = "FeeDetails", CourseLength = "CourseLength", FinancialSupport = "FinancialSupport"
+                FeeUkEu = 123.45m, FeeInternational = 543.21m, FeeDetails = "FeeDetails", CourseLength = null, FinancialSupport = "FinancialSupport"
             };
             var ucasCourseEnrichmentGetModel = new UcasCourseEnrichmentGetModel { EnrichmentModel = enrichmentModel };
 
@@ -541,7 +542,7 @@ namespace ManageCoursesUi.Tests
         {
             var manageApi = new Mock<IManageApi>();
 
-            var viewModel = new CourseFeesEnrichmentViewModel { FeeUkEu = "123.45", FeeInternational = "543.21", FeeDetails = "FeeDetails", CourseLength = "CourseLength", FinancialSupport = "FinancialSupport" };
+            var viewModel = new CourseFeesEnrichmentViewModel { FeeUkEu = "123.45", FeeInternational = "543.21", FeeDetails = "FeeDetails", CourseLength = CourseLength.OneYear, FinancialSupport = "FinancialSupport" };
 
             var testCourse = new Course() { Name = "Name", CourseCode = "CourseCode" };
 
@@ -577,9 +578,9 @@ namespace ManageCoursesUi.Tests
         {
             var manageApi = new Mock<IManageApi>();
 
-            var viewModel = new CourseFeesEnrichmentViewModel { FeeUkEu = "123.45", FeeInternational = "543.21", FeeDetails = "FeeDetails", CourseLength = "CourseLength", FinancialSupport = "FinancialSupport" };
+            var viewModel = new CourseFeesEnrichmentViewModel { FeeUkEu = "123.45", FeeInternational = "543.21", FeeDetails = "FeeDetails", CourseLength = CourseLength.TwoYears, FinancialSupport = "FinancialSupport" };
 
-            var enrichmentModel = new CourseEnrichmentModel { FeeUkEu = 123.45m, FeeInternational = 543.21m, FeeDetails = "FeeDetails", CourseLength = "CourseLength", FinancialSupport = "FinancialSupport" };
+            var enrichmentModel = new CourseEnrichmentModel { FeeUkEu = 123.45m, FeeInternational = 543.21m, FeeDetails = "FeeDetails", CourseLength = null, FinancialSupport = "FinancialSupport" };
 
             var ucasCourseEnrichmentGetModel = new UcasCourseEnrichmentGetModel { EnrichmentModel = enrichmentModel };
 
@@ -635,12 +636,13 @@ namespace ManageCoursesUi.Tests
 
             if (courseFeesEnrichmentViewModel != null)
             {
+                var courseLength = courseFeesEnrichmentViewModel.CourseLength.HasValue ? courseFeesEnrichmentViewModel.CourseLength.Value.ToString() : null;
                 result =
                     model.FeeDetails == courseFeesEnrichmentViewModel.FeeDetails &&
                     model.FeeInternational.ToString() == courseFeesEnrichmentViewModel.FeeInternational &&
                     model.FeeUkEu.ToString() == courseFeesEnrichmentViewModel.FeeUkEu && 
                     model.FinancialSupport == courseFeesEnrichmentViewModel.FinancialSupport &&
-                    model.CourseLength== courseFeesEnrichmentViewModel.CourseLength;
+                    model.CourseLength == courseLength;
             }
             return result;
         }

@@ -7,6 +7,7 @@ using GovUk.Education.ManageCourses.Ui;
 using GovUk.Education.ManageCourses.Ui.Helpers;
 using GovUk.Education.ManageCourses.Ui.Services;
 using GovUk.Education.ManageCourses.Ui.ViewModels;
+using GovUk.Education.ManageCourses.Ui.ViewModels.Enums;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -194,7 +195,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
 
             var model = new CourseFeesEnrichmentViewModel
             {
-                CourseLength = enrichmentModel?.CourseLength,
+                CourseLength = enrichmentModel?.CourseLength.GetCourseLength(),
                 FeeUkEu = enrichmentModel?.FeeUkEu.ToString(),
                 FeeInternational = enrichmentModel?.FeeInternational.ToString(),
                 FeeDetails = enrichmentModel?.FeeDetails,
@@ -212,7 +213,10 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             if (!ModelState.IsValid)
             {
                 var routeData = GetCourseRouteDataViewModel(instCode, accreditingProviderId, ucasCode);
+                var courseDetails = await _manageApi.GetCourseByUcasCode(instCode, ucasCode);
+                var courseInfo = new CourseInfoViewModel { ProgrammeCode = courseDetails.CourseCode, Name = courseDetails.Name };
                 viewModel.RouteData = routeData;
+                viewModel.CourseInfo = courseInfo;
                 return View("Fees", viewModel);
             }
             await SaveEnrichment(instCode, ucasCode, viewModel);
@@ -267,10 +271,15 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
                     feeInternational = 0;
                 }
 
+                string courseLength = null;
+
+                if (courseFeesEnrichmentViewModel.CourseLength.HasValue) {
+                    courseLength = courseFeesEnrichmentViewModel.CourseLength.Value.ToString();
+                }
+                enrichmentModel.CourseLength = courseLength;
                 enrichmentModel.FeeUkEu = feeUkEu;
                 enrichmentModel.FeeInternational = feeInternational;
                 enrichmentModel.FeeDetails = courseFeesEnrichmentViewModel.FeeDetails;
-                enrichmentModel.CourseLength = courseFeesEnrichmentViewModel.CourseLength;
                 enrichmentModel.FinancialSupport = courseFeesEnrichmentViewModel.FinancialSupport;
             }
         }
@@ -343,6 +352,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
                 return new CourseEnrichmentViewModel();
             }
             var enrichmentModel = ucasCourseEnrichmentGetModel?.EnrichmentModel ?? new CourseEnrichmentModel();
+            
             var result = new CourseEnrichmentViewModel()
             {
                 AboutCourse = enrichmentModel.AboutCourse,
@@ -351,12 +361,11 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
                 Qualifications = enrichmentModel.Qualifications,
                 PersonalQualities = enrichmentModel.PersonalQualities,
                 OtherRequirements = enrichmentModel.OtherRequirements,
-                CourseLength = enrichmentModel.CourseLength,
+                CourseLength = enrichmentModel.CourseLength.GetCourseLength(),
                 FeeUkEu = enrichmentModel.FeeUkEu,
                 FeeInternational = enrichmentModel.FeeInternational,
                 FeeDetails = enrichmentModel.FeeDetails,
                 FinancialSupport = enrichmentModel.FinancialSupport,
-
                 DraftLastUpdatedUtc = ucasCourseEnrichmentGetModel.UpdatedTimestampUtc,
                 LastPublishedUtc = ucasCourseEnrichmentGetModel.LastPublishedTimestampUtc
             };

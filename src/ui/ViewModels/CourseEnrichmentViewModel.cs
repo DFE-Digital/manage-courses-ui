@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using GovUk.Education.ManageCourses.Ui.ViewModels.Enums;
-
 namespace GovUk.Education.ManageCourses.Ui.ViewModels
 {
     public class CourseEnrichmentViewModel
@@ -19,7 +18,7 @@ namespace GovUk.Education.ManageCourses.Ui.ViewModels
         public string HowSchoolPlacementsWork { get; set; }
 
         // course length and fees
-        public string CourseLength { get; set; }
+        public CourseLength? CourseLength { get; set; }
         public decimal FeeUkEu { get; set; }
         public decimal FeeInternational { get; set; }
         public string FeeDetails { get; set; }
