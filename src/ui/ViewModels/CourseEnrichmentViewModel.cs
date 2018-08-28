@@ -19,13 +19,13 @@ namespace GovUk.Education.ManageCourses.Ui.ViewModels
         public string HowSchoolPlacementsWork { get; set; }
 
         [RegularExpression(@"^\s*(\S+\s+|\S+$){0,100}$", ErrorMessage = "Reduce the word count for details about the required qualifications")]
-        [Required(ErrorMessage = "Give details about the required qualifications")]        
+        [Required(ErrorMessage = "Give details about the required qualifications")]
         public string Qualifications { get; set; }
 
-        [RegularExpression(@"^\s*(\S+\s+|\S+$){0,100}$", ErrorMessage = "Reduce the word count for details about personal qualities")]     
+        [RegularExpression(@"^\s*(\S+\s+|\S+$){0,100}$", ErrorMessage = "Reduce the word count for details about personal qualities")]
         public string PersonalQualities { get; set; }
 
-        [RegularExpression(@"^\s*(\S+\s+|\S+$){0,100}$", ErrorMessage = "Reduce the word count for details about other requirements")]     
+        [RegularExpression(@"^\s*(\S+\s+|\S+$){0,100}$", ErrorMessage = "Reduce the word count for details about other requirements")]
         public string OtherRequirements { get; set; }
         public DateTime? DraftLastUpdatedUtc { get; internal set; }
         public DateTime? LastPublishedUtc { get; internal set; }

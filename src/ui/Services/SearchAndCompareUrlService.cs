@@ -4,9 +4,9 @@ namespace GovUk.Education.ManageCourses.Ui.Services
 {
     public class SearchAndCompareUrlService : ISearchAndCompareUrlService
     {
-        private object searchAndComparBaseUrl;
+        private string searchAndComparBaseUrl;
 
-        public SearchAndCompareUrlService(String searchAndComparBaseUrl)
+        public SearchAndCompareUrlService(string searchAndComparBaseUrl)
         {
             this.searchAndComparBaseUrl = searchAndComparBaseUrl;
         }

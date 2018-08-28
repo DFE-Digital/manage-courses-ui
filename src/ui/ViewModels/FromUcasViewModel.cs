@@ -7,7 +7,6 @@ namespace GovUk.Education.ManageCourses.Ui.ViewModels
     {
         public bool AllowPreview { get; set; }
         public bool AllowPublish { get;  set; }
-
         public string OrganisationName { get; set; }
         public string OrganisationId { get; set; }
         public bool MultipleOrganisations { get; set; }
@@ -16,7 +15,7 @@ namespace GovUk.Education.ManageCourses.Ui.ViewModels
         public CourseVariantViewModel Course { get; set; }
         public CourseEnrichmentViewModel CourseEnrichment { get; set; }
         public CourseRouteDataViewModel RouteData { get; set; }
-        public Uri CurrentUrl { get; set; }
+        public Uri LiveSearchUrl { get; set; }
     }
 
     public class CourseVariantViewModel
