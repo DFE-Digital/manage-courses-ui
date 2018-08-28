@@ -23,7 +23,7 @@ namespace GovUk.Education.ManageCourses.Ui.Helpers
             var result = "";
             if ((course.Schools.Any(s => s.Status.ToLower() == "n")) && (course.Schools.All(s => s.Status != "r")))
             {
-                result = "New-not yet running";
+                result = "New – not yet running";
             }
             if (course.Schools.Any(s => s.Status.ToLower() == "r"))
             {
