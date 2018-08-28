@@ -13,7 +13,6 @@ namespace GovUk.Education.ManageCourses.Ui.Helpers
         {
             var result = string.IsNullOrWhiteSpace(course.ProfpostFlag) ? "QTS " : "PGCE with QTS ";
 
-            //result += course.StudyMode.Equals("F", StringComparison.InvariantCultureIgnoreCase) ? "full time" : "part time" ;
             if (course.StudyMode.Equals("F", StringComparison.InvariantCultureIgnoreCase))
             {
                 result += "full time";
