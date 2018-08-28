@@ -9,7 +9,7 @@ namespace GovUk.Education.ManageCourses.Ui
         ///    This had been made necessary by some external links that take users to the /auth/cb endpoints 
         ///    Without the necessary parameterisation.
         ///</summary>
-        public IApplicationBuilder UseTemporaryRedirectForSpuriousAuthCbRequests(this IApplicationBuilder app)
+        public static IApplicationBuilder UseTemporaryRedirectForSpuriousAuthCbRequests(this IApplicationBuilder app)
         {
             return app.Use(async (context, next) => {                
                 var isSpuriousAuthCbRequest = 
