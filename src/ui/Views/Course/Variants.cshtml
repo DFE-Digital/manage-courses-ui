@@ -140,31 +140,31 @@
         @switch(courseEnrichment.DeterminePublicationState())
         {
           case WorkflowStatus.Blank:
-            <div class="govuk-tag__empty add-bottom-margin">empty</div>
+            <div class="govuk-tag govuk-tag--blank">empty</div>
             break;
           case WorkflowStatus.SubsequentDraft:
-            <div class="govuk-tag__draft add-bottom-margin">draft</div>
+            <div class="govuk-tag govuk-tag--draft">draft</div>
             break;
           case WorkflowStatus.Published:
-            <div class="govuk-tag__published add-bottom-margin">published</div>
+            <div class="govuk-tag govuk-tag--published">published</div>
             break;
         }
 
         @if (courseEnrichment.DeterminePublicationState() == WorkflowStatus.Blank)
-        {          
+        {
             <p class="govuk-body">You need to complete and publish this information.</p>
             <hr class="related__section-break">
         }
 
         @if (courseEnrichment.DeterminePublicationState() == WorkflowStatus.SubsequentDraft)
-        {          
+        {
             <p class="govuk-body">You have unpublished changes.</p>
             <p class="govuk-body">Last saved:<br />@courseEnrichment.DraftLastUpdatedUtc.DateString()</p>
             <hr class="related__section-break">
         }
 
         @if (courseEnrichment.LastPublishedUtc.HasValue)
-        {          
+        {
             <p class="govuk-body">Last published:<br />@courseEnrichment.LastPublishedUtc.DateString()</p>
             <hr class="related__section-break">
         }
@@ -174,16 +174,16 @@
 
             if(Model.AllowPreview)
             {
-              <h4 class="govuk-heading-m">Preview</h4> 
+              <h4 class="govuk-heading-m">Preview</h4>
               <p class="govuk-body">See how this course looks with your changes.</p>
               <p class="govuk-body">Preview your course to check for mistakes before publishing.</p>
               <p class="govuk-body"><a asp-action="Preview">Preview course</a></p>
 
               <hr class="related__section-break">
-            }       
+            }
 
             if(Model.AllowPublish)
-            { 
+            {
               <h4 class="govuk-heading-m">Publish</h4>
               <p class="govuk-body">Publish your changes for applicants to see them.</p>
 
@@ -192,7 +192,7 @@
               </form>
 
               <hr class="related__section-break">
-            }            
+            }
         }
 
         <h4 class="govuk-heading-m">View on website</h4>
