@@ -10,13 +10,13 @@
 
 <a href="@Url.Action("Courses", "Organisation", new {ucasCode = Model.Course.UcasCode})" class="govuk-back-link">Back</a>
 
-@Html.Partial("~/Views/Shared/_Alerts.cshtml")
-
 <main role="main" class="govuk-main-wrapper" id="main-content">
   <h1 class="govuk-heading-xl">
     <span class="govuk-caption-xl">@Model.Course.Type</span>
     @Model.Course.Name (@Model.Course.ProgrammeCode)
   </h1>
+
+  @Html.Partial("~/Views/Shared/_Alerts.cshtml")
 
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">

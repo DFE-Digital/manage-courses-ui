@@ -8,7 +8,9 @@
     position: relative;
 
     &:first-of-type {
+      border: none;
       margin-top: 0;
+      padding-top: 0;
     }
   }
 
