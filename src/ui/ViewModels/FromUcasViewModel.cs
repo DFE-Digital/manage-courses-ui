@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace GovUk.Education.ManageCourses.Ui.ViewModels
 {
-    public class FromUcasViewModel
+    public class VariantViewModel
     {
         public bool AllowPreview { get; set; }
         public bool AllowPublish { get;  set; }

@@ -223,7 +223,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             }
         }
 
-        private FromUcasViewModel LoadViewModel(UserOrganisation org, Course course, bool multipleOrganisations, UcasCourseEnrichmentGetModel ucasCourseEnrichmentGetModel, CourseRouteDataViewModel routeData)
+        private VariantViewModel LoadViewModel(UserOrganisation org, Course course, bool multipleOrganisations, UcasCourseEnrichmentGetModel ucasCourseEnrichmentGetModel, CourseRouteDataViewModel routeData)
         {
             var courseVariant =
                 new CourseVariantViewModel
@@ -265,7 +265,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
                 };
 
             var courseEnrichmentViewModel = GetCourseEnrichmentViewModel(ucasCourseEnrichmentGetModel);
-            var viewModel = new FromUcasViewModel
+            var viewModel = new VariantViewModel
             {
                 OrganisationName = org.OrganisationName,
                 OrganisationId = org.OrganisationId,
@@ -275,7 +275,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
                 Course = courseVariant,
                 CourseEnrichment = courseEnrichmentViewModel,
                 RouteData = routeData,
-                CurrentUrl = searchAndCompareUrlService.GetCoursePageUri(org.UcasCode, courseVariant.ProgrammeCode),
+                LiveSearchUrl = searchAndCompareUrlService.GetCoursePageUri(org.UcasCode, courseVariant.ProgrammeCode),
                 AllowPreview = featureFlags.ShowCoursePreview,
                 AllowPublish = featureFlags.ShowCoursePublish
             };

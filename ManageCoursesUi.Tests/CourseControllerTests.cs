@@ -57,7 +57,7 @@ namespace ManageCoursesUi.Tests
             var viewResult = result as ViewResult;
             Assert.IsNotNull(viewResult);
 
-            var model = viewResult.Model as FromUcasViewModel;
+            var model = viewResult.Model as VariantViewModel;
 
             Assert.IsNotNull(model);
             Assert.AreEqual(TestHelper.TargetedCourseTitle, model.CourseTitle);
