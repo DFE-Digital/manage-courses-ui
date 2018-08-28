@@ -498,6 +498,117 @@ namespace ManageCoursesUi.Tests
             manageApi.Verify(x => x.SaveEnrichmentCourse(TestHelper.InstitutionCode, TestHelper.TargetedUcasCode, It.Is<CourseEnrichmentModel>(c => Check(c, viewModel))), Times.Once());
         }
 
+
+        [Test]
+        public async Task Fees()
+        {
+            var manageApi = new Mock<IManageApi>();
+
+            var enrichmentModel = new CourseEnrichmentModel {
+                FeeUkEu = 123.45m, FeeInternational = 543.21m, FeeDetails = "FeeDetails", CourseLength = "CourseLength", FinancialSupport = "FinancialSupport"
+            };
+            var ucasCourseEnrichmentGetModel = new UcasCourseEnrichmentGetModel { EnrichmentModel = enrichmentModel };
+
+            manageApi.Setup(x => x.GetEnrichmentCourse(TestHelper.InstitutionCode, TestHelper.TargetedUcasCode)).ReturnsAsync(ucasCourseEnrichmentGetModel);
+
+            var testCourse = new Course() { Name = "Name", CourseCode = "CourseCode" };
+
+            manageApi.Setup(x => x.GetCourseByUcasCode(TestHelper.InstitutionCode, TestHelper.TargetedUcasCode)).ReturnsAsync(testCourse);
+
+            var controller = new CourseController(manageApi.Object);
+            var result = await controller.Fees(TestHelper.InstitutionCode, TestHelper.AccreditedProviderId, TestHelper.TargetedUcasCode);
+
+            var viewResult = result as ViewResult;
+            Assert.IsNotNull(viewResult);
+
+            var model = viewResult.Model as CourseFeesEnrichmentViewModel;
+
+            Assert.IsNotNull(model);
+
+            Assert.AreEqual(TestHelper.InstitutionCode, model.RouteData.InstCode);
+            Assert.AreEqual(TestHelper.AccreditedProviderId, model.RouteData.AccreditingProviderId);
+            Assert.AreEqual(TestHelper.TargetedUcasCode, model.RouteData.UcasCode);
+
+            Assert.AreEqual(enrichmentModel.CourseLength, model.CourseLength);
+            Assert.AreEqual(enrichmentModel.FeeDetails, model.FeeDetails);
+            Assert.AreEqual(enrichmentModel.FeeInternational.ToString(), model.FeeInternational);
+            Assert.AreEqual(enrichmentModel.FeeUkEu.ToString(), model.FeeUkEu);
+            Assert.AreEqual(enrichmentModel.FinancialSupport, model.FinancialSupport);
+        }
+
+        [Test]
+        public async Task FeesPost_Invalid()
+        {
+            var manageApi = new Mock<IManageApi>();
+
+            var viewModel = new CourseFeesEnrichmentViewModel { FeeUkEu = "123.45", FeeInternational = "543.21", FeeDetails = "FeeDetails", CourseLength = "CourseLength", FinancialSupport = "FinancialSupport" };
+
+            var testCourse = new Course() { Name = "Name", CourseCode = "CourseCode" };
+
+            manageApi.Setup(x => x.GetCourseByUcasCode(TestHelper.InstitutionCode, TestHelper.TargetedUcasCode)).ReturnsAsync(testCourse);
+
+            var controller = new CourseController(manageApi.Object);
+
+            controller.ModelState.AddModelError("you", "failed");
+
+            var result = await controller.FeesPost(TestHelper.InstitutionCode, TestHelper.AccreditedProviderId, TestHelper.TargetedUcasCode, viewModel);
+
+            var viewResult = result as ViewResult;
+            Assert.IsNotNull(viewResult);
+            Assert.AreEqual("Fees", viewResult.ViewName);
+
+            var model = viewResult.Model as CourseFeesEnrichmentViewModel;
+
+            Assert.IsNotNull(model);
+
+            Assert.AreEqual(TestHelper.InstitutionCode, model.RouteData.InstCode);
+            Assert.AreEqual(TestHelper.AccreditedProviderId, model.RouteData.AccreditingProviderId);
+            Assert.AreEqual(TestHelper.TargetedUcasCode, model.RouteData.UcasCode);
+
+            Assert.AreEqual(viewModel.CourseLength, model.CourseLength);
+            Assert.AreEqual(viewModel.FeeDetails, model.FeeDetails);
+            Assert.AreEqual(viewModel.FeeInternational, model.FeeInternational);
+            Assert.AreEqual(viewModel.FeeUkEu, model.FeeUkEu);
+            Assert.AreEqual(viewModel.FinancialSupport, model.FinancialSupport);
+        }
+
+        [Test]
+        public async Task FeesPost()
+        {
+            var manageApi = new Mock<IManageApi>();
+
+            var viewModel = new CourseFeesEnrichmentViewModel { FeeUkEu = "123.45", FeeInternational = "543.21", FeeDetails = "FeeDetails", CourseLength = "CourseLength", FinancialSupport = "FinancialSupport" };
+
+            var enrichmentModel = new CourseEnrichmentModel { FeeUkEu = 123.45m, FeeInternational = 543.21m, FeeDetails = "FeeDetails", CourseLength = "CourseLength", FinancialSupport = "FinancialSupport" };
+
+            var ucasCourseEnrichmentGetModel = new UcasCourseEnrichmentGetModel { EnrichmentModel = enrichmentModel };
+
+            manageApi.Setup(x => x.GetEnrichmentCourse(TestHelper.InstitutionCode, TestHelper.TargetedUcasCode)).ReturnsAsync(ucasCourseEnrichmentGetModel);
+
+            var tempDataMock = new Mock<ITempDataDictionary>();
+
+            var controller = new CourseController(manageApi.Object);
+            controller.TempData = tempDataMock.Object;
+            var result = await controller.FeesPost(TestHelper.InstitutionCode, TestHelper.AccreditedProviderId, TestHelper.TargetedUcasCode, viewModel);
+
+            var redirectToActionResult = result as RedirectToActionResult;
+            Assert.IsNotNull(redirectToActionResult);
+            Assert.AreEqual("Variants", redirectToActionResult.ActionName);
+
+            var tempData = controller.TempData;
+
+            tempDataMock.Verify(x => x.Add("MessageType", "success"), Times.Once);
+            tempDataMock.Verify(x => x.Add("MessageTitle", "Your changes have been saved"), Times.Once);
+
+            var routeValues = redirectToActionResult.RouteValues;
+
+            Assert.AreEqual(TestHelper.InstitutionCode, routeValues["instCode"]);
+            Assert.AreEqual(TestHelper.AccreditedProviderId, routeValues["accreditingProviderId"]);
+            Assert.AreEqual(TestHelper.TargetedUcasCode, routeValues["ucasCode"]);
+
+            manageApi.Verify(x => x.SaveEnrichmentCourse(TestHelper.InstitutionCode, TestHelper.TargetedUcasCode, It.Is<CourseEnrichmentModel>(c => Check(c, viewModel))), Times.Once());
+        }
+
         private bool Check(CourseEnrichmentModel model, ICourseEnrichmentViewModel viewModel)
         {
             var result = false;
@@ -520,6 +631,17 @@ namespace ManageCoursesUi.Tests
                     model.OtherRequirements == courseRequirementsEnrichmentViewModel.OtherRequirements;
             }
 
+            var courseFeesEnrichmentViewModel = viewModel as CourseFeesEnrichmentViewModel;
+
+            if (courseFeesEnrichmentViewModel != null)
+            {
+                result =
+                    model.FeeDetails == courseFeesEnrichmentViewModel.FeeDetails &&
+                    model.FeeInternational.ToString() == courseFeesEnrichmentViewModel.FeeInternational &&
+                    model.FeeUkEu.ToString() == courseFeesEnrichmentViewModel.FeeUkEu && 
+                    model.FinancialSupport == courseFeesEnrichmentViewModel.FinancialSupport &&
+                    model.CourseLength== courseFeesEnrichmentViewModel.CourseLength;
+            }
             return result;
         }
         
