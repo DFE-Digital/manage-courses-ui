@@ -12,7 +12,7 @@
     @if (body != null)
     {
       <div class="govuk-@type-summary__body">
-        <p clas="govuk-body">@body</p>
+        <p clas="govuk-body">@Html.Raw(body)</p>
       </div>
     }
   </div>
