@@ -247,13 +247,15 @@ namespace ManageCoursesUi.Tests
 
 
             var objectValidator = new Mock<IObjectModelValidator>();
-            CourseEnrichmentModel objectToVerify = null;
+            CourseEnrichmentViewModel objectToVerify = null;
 
             objectValidator.Setup(o => o.Validate(It.IsAny<ActionContext>(), 
                                               It.IsAny<ValidationStateDictionary>(), 
                                               It.IsAny<string>(), 
                                               It.IsAny<Object>()))
-                            .Callback<ActionContext, ValidationStateDictionary, string, Object>((a,b,c,d) => objectToVerify = d as CourseEnrichmentModel)
+                            .Callback<ActionContext, ValidationStateDictionary, string, Object>((a,b,c,d) => {
+                                objectToVerify = d as CourseEnrichmentViewModel;
+                            })
                             .Verifiable();
             
             var courseController = new CourseController(mockApi.Object, new Mock<ISearchAndCompareUrlService>().Object, new MockFeatureFlags());
