@@ -242,6 +242,8 @@ namespace GovUk.Education.ManageCourses.Ui
 
             app.UseForwardedHeaders(forwardedHeadersOptions);
 
+            app.UseTemporaryRedirectForSpuriousAuthCbRequests();
+            
             app.UseAuthentication();
 
             var config = serviceProvider.GetService<ManageCoursesConfig>();
