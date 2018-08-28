@@ -9,7 +9,9 @@ using GovUk.Education.ManageCourses.Ui.Services;
 using GovUk.Education.ManageCourses.Ui.ViewModels;
 using ManageCoursesUi.Tests.Enums;
 using ManageCoursesUi.Tests.Helpers;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Moq;
 using NUnit.Framework;
@@ -198,6 +200,95 @@ namespace ManageCoursesUi.Tests
             var controller = new CourseController(manageApi.Object, new SearchAndCompareUrlService("http://www.example.com"), new MockFeatureFlags());
 
             Assert.ThrowsAsync<Exception>(async() => await controller.Variants(TestHelper.InstitutionCode, TestHelper.AccreditedProviderId, TestHelper.TargetedUcasCode));
+        }
+
+        [Test]
+        public void Preview()
+        {
+            var courseController = new CourseController(new Mock<IManageApi>().Object, new Mock<ISearchAndCompareUrlService>().Object, new MockFeatureFlags());
+            var viewModel = (courseController.Preview("abc", "def", "ghi") as ViewResult)?.Model as CourseReferenceViewModel;
+
+            Assert.NotNull(viewModel);
+            Assert.AreEqual("abc", viewModel.InstCode);
+            Assert.AreEqual("ghi", viewModel.CourseCode);
+        }
+
+        [Test]
+        public void Preview_RespectsFeatureFlag()
+        {
+            var flags = new Mock<IFeatureFlags>();
+            flags.Setup(x => x.ShowCoursePreview).Returns(false).Verifiable();
+
+            var courseController = new CourseController(new Mock<IManageApi>().Object, new Mock<ISearchAndCompareUrlService>().Object, flags.Object);
+            var redirectResult = courseController.Preview("abc", "def", "ghi") as RedirectToActionResult;
+
+            flags.VerifyAll();
+            Assert.NotNull(redirectResult);
+            Assert.AreEqual("Variants", redirectResult.ActionName);
+            Assert.AreEqual("abc", redirectResult.RouteValues["instCode"]);
+            Assert.AreEqual("def", redirectResult.RouteValues["accreditingProviderId"]);
+            Assert.AreEqual("ghi", redirectResult.RouteValues["ucasCode"]);
+        }
+
+        [Test]
+        public void VariantsPublish()
+        {
+            var enrichmentModel = new CourseEnrichmentModel { 
+                AboutCourse = "AboutCourse", 
+                InterviewProcess = "InterviewProcess", 
+                HowSchoolPlacementsWork = "HowSchoolPlacementsWork" 
+            };
+
+            var ucasCourseEnrichmentGetModel = new UcasCourseEnrichmentGetModel { EnrichmentModel = enrichmentModel };
+
+            var mockApi = new Mock<IManageApi>();
+            mockApi.Setup(x => x.GetEnrichmentCourse(TestHelper.InstitutionCode, TestHelper.TargetedUcasCode)).ReturnsAsync(ucasCourseEnrichmentGetModel).Verifiable();
+            mockApi.Setup(x => x.PublishEnrichmentCourse(TestHelper.InstitutionCode, TestHelper.TargetedUcasCode)).ReturnsAsync(true).Verifiable();
+
+
+            var objectValidator = new Mock<IObjectModelValidator>();
+            CourseEnrichmentModel objectToVerify = null;
+
+            objectValidator.Setup(o => o.Validate(It.IsAny<ActionContext>(), 
+                                              It.IsAny<ValidationStateDictionary>(), 
+                                              It.IsAny<string>(), 
+                                              It.IsAny<Object>()))
+                            .Callback<ActionContext, ValidationStateDictionary, string, Object>((a,b,c,d) => objectToVerify = d as CourseEnrichmentModel)
+                            .Verifiable();
+            
+            var courseController = new CourseController(mockApi.Object, new Mock<ISearchAndCompareUrlService>().Object, new MockFeatureFlags());
+            courseController.ObjectValidator = objectValidator.Object;
+            courseController.TempData = new TempDataDictionary(new DefaultHttpContext(), Mock.Of<ITempDataProvider>());
+            
+            var res = courseController.VariantsPublish(TestHelper.InstitutionCode, "def", TestHelper.TargetedUcasCode).Result;
+
+            mockApi.VerifyAll();
+            objectValidator.VerifyAll();
+
+            Assert.AreEqual("success", courseController.TempData["MessageType"]);
+            Assert.AreEqual("Your course has been published", courseController.TempData["MessageTitle"]);
+
+            Assert.IsNotNull(objectToVerify);
+            Assert.AreEqual("AboutCourse", objectToVerify.AboutCourse);
+            Assert.AreEqual("InterviewProcess", objectToVerify.InterviewProcess);
+            Assert.AreEqual("HowSchoolPlacementsWork", objectToVerify.HowSchoolPlacementsWork);
+        }
+
+        [Test]
+        public void VariantsPublish_RespectsFeatureFlag()
+        {
+            var flags = new Mock<IFeatureFlags>();
+            flags.Setup(x => x.ShowCoursePublish).Returns(false).Verifiable();
+
+            var courseController = new CourseController(new Mock<IManageApi>().Object, new Mock<ISearchAndCompareUrlService>().Object, flags.Object);
+            var redirectResult = courseController.VariantsPublish("abc", "def", "ghi").Result as RedirectToActionResult;
+
+            flags.VerifyAll();
+            Assert.NotNull(redirectResult);
+            Assert.AreEqual("Variants", redirectResult.ActionName);
+            Assert.AreEqual("abc", redirectResult.RouteValues["instCode"]);
+            Assert.AreEqual("def", redirectResult.RouteValues["accreditingProviderId"]);
+            Assert.AreEqual("ghi", redirectResult.RouteValues["ucasCode"]);
         }
 
         [Test]

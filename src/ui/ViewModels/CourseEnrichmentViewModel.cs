@@ -15,7 +15,7 @@ namespace GovUk.Education.ManageCourses.Ui.ViewModels
         public string InterviewProcess { get; set; }
 
         [RegularExpression(@"^\s*(\S+\s+|\S+$){0,350}$", ErrorMessage = "Reduce the word count for details about school placements")]
-        [Required(ErrorMessage = "Give details about scool placements")]
+        [Required(ErrorMessage = "Give details about school placements")]
         public string HowSchoolPlacementsWork { get; set; }
 
         [RegularExpression(@"^\s*(\S+\s+|\S+$){0,100}$", ErrorMessage = "Reduce the word count for details about the required qualifications")]

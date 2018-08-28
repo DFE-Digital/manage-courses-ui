@@ -49,7 +49,7 @@ namespace GovUk.Education.ManageCourses.Ui.Services
                     Name = routeName,
                     IsSalaried = isSalaried
                 }, 
-                IncludesPgce = string.IsNullOrWhiteSpace(ucasCourseData.ProfpostFlag) ? IncludesPgce.Yes : IncludesPgce.No,
+                IncludesPgce = string.IsNullOrWhiteSpace(ucasCourseData.ProfpostFlag) ? IncludesPgce.No : IncludesPgce.Yes,
                 Campuses = new Collection<SearchAndCompare.Domain.Models.Campus>(ucasCourseData.Schools.Select(school => 
                     new SearchAndCompare.Domain.Models.Campus
                     {

@@ -37,6 +37,9 @@ Go to `https://localhost:44364` in your browser
 
 ## Run
 
+## Dotnet SDK
+You will need to have Version 2.1.302 of the dotnet SDK installed. This is due to a bug in ASP.NET MVC Core which is using inconsistent package versions. [The bug](https://github.com/aspnet/Mvc/issues/7969) has a fix promised in .NET Core 2.1.3   
+
 ### App settings variables
 You will need to set the app settings (prefered to be store as `user-secrets`):
 
