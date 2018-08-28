@@ -17,6 +17,7 @@ namespace GovUk.Education.ManageCourses.Ui.ViewModels
         public CourseEnrichmentViewModel CourseEnrichment { get; set; }
         public CourseRouteDataViewModel RouteData { get; set; }
         public Uri LiveSearchUrl { get; set; }
+        public bool IsSalary { get; set; }
     }
 
     public class CourseVariantViewModel

@@ -18,6 +18,14 @@ namespace GovUk.Education.ManageCourses.Ui.ViewModels
         [Required(ErrorMessage = "Give details about school placements")]
         public string HowSchoolPlacementsWork { get; set; }
 
+        // course length and fees
+        public string CourseLength { get; set; }
+        public decimal FeeUkEu { get; set; }
+        public decimal FeeInternational { get; set; }
+        public string FeeDetails { get; set; }
+        public string FinancialSupport { get; set; }
+
+        // course requirements
         [RegularExpression(@"^\s*(\S+\s+|\S+$){0,100}$", ErrorMessage = "Reduce the word count for details about the required qualifications")]
         [Required(ErrorMessage = "Give details about the required qualifications")]
         public string Qualifications { get; set; }
