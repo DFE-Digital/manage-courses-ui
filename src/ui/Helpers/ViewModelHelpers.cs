@@ -29,7 +29,7 @@ namespace GovUk.Education.ManageCourses.Ui.Helpers
             {
                 result = "Running";
             }
-            if (course.Schools.Any(s => s.Status.ToLower() == "d") || course.Schools.Any(s => s.Status.ToLower() == "s") && string.IsNullOrEmpty(result))
+            if ((course.Schools.Any(s => s.Status.ToLower() == "d") || course.Schools.Any(s => s.Status.ToLower() == "s")) && string.IsNullOrEmpty(result))
             {
                 result = "Not running";
             }

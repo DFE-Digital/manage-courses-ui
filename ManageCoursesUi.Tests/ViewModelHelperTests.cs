@@ -45,7 +45,7 @@ namespace ManageCoursesUi.Tests
         }
 
         [Test]
-        [TestCase("N","N","N","N", "New – not yet running")]
+        [TestCase("N", "N", "N", "N", "New – not yet running")]
         [TestCase("N", "N", "S", "S", "New – not yet running")]
         [TestCase("N", "S", "S", "S", "New – not yet running")]
         [TestCase("S", "N", "S", "S", "New – not yet running")]
@@ -67,6 +67,10 @@ namespace ManageCoursesUi.Tests
         [TestCase("n", "n", "r", "n", "Running")]
         [TestCase("n", "n", "n", "r", "Running")]
         [TestCase("R", "", "", "N", "Running")]
+        [TestCase("R", "S", "D", "D", "Running")]
+        [TestCase("R", "S", "D", "N", "Running")]
+        [TestCase("r", "s", "d", "d", "Running")]
+        [TestCase("r", "s", "d", "n", "Running")]
         [TestCase("S", "S", "S", "S", "Not running")]
         [TestCase("D", "S", "S", "S", "Not running")]
         [TestCase("S", "D", "S", "S", "Not running")]
