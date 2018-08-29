@@ -1,0 +1,17 @@
+.govuk-tag {
+  margin-bottom: govuk-spacing(3);
+}
+
+.govuk-tag--blank {
+  background: govuk-colour("white");
+  color: govuk-colour("grey-1");
+  border: 2px solid govuk-colour("grey-2");
+}
+
+.govuk-tag--draft {
+  background: govuk-colour("orange");
+}
+
+.govuk-tag--published {
+  background: govuk-colour("blue");
+}

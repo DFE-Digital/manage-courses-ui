@@ -5,8 +5,11 @@ $govuk-global-styles: true;
 
 @import "node_modules/govuk-frontend/all";
 @import "components/cookie-banner";
+@import "components/preview-banner";
+@import "components/missing-section";
 @import "components/related";
 @import "components/character-count";
+@import "components/publish-tags";
 @import "patterns/course-parts";
 @import "patterns/success-summary";
 @import "patterns/notice-summary";

@@ -1,5 +1,5 @@
 <!-- 
-    Save a copy of this file as dev.targets in the UI Project folder if you want to use local builds of the API Client Project
+    Save a copy of this file as dev-mc-api.targets in the UI Project folder if you want to use local builds of the API Client Project
     Update the path to the .csproj file to match your local environment, and don't commit it :)
 -->
 <Project>
