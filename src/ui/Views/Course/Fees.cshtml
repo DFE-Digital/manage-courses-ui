@@ -36,7 +36,7 @@
                   var optionChecked = Model.CourseLength.HasValue && option.Key == Model.CourseLength.Value;
                   <div class="govuk-radios__item">
                     <input type="radio" id="@keyString" class="govuk-radios__input" asp-for="@Model.CourseLength" check="@optionChecked" value="@option.Key" />
-                    <label for="@keyString" class="govuk-label govuk-radios__label govuk-!-font-weight-bold">@option.Value</label>
+                    <label for="@keyString" class="govuk-label govuk-radios__label">@option.Value</label>
                   </div>
                 }
               }
@@ -46,7 +46,7 @@
         <hr class="govuk-section-break govuk-section-break--l">
         <h2 class="govuk-heading-l">Course fees</h2>
         <div id="CourseFees-wrapper" class="govuk-form-group @(fee_uk_eu ? " govuk-form-group--error " : " ")">
-          <label asp-for="FeeUkEu" class="govuk-label govuk-!-font-weight-bold">Fee for UK and EU students</label>
+          <label asp-for="FeeUkEu" class="govuk-label">Fee for UK and EU students</label>
           @if (fee_uk_eu) {
             <span asp-validation-for="FeeUkEu" class="govuk-error-message"></span>
           }
@@ -58,7 +58,7 @@
           </div>
         </div>
          <div id="InternationalCourseFees-wrapper" class="govuk-form-group @(fee_iternational ? " govuk-form-group--error " : " ")">
-          <label asp-for="FeeInternational" class="govuk-label govuk-!-font-weight-bold">Fee for international students (optional)</label>
+          <label asp-for="FeeInternational" class="govuk-label">Fee for international students (optional)</label>
           @if (fee_iternational) {
             <span asp-validation-for="FeeInternational" class="govuk-error-message"></span>
           }
@@ -85,6 +85,7 @@
             <textarea asp-for="FeeDetails" class="govuk-textarea js-character-count" rows="15" data-module="character-count"></textarea>
           </div>
         </div>
+        <hr class="govuk-section-break govuk-section-break--l">
         <h2 class="govuk-heading-l">Financial support you offer</h2>
         <p class="govuk-body">If applicable, say more about the financial support you offer for this course. For example, any bursaries available.</p>
         <p class="govuk-body">You don’t need to add details of any DfE bursaries and subject scholarships here. These will be published automatically to your course page.</p>
@@ -104,6 +105,11 @@
           <a href="@Url.Action("Variants", "Course", Model.RouteData)" class "govuk-link">Cancel changes</a>
         </p>
       </form>
+    </div>
+    <div class="govuk-grid-column-one-third">
+      <aside class="related">
+        @Html.Partial("FormattingAdvice")
+      </aside>
     </div>
   </div>
 </main>

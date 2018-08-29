@@ -8,8 +8,8 @@ namespace GovUk.Education.ManageCourses.Ui.Helpers
     {
         public static readonly Dictionary<CourseLength, string>  Lookup = new Dictionary<CourseLength, string>()
                 {
-                  { CourseLength.OneYear, "One year" },
-                  { CourseLength.TwoYears, "Up to two years" },
+                  { CourseLength.OneYear, "1 year" },
+                  { CourseLength.TwoYears, "Up to 2 years" },
                   { CourseLength.Other, "Other" },
                 };
 
