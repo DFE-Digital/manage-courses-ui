@@ -8,7 +8,7 @@ using GovUk.Education.ManageCourses.Ui.ViewModels;
 using GovUk.Education.SearchAndCompare.Domain.Models;
 using GovUk.Education.SearchAndCompare.Domain.Models.Enums;
 using GovUk.Education.SearchAndCompare.Domain.Models.Joins;
-using GovUk.Education.SearchAndCompare.UI.Shared.ViewComponents;
+using GovUk.Education.SearchAndCompare.UI.Shared.ViewModels;
 
 namespace GovUk.Education.ManageCourses.Ui.Services
 {
