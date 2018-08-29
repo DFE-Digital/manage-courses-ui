@@ -13,21 +13,48 @@ namespace GovUk.Education.ManageCourses.Ui.Helpers
         {
             var result = string.IsNullOrWhiteSpace(course.ProfpostFlag) ? "QTS " : "PGCE with QTS ";
 
-            result += course.StudyMode.Equals("F", StringComparison.InvariantCultureIgnoreCase) ? "full time" : "part time";
-            result += course.ProgramType.Equals("SS", StringComparison.InvariantCultureIgnoreCase) ? " with salary" : "";
+            result += course.StudyMode.ToLower().Equals("f", StringComparison.InvariantCultureIgnoreCase) ? "full time" : "part time";
+            result += course.ProgramType.ToLower().Equals("ss", StringComparison.InvariantCultureIgnoreCase) ? " with salary" : "";
 
             return result;
         }
-        public static string GetCourseVariantType(this CourseVariant courseVariant)
+        public static string GetCourseStatus(this Course course)
         {
-            var result = string.IsNullOrWhiteSpace(courseVariant.ProfPostFlag) ? "QTS " : "PGCE with QTS ";
-
-            result += courseVariant.StudyMode.Equals("F", StringComparison.InvariantCultureIgnoreCase) ? "full time" : "part time";
-            result += courseVariant.ProgramType.Equals("SS", StringComparison.InvariantCultureIgnoreCase) ? " with salary" : "";
-
+            var result = "";
+            if (course.Schools.Any(s => s.Status.ToLower() == "r"))
+            {
+                result = "Running";
+            }
+            else if (course.Schools.Any(s => s.Status.ToLower() == "n"))
+            {
+                result = "New – not yet running";
+            }
+            else if (course.Schools.Any(s => s.Status.ToLower() == "d") || course.Schools.Any(s => s.Status.ToLower() == "s"))
+            {
+                result = "Not running";
+            }
             return result;
         }
-
+        public static string GetSchoolStatus(this SchoolViewModel school)
+        {
+            var result = "";
+            switch (school.Status.ToLower())
+            {
+                case "d":
+                    result = "Discontinued";
+                    break;
+                case "r":
+                    result = "Running";
+                    break;
+                case "n":
+                    result = "New";
+                    break;
+                case "s":
+                    result = "Suspended";
+                    break;
+            }
+            return result;
+        }
         public static string GetRoute(this CourseVariantViewModel viewModel)
         {
             var result = "";
