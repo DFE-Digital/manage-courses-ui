@@ -206,9 +206,12 @@
             }
         }
 
-        <h4 class="govuk-heading-m">View on website</h4>
-        <p class="govuk-body">See how this course currently looks to applicants:</p>
-        <p class="govuk-body"><a href="@Model.LiveSearchUrl">View on website</a></p>
+        @if(Model.AllowLiveView)
+        {
+          <h4 class="govuk-heading-m">View on website</h4>
+          <p class="govuk-body">See how this course currently looks to applicants:</p>
+          <p class="govuk-body"><a href="@Model.LiveSearchUrl">View on website</a></p>
+        }
       </aside>
     </div>
   </div>

@@ -288,7 +288,8 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
                 RouteData = routeData,
                 LiveSearchUrl = searchAndCompareUrlService.GetCoursePageUri(org.UcasCode, courseVariant.ProgrammeCode),
                 AllowPreview = featureFlags.ShowCoursePreview,
-                AllowPublish = featureFlags.ShowCoursePublish
+                AllowPublish = featureFlags.ShowCoursePublish,
+                AllowLiveView = featureFlags.ShowCourseLiveView
             };
             return viewModel;
         }
