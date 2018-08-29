@@ -4,6 +4,7 @@ using System.IdentityModel.Tokens.Jwt;
 using GovUk.Education.ManageCourses.ApiClient;
 using GovUk.Education.ManageCourses.Ui.ActionFilters;
 using GovUk.Education.ManageCourses.Ui.Services;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Builder;
@@ -161,6 +162,24 @@ namespace GovUk.Education.ManageCourses.Ui
                 options.DisableTelemetry = true;
                 options.Events = new OpenIdConnectEvents
                 {
+                    
+                    OnMessageReceived = context =>
+                    {
+                        var isSpuriousAuthCbRequest = 
+                            context.Request.Path == new Microsoft.AspNetCore.Http.PathString("/auth/cb")
+                            && context.Request.Method == "GET"
+                            && !context.Request.Query.ContainsKey("code");
+
+                        if (isSpuriousAuthCbRequest)
+                        {                            
+                            context.HandleResponse();
+                            context.Response.StatusCode = 302;
+                            context.Response.Headers["Location"] = "/";                                                        
+                        }
+                        
+                        return Task.CompletedTask;
+                    },
+
                     OnRedirectToIdentityProvider = context =>
                     {
                         context.ProtocolMessage.Prompt = "consent";
@@ -242,7 +261,7 @@ namespace GovUk.Education.ManageCourses.Ui
 
             app.UseForwardedHeaders(forwardedHeadersOptions);
 
-            app.UseTemporaryRedirectForSpuriousAuthCbRequests();
+            //app.UseTemporaryRedirectForSpuriousAuthCbRequests();
             
             app.UseAuthentication();
 
