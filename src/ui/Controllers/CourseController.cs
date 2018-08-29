@@ -49,6 +49,16 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
 
             var viewModel = LoadViewModel(org, course, multipleOrganisations, ucasCourseEnrichmentGetModel, routeData);
 
+            if (viewModel.Course.Status.Equals("Running", StringComparison.InvariantCultureIgnoreCase))
+                return View(viewModel);
+             //setup the alert message box for non running courses
+            this.TempData.Add("MessageType", "notice");
+            this.TempData.Add("MessageTitle",
+                viewModel.Course.Status.Equals("Not running", StringComparison.InvariantCultureIgnoreCase)
+                    ? "This course is not running."
+                    : "This course is new and not yet running.");
+            this.TempData.Add("MessageBody", "It won’t appear online. To publish it you need to set the status of at least one training location to “running” in <a href='https://update.ucas.co.uk/cgi-bin/hsrun.hse/NetUpdate/netupdate2/netupdate2.hjx;start=netupdate2.HsLoginPage.run'>UCAS web-link</a>.");
+
             return View("Variants", viewModel);
         }
 
@@ -60,7 +70,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             {
                 return RedirectToAction("Variants", new { instCode, accreditingProviderId, ucasCode });
             }
-            var enrichment = await _manageApi.GetEnrichmentCourse(instCode, ucasCode);  
+            var enrichment = await _manageApi.GetEnrichmentCourse(instCode, ucasCode);
             var enrichmentModel = GetCourseEnrichmentViewModel(enrichment);
 
             ModelState.Clear();
@@ -69,22 +79,22 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             if (!ModelState.IsValid)
             {
                 return await Variants(instCode, accreditingProviderId, ucasCode);
-            }               
+            }
 
             var result = await _manageApi.PublishEnrichmentCourse(instCode, ucasCode);
-                
-            if (result) 
+
+            if (result)
             {
                 SetSucessMessage("Your course has been published");
             }
 
             return RedirectToAction("Variants", new { instCode, accreditingProviderId, ucasCode });
         }
-        
+
         [Route("{instCode}/course/{accreditingProviderId=self}/{ucasCode}/preview")]
         public IActionResult Preview(string instCode, string accreditingProviderId, string ucasCode)
         {
-            if (!featureFlags.ShowCoursePreview) 
+            if (!featureFlags.ShowCoursePreview)
             {
                 return RedirectToAction("Variants", new { instCode, accreditingProviderId, ucasCode });
             }
@@ -239,6 +249,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
                         Qualifications = course.ProfpostFlag,
                         StudyMode = course.StudyMode,
                         Subjects = course.Subjects,
+                        Status = course.GetCourseStatus(),
                         Schools = course.Schools.Select(campus =>
                         {
                             var addressLines = (new List<string>()
