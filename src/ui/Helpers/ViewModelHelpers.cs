@@ -11,20 +11,11 @@ namespace GovUk.Education.ManageCourses.Ui.Helpers
     {
         public static string GetCourseVariantType(this Course course)
         {
-            var result = string.IsNullOrWhiteSpace(course.ProfpostFlag) ? "QTS " : "PGCE with QTS ";
+            var result = string.IsNullOrWhiteSpace(course.ProfpostFlag) ? "QTS, " : "PGCE with QTS, ";
 
             result += GetStudyModeText(course.StudyMode);
 
             result += course.ProgramType.Equals("SS", StringComparison.InvariantCultureIgnoreCase) ? " with salary" : "";
-
-            return result;
-        }
-        public static string GetCourseVariantType(this CourseVariant courseVariant)
-        {
-            var result = string.IsNullOrWhiteSpace(courseVariant.ProfPostFlag) ? "QTS " : "PGCE with QTS ";
-
-            result += courseVariant.StudyMode.Equals("F", StringComparison.InvariantCultureIgnoreCase) ? "full time" : "part time";
-            result += courseVariant.ProgramType.Equals("SS", StringComparison.InvariantCultureIgnoreCase) ? " with salary" : "";
 
             return result;
         }
@@ -74,7 +65,7 @@ namespace GovUk.Education.ManageCourses.Ui.Helpers
 
         public static string GetStudyMode(this CourseVariantViewModel viewModel)
         {
-            return GetStudyModeText(viewModel.StudyMode);
+            return UppercaseFirst(GetStudyModeText(viewModel.StudyMode));
         }
 
         public static string GetAgeRange(this CourseVariantViewModel viewModel)
@@ -163,10 +154,16 @@ namespace GovUk.Education.ManageCourses.Ui.Helpers
             }
             else if (studyMode.Equals("B", StringComparison.InvariantCultureIgnoreCase))
             {
-                returnString = "Both full time and part time";
+                returnString = "full time or part time";
             }
 
             return returnString;
+        }
+        private static string UppercaseFirst(string str)
+        {
+            if (string.IsNullOrEmpty(str))
+                return string.Empty;
+            return char.ToUpper(str[0]) + str.Substring(1).ToLower();
         }
     }
 }
