@@ -14,6 +14,7 @@ $govuk-global-styles: true;
 @import "patterns/success-summary";
 @import "patterns/notice-summary";
 @import "patterns/definition-list";
+@import "patterns/currency-input";
 
 // GOVU.UK Tabs without border around entire component
 .govuk-tabs__panel--without-border {

@@ -7,6 +7,7 @@ using GovUk.Education.ManageCourses.Ui;
 using GovUk.Education.ManageCourses.Ui.Controllers;
 using GovUk.Education.ManageCourses.Ui.Services;
 using GovUk.Education.ManageCourses.Ui.ViewModels;
+using GovUk.Education.ManageCourses.Ui.ViewModels.Enums;
 using ManageCoursesUi.Tests.Enums;
 using ManageCoursesUi.Tests.Helpers;
 using Microsoft.AspNetCore.Http;
@@ -233,10 +234,10 @@ namespace ManageCoursesUi.Tests
         [Test]
         public void VariantsPublish()
         {
-            var enrichmentModel = new CourseEnrichmentModel { 
-                AboutCourse = "AboutCourse", 
-                InterviewProcess = "InterviewProcess", 
-                HowSchoolPlacementsWork = "HowSchoolPlacementsWork" 
+            var enrichmentModel = new CourseEnrichmentModel {
+                AboutCourse = "AboutCourse",
+                InterviewProcess = "InterviewProcess",
+                HowSchoolPlacementsWork = "HowSchoolPlacementsWork"
             };
 
             var ucasCourseEnrichmentGetModel = new UcasCourseEnrichmentGetModel { EnrichmentModel = enrichmentModel };
@@ -249,19 +250,19 @@ namespace ManageCoursesUi.Tests
             var objectValidator = new Mock<IObjectModelValidator>();
             CourseEnrichmentViewModel objectToVerify = null;
 
-            objectValidator.Setup(o => o.Validate(It.IsAny<ActionContext>(), 
-                                              It.IsAny<ValidationStateDictionary>(), 
-                                              It.IsAny<string>(), 
+            objectValidator.Setup(o => o.Validate(It.IsAny<ActionContext>(),
+                                              It.IsAny<ValidationStateDictionary>(),
+                                              It.IsAny<string>(),
                                               It.IsAny<Object>()))
                             .Callback<ActionContext, ValidationStateDictionary, string, Object>((a,b,c,d) => {
                                 objectToVerify = d as CourseEnrichmentViewModel;
                             })
                             .Verifiable();
-            
+
             var courseController = new CourseController(mockApi.Object, new Mock<ISearchAndCompareUrlService>().Object, new MockFeatureFlags());
             courseController.ObjectValidator = objectValidator.Object;
             courseController.TempData = new TempDataDictionary(new DefaultHttpContext(), Mock.Of<ITempDataProvider>());
-            
+
             var res = courseController.VariantsPublish(TestHelper.InstitutionCode, "def", TestHelper.TargetedUcasCode).Result;
 
             mockApi.VerifyAll();
@@ -498,6 +499,119 @@ namespace ManageCoursesUi.Tests
             manageApi.Verify(x => x.SaveEnrichmentCourse(TestHelper.InstitutionCode, TestHelper.TargetedUcasCode, It.Is<CourseEnrichmentModel>(c => Check(c, viewModel))), Times.Once());
         }
 
+
+        [Test]
+        public async Task Fees()
+        {
+            var manageApi = new Mock<IManageApi>();
+
+            var enrichmentModel = new CourseEnrichmentModel {
+                FeeUkEu = 123.45m, FeeInternational = 543.21m, FeeDetails = "FeeDetails", CourseLength = null, FinancialSupport = "FinancialSupport"
+            };
+            var ucasCourseEnrichmentGetModel = new UcasCourseEnrichmentGetModel { EnrichmentModel = enrichmentModel };
+
+            manageApi.Setup(x => x.GetEnrichmentCourse(TestHelper.InstitutionCode, TestHelper.TargetedUcasCode)).ReturnsAsync(ucasCourseEnrichmentGetModel);
+
+            var testCourse = new Course() { Name = "Name", CourseCode = "CourseCode" };
+
+            manageApi.Setup(x => x.GetCourseByUcasCode(TestHelper.InstitutionCode, TestHelper.TargetedUcasCode)).ReturnsAsync(testCourse);
+
+            var controller = new CourseController(manageApi.Object, new SearchAndCompareUrlService("http://www.example.com"), new MockFeatureFlags());
+            var result = await controller.Fees(TestHelper.InstitutionCode, TestHelper.AccreditedProviderId, TestHelper.TargetedUcasCode);
+
+            var viewResult = result as ViewResult;
+            Assert.IsNotNull(viewResult);
+
+            var model = viewResult.Model as CourseFeesEnrichmentViewModel;
+
+            Assert.IsNotNull(model);
+
+            Assert.AreEqual(TestHelper.InstitutionCode, model.RouteData.InstCode);
+            Assert.AreEqual(TestHelper.AccreditedProviderId, model.RouteData.AccreditingProviderId);
+            Assert.AreEqual(TestHelper.TargetedUcasCode, model.RouteData.UcasCode);
+
+            Assert.AreEqual(enrichmentModel.CourseLength, model.CourseLength);
+            Assert.AreEqual(enrichmentModel.FeeDetails, model.FeeDetails);
+            Assert.AreEqual(enrichmentModel.FeeInternational, model.FeeInternational);
+            Assert.AreEqual(enrichmentModel.FeeUkEu, model.FeeUkEu);
+            Assert.AreEqual(enrichmentModel.FinancialSupport, model.FinancialSupport);
+        }
+
+        [Test]
+        public async Task FeesPost_Invalid()
+        {
+            var manageApi = new Mock<IManageApi>();
+
+            var viewModel = new CourseFeesEnrichmentViewModel { FeeUkEu = 123.45m, FeeInternational = 543.21m, FeeDetails = "FeeDetails", CourseLength = CourseLength.OneYear, FinancialSupport = "FinancialSupport" };
+
+            var testCourse = new Course() { Name = "Name", CourseCode = "CourseCode" };
+
+            manageApi.Setup(x => x.GetCourseByUcasCode(TestHelper.InstitutionCode, TestHelper.TargetedUcasCode)).ReturnsAsync(testCourse);
+
+            var controller = new CourseController(manageApi.Object, new SearchAndCompareUrlService("http://www.example.com"), new MockFeatureFlags());
+
+            controller.ModelState.AddModelError("you", "failed");
+
+            var result = await controller.FeesPost(TestHelper.InstitutionCode, TestHelper.AccreditedProviderId, TestHelper.TargetedUcasCode, viewModel);
+
+            var viewResult = result as ViewResult;
+            Assert.IsNotNull(viewResult);
+            Assert.AreEqual("Fees", viewResult.ViewName);
+
+            var model = viewResult.Model as CourseFeesEnrichmentViewModel;
+
+            Assert.IsNotNull(model);
+
+            Assert.AreEqual(TestHelper.InstitutionCode, model.RouteData.InstCode);
+            Assert.AreEqual(TestHelper.AccreditedProviderId, model.RouteData.AccreditingProviderId);
+            Assert.AreEqual(TestHelper.TargetedUcasCode, model.RouteData.UcasCode);
+
+            Assert.AreEqual(viewModel.CourseLength, model.CourseLength);
+            Assert.AreEqual(viewModel.FeeDetails, model.FeeDetails);
+            Assert.AreEqual(viewModel.FeeInternational, model.FeeInternational);
+            Assert.AreEqual(viewModel.FeeUkEu, model.FeeUkEu);
+            Assert.AreEqual(viewModel.FinancialSupport, model.FinancialSupport);
+        }
+
+        [Test]
+        public async Task FeesPost()
+        {
+            var manageApi = new Mock<IManageApi>();
+
+            var viewModel = new CourseFeesEnrichmentViewModel { FeeUkEu = 123.45m, FeeInternational = 543.21m, FeeDetails = "FeeDetails", CourseLength = CourseLength.TwoYears, FinancialSupport = "FinancialSupport" };
+
+            var enrichmentModel = new CourseEnrichmentModel { FeeUkEu = 123.45m, FeeInternational = 543.21m, FeeDetails = "FeeDetails", CourseLength = null, FinancialSupport = "FinancialSupport" };
+
+            var ucasCourseEnrichmentGetModel = new UcasCourseEnrichmentGetModel { EnrichmentModel = enrichmentModel };
+
+            manageApi.Setup(x => x.GetEnrichmentCourse(TestHelper.InstitutionCode, TestHelper.TargetedUcasCode)).ReturnsAsync(ucasCourseEnrichmentGetModel);
+
+            var tempDataMock = new Mock<ITempDataDictionary>();
+
+
+            var controller = new CourseController(manageApi.Object, new SearchAndCompareUrlService("http://www.example.com"), new MockFeatureFlags());
+
+            controller.TempData = tempDataMock.Object;
+            var result = await controller.FeesPost(TestHelper.InstitutionCode, TestHelper.AccreditedProviderId, TestHelper.TargetedUcasCode, viewModel);
+
+            var redirectToActionResult = result as RedirectToActionResult;
+            Assert.IsNotNull(redirectToActionResult);
+            Assert.AreEqual("Variants", redirectToActionResult.ActionName);
+
+            var tempData = controller.TempData;
+
+            tempDataMock.Verify(x => x.Add("MessageType", "success"), Times.Once);
+            tempDataMock.Verify(x => x.Add("MessageTitle", "Your changes have been saved"), Times.Once);
+
+            var routeValues = redirectToActionResult.RouteValues;
+
+            Assert.AreEqual(TestHelper.InstitutionCode, routeValues["instCode"]);
+            Assert.AreEqual(TestHelper.AccreditedProviderId, routeValues["accreditingProviderId"]);
+            Assert.AreEqual(TestHelper.TargetedUcasCode, routeValues["ucasCode"]);
+
+            manageApi.Verify(x => x.SaveEnrichmentCourse(TestHelper.InstitutionCode, TestHelper.TargetedUcasCode, It.Is<CourseEnrichmentModel>(c => Check(c, viewModel))), Times.Once());
+        }
+
         private bool Check(CourseEnrichmentModel model, ICourseEnrichmentViewModel viewModel)
         {
             var result = false;
@@ -520,15 +634,27 @@ namespace ManageCoursesUi.Tests
                     model.OtherRequirements == courseRequirementsEnrichmentViewModel.OtherRequirements;
             }
 
+            var courseFeesEnrichmentViewModel = viewModel as CourseFeesEnrichmentViewModel;
+
+            if (courseFeesEnrichmentViewModel != null)
+            {
+                var courseLength = courseFeesEnrichmentViewModel.CourseLength.HasValue ? courseFeesEnrichmentViewModel.CourseLength.Value.ToString() : null;
+                result =
+                    model.FeeDetails == courseFeesEnrichmentViewModel.FeeDetails &&
+                    model.FeeInternational == courseFeesEnrichmentViewModel.FeeInternational &&
+                    model.FeeUkEu == courseFeesEnrichmentViewModel.FeeUkEu &&
+                    model.FinancialSupport == courseFeesEnrichmentViewModel.FinancialSupport &&
+                    model.CourseLength == courseLength;
+            }
             return result;
         }
-        
+
         private class MockFeatureFlags : IFeatureFlags
         {
             public bool ShowCoursePreview => true;
 
             public bool ShowCoursePublish => true;
-            
+
             public bool ShowCourseLiveView => true;
         }
     }
