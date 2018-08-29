@@ -141,7 +141,7 @@ Check that the bindings for https settings are for port 44364 (you may need to r
 
 ## Using a local version of ManageCourses.ApiClient and SearchAndCompareUi.Shared
 
-If you want to use a version of ManageCourses.ApiClient/SearchAndCompareUi.Shared that is not (yet) on nuget.org, copy `src/ui/dev-mc-api.targets.example` to `src/ui/dev-mc-api.targets` and/or `src/ui/dev-sc-shared.targets.example` to `src/ui/dev-sc-shared.targets` and update the Project path referenced in that file to your local ApiClient project.
+If you want to use a version of ManageCourses.ApiClient/SearchAndCompareUi.Shared that is not (yet) on nuget.org, copy `src/ui/dev-mc-api.targets.example` to `src/ui/dev-mc-api.targets` and/or `src/ui/dev-sc-shared.targets.example` to `src/ui/dev-sc-shared.targets` and update the Project path referenced in that file to your local ApiClient project
 
 ## Auth workflow
 
