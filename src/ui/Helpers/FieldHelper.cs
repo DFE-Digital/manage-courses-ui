@@ -10,9 +10,9 @@ namespace GovUk.Education.ManageCourses.Ui.Helpers
             return result;
         }
 
-        public static string DisplayText(this decimal value, int maxLength = 100, string defaultEmpty = "This field is empty")
+        public static string DisplayText(this decimal? value, int maxLength = 100, string defaultEmpty = "This field is empty")
         {
-            var text = value == 0m ? "" : value.ToString();
+            var text = value.HasValue ? value.Value.ToString() : "";
             var result = DisplayText(text, maxLength, defaultEmpty);
             return result;
         }

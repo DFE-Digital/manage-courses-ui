@@ -19,8 +19,8 @@ namespace GovUk.Education.ManageCourses.Ui.ViewModels
 
         // course length and fees
         public CourseLength? CourseLength { get; set; }
-        public decimal FeeUkEu { get; set; }
-        public decimal FeeInternational { get; set; }
+        public decimal? FeeUkEu { get; set; }
+        public decimal? FeeInternational { get; set; }
         public string FeeDetails { get; set; }
         public string FinancialSupport { get; set; }
 
