@@ -234,10 +234,10 @@ namespace ManageCoursesUi.Tests
         [Test]
         public void VariantsPublish()
         {
-            var enrichmentModel = new CourseEnrichmentModel { 
-                AboutCourse = "AboutCourse", 
-                InterviewProcess = "InterviewProcess", 
-                HowSchoolPlacementsWork = "HowSchoolPlacementsWork" 
+            var enrichmentModel = new CourseEnrichmentModel {
+                AboutCourse = "AboutCourse",
+                InterviewProcess = "InterviewProcess",
+                HowSchoolPlacementsWork = "HowSchoolPlacementsWork"
             };
 
             var ucasCourseEnrichmentGetModel = new UcasCourseEnrichmentGetModel { EnrichmentModel = enrichmentModel };
@@ -250,19 +250,19 @@ namespace ManageCoursesUi.Tests
             var objectValidator = new Mock<IObjectModelValidator>();
             CourseEnrichmentViewModel objectToVerify = null;
 
-            objectValidator.Setup(o => o.Validate(It.IsAny<ActionContext>(), 
-                                              It.IsAny<ValidationStateDictionary>(), 
-                                              It.IsAny<string>(), 
+            objectValidator.Setup(o => o.Validate(It.IsAny<ActionContext>(),
+                                              It.IsAny<ValidationStateDictionary>(),
+                                              It.IsAny<string>(),
                                               It.IsAny<Object>()))
                             .Callback<ActionContext, ValidationStateDictionary, string, Object>((a,b,c,d) => {
                                 objectToVerify = d as CourseEnrichmentViewModel;
                             })
                             .Verifiable();
-            
+
             var courseController = new CourseController(mockApi.Object, new Mock<ISearchAndCompareUrlService>().Object, new MockFeatureFlags());
             courseController.ObjectValidator = objectValidator.Object;
             courseController.TempData = new TempDataDictionary(new DefaultHttpContext(), Mock.Of<ITempDataProvider>());
-            
+
             var res = courseController.VariantsPublish(TestHelper.InstitutionCode, "def", TestHelper.TargetedUcasCode).Result;
 
             mockApi.VerifyAll();
@@ -516,7 +516,7 @@ namespace ManageCoursesUi.Tests
 
             manageApi.Setup(x => x.GetCourseByUcasCode(TestHelper.InstitutionCode, TestHelper.TargetedUcasCode)).ReturnsAsync(testCourse);
 
-            var controller = new CourseController(manageApi.Object);
+            var controller = new CourseController(manageApi.Object, new SearchAndCompareUrlService("http://www.example.com"), new MockFeatureFlags());
             var result = await controller.Fees(TestHelper.InstitutionCode, TestHelper.AccreditedProviderId, TestHelper.TargetedUcasCode);
 
             var viewResult = result as ViewResult;
@@ -548,7 +548,7 @@ namespace ManageCoursesUi.Tests
 
             manageApi.Setup(x => x.GetCourseByUcasCode(TestHelper.InstitutionCode, TestHelper.TargetedUcasCode)).ReturnsAsync(testCourse);
 
-            var controller = new CourseController(manageApi.Object);
+            var controller = new CourseController(manageApi.Object, new SearchAndCompareUrlService("http://www.example.com"), new MockFeatureFlags());
 
             controller.ModelState.AddModelError("you", "failed");
 
@@ -588,7 +588,9 @@ namespace ManageCoursesUi.Tests
 
             var tempDataMock = new Mock<ITempDataDictionary>();
 
-            var controller = new CourseController(manageApi.Object);
+
+            var controller = new CourseController(manageApi.Object, new SearchAndCompareUrlService("http://www.example.com"), new MockFeatureFlags());
+
             controller.TempData = tempDataMock.Object;
             var result = await controller.FeesPost(TestHelper.InstitutionCode, TestHelper.AccreditedProviderId, TestHelper.TargetedUcasCode, viewModel);
 
@@ -640,13 +642,13 @@ namespace ManageCoursesUi.Tests
                 result =
                     model.FeeDetails == courseFeesEnrichmentViewModel.FeeDetails &&
                     model.FeeInternational.ToString() == courseFeesEnrichmentViewModel.FeeInternational &&
-                    model.FeeUkEu.ToString() == courseFeesEnrichmentViewModel.FeeUkEu && 
+                    model.FeeUkEu.ToString() == courseFeesEnrichmentViewModel.FeeUkEu &&
                     model.FinancialSupport == courseFeesEnrichmentViewModel.FinancialSupport &&
                     model.CourseLength == courseLength;
             }
             return result;
         }
-        
+
         private class MockFeatureFlags : IFeatureFlags
         {
             public bool ShowCoursePreview => true;

@@ -224,6 +224,17 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             return RedirectToAction("Variants", new { instCode, accreditingProviderId, ucasCode });
         }
 
+        private async Task SaveEnrichment(string instCode, string ucasCode, ICourseEnrichmentViewModel viewModel)
+        {
+            var course = await _manageApi.GetEnrichmentCourse(instCode, ucasCode);
+
+            var enrichmentModel = course?.EnrichmentModel ?? new CourseEnrichmentModel();
+            MapEnrichment(enrichmentModel, viewModel);
+
+            await _manageApi.SaveEnrichmentCourse(instCode, ucasCode, enrichmentModel);
+
+        }
+
         private void Validate(string instCode, string accreditingProviderId, string ucasCode)
         {
             if (string.IsNullOrEmpty(instCode)) { throw new ArgumentNullException(instCode, "instCode cannot be null or empty"); }
@@ -231,7 +242,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             if (string.IsNullOrEmpty(ucasCode)) { throw new ArgumentNullException(ucasCode, "ucasCode cannot be null or empty"); }
         }
 
-        private void SetSucessMessage()
+        private void SetSucessMessage(string message = null)
         {
             TempData.Add("MessageType", "success");
             TempData.Add("MessageTitle", message ?? "Your changes have been saved");
@@ -352,7 +363,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
                 return new CourseEnrichmentViewModel();
             }
             var enrichmentModel = ucasCourseEnrichmentGetModel?.EnrichmentModel ?? new CourseEnrichmentModel();
-            
+
             var result = new CourseEnrichmentViewModel()
             {
                 AboutCourse = enrichmentModel.AboutCourse,
