@@ -19,12 +19,10 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
     public class OrganisationController : CommonAttributesControllerBase
     {
         private readonly IManageApi _manageApi;
-        private readonly IFeatureFlags _featureFlags;
 
-        public OrganisationController(IManageApi manageApi, IFeatureFlags featureFlags)
+        public OrganisationController(IManageApi manageApi)
         {
             _manageApi = manageApi;
-            _featureFlags = featureFlags;
         }
 
         [Route("{ucasCode}/courses")]
@@ -49,12 +47,6 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
         [Route("{ucasCode}/about")]
         public async Task<IActionResult> About(string ucasCode)
         {
-
-            if (!_featureFlags.ShowOrgEnrichment)
-            {
-                return RedirectToAction("Courses", new { ucasCode = ucasCode });
-            }
-
             var ucasInstitutionEnrichmentGetModel = await _manageApi.GetEnrichmentOrganisation(ucasCode);
 
             var tabViewModel = await GetTabViewModelAsync(ucasCode, "about");
@@ -297,8 +289,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
                 CurrentTab = currentTab,
                 MultipleOrganisations = orgs.Count() > 1,
                 OrganisationName = organisationName,
-                UcasCode = ucasCode,
-                ShowAboutTab = _featureFlags.ShowOrgEnrichment
+                UcasCode = ucasCode
             };
 
             return result;
