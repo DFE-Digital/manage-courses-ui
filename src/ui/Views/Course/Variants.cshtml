@@ -92,6 +92,45 @@
           </dl>
         </div>
 
+        @if (!@Model.IsSalary) {
+          <div class="course-parts__item">
+            <h3 class="course-parts__title">Course length and fees</h3>
+            <a class="course-parts__action" href="@Url.Action("Fees", "Course", Model.RouteData)">Edit</a>
+            <dl class="course-parts__fields">
+              <dt class="course-parts__fields__label">
+                Course length
+              </dt>
+              <dd class="course-parts__fields__value">
+                @courseEnrichment?.CourseLength.DisplayText()
+              </dd>
+              <dt class="course-parts__fields__label">
+                Fee for UK and EU students
+              </dt>
+              <dd class="course-parts__fields__value">
+                @courseEnrichment?.FeeUkEu.DisplayText()
+              </dd>
+              <dt class="course-parts__fields__label">
+                Fee for international students (optional)
+              </dt>
+              <dd class="course-parts__fields__value">
+                @courseEnrichment?.FeeInternational.DisplayText()
+              </dd>
+              <dt class="course-parts__fields__label">
+                Fee details (optional)
+              </dt>
+              <dd class="course-parts__fields__value">
+                @courseEnrichment?.FeeDetails.DisplayText()
+              </dd>
+              <dt class="course-parts__fields__label">
+                Financial support you offer (optional)
+              </dt>
+              <dd class="course-parts__fields__value">
+                @courseEnrichment?.FinancialSupport.DisplayText()
+              </dd>
+            </dl>
+          </div>
+        }
+
         <div class="course-parts__item">
           <h3 class="course-parts__title">Requirements and eligbility</h3>
           <a class="course-parts__action" href="@Url.Action("Requirements", "Course", Model.RouteData)">Edit</a>
@@ -100,19 +139,19 @@
               Qualifications needed
             </dt>
             <dd class="course-parts__fields__value">
-                @courseEnrichment?.Qualifications.DisplayText()
+              @courseEnrichment?.Qualifications.DisplayText()
             </dd>
             <dt class="course-parts__fields__label" id="section-PersonalQualities">
               Personal qualities (optional)
             </dt>
             <dd class="course-parts__fields__value">
-                @courseEnrichment?.PersonalQualities.DisplayText()
+              @courseEnrichment?.PersonalQualities.DisplayText()
             </dd>
             <dt class="course-parts__fields__label"id="section-OtherRequirements">
               Other requirements (optional)
             </dt>
             <dd class="course-parts__fields__value">
-                @courseEnrichment?.OtherRequirements.DisplayText()
+              @courseEnrichment?.OtherRequirements.DisplayText()
             </dd>
           </dl>
         </div>

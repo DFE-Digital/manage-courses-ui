@@ -1,0 +1,115 @@
+@model CourseFeesEnrichmentViewModel
+@{
+  Layout = "_Layout";
+  var course_length = ViewData.ModelState["CourseLength"] != null && ViewData.ModelState["CourseLength"].Errors.Any();
+  var fee_uk_eu = ViewData.ModelState["FeeUkEu"] != null && ViewData.ModelState["FeeUkEu"].Errors.Any();
+  var fee_iternational = ViewData.ModelState["FeeInternational"] != null && ViewData.ModelState["FeeInternational"].Errors.Any();
+  var fee_details = ViewData.ModelState["FeeDetails"] != null && ViewData.ModelState["FeeDetails"].Errors.Any();
+  var financial_support = ViewData.ModelState["FinancialSupport"] != null && ViewData.ModelState["FinancialSupport"].Errors.Any();
+}
+
+<a href="@Url.Action("Variants", "Course", Model.RouteData)" class="govuk-back-link">Back</a>
+
+<main role="main" class="govuk-main-wrapper" id="main-content">
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <h1 class="govuk-heading-xl">
+        <span class="govuk-caption-xl">@Model.CourseInfo.Name (@Model.CourseInfo.ProgrammeCode)</span>
+        Course length and fees
+      </h1>
+      @Html.Partial("ErrorSummary")
+      <form asp-controller="Course" asp-action="Fees" method="post" data-module="form">
+        <div class="govuk-form-group">
+          <fieldset class="govuk-fieldset">
+            <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+              <h2 class="govuk-fieldset__heading">Course length</h2>
+            </legend>
+            @if (course_length) {
+              <span asp-validation-for="CourseLength" class="govuk-error-message"></span>
+            }
+            <div class="govuk-radios">
+              @{
+                var options = CourseLengthHelper.Lookup;
+
+                foreach (var option in options){
+                  var keyString = option.Key.ToString();
+                  var optionChecked = Model.CourseLength.HasValue && option.Key == Model.CourseLength.Value;
+                  <div class="govuk-radios__item">
+                    <input type="radio" id="@keyString" class="govuk-radios__input" asp-for="@Model.CourseLength" check="@optionChecked" value="@option.Key" />
+                    <label for="@keyString" class="govuk-label govuk-radios__label">@option.Value</label>
+                  </div>
+                }
+              }
+            </div>
+          </fieldset>
+        </div>
+        <hr class="govuk-section-break govuk-section-break--l">
+        <h2 class="govuk-heading-l">Course fees</h2>
+        <div id="CourseFees-wrapper" class="govuk-form-group @(fee_uk_eu ? " govuk-form-group--error " : " ")">
+          <label asp-for="FeeUkEu" class="govuk-label">Fee for UK and EU students</label>
+          @if (fee_uk_eu) {
+            <span asp-validation-for="FeeUkEu" class="govuk-error-message"></span>
+          }
+          <div class="govuk-currency-input">
+            <div class="govuk-currency-input__inner">
+              <span class="govuk-currency-input__inner__unit">£</span>
+              <input asp-for="FeeUkEu" type="number" class="govuk-currency-input__inner__input govuk-input govuk-input--width-10"></input>
+            </div>
+          </div>
+        </div>
+         <div id="InternationalCourseFees-wrapper" class="govuk-form-group @(fee_iternational ? " govuk-form-group--error " : " ")">
+          <label asp-for="FeeInternational" class="govuk-label">Fee for international students (optional)</label>
+          @if (fee_iternational) {
+            <span asp-validation-for="FeeInternational" class="govuk-error-message"></span>
+          }
+          <div class="govuk-currency-input">
+            <div class="govuk-currency-input__inner">
+              <span class="govuk-currency-input__inner__unit">£</span>
+              <input asp-for="FeeInternational" type="number" class="govuk-currency-input__inner__input govuk-input govuk-input--width-10"></input>
+            </div>
+          </div>
+        </div>
+         <h4 class="govuk-heading-m">Fee details</h4>
+        <p class="govuk-body">If applicable, give further details about the fees for this course.</p>
+        <p class="govuk-body">This could include:</p>
+        <ul class="govuk-list govuk-list--bullet">
+          <li>any top up fees</li>
+          <li>any other costs</li>
+        </ul>
+        <div class="govuk-character-count" data-module="character-count" data-maxwords="250">
+          <div id="FeeDetails-wrapper" class="govuk-form-group @(fee_details ? " govuk-form-group--error " : " ")">
+            <label asp-for="FeeDetails" class="govuk-label govuk-!-font-weight-bold">Fee details (optional)</label>
+            @if (fee_details) {
+              <span asp-validation-for="FeeDetails" class="govuk-error-message"></span>
+            }
+            <textarea asp-for="FeeDetails" class="govuk-textarea js-character-count" rows="15" data-module="character-count"></textarea>
+          </div>
+        </div>
+        <hr class="govuk-section-break govuk-section-break--l">
+        <h2 class="govuk-heading-l">Financial support you offer</h2>
+        <p class="govuk-body">If applicable, say more about the financial support you offer for this course. For example, any bursaries available.</p>
+        <p class="govuk-body">You don’t need to add details of any DfE bursaries and subject scholarships here. These will be published automatically to your course page.</p>
+        <div class="govuk-character-count" data-module="character-count" data-maxwords="250">
+          <div id="FinancialSupport-wrapper" class="govuk-form-group @(financial_support ? " govuk-form-group--error " : " ")">
+            <label asp-for="FinancialSupport" class="govuk-label govuk-!-font-weight-bold">Financial support you offer (optional)</label>
+            @if (financial_support) {
+              <span asp-validation-for="FinancialSupport" class="govuk-error-message"></span>
+            }
+            <textarea asp-for="FinancialSupport" class="govuk-textarea js-character-count" rows="15" data-module="character-count"></textarea>
+          </div>
+        </div>
+         <div class="govuk-form">
+          <input type="submit" class="govuk-button" value="Save">
+        </div>
+        <p class="govuk-body">
+          <a href="@Url.Action("Variants", "Course", Model.RouteData)" class "govuk-link">Cancel changes</a>
+        </p>
+      </form>
+    </div>
+    <div class="govuk-grid-column-one-third">
+      <aside class="related">
+        @Html.Partial("FormattingAdvice")
+      </aside>
+    </div>
+  </div>
+</main>
