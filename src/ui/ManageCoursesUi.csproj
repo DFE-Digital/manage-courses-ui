@@ -27,10 +27,10 @@
   <Import Condition="Exists('$(ProjectDir)dev-sc-shared.targets')" Project="$(ProjectDir)dev-sc-shared.targets" />
 
   <ItemGroup Condition="Exists('$(ProjectDir)dev-mc-api.targets')==false">
-    <PackageReference Include="GovUk.Education.ManageCourses.ApiClient" Version="0.8.1-retrieve-ucas-inst" />
+    <PackageReference Include="GovUk.Education.ManageCourses.ApiClient" Version="0.9.2.*" />
   </ItemGroup>
   <ItemGroup Condition="Exists('$(ProjectDir)dev-sc-shared.targets')==false">    
-    <PackageReference Include="GovUk.Education.SearchAndCompare.Ui.Shared" Version="0.1.0-extract-details-view.5" />
+    <PackageReference Include="GovUk.Education.SearchAndCompare.Ui.Shared" Version="0.1.0.*" />
   </ItemGroup>
   <Target Name="Webpack" BeforeTargets="AfterBuild">
     <Exec Command="npm install" />
