@@ -13,18 +13,7 @@ namespace GovUk.Education.ManageCourses.Ui.Helpers
         {
             var result = string.IsNullOrWhiteSpace(course.ProfpostFlag) ? "QTS " : "PGCE with QTS ";
 
-            if (course.StudyMode.Equals("F", StringComparison.InvariantCultureIgnoreCase))
-            {
-                result += "full time";
-            }
-            else if (course.StudyMode.Equals("P", StringComparison.InvariantCultureIgnoreCase))
-            {
-                result += "part time";
-            }
-            else if (course.StudyMode.Equals("B", StringComparison.InvariantCultureIgnoreCase))
-            {
-                result += "Both full time and part time";
-            }
+            result += GetStudyModeText(course.StudyMode);
 
             result += course.ProgramType.Equals("SS", StringComparison.InvariantCultureIgnoreCase) ? " with salary" : "";
 
@@ -85,7 +74,7 @@ namespace GovUk.Education.ManageCourses.Ui.Helpers
 
         public static string GetStudyMode(this CourseVariantViewModel viewModel)
         {
-            return viewModel.StudyMode.Equals("F", StringComparison.InvariantCultureIgnoreCase) ? "Full time" : "Part time";
+            return GetStudyModeText(viewModel.StudyMode);
         }
 
         public static string GetAgeRange(this CourseVariantViewModel viewModel)
@@ -159,6 +148,25 @@ namespace GovUk.Education.ManageCourses.Ui.Helpers
             }
 
             return result;
+        }
+
+        private static string GetStudyModeText(string studyMode)
+        {
+            var returnString = string.Empty;
+            if (studyMode.Equals("F", StringComparison.InvariantCultureIgnoreCase))
+            {
+                returnString = "full time";
+            }
+            else if (studyMode.Equals("P", StringComparison.InvariantCultureIgnoreCase))
+            {
+                returnString = "part time";
+            }
+            else if (studyMode.Equals("B", StringComparison.InvariantCultureIgnoreCase))
+            {
+                returnString = "Both full time and part time";
+            }
+
+            return returnString;
         }
     }
 }
