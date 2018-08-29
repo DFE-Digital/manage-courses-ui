@@ -532,8 +532,8 @@ namespace ManageCoursesUi.Tests
 
             Assert.AreEqual(enrichmentModel.CourseLength, model.CourseLength);
             Assert.AreEqual(enrichmentModel.FeeDetails, model.FeeDetails);
-            Assert.AreEqual(enrichmentModel.FeeInternational.ToString(), model.FeeInternational);
-            Assert.AreEqual(enrichmentModel.FeeUkEu.ToString(), model.FeeUkEu);
+            Assert.AreEqual(enrichmentModel.FeeInternational, model.FeeInternational);
+            Assert.AreEqual(enrichmentModel.FeeUkEu, model.FeeUkEu);
             Assert.AreEqual(enrichmentModel.FinancialSupport, model.FinancialSupport);
         }
 
@@ -542,7 +542,7 @@ namespace ManageCoursesUi.Tests
         {
             var manageApi = new Mock<IManageApi>();
 
-            var viewModel = new CourseFeesEnrichmentViewModel { FeeUkEu = "123.45", FeeInternational = "543.21", FeeDetails = "FeeDetails", CourseLength = CourseLength.OneYear, FinancialSupport = "FinancialSupport" };
+            var viewModel = new CourseFeesEnrichmentViewModel { FeeUkEu = 123.45m, FeeInternational = 543.21m, FeeDetails = "FeeDetails", CourseLength = CourseLength.OneYear, FinancialSupport = "FinancialSupport" };
 
             var testCourse = new Course() { Name = "Name", CourseCode = "CourseCode" };
 
@@ -578,7 +578,7 @@ namespace ManageCoursesUi.Tests
         {
             var manageApi = new Mock<IManageApi>();
 
-            var viewModel = new CourseFeesEnrichmentViewModel { FeeUkEu = "123.45", FeeInternational = "543.21", FeeDetails = "FeeDetails", CourseLength = CourseLength.TwoYears, FinancialSupport = "FinancialSupport" };
+            var viewModel = new CourseFeesEnrichmentViewModel { FeeUkEu = 123.45m, FeeInternational = 543.21m, FeeDetails = "FeeDetails", CourseLength = CourseLength.TwoYears, FinancialSupport = "FinancialSupport" };
 
             var enrichmentModel = new CourseEnrichmentModel { FeeUkEu = 123.45m, FeeInternational = 543.21m, FeeDetails = "FeeDetails", CourseLength = null, FinancialSupport = "FinancialSupport" };
 
@@ -641,8 +641,8 @@ namespace ManageCoursesUi.Tests
                 var courseLength = courseFeesEnrichmentViewModel.CourseLength.HasValue ? courseFeesEnrichmentViewModel.CourseLength.Value.ToString() : null;
                 result =
                     model.FeeDetails == courseFeesEnrichmentViewModel.FeeDetails &&
-                    model.FeeInternational.ToString() == courseFeesEnrichmentViewModel.FeeInternational &&
-                    model.FeeUkEu.ToString() == courseFeesEnrichmentViewModel.FeeUkEu &&
+                    model.FeeInternational == courseFeesEnrichmentViewModel.FeeInternational &&
+                    model.FeeUkEu == courseFeesEnrichmentViewModel.FeeUkEu &&
                     model.FinancialSupport == courseFeesEnrichmentViewModel.FinancialSupport &&
                     model.CourseLength == courseLength;
             }
@@ -654,7 +654,7 @@ namespace ManageCoursesUi.Tests
             public bool ShowCoursePreview => true;
 
             public bool ShowCoursePublish => true;
-            
+
             public bool ShowCourseLiveView => true;
         }
     }

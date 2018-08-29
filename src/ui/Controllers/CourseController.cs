@@ -196,8 +196,8 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             var model = new CourseFeesEnrichmentViewModel
             {
                 CourseLength = enrichmentModel?.CourseLength.GetCourseLength(),
-                FeeUkEu = enrichmentModel?.FeeUkEu.ToString(),
-                FeeInternational = enrichmentModel?.FeeInternational.ToString(),
+                FeeUkEu = enrichmentModel?.FeeUkEu,
+                FeeInternational = enrichmentModel?.FeeInternational,
                 FeeDetails = enrichmentModel?.FeeDetails,
                 FinancialSupport = enrichmentModel?.FinancialSupport,
                 RouteData = routeData,
@@ -270,26 +270,12 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             var courseFeesEnrichmentViewModel = viewModel as CourseFeesEnrichmentViewModel;
             if (courseFeesEnrichmentViewModel != null)
             {
-                decimal feeUkEu = 0;
-                if (!decimal.TryParse(courseFeesEnrichmentViewModel.FeeUkEu, out feeUkEu))
-                {
-                    feeUkEu = 0;
-                }
 
-                decimal feeInternational = 0;
-                if (!decimal.TryParse(courseFeesEnrichmentViewModel.FeeInternational, out feeInternational))
-                {
-                    feeInternational = 0;
-                }
+                var courseLength = courseFeesEnrichmentViewModel.CourseLength.HasValue ? courseFeesEnrichmentViewModel.CourseLength.Value.ToString() : null;
 
-                string courseLength = null;
-
-                if (courseFeesEnrichmentViewModel.CourseLength.HasValue) {
-                    courseLength = courseFeesEnrichmentViewModel.CourseLength.Value.ToString();
-                }
                 enrichmentModel.CourseLength = courseLength;
-                enrichmentModel.FeeUkEu = feeUkEu;
-                enrichmentModel.FeeInternational = feeInternational;
+                enrichmentModel.FeeUkEu = courseFeesEnrichmentViewModel.FeeUkEu;
+                enrichmentModel.FeeInternational = courseFeesEnrichmentViewModel.FeeInternational;
                 enrichmentModel.FeeDetails = courseFeesEnrichmentViewModel.FeeDetails;
                 enrichmentModel.FinancialSupport = courseFeesEnrichmentViewModel.FinancialSupport;
             }
