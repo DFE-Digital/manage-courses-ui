@@ -39,7 +39,7 @@ Go to `https://localhost:44364` in your browser
 
 ## Dotnet SDK
 
-You will need to have Version 2.1.300 ~
+You will need to have SDK Version
 [2.1.302 (download)](https://www.microsoft.com/net/download/thank-you/dotnet-sdk-2.1.302-windows-x64-installer)
 of the dotnet SDK installed in order to build and run this. This is due to a
 bug in ASP.NET MVC Core which is using inconsistent package versions.
