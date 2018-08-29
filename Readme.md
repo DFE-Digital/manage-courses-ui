@@ -37,9 +37,13 @@ Go to `https://localhost:44364` in your browser
 
 ## Run
 
+## Dotnet SDK
+You will need to have Version 2.1.300~2.1.302 of the dotnet SDK installed in order to build and run this. This is due to a bug in ASP.NET MVC Core which is using inconsistent package versions. [The bug](https://github.com/aspnet/Mvc/issues/7969) has a fix promised in .NET Core 2.1.3   
+
 ### App settings variables
 You will need to set the app settings (prefered to be store as `user-secrets`):
 
+* **SearchAndCompare:UiBaseUrl** the location of the search and compare UI, for the purpose of linking, e.g. "https://find-postgraduate-teacher-training.gov.uk". Avoid trailing slash.
 * **ApiConnection:url** - the location of your [manage-courses-api](https://github.com/DFE-Digital/manage-courses-api) deployment. You can use a local one or perhaps [the one in the Dev Environment](https://manage-courses-ui-bat-development.e4ff.pro-eu-west-1.openshiftapps.com) if you are lazy
 * **DFE_SIGNIN_CLIENT_SECRET** - the client secret of your oath server
 * **auth:oidc:metadataAddress** - the .well-known config URL of your oauth server, if you don't want to use the default sandbox one
@@ -130,9 +134,9 @@ Check that the bindings for https settings are for port 44364 (you may need to r
 
 # Miscellaneous
 
-## Using a local version of ManageCourses.ApiClient
+## Using a local version of ManageCourses.ApiClient and SearchAndCompareUi.Shared
 
-If you want to use a version of ManageCourses.ApiClient that is not (yet) on nuget.org, copy `src/ui/dev.targets.example` to `src/ui/dev.targets` and update the Project path referenced in that file to your local ApiClient project
+If you want to use a version of ManageCourses.ApiClient/SearchAndCompareUi.Shared that is not (yet) on nuget.org, copy `src/ui/dev-mc-api.targets.example` to `src/ui/dev-mc-api.targets` and/or `src/ui/dev-sc-shared.targets.example` to `src/ui/dev-sc-shared.targets` and update the Project path referenced in that file to your local ApiClient project
 
 ## Auth workflow
 

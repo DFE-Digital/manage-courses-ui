@@ -19,6 +19,11 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using IdentityModel.Client;
 using Microsoft.AspNetCore.SpaServices.Webpack;
+using GovUk.Education.SearchAndCompare.UI.Shared.Services;
+using GovUk.Education.SearchAndCompare.UI.Shared.ViewComponents;
+using System.Reflection;
+using Microsoft.AspNetCore.Mvc.Razor;
+using Microsoft.Extensions.FileProviders;
 
 namespace GovUk.Education.ManageCourses.Ui
 {
@@ -37,9 +42,12 @@ namespace GovUk.Education.ManageCourses.Ui
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            var sharedAssembly = typeof(CourseDetailsViewComponent).GetTypeInfo().Assembly; 
             services.AddMvc(options =>
                 options.Filters.Add(typeof(McExceptionFilter))
-            );
+            ).AddApplicationPart(sharedAssembly);
+
+            services.Configure<RazorViewEngineOptions>(o => o.FileProviders.Add(new EmbeddedFileProvider(sharedAssembly, "GovUk.Education.SearchAndCompare.UI.Shared")));
 
             services.AddRouting(options => options.LowercaseUrls = true);
 
@@ -194,12 +202,15 @@ namespace GovUk.Education.ManageCourses.Ui
             });
 
             services.AddSingleton<IFeatureFlags>(x => new FeatureFlags(Configuration.GetSection("features")));
+            services.AddSingleton<ISearchAndCompareUrlService>(x => new SearchAndCompareUrlService(Configuration.GetValue("SearchAndCompare:UiBaseUrl", "")));
             services.AddSingleton<IManageCoursesApiClientConfiguration, ManageCoursesApiClientConfiguration>();
             services.AddScoped(provider => AnalyticsPolicy.FromEnv());
             services.AddScoped<AnalyticsAttribute>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddSingleton<ManageCoursesConfig, ManageCoursesConfig>();
             services.AddSingleton<IManageApi, ManageApi>();
+            services.AddScoped<ICourseMapper, CourseMapper>();
+            services.AddScoped<ICourseDetailsService, CourseDetailsService>();
             services.AddSingleton(serviceProvider =>
             {
                 var manageCoursesApiClientConfiguration = serviceProvider.GetService<IManageCoursesApiClientConfiguration>();
