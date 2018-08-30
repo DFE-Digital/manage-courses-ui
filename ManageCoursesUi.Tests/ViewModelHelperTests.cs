@@ -29,7 +29,9 @@ namespace ManageCoursesUi.Tests
         [TestCase("pg", "f", "sd", "PGCE with QTS full time")]
         [TestCase("PG", "F", "SD", "PGCE with QTS full time")]
         [TestCase("pg", "p", "sd", "PGCE with QTS part time")]
-        [TestCase("PG", "P", "SD", "PGCE with QTS part time")]        
+        [TestCase("PG", "P", "SD", "PGCE with QTS part time")]
+        [TestCase("PG", "B", "SD", "PGCE with QTS, full time or part time")]
+        [TestCase("pg", "b", "sd", "PGCE with QTS, full time or part time")]
         public void TestGetCourseVariantType(string profpostFlag, string studyMode, string programType, string expectedResult)
         {
             var course = new Course
@@ -135,6 +137,8 @@ namespace ManageCoursesUi.Tests
         [TestCase("f", "Full time")]
         [TestCase("P", "Part time")]
         [TestCase("p", "Part time")]
+        [TestCase("B", "Full time or part time")]
+        [TestCase("b", "Full time or part time")]
         public void TestGetStudyMode(string studyMode, string expectedResult)
         {
             var courseVariantViewModel = new CourseVariantViewModel { StudyMode = studyMode };

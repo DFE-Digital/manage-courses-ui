@@ -11,7 +11,16 @@ namespace GovUk.Education.ManageCourses.Ui.Helpers
     {
         public static string GetCourseVariantType(this Course course)
         {
-            var result = string.IsNullOrWhiteSpace(course.ProfpostFlag) ? "QTS " : "PGCE with QTS ";
+            var result = string.IsNullOrWhiteSpace(course.ProfpostFlag) ? "QTS" : "PGCE with QTS";
+
+            if ((!string.IsNullOrWhiteSpace(result)) && course.StudyMode.Equals("B", StringComparison.InvariantCultureIgnoreCase))
+            {
+                result += ", ";
+            }
+            else
+            {
+                result += " ";
+            }
 
             result += GetStudyModeText(course.StudyMode);
 
@@ -179,6 +188,12 @@ namespace GovUk.Education.ManageCourses.Ui.Helpers
         private static string GetStudyModeText(string studyMode)
         {
             var returnString = string.Empty;
+
+            if (string.IsNullOrWhiteSpace(studyMode))
+            {
+                return returnString;//TODO clarify what happens if study mode is missing
+            }
+
             if (studyMode.Equals("F", StringComparison.InvariantCultureIgnoreCase))
             {
                 returnString = "full time";
