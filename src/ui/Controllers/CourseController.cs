@@ -154,9 +154,10 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
                 return View("About", viewModel);
             }
 
-            await SaveEnrichment(instCode, ucasCode, viewModel);
-
-            SetSucessMessage();
+            if (await SaveEnrichment(instCode, ucasCode, viewModel))
+            {
+                SetSucessMessage();
+            }
 
             return RedirectToAction("Variants", new { instCode, accreditingProviderId, ucasCode });
         }
@@ -198,8 +199,10 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
                 return View("Requirements", viewModel);
             }
 
-            await SaveEnrichment(instCode, ucasCode, viewModel);
-            SetSucessMessage();
+            if(await SaveEnrichment(instCode, ucasCode, viewModel))
+            {
+                SetSucessMessage();
+            }
 
             return RedirectToAction("Variants", new { instCode, accreditingProviderId, ucasCode });
         }
@@ -238,8 +241,10 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
                 viewModel.CourseInfo = courseInfo;
                 return View("Salary", viewModel);
             }
-            await SaveEnrichment(instCode, ucasCode, viewModel);
-            SetSucessMessage();
+            if(await SaveEnrichment(instCode, ucasCode, viewModel))
+            {
+                SetSucessMessage();
+            }
             return RedirectToAction("Variants", new { instCode, accreditingProviderId, ucasCode });
         }
 
@@ -280,20 +285,28 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
                 viewModel.CourseInfo = courseInfo;
                 return View("Fees", viewModel);
             }
-            await SaveEnrichment(instCode, ucasCode, viewModel);
-            SetSucessMessage();
+            if(await SaveEnrichment(instCode, ucasCode, viewModel))
+            {
+                SetSucessMessage();
+            }
             return RedirectToAction("Variants", new { instCode, accreditingProviderId, ucasCode });
         }
 
-        private async Task SaveEnrichment(string instCode, string ucasCode, ICourseEnrichmentViewModel viewModel)
+        private async Task<bool> SaveEnrichment(string instCode, string ucasCode, ICourseEnrichmentViewModel viewModel)
         {
             var course = await _manageApi.GetEnrichmentCourse(instCode, ucasCode);
 
+            if (course == null && viewModel.IsEmpty())
+            {
+                // Draft state is "New" and no changes have been made - don't insert a draft
+                return false;
+            }
+
             var enrichmentModel = course?.EnrichmentModel ?? new CourseEnrichmentModel();
-            MapEnrichment(enrichmentModel, viewModel);
+            viewModel.MapInto(ref enrichmentModel);
 
             await _manageApi.SaveEnrichmentCourse(instCode, ucasCode, enrichmentModel);
-
+            return true;
         }
 
         private void Validate(string instCode, string accreditingProviderId, string ucasCode)
@@ -307,49 +320,6 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
         {
             TempData.Add("MessageType", "success");
             TempData.Add("MessageTitle", message ?? "Your changes have been saved");
-        }
-        private void MapEnrichment(CourseEnrichmentModel enrichmentModel, ICourseEnrichmentViewModel viewModel)
-        {
-            var aboutCourseEnrichmentViewModel = viewModel as AboutCourseEnrichmentViewModel;
-
-            if (aboutCourseEnrichmentViewModel != null)
-            {
-                enrichmentModel.AboutCourse = aboutCourseEnrichmentViewModel.AboutCourse;
-                enrichmentModel.InterviewProcess = aboutCourseEnrichmentViewModel.InterviewProcess;
-                enrichmentModel.HowSchoolPlacementsWork = aboutCourseEnrichmentViewModel.HowSchoolPlacementsWork;
-            }
-
-            var courseRequirementsEnrichmentViewModel = viewModel as CourseRequirementsEnrichmentViewModel;
-
-            if (courseRequirementsEnrichmentViewModel != null)
-            {
-                enrichmentModel.Qualifications = courseRequirementsEnrichmentViewModel.Qualifications;
-                enrichmentModel.PersonalQualities = courseRequirementsEnrichmentViewModel.PersonalQualities;
-                enrichmentModel.OtherRequirements = courseRequirementsEnrichmentViewModel.OtherRequirements;
-            }
-
-            var courseFeesEnrichmentViewModel = viewModel as CourseFeesEnrichmentViewModel;
-            if (courseFeesEnrichmentViewModel != null)
-            {
-
-                var courseLength = courseFeesEnrichmentViewModel.CourseLength.HasValue ? courseFeesEnrichmentViewModel.CourseLength.Value.ToString() : null;
-
-                enrichmentModel.CourseLength = courseLength;
-                enrichmentModel.FeeUkEu = courseFeesEnrichmentViewModel.FeeUkEu;
-                enrichmentModel.FeeInternational = courseFeesEnrichmentViewModel.FeeInternational;
-                enrichmentModel.FeeDetails = courseFeesEnrichmentViewModel.FeeDetails;
-                enrichmentModel.FinancialSupport = courseFeesEnrichmentViewModel.FinancialSupport;
-            }
-
-            var courseSalaryEnrichmentViewModel = viewModel as CourseSalaryEnrichmentViewModel;
-            if (courseSalaryEnrichmentViewModel != null)
-            {
-
-                var courseLength = courseSalaryEnrichmentViewModel.CourseLength.HasValue ? courseSalaryEnrichmentViewModel.CourseLength.Value.ToString() : null;
-
-                enrichmentModel.CourseLength = courseLength;;
-                enrichmentModel.SalaryDetails = courseSalaryEnrichmentViewModel.SalaryDetails;
-            }
         }
 
         private VariantViewModel LoadViewModel(UserOrganisation org, ApiClient.Course course, bool multipleOrganisations, UcasCourseEnrichmentGetModel ucasCourseEnrichmentGetModel, CourseRouteDataViewModel routeData)

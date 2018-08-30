@@ -67,8 +67,6 @@ namespace GovUk.Education.ManageCourses.Ui
         {
             var result = await _apiClient.Enrichment_GetInstitutionAsync(ucasCode);
 
-            result = result ?? new UcasInstitutionEnrichmentGetModel { EnrichmentModel = new InstitutionEnrichmentModel() { AccreditingProviderEnrichments = new ObservableCollection<AccreditingProviderEnrichment>() } };
-
             return result;
         }
 
