@@ -504,7 +504,7 @@ namespace ManageCoursesUi.Tests
 
             manageApi.Setup(x => x.GetCourseByUcasCode(TestHelper.InstitutionCode, TestHelper.TargetedUcasCode)).ReturnsAsync(testCourse);
 
-            var controller = new CourseController(manageApi.Object, new SearchAndCompareUrlService("http://www.example.com"), new MockFeatureFlags());
+            var controller = new CourseController(manageApi.Object, new CourseMapper(), new SearchAndCompareUrlService("http://www.example.com"), new MockFeatureFlags());
             var result = await controller.Salary(TestHelper.InstitutionCode, TestHelper.AccreditedProviderId, TestHelper.TargetedUcasCode);
 
             var viewResult = result as ViewResult;
@@ -533,7 +533,7 @@ namespace ManageCoursesUi.Tests
 
             manageApi.Setup(x => x.GetCourseByUcasCode(TestHelper.InstitutionCode, TestHelper.TargetedUcasCode)).ReturnsAsync(testCourse);
 
-            var controller = new CourseController(manageApi.Object, new SearchAndCompareUrlService("http://www.example.com"), new MockFeatureFlags());
+            var controller = new CourseController(manageApi.Object, new CourseMapper(), new SearchAndCompareUrlService("http://www.example.com"), new MockFeatureFlags());
 
             controller.ModelState.AddModelError("you", "failed");
 
@@ -571,7 +571,7 @@ namespace ManageCoursesUi.Tests
             var tempDataMock = new Mock<ITempDataDictionary>();
 
 
-            var controller = new CourseController(manageApi.Object, new SearchAndCompareUrlService("http://www.example.com"), new MockFeatureFlags());
+            var controller = new CourseController(manageApi.Object, new CourseMapper(), new SearchAndCompareUrlService("http://www.example.com"), new MockFeatureFlags());
 
             controller.TempData = tempDataMock.Object;
             var result = await controller.SalaryPost(TestHelper.InstitutionCode, TestHelper.AccreditedProviderId, TestHelper.TargetedUcasCode, viewModel);
