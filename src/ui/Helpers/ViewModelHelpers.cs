@@ -38,7 +38,7 @@ namespace GovUk.Education.ManageCourses.Ui.Helpers
         public static string GetSchoolStatus(this SchoolViewModel school)
         {
             var result = "";
-            switch (school.Status.ToLower())
+            switch ((school.Status ?? "").ToLower())
             {
                 case "d":
                     result = "Discontinued";
