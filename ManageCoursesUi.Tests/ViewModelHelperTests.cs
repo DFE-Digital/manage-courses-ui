@@ -24,8 +24,6 @@ namespace ManageCoursesUi.Tests
         [TestCase("PG", "P", "SS", "PGCE with QTS part time with salary")]
         [TestCase("", "f", "sd", "QTS full time")]
         [TestCase("", "F", "SD", "QTS full time")]
-        [TestCase("", "", "SD", "QTS part time")]
-        [TestCase("", "", "", "QTS part time")]
         [TestCase(null, "f", "sd", "QTS full time")]
         [TestCase(null, "F", "SD", "QTS full time")]
         [TestCase("pg", "f", "sd", "PGCE with QTS full time")]
@@ -135,7 +133,6 @@ namespace ManageCoursesUi.Tests
         [Test]
         [TestCase("F", "Full time")]
         [TestCase("f", "Full time")]
-        [TestCase("", "Part time")]
         [TestCase("P", "Part time")]
         [TestCase("p", "Part time")]
         public void TestGetStudyMode(string studyMode, string expectedResult)

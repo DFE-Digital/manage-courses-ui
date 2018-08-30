@@ -11,7 +11,7 @@ namespace GovUk.Education.ManageCourses.Ui.Helpers
     {
         public static string GetCourseVariantType(this Course course)
         {
-            var result = string.IsNullOrWhiteSpace(course.ProfpostFlag) ? "QTS, " : "PGCE with QTS, ";
+            var result = string.IsNullOrWhiteSpace(course.ProfpostFlag) ? "QTS " : "PGCE with QTS ";
 
             result += GetStudyModeText(course.StudyMode);
 
