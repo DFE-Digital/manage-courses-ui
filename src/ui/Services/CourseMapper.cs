@@ -16,6 +16,9 @@ namespace GovUk.Education.ManageCourses.Ui.Services
     {
         public SearchAndCompare.Domain.Models.Course MapToSearchAndCompareCourse(ApiClient.UcasInstitution ucasInstData, ApiClient.Course ucasCourseData, InstitutionEnrichmentModel orgEnrichmentModel, CourseEnrichmentModel courseEnrichmentModel)
         {
+            ucasInstData = ucasInstData ?? new ApiClient.UcasInstitution();
+            ucasCourseData = ucasCourseData ?? new ApiClient.Course();
+            ucasCourseData.Schools = ucasCourseData.Schools ?? new ObservableCollection<School>();
             orgEnrichmentModel = orgEnrichmentModel ?? new InstitutionEnrichmentModel();
             courseEnrichmentModel = courseEnrichmentModel ?? new CourseEnrichmentModel();
 
@@ -33,7 +36,7 @@ namespace GovUk.Education.ManageCourses.Ui.Services
                 };
 
             // todo refactor out from Extension Method
-            var routeName = new CourseVariantViewModel { Route = ucasCourseData.ProgramType }.GetRoute();
+            var routeName = new CourseVariantViewModel { Route = ucasCourseData?.ProgramType ?? "" }.GetRoute();
             var isSalaried = routeName.IndexOf("salaried") > -1;
 
             var mappedCourse = new SearchAndCompare.Domain.Models.Course
@@ -65,20 +68,22 @@ namespace GovUk.Education.ManageCourses.Ui.Services
                         }
                     }
                 ).ToList()),
-                CourseSubjects = new Collection<CourseSubject>(ucasCourseData.Subjects.Split(", ").Select(subject =>
-                new CourseSubject
-                {
-                    Subject = new Subject
-                    {
-                        Name = subject
-                    }
+                CourseSubjects = string.IsNullOrWhiteSpace(ucasCourseData.Subjects) 
+                    ? new Collection<CourseSubject>() 
+                    : new Collection<CourseSubject>(ucasCourseData.Subjects.Split(", ").Select(subject =>
+                        new CourseSubject
+                        {
+                            Subject = new Subject
+                            {
+                                Name = subject
+                            }
 
-                }).ToList()),
+                        }).ToList()),
                 Fees = new Fees
                 {
-                    Uk = (int) courseEnrichmentModel.FeeUkEu,
-                    Eu = (int) courseEnrichmentModel.FeeUkEu,
-                    International = (int) courseEnrichmentModel.FeeInternational,
+                    Uk = (int) (courseEnrichmentModel.FeeUkEu ?? 0), 
+                    Eu = (int) (courseEnrichmentModel.FeeUkEu ?? 0),
+                    International = (int) (courseEnrichmentModel.FeeInternational ?? 0),
                 },
                 
                 IsSalaried = isSalaried,                
@@ -95,7 +100,7 @@ namespace GovUk.Education.ManageCourses.Ui.Services
                 ApplicationsAcceptedFrom = ucasCourseData.Schools.Select(x => {
                         DateTime parsed;                    
                         return DateTime.TryParse(x.ApplicationsAcceptedFrom, out parsed) ? (DateTime?) parsed : null;
-                    }).Where(x => x != null)
+                    }).Where(x => x != null && x.HasValue)
                     .OrderBy(x => x.Value)
                     .FirstOrDefault(),
 

@@ -129,6 +129,13 @@ namespace ManageCoursesUi.Tests.Services
             res.PartTime.Should().Be(VacancyStatus.Vacancies);
         } 
 
+        [Test]
+
+        public void MapToSearchAndCompareCourse_Nulls()
+        {
+            var mapper = new CourseMapper();
+            Assert.DoesNotThrow(() => mapper.MapToSearchAndCompareCourse(null, null, null, null));
+        }
 
     }
 }
