@@ -30,31 +30,17 @@ namespace ManageCoursesUi.Tests
         {
             var exceptionContext = GetExceptionContext();
 
-            Assert.IsNull(exceptionContext.Exception);
-            Assert.IsNull(exceptionContext.Result);
-
-            sut.OnException(exceptionContext);
-
-            Assert.IsNull(exceptionContext.Exception);
-            Assert.IsNull(exceptionContext.Result);
-        }
-
-        [Test]
-        public void OnException_Exception()
-        {
-            var exceptionContext = GetExceptionContext();
-
             exceptionContext.Exception = new Exception();
             Assert.IsNotNull(exceptionContext.Exception);
             Assert.IsNull(exceptionContext.Result);
 
             sut.OnException(exceptionContext);
 
+            Assert.IsTrue(exceptionContext.ExceptionHandled);
             Assert.IsNotNull(exceptionContext.Exception);
-            Assert.IsNull(exceptionContext.Result);
-            Assert.IsFalse(exceptionContext.ExceptionHandled);
+            Assert.IsNotNull(exceptionContext.Result as RedirectToActionResult);
+            Assert.AreEqual(500, (exceptionContext.Result as RedirectToActionResult).RouteValues["statusCode"]);
         }
-
 
         [Test]
         public void OnException_SwaggerException()
@@ -67,9 +53,10 @@ namespace ManageCoursesUi.Tests
 
             sut.OnException(exceptionContext);
 
-            Assert.IsNotNull(exceptionContext.Exception);
-            Assert.IsNull(exceptionContext.Result);
-            Assert.IsFalse(exceptionContext.ExceptionHandled);
+            Assert.IsNotNull(exceptionContext.Exception);            
+            Assert.IsNotNull(exceptionContext.Result as RedirectToActionResult);
+            Assert.AreEqual(500, (exceptionContext.Result as RedirectToActionResult).RouteValues["statusCode"]);
+            Assert.True(exceptionContext.ExceptionHandled);
 
         }
 
