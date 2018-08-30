@@ -112,7 +112,26 @@
           </dl>
         </div>
 
-        @if (!@Model.IsSalary) {
+        @if (@Model.IsSalary) {
+          <div class="course-parts__item">
+            <h3 class="course-parts__title">Course length and salary</h3>
+            <a class="course-parts__action" href="@Url.Action("Salary", "Course", Model.RouteData)">Edit</a>
+            <dl class="course-parts__fields">
+              <dt class="course-parts__fields__label">
+                Course length
+              </dt>
+              <dd class="course-parts__fields__value">
+                @courseEnrichment?.CourseLength.DisplayText()
+              </dd>
+              <dt class="course-parts__fields__label">
+                Salary
+              </dt>
+              <dd class="course-parts__fields__value">
+                @courseEnrichment?.SalaryDetails.DisplayText()
+              </dd>
+            </dl>
+          </div>
+        } else {
           <div class="course-parts__item">
             <h3 class="course-parts__title">Course length and fees</h3>
             <a class="course-parts__action" href="@Url.Action("Fees", "Course", Model.RouteData)">Edit</a>
