@@ -29,6 +29,10 @@ namespace GovUk.Education.ManageCourses.Ui.ViewModels
         [RegularExpression(@"^\s*(\S+\s+|\S+$){0,250}$", ErrorMessage = "Reduce the word count for financial support")]
         public string FinancialSupport { get; set; }
 
+        // course salary
+        [RegularExpression(@"^\s*(\S+\s+|\S+$){0,250}$", ErrorMessage = "Reduce the word count for salary")]
+        public string Salary { get; set; }
+
         // course requirements
         [RegularExpression(@"^\s*(\S+\s+|\S+$){0,100}$", ErrorMessage = "Reduce the word count for details about the required qualifications")]
         [Required(ErrorMessage = "Give details about the required qualifications")]

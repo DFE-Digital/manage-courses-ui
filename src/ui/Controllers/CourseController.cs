@@ -183,6 +183,46 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
         }
 
         [HttpGet]
+        [Route("{instCode}/course/{accreditingProviderId=self}/{ucasCode}/salary")]
+        public async Task<IActionResult> Salary(string instCode, string accreditingProviderId, string ucasCode)
+        {
+            var courseDetails = await _manageApi.GetCourseByUcasCode(instCode, ucasCode);
+            var ucasCourseEnrichmentGetModel = await _manageApi.GetEnrichmentCourse(instCode, ucasCode);
+            var routeData = GetCourseRouteDataViewModel(instCode, accreditingProviderId, ucasCode);
+            var courseInfo = new CourseInfoViewModel { ProgrammeCode = courseDetails.CourseCode, Name = courseDetails.Name };
+
+            var enrichmentModel = ucasCourseEnrichmentGetModel?.EnrichmentModel ?? new CourseEnrichmentModel();
+
+            var model = new CourseSalaryEnrichmentViewModel
+            {
+                CourseLength = enrichmentModel?.CourseLength.GetCourseLength(),
+                Salary = enrichmentModel?.FeeDetails,
+                FinancialSupport = enrichmentModel?.FinancialSupport,
+                RouteData = routeData,
+                CourseInfo = courseInfo
+            };
+            return View(model);
+        }
+
+        [HttpPost]
+        [Route("{instCode}/course/{accreditingProviderId=self}/{ucasCode}/salary")]
+        public async Task<IActionResult> SalaryPost(string instCode, string accreditingProviderId, string ucasCode, CourseSalaryEnrichmentViewModel viewModel)
+        {
+            if (!ModelState.IsValid)
+            {
+                var routeData = GetCourseRouteDataViewModel(instCode, accreditingProviderId, ucasCode);
+                var courseDetails = await _manageApi.GetCourseByUcasCode(instCode, ucasCode);
+                var courseInfo = new CourseInfoViewModel { ProgrammeCode = courseDetails.CourseCode, Name = courseDetails.Name };
+                viewModel.RouteData = routeData;
+                viewModel.CourseInfo = courseInfo;
+                return View("Salary", viewModel);
+            }
+            await SaveEnrichment(instCode, ucasCode, viewModel);
+            SetSucessMessage();
+            return RedirectToAction("Variants", new { instCode, accreditingProviderId, ucasCode });
+        }
+
+        [HttpGet]
         [Route("{instCode}/course/{accreditingProviderId=self}/{ucasCode}/fees-and-length")]
         public async Task<IActionResult> Fees(string instCode, string accreditingProviderId, string ucasCode)
         {
