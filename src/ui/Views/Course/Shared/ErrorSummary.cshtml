@@ -1,0 +1,26 @@
+﻿@using Microsoft.AspNetCore.Mvc.ModelBinding;
+@using System.Linq;
+
+
+@if (!@ViewContext.ModelState.IsValid)
+{
+    <div class="govuk-error-summary" role="alert" aria-labelledby="error-summary-heading" tabindex="-1">
+        <h2 class="govuk-heading-m govuk-error-summary__title" id="error-summary-heading">
+            You&#8217;ll need to correct some information.
+        </h2>
+
+        <div class="govuk-error-summary__body">
+            <ul class="govuk-list govuk-error-summary__list">
+
+                @foreach (var state in ViewContext.ModelState)
+                {
+                    foreach (var error in state.Value.Errors)
+                    {
+                        <li><a href="#section-@state.Key">@error.ErrorMessage</a></li>
+                    }
+                }
+
+            </ul>
+        </div>
+    </div>
+}

@@ -142,7 +142,8 @@ namespace ManageCoursesUi.Tests.Helpers
                                 Address2 = "address2",
                                 Address3 = "address3",
                                 Address4 = "address4",
-                                PostCode = "AS123D"
+                                PostCode = "AS123D",
+                                Status = "R"
                             }
                         }
                     }

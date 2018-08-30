@@ -3,8 +3,11 @@ using System.Collections.Generic;
 
 namespace GovUk.Education.ManageCourses.Ui.ViewModels
 {
-    public class FromUcasViewModel
+    public class VariantViewModel
     {
+        public bool AllowPreview { get; set; }
+        public bool AllowPublish { get;  set; }
+        public bool AllowLiveView { get;  set; }
         public string OrganisationName { get; set; }
         public string OrganisationId { get; set; }
         public bool MultipleOrganisations { get; set; }
@@ -13,6 +16,8 @@ namespace GovUk.Education.ManageCourses.Ui.ViewModels
         public CourseVariantViewModel Course { get; set; }
         public CourseEnrichmentViewModel CourseEnrichment { get; set; }
         public CourseRouteDataViewModel RouteData { get; set; }
+        public Uri LiveSearchUrl { get; set; }
+        public bool IsSalary { get; set; }
     }
 
     public class CourseVariantViewModel
@@ -29,6 +34,7 @@ namespace GovUk.Education.ManageCourses.Ui.ViewModels
         public string Qualifications { get; set; }
         public string StudyMode { get; set; }
         public string Regions { get; set; }
+        public string Status { get; set; }
         public IEnumerable<SchoolViewModel> Schools { get; set; }
 
     }
@@ -38,6 +44,7 @@ namespace GovUk.Education.ManageCourses.Ui.ViewModels
         public string LocationName { get; set; }
         public string Address { get; set; }
         public string Code { get; set; }
+        public string Status { get; set; }
         public string FullTimeVacancies { get; set; }
         public string PartTimeVacancies { get; set; }
 

@@ -1,18 +1,18 @@
 @{
   var type = (string)TempData.Get("MessageType");
   var title = (string)TempData.Get("MessageTitle");
-  var body = (string)TempData.Get("MessageBody");
+  var body = (string)TempData.Get("MessageBodyHtml");
 }
 
 @if (type != null)
 {
   <div class="govuk-@type-summary" role="alert">
-    <h3 class="govuk-heading-m govuk-@type-summary__title">@title</h3>
+    <h3 class="govuk-@type-summary__title">@title</h3>
 
     @if (body != null)
     {
       <div class="govuk-@type-summary__body">
-        <p clas="govuk-body">@body</p>
+        <p clas="govuk-body">@Html.Raw(body)</p>
       </div>
     }
   </div>

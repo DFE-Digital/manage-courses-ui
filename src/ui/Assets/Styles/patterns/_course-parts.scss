@@ -8,7 +8,9 @@
     position: relative;
 
     &:first-of-type {
+      border: none;
       margin-top: 0;
+      padding-top: 0;
     }
   }
 
@@ -42,6 +44,10 @@
       @include govuk-responsive-margin(4, "bottom");
       color: $govuk-secondary-text-colour;
       margin-left: 0;
+      max-width: 500px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
 
       &:last-of-type {
         margin-bottom: 0;

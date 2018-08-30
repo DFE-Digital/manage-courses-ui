@@ -11,15 +11,50 @@ namespace GovUk.Education.ManageCourses.Ui.Helpers
     {
         public static string GetCourseVariantType(this Course course)
         {
-            var result = string.IsNullOrWhiteSpace(course.ProfpostFlag) ? "QTS, " : "PGCE with QTS, ";
+            var result = string.IsNullOrWhiteSpace(course.ProfpostFlag) ? "QTS " : "PGCE with QTS ";
 
-            result += GetStudyModeText(course.StudyMode);
-
-            result += course.ProgramType.Equals("SS", StringComparison.InvariantCultureIgnoreCase) ? " with salary" : "";
+            result += course.StudyMode.ToLower().Equals("f", StringComparison.InvariantCultureIgnoreCase) ? "full time" : "part time";
+            result += course.ProgramType.ToLower().Equals("ss", StringComparison.InvariantCultureIgnoreCase) ? " with salary" : "";
 
             return result;
         }
-
+        public static string GetCourseStatus(this Course course)
+        {
+            var result = "";
+            if (course.Schools.Any(s => s.Status.ToLower() == "r"))
+            {
+                result = "Running";
+            }
+            else if (course.Schools.Any(s => s.Status.ToLower() == "n"))
+            {
+                result = "New – not yet running";
+            }
+            else if (course.Schools.Any(s => s.Status.ToLower() == "d") || course.Schools.Any(s => s.Status.ToLower() == "s"))
+            {
+                result = "Not running";
+            }
+            return result;
+        }
+        public static string GetSchoolStatus(this SchoolViewModel school)
+        {
+            var result = "";
+            switch (school.Status.ToLower())
+            {
+                case "d":
+                    result = "Discontinued";
+                    break;
+                case "r":
+                    result = "Running";
+                    break;
+                case "n":
+                    result = "New";
+                    break;
+                case "s":
+                    result = "Suspended";
+                    break;
+            }
+            return result;
+        }
         public static string GetRoute(this CourseVariantViewModel viewModel)
         {
             var result = "";
@@ -65,7 +100,7 @@ namespace GovUk.Education.ManageCourses.Ui.Helpers
 
         public static string GetStudyMode(this CourseVariantViewModel viewModel)
         {
-            return UppercaseFirst(GetStudyModeText(viewModel.StudyMode));
+            return viewModel.StudyMode.Equals("F", StringComparison.InvariantCultureIgnoreCase) ? "Full time" : "Part time";
         }
 
         public static string GetAgeRange(this CourseVariantViewModel viewModel)
@@ -139,31 +174,6 @@ namespace GovUk.Education.ManageCourses.Ui.Helpers
             }
 
             return result;
-        }
-
-        private static string GetStudyModeText(string studyMode)
-        {
-            var returnString = string.Empty;
-            if (studyMode.Equals("F", StringComparison.InvariantCultureIgnoreCase))
-            {
-                returnString = "full time";
-            }
-            else if (studyMode.Equals("P", StringComparison.InvariantCultureIgnoreCase))
-            {
-                returnString = "part time";
-            }
-            else if (studyMode.Equals("B", StringComparison.InvariantCultureIgnoreCase))
-            {
-                returnString = "full time or part time";
-            }
-
-            return returnString;
-        }
-        private static string UppercaseFirst(string str)
-        {
-            if (string.IsNullOrEmpty(str))
-                return string.Empty;
-            return char.ToUpper(str[0]) + str.Substring(1).ToLower();
         }
     }
 }
