@@ -13,7 +13,7 @@ namespace GovUk.Education.ManageCourses.Ui.Helpers
         {
             var result = string.IsNullOrWhiteSpace(course.ProfpostFlag) ? "QTS" : "PGCE with QTS";
 
-            if ((!string.IsNullOrWhiteSpace(result)) && course.StudyMode.Equals("B", StringComparison.InvariantCultureIgnoreCase))
+            if ((!string.IsNullOrWhiteSpace(result)) && string.Equals(course.StudyMode, "B", StringComparison.InvariantCultureIgnoreCase))
             {
                 result += ", ";
             }
@@ -24,7 +24,9 @@ namespace GovUk.Education.ManageCourses.Ui.Helpers
 
             result += GetStudyModeText(course.StudyMode);
 
-            result += course.ProgramType.ToLower().Equals("ss", StringComparison.InvariantCultureIgnoreCase) ? " with salary" : "";
+            result += string.Equals(course.ProgramType, "ss", StringComparison.InvariantCultureIgnoreCase) 
+                ? " with salary" 
+                : "";
 
             return result;
         }
