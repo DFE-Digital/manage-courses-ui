@@ -2,8 +2,7 @@
 @{
   Layout = "_Layout";
   var course_length = ViewData.ModelState["CourseLength"] != null && ViewData.ModelState["CourseLength"].Errors.Any();
-  var salary = ViewData.ModelState["Salary"] != null && ViewData.ModelState["Salary"].Errors.Any();
-  var financial_support = ViewData.ModelState["FinancialSupport"] != null && ViewData.ModelState["FinancialSupport"].Errors.Any();
+  var salary = ViewData.ModelState["SalaryDetails"] != null && ViewData.ModelState["SalaryDetails"].Errors.Any();
 }
 
 <a href="@Url.Action("Variants", "Course", Model.RouteData)" class="govuk-back-link">Back</a>
@@ -16,7 +15,7 @@
         Course length and fees
       </h1>
       @Html.Partial("ErrorSummary")
-      <form asp-controller="Course" asp-action="Fees" method="post" data-module="form">
+      <form asp-controller="Course" asp-action="Salary" method="post" data-module="form">
         <div class="govuk-form-group">
           <fieldset class="govuk-fieldset">
             <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
@@ -51,27 +50,14 @@
         </ul>
         <div class="govuk-character-count" data-module="character-count" data-maxwords="250">
           <div id="Salary-wrapper" class="govuk-form-group @(salary ? " govuk-form-group--error " : " ")">
-            <label asp-for="Salary" class="govuk-label">Salary</label>
+            <label asp-for="SalaryDetails" class="govuk-label">Salary</label>
             @if (salary) {
-              <span asp-validation-for="Salary" class="govuk-error-message"></span>
+              <span asp-validation-for="SalaryDetails" class="govuk-error-message"></span>
             }
-            <textarea asp-for="Salary" class="govuk-textarea js-character-count" rows="15" data-module="character-count"></textarea>
+            <textarea asp-for="SalaryDetails" class="govuk-textarea js-character-count" rows="15" data-module="character-count"></textarea>
           </div>
         </div>
-        <hr class="govuk-section-break govuk-section-break--l">
-        <h2 class="govuk-heading-l">Financial support you offer</h2>
-        <p class="govuk-body">If applicable, say more about the financial support you offer for this course. For example, any bursaries available.</p>
-        <p class="govuk-body">You don’t need to add details of any DfE bursaries and subject scholarships here. These will be published automatically to your course page.</p>
-        <div class="govuk-character-count" data-module="character-count" data-maxwords="250">
-          <div id="FinancialSupport-wrapper" class="govuk-form-group @(financial_support ? " govuk-form-group--error " : " ")">
-            <label asp-for="FinancialSupport" class="govuk-label govuk-!-font-weight-bold">Financial support you offer (optional)</label>
-            @if (financial_support) {
-              <span asp-validation-for="FinancialSupport" class="govuk-error-message"></span>
-            }
-            <textarea asp-for="FinancialSupport" class="govuk-textarea js-character-count" rows="15" data-module="character-count"></textarea>
-          </div>
-        </div>
-         <div class="govuk-form">
+        <div class="govuk-form">
           <input type="submit" class="govuk-button" value="Save">
         </div>
         <p class="govuk-body">

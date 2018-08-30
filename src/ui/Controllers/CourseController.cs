@@ -196,8 +196,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             var model = new CourseSalaryEnrichmentViewModel
             {
                 CourseLength = enrichmentModel?.CourseLength.GetCourseLength(),
-                Salary = enrichmentModel?.FeeDetails,
-                FinancialSupport = enrichmentModel?.FinancialSupport,
+                SalaryDetails = enrichmentModel?.SalaryDetails,
                 RouteData = routeData,
                 CourseInfo = courseInfo
             };
@@ -319,6 +318,16 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
                 enrichmentModel.FeeDetails = courseFeesEnrichmentViewModel.FeeDetails;
                 enrichmentModel.FinancialSupport = courseFeesEnrichmentViewModel.FinancialSupport;
             }
+
+            var courseSalaryEnrichmentViewModel = viewModel as CourseSalaryEnrichmentViewModel;
+            if (courseSalaryEnrichmentViewModel != null)
+            {
+
+                var courseLength = courseSalaryEnrichmentViewModel.CourseLength.HasValue ? courseSalaryEnrichmentViewModel.CourseLength.Value.ToString() : null;
+
+                enrichmentModel.CourseLength = courseLength;;
+                enrichmentModel.SalaryDetails = courseSalaryEnrichmentViewModel.SalaryDetails;
+            }
         }
 
         private VariantViewModel LoadViewModel(UserOrganisation org, Course course, bool multipleOrganisations, UcasCourseEnrichmentGetModel ucasCourseEnrichmentGetModel, CourseRouteDataViewModel routeData)
@@ -405,6 +414,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
                 FeeInternational = enrichmentModel.FeeInternational,
                 FeeDetails = enrichmentModel.FeeDetails,
                 FinancialSupport = enrichmentModel.FinancialSupport,
+                SalaryDetails = enrichmentModel.SalaryDetails,
                 DraftLastUpdatedUtc = ucasCourseEnrichmentGetModel.UpdatedTimestampUtc,
                 LastPublishedUtc = ucasCourseEnrichmentGetModel.LastPublishedTimestampUtc
             };

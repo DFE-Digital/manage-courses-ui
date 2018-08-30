@@ -9,10 +9,7 @@ namespace GovUk.Education.ManageCourses.Ui.ViewModels
         public CourseLength? CourseLength { get; set; }
 
         [RegularExpression(@"^\s*(\S+\s+|\S+$){0,250}$", ErrorMessage = "Reduce the word count for salary")]
-        public string Salary { get; set; }
-
-        [RegularExpression(@"^\s*(\S+\s+|\S+$){0,250}$", ErrorMessage = "Reduce the word count for financial support")]
-        public string FinancialSupport { get; set; }
+        public string SalaryDetails { get; set; }
 
         public CourseRouteDataViewModel RouteData { get; set; }
 
