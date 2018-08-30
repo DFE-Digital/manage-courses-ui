@@ -260,23 +260,21 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
 
         private List<Provider> GetProviders(InstitutionCourses institutionCourses)
         {
-            var providerNames = institutionCourses.Courses.Select(x => x.AccreditingProviderName).Distinct().ToList();
+            var uniqueAccreditingProviderIds = institutionCourses.Courses.Select(c => c.AccreditingProviderId).Distinct();
             var providers = new List<Provider>();
-            foreach (var providerName in providerNames)
+            foreach (var uniqueAccreditingProviderId in uniqueAccreditingProviderIds)
             {
-                var providerCourses = institutionCourses.Courses.Where(x => x.AccreditingProviderName == providerName).ToList();
-                var providerId = providerCourses.Select(x => x.AccreditingProviderId).Distinct().SingleOrDefault(); //should all be the same
-
-                var provider = new Provider
+                var name = institutionCourses.Courses.First(c => c.AccreditingProviderId == uniqueAccreditingProviderId)
+                    .AccreditingProviderName;
+                var courses = institutionCourses.Courses.Where(c => c.AccreditingProviderId == uniqueAccreditingProviderId).ToList();
+                providers.Add(new Provider
                 {
-                    ProviderId = providerId,
-                    ProviderName = providerName,
-                    Courses = providerCourses,
-                    TotalCount = providerCourses.Count
-                };
-                providers.Add(provider);
+                    ProviderId = uniqueAccreditingProviderId,
+                    ProviderName = name,
+                    Courses = courses,
+                    TotalCount = courses.Count,
+                });
             }
-
             return providers;
         }
 
