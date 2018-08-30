@@ -21,15 +21,15 @@ namespace GovUk.Education.ManageCourses.Ui.Helpers
         public static string GetCourseStatus(this Course course)
         {
             var result = "";
-            if (course.Schools.Any(s => s.Status.ToLower() == "r"))
+            if (course.Schools.Any(s => String.Equals(s.Status, "r", StringComparison.InvariantCultureIgnoreCase)))
             {
                 result = "Running";
             }
-            else if (course.Schools.Any(s => s.Status.ToLower() == "n"))
+            else if (course.Schools.Any(s => String.Equals(s.Status, "n", StringComparison.InvariantCultureIgnoreCase)))
             {
                 result = "New – not yet running";
             }
-            else if (course.Schools.Any(s => s.Status.ToLower() == "d") || course.Schools.Any(s => s.Status.ToLower() == "s"))
+            else if (course.Schools.Any(s => String.Equals(s.Status, "d", StringComparison.InvariantCultureIgnoreCase)) || course.Schools.Any(s => String.Equals(s.Status, "s", StringComparison.InvariantCultureIgnoreCase)))
             {
                 result = "Not running";
             }

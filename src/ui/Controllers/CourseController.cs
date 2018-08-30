@@ -50,16 +50,6 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
 
             var viewModel = LoadViewModel(org, course, multipleOrganisations, ucasCourseEnrichmentGetModel, routeData);
 
-            if (viewModel.Course.Status.Equals("Running", StringComparison.InvariantCultureIgnoreCase))
-                return View(viewModel);
-             //setup the alert message box for non running courses
-            this.TempData.Add("MessageType", "notice");
-            this.TempData.Add("MessageTitle",
-                viewModel.Course.Status.Equals("Not running", StringComparison.InvariantCultureIgnoreCase)
-                    ? "This course is not running."
-                    : "This course is new and not yet running.");
-            this.TempData.Add("MessageBodyHtml", "It won’t appear online. To publish it you need to set the status of at least one training location to “running” in <a href='https://update.ucas.co.uk/cgi-bin/hsrun.hse/NetUpdate/netupdate2/netupdate2.hjx;start=netupdate2.HsLoginPage.run'>UCAS web-link</a>.");
-
             return View("Variants", viewModel);
         }
 

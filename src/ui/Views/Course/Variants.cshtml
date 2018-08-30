@@ -20,6 +20,27 @@
 
   @Html.Partial("~/Views/Shared/_Alerts.cshtml")
 
+  @if(Model.Course.StatusAsEnum != CourseVariantStatus.Running)
+  {
+    <div class="govuk-notice-summary" role="alert">
+      <h3 class="govuk-notice-summary__title">
+        @if(Model.Course.StatusAsEnum == CourseVariantStatus.New)
+        {
+          <text>This course is new and not yet running.</text>
+        }
+        else 
+        {
+          <text>This course is not running.</text>
+        }
+      </h3>
+      <div class="govuk-notice-summary__body">
+        <p clas="govuk-body">
+          It won&#8217;t appear online. To publish it you need to set the status of at least one training location to &ldquo;running&rdquo; in <a href='https://update.ucas.co.uk/cgi-bin/hsrun.hse/NetUpdate/netupdate2/netupdate2.hjx;start=netupdate2.HsLoginPage.run'>UCAS web-link</a>.
+        </p>
+      </div>
+    </div>
+  }
+
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
       <div class="course-parts">

@@ -35,9 +35,16 @@ namespace GovUk.Education.ManageCourses.Ui.ViewModels
         public string StudyMode { get; set; }
         public string Regions { get; set; }
         public string Status { get; set; }
+
+        public CourseVariantStatus StatusAsEnum => 
+                string.Equals("running", Status ?? "", StringComparison.InvariantCultureIgnoreCase) ? CourseVariantStatus.Running
+              : string.Equals("not running", Status ?? "", StringComparison.InvariantCultureIgnoreCase) ? CourseVariantStatus.NotRunning
+              : CourseVariantStatus.New;            
+        
         public IEnumerable<SchoolViewModel> Schools { get; set; }
 
     }
+    
 
     public class SchoolViewModel
     {
@@ -60,4 +67,10 @@ namespace GovUk.Education.ManageCourses.Ui.ViewModels
             return DateTime.TryParse(dateToFormat, out var date) ? date.ToString("dd MMM yyyy") : dateToFormat;
         }
     }
+    public enum CourseVariantStatus
+    {
+        Running,
+        NotRunning,
+        New
+    };
 }
