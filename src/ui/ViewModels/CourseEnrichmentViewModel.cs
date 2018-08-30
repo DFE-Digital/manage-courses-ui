@@ -17,8 +17,11 @@ namespace GovUk.Education.ManageCourses.Ui.ViewModels
         [Required(ErrorMessage = "Give details about school placements")]
         public string HowSchoolPlacementsWork { get; set; }
 
-        // course length and fees
+
+        [Required(ErrorMessage = "Give details about course length")]// course length and fees
         public CourseLength? CourseLength { get; set; }
+
+        [Required(ErrorMessage = "Give details about the fee for UK and EU students")]
         public decimal? FeeUkEu { get; set; }
         public decimal? FeeInternational { get; set; }
 
@@ -27,10 +30,12 @@ namespace GovUk.Education.ManageCourses.Ui.ViewModels
         public string FeeDetails { get; set; }
 
         [RegularExpression(@"^\s*(\S+\s+|\S+$){0,250}$", ErrorMessage = "Reduce the word count for financial support")]
+
         public string FinancialSupport { get; set; }
 
         // course salary
         [RegularExpression(@"^\s*(\S+\s+|\S+$){0,250}$", ErrorMessage = "Reduce the word count for salary")]
+        [Required(ErrorMessage = "Give details about salary")]
         public string SalaryDetails { get; set; }
 
         // course requirements
