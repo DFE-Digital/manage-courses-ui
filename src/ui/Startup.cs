@@ -20,7 +20,6 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using IdentityModel.Client;
 using Microsoft.AspNetCore.SpaServices.Webpack;
-using GovUk.Education.SearchAndCompare.UI.Shared.Services;
 using GovUk.Education.SearchAndCompare.UI.Shared.ViewComponents;
 using System.Reflection;
 using Microsoft.AspNetCore.Mvc.Razor;
@@ -229,7 +228,6 @@ namespace GovUk.Education.ManageCourses.Ui
             services.AddSingleton<ManageCoursesConfig, ManageCoursesConfig>();
             services.AddSingleton<IManageApi, ManageApi>();
             services.AddScoped<ICourseMapper, CourseMapper>();
-            services.AddScoped<ICourseDetailsService, CourseDetailsService>();
             services.AddSingleton(serviceProvider =>
             {
                 var manageCoursesApiClientConfiguration = serviceProvider.GetService<IManageCoursesApiClientConfiguration>();

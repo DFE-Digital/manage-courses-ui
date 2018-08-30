@@ -8,6 +8,8 @@ using GovUk.Education.ManageCourses.Ui.Helpers;
 using GovUk.Education.ManageCourses.Ui.Services;
 using GovUk.Education.ManageCourses.Ui.ViewModels;
 using GovUk.Education.ManageCourses.Ui.ViewModels.Enums;
+using GovUk.Education.SearchAndCompare.Domain.Models;
+using GovUk.Education.SearchAndCompare.UI.Shared.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -18,12 +20,14 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
     public class CourseController : CommonAttributesControllerBase
     {
         private readonly IManageApi _manageApi;
+        private readonly ICourseMapper courseMapper;
         private readonly ISearchAndCompareUrlService searchAndCompareUrlService;
         private readonly IFeatureFlags featureFlags;
 
-        public CourseController(IManageApi manageApi, ISearchAndCompareUrlService searchAndCompareUrlHelper, IFeatureFlags featureFlags)
+        public CourseController(IManageApi manageApi, ICourseMapper courseMapper, ISearchAndCompareUrlService searchAndCompareUrlHelper, IFeatureFlags featureFlags)
         {
             _manageApi = manageApi;
+            this.courseMapper = courseMapper;
             this.searchAndCompareUrlService = searchAndCompareUrlHelper;
             this.featureFlags = featureFlags;
         }
@@ -90,9 +94,27 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
                 return RedirectToAction("Variants", new { instCode, accreditingProviderId, ucasCode });
             }
 
-            return View(new CourseReferenceViewModel{
-                CourseCode = ucasCode,
-                InstCode = instCode
+            var ucasInstData = _manageApi.GetUcasInstitution(instCode).Result;
+            var ucasCourseData = _manageApi.GetCourseByUcasCode(instCode, ucasCode).Result;
+            var orgEnrichmentData = _manageApi.GetEnrichmentOrganisation(instCode).Result;
+            var courseEnrichmentData = _manageApi.GetEnrichmentCourse(instCode, ucasCode).Result;
+
+            if (ucasInstData == null || ucasCourseData == null)
+            {
+                return NotFound();
+            }
+
+            var course = courseMapper.MapToSearchAndCompareCourse(
+                ucasInstData,
+                ucasCourseData,
+                orgEnrichmentData?.EnrichmentModel,
+                courseEnrichmentData?.EnrichmentModel);
+
+            return View(new SearchAndCompare.UI.Shared.ViewModels.CourseDetailsViewModel{
+                AboutYourOrgLink = Url.Action("About", "Organisation", new { ucasCode = instCode }),
+                PreviewMode = true,
+                Course = course,
+                Finance = new FinanceViewModel(course, new FeeCaps())
             });
         }
 
@@ -281,7 +303,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             }
         }
 
-        private VariantViewModel LoadViewModel(UserOrganisation org, Course course, bool multipleOrganisations, UcasCourseEnrichmentGetModel ucasCourseEnrichmentGetModel, CourseRouteDataViewModel routeData)
+        private VariantViewModel LoadViewModel(UserOrganisation org, ApiClient.Course course, bool multipleOrganisations, UcasCourseEnrichmentGetModel ucasCourseEnrichmentGetModel, CourseRouteDataViewModel routeData)
         {
             var courseVariant =
                 new CourseVariantViewModel
