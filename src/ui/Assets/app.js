@@ -21,14 +21,17 @@ for (var i = $textareas.length - 1; i >= 0; i--) {
 // Check for changes in form and alert user if navigating away
 // TODO: Move into reusable constructor
 var $form = document.querySelector('[data-module="form"]');
-var $originalFormContent = serialize($form);
-$form.addEventListener("submit", function(event) {
-  window.onbeforeunload = null
-});
+if ($form) {
+  var $form = document.querySelector('[data-module="form"]');
+  var $originalFormContent = serialize($form);
+  $form.addEventListener("submit", function(event) {
+    window.onbeforeunload = null
+  });
 
-window.onbeforeunload = function() {
-  if (serialize($form) != $originalFormContent)
-  return 'You have unsaved changes, are you sure you want to leave?'
+  window.onbeforeunload = function() {
+    if (serialize($form) != $originalFormContent)
+    return 'You have unsaved changes, are you sure you want to leave?'
+  }
 }
 
 if (process.env.NODE_ENV == 'development') {
