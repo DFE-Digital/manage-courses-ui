@@ -8,9 +8,9 @@
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds">
     <h2 class="govuk-heading-l">Step 1. About your organisation</h2>
-    <p class="govuk-body">Your organisation information and contact details will show on every course. They are edited and published separately from course information.</p>
-    <p class="govuk-body">You need to complete your organisation fields and publish them.</p>
-    <p class="govuk-body"><a class="govuk-link" href="@Url.Action("About", "Organisation")">Fill-in your organisation information</a></p>
+    <p class="govuk-body">You need to add a description of your organisation - this is a chance to tell applicants why they should train with you. You should also say what you do for candidates with disabilities and other needs, and check your contact details to make sure they're correct.</p>
+    <p class="govuk-body">Once you’ve published your organisation information, it will show on each of your course pages. You’ll have to add your course details separately in Step 2 below.</p>
+    <p class="govuk-body"><a class="govuk-link" href="@Url.Action("About", "Organisation")">Fill in your organisation information</a></p>
   </div>
 </div>
 
@@ -20,12 +20,14 @@
   <div class="govuk-grid-column-two-thirds">
     <h2 class="govuk-heading-l">Step 2. Course details</h2>
     <h3 class="govuk-heading-m">Preview and publish courses</h3>
-    <p class="govuk-body">You must complete and publish each course. You should preview your course to see how it will look to applicants before you publish.</p>
-    <p class="govuk-body">Your course information will not be seen by applicants until you have published it.</p>
+    <p class="govuk-body">Give more details about each of your courses - including their structure and content, information about fees and financial help, and the qualifications needed for them.</p>
+    <p class="govuk-body">Make sure you preview each course before you publish it, to see how it will look online to applicants. Your courses won’t be seen by applicants until the search service, Find postgraduate teacher training, is launched in October.</p>
     <h3 class="govuk-heading-m">Copying content between courses</h3>
-    <p class="govuk-body">Once you’ve completed a single course you can use a ‘copy course’ feature to duplicate information in other courses.</p>
+    <p class="govuk-body">Once you’ve saved a course, you can use the ‘copy course’ feature to copy information from it to other courses.</p>
   </div>
 </div>
+
+<hr class="govuk-section-break govuk-section-break--m">
 
   @foreach (var provider in Model.Providers)
   {
@@ -64,11 +66,11 @@
   }
 </section>
 
-<hr class="govuk-section-break govuk-section-break--visible govuk-section-break--l">
+<hr class="govuk-section-break govuk-section-break--visible govuk-section-break--xl">
 
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds">
-    <h2 class="govuk-heading-l">Request access for someone</h2>
+    <h2 class="govuk-heading-l">Request access for someone else</h2>
     <p class="govuk-body">You can request a DfE Sign-in account for others who manage your courses.</p>
     <p class="govuk-body"><a class="govuk-link" href="@Url.Action("RequestAccess", "Organisation")">Request access for someone else</a></p>
   </div>
