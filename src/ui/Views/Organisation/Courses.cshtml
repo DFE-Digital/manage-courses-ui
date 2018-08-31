@@ -41,6 +41,7 @@
           <th class="govuk-table__header ucas-info-table__subject-col" scope="col">Subject</th>
           <th class="govuk-table__header ucas-info-table__type-col" scope="col">Type</th>
           <th class="govuk-table__header ucas-info-table__type-col" scope="col">Status</th>
+          <th class="govuk-table__header ucas-info-table__type-col" scope="col">Course content</th>
         </tr>
       </thead>
       <tbody class="govuk-table__body">
@@ -54,6 +55,23 @@
           </td>
           <td class="govuk-table__cell">@course.GetCourseVariantType()</td>
           <td class="govuk-table__cell">@course.GetCourseStatus()</td>
+          <td class="govuk-table__cell">
+            @if(course.GetCourseStatus() != "Not running")
+            {
+              @switch(course.EnrichmentWorkflowStatus)
+              {
+                case GovUk.Education.ManageCourses.ApiClient.EnumStatus.Draft:
+                  <div class="govuk-tag govuk-tag--draft">draft</div>
+                  break;
+                case GovUk.Education.ManageCourses.ApiClient.EnumStatus.Published:              
+                  <div class="govuk-tag govuk-tag--published">published</div>
+                  break;
+                default:
+                  <div class="govuk-tag govuk-tag--blank">empty</div>
+                  break;
+              }
+            }
+          </td>
         </tr>
       }
       </tbody>
