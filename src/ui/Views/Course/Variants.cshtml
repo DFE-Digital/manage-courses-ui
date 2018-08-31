@@ -33,8 +33,15 @@
         }
       </h3>
       <div class="govuk-notice-summary__body">
-        <p clas="govuk-body">
-          It won&#8217;t appear online. To publish it you need to set the status of at least one training location to &ldquo;running&rdquo; in <a href='https://update.ucas.co.uk/cgi-bin/hsrun.hse/NetUpdate/netupdate2/netupdate2.hjx;start=netupdate2.HsLoginPage.run'>UCAS web-link</a>.
+        <p class="govuk-body">
+          @if(Model.Course.StatusAsEnum == CourseVariantStatus.New)
+          {
+            <text>It won&#8217;t appear online until one or more training locations are set to &ldquo;running&rdquo; in <a href='https://update.ucas.co.uk/cgi-bin/hsrun.hse/NetUpdate/netupdate2/netupdate2.hjx;start=netupdate2.HsLoginPage.run'>UCAS web-link</a>.</text>
+          }
+          else
+          {
+            <text>It won&#8217;t appear online. You can publish it by changing the status of one or more training locations to &ldquo;running&rdquo; in <a href='https://update.ucas.co.uk/cgi-bin/hsrun.hse/NetUpdate/netupdate2/netupdate2.hjx;start=netupdate2.HsLoginPage.run'>UCAS web-link</a>.</text>
+          }
         </p>
       </div>
     </div>
