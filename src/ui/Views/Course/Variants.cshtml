@@ -11,10 +11,10 @@
 
 <a href="@Url.Action("Courses", "Organisation", new {ucasCode = Model.Course.UcasCode})" class="govuk-back-link">Back</a>
 
-@await Html.PartialAsync("~/Views/Shared/_Alerts.cshtml")
-@await Html.PartialAsync("Shared/ErrorSummaryCourseOverview.cshtml")
-
 <main role="main" class="govuk-main-wrapper" id="main-content">
+    @await Html.PartialAsync("~/Views/Shared/_Alerts.cshtml")
+    @await Html.PartialAsync("Shared/ErrorSummaryCourseOverview.cshtml")
+
   <h1 class="govuk-heading-xl">
     <span class="govuk-caption-xl">@Model.Course.Type</span>
     @Model.Course.Name (@Model.Course.ProgrammeCode)
