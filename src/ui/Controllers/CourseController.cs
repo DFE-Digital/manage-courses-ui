@@ -112,11 +112,12 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
                 orgEnrichmentData?.EnrichmentModel,
                 courseEnrichmentData?.EnrichmentModel);
 
-            return View(new SearchAndCompare.UI.Shared.ViewModels.CourseDetailsViewModel{
+            return View(new SearchAndCompare.UI.Shared.ViewModels.CourseDetailsViewModel
+            {
                 AboutYourOrgLink = Url.Action("About", "Organisation", new { ucasCode = instCode }),
-                PreviewMode = true,
-                Course = course,
-                Finance = new FinanceViewModel(course, new FeeCaps())
+                    PreviewMode = true,
+                    Course = course,
+                    Finance = new FinanceViewModel(course, new FeeCaps())
             });
         }
 
@@ -201,7 +202,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
                 return View("Requirements", viewModel);
             }
 
-            if(await SaveEnrichment(instCode, ucasCode, viewModel))
+            if (await SaveEnrichment(instCode, ucasCode, viewModel))
             {
                 SetSucessMessage();
             }
@@ -243,7 +244,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
                 viewModel.CourseInfo = courseInfo;
                 return View("Salary", viewModel);
             }
-            if(await SaveEnrichment(instCode, ucasCode, viewModel))
+            if (await SaveEnrichment(instCode, ucasCode, viewModel))
             {
                 SetSucessMessage();
             }
@@ -287,7 +288,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
                 viewModel.CourseInfo = courseInfo;
                 return View("Fees", viewModel);
             }
-            if(await SaveEnrichment(instCode, ucasCode, viewModel))
+            if (await SaveEnrichment(instCode, ucasCode, viewModel))
             {
                 SetSucessMessage();
             }
@@ -387,7 +388,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             return viewModel;
         }
 
-        private static BaseCourseEnrichmentViewModel GetCourseEnrichmentViewModel(UcasCourseEnrichmentGetModel ucasCourseEnrichmentGetModel,  bool isSalary, CourseRouteDataViewModel routeData = null)
+        private static BaseCourseEnrichmentViewModel GetCourseEnrichmentViewModel(UcasCourseEnrichmentGetModel ucasCourseEnrichmentGetModel, bool isSalary, CourseRouteDataViewModel routeData = null)
         {
             BaseCourseEnrichmentViewModel result = null;
 
@@ -397,6 +398,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
 
             if (isSalary)
             {
+
                 result = new SalaryBasedCourseEnrichmentViewModel()
                 {
                     AboutCourse = enrichmentModel.AboutCourse,

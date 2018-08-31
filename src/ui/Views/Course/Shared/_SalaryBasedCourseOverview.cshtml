@@ -1,0 +1,25 @@
+﻿@model SalaryBasedCourseEnrichmentViewModel
+
+@{
+  var courseEnrichment = Model;
+  var routeData = Model.RouteData;
+}
+
+  <div class="course-parts__item">
+    <h3 class="course-parts__title">Course length and salary</h3>
+    <a class="course-parts__action" href="@Url.Action("Salary", "Course", routeData)">Edit</a>
+    <dl class="course-parts__fields">
+      <dt class="course-parts__fields__label">
+        Course length
+      </dt>
+      <dd class="course-parts__fields__value">
+        @courseEnrichment?.CourseLength.DisplayText()
+      </dd>
+      <dt class="course-parts__fields__label">
+        Salary
+      </dt>
+      <dd class="course-parts__fields__value">
+        @courseEnrichment?.SalaryDetails.DisplayText()
+      </dd>
+    </dl>
+  </div>

@@ -1,0 +1,31 @@
+﻿@model BaseCourseEnrichmentViewModel
+
+@{
+  var courseEnrichment = Model;
+  var routeData = Model.RouteData;
+}
+
+<div class="course-parts__item">
+  <h3 class="course-parts__title">About this course</h3>
+  <a class="course-parts__action" href="@Url.Action("About", "Course", routeData)">Edit</a>
+  <dl class="course-parts__fields">
+    <dt class="course-parts__fields__label" id="section-AboutCourse">
+        About this course
+    </dt>
+    <dd asp-for="AboutCourse" class="course-parts__fields__value">
+        @courseEnrichment?.AboutCourse.DisplayText()
+    </dd>
+    <dt class="course-parts__fields__label" id="section-InterviewProcess">
+        Interview process (optional)
+    </dt>
+    <dd class="course-parts__fields__value">
+        @courseEnrichment?.InterviewProcess.DisplayText()
+    </dd>
+    <dt class="course-parts__fields__label" id="section-HowSchoolPlacementsWork">
+        How school placements work
+    </dt>
+    <dd class="course-parts__fields__value">
+        @courseEnrichment?.HowSchoolPlacementsWork.DisplayText()
+    </dd>
+  </dl>
+</div>

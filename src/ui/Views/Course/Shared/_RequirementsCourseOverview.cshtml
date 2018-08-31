@@ -1,0 +1,32 @@
+﻿@model BaseCourseEnrichmentViewModel
+
+@{
+  var courseEnrichment = Model;
+  var routeData = Model.RouteData;
+}
+
+<div class="course-parts__item">
+  <h3 class="course-parts__title">Requirements and eligbility</h3>
+  <a class="course-parts__action" href="@Url.Action("Requirements", "Course", routeData)">Edit</a>
+  <dl class="course-parts__fields">
+    <dt class="course-parts__fields__label" id="section-Qualifications">
+      Qualifications needed
+    </dt>
+    <dd class="course-parts__fields__value">
+      @courseEnrichment?.Qualifications.DisplayText()
+    </dd>
+    <dt class="course-parts__fields__label" id="section-PersonalQualities">
+      Personal qualities (optional)
+    </dt>
+    <dd class="course-parts__fields__value">
+      @courseEnrichment?.PersonalQualities.DisplayText()
+    </dd>
+    <dt class="course-parts__fields__label"id="section-OtherRequirements">
+      Other requirements (optional)
+    </dt>
+    <dd class="course-parts__fields__value">
+      @courseEnrichment?.OtherRequirements.DisplayText()
+    </dd>
+  </dl>
+</div>
+

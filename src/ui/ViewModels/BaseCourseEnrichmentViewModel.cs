@@ -32,6 +32,7 @@ namespace GovUk.Education.ManageCourses.Ui.ViewModels
 
         [RegularExpression(@"^\s*(\S+\s+|\S+$){0,100}$", ErrorMessage = "Reduce the word count for other requirements")]
         public string OtherRequirements { get; set; }
+
         public DateTime? DraftLastUpdatedUtc { get; internal set; }
         public DateTime? LastPublishedUtc { get; internal set; }
 
@@ -52,5 +53,7 @@ namespace GovUk.Education.ManageCourses.Ui.ViewModels
         }
 
         public CourseRouteDataViewModel RouteData { get; set; }
+        public List<string> GetAboutCourseFields() => new List<string> { nameof(this.AboutCourse), nameof(this.InterviewProcess), nameof(this.HowSchoolPlacementsWork) };
+        public List<string> GetRequirementsFields() => new List<string> { nameof(this.Qualifications), nameof(this.PersonalQualities), nameof(this.OtherRequirements) };
     }
 }

@@ -18,5 +18,7 @@ namespace GovUk.Education.ManageCourses.Ui.ViewModels
         [RegularExpression(@"^\s*(\S+\s+|\S+$){0,250}$", ErrorMessage = "Reduce the word count for financial support")]
 
         public string FinancialSupport { get; set; }
+
+            public List<string> GetFeesFields() => new List<string> { nameof(this.CourseLength), nameof(this.FeeUkEu), nameof(this.FeeInternational), nameof(this.FeeDetails) };
     }
 }
