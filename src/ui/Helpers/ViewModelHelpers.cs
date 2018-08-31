@@ -11,25 +11,37 @@ namespace GovUk.Education.ManageCourses.Ui.Helpers
     {
         public static string GetCourseVariantType(this Course course)
         {
-            var result = string.IsNullOrWhiteSpace(course.ProfpostFlag) ? "QTS " : "PGCE with QTS ";
+            var result = string.IsNullOrWhiteSpace(course.ProfpostFlag) ? "QTS" : "PGCE with QTS";
 
-            result += course.StudyMode.ToLower().Equals("f", StringComparison.InvariantCultureIgnoreCase) ? "full time" : "part time";
-            result += course.ProgramType.ToLower().Equals("ss", StringComparison.InvariantCultureIgnoreCase) ? " with salary" : "";
+            if ((!string.IsNullOrWhiteSpace(result)) && string.Equals(course.StudyMode, "B", StringComparison.InvariantCultureIgnoreCase))
+            {
+                result += ", ";
+            }
+            else
+            {
+                result += " ";
+            }
+
+            result += GetStudyModeText(course.StudyMode);
+
+            result += string.Equals(course.ProgramType, "ss", StringComparison.InvariantCultureIgnoreCase) 
+                ? " with salary" 
+                : "";
 
             return result;
         }
         public static string GetCourseStatus(this Course course)
         {
             var result = "";
-            if (course.Schools.Any(s => s.Status.ToLower() == "r"))
+            if (course.Schools.Any(s => String.Equals(s.Status, "r", StringComparison.InvariantCultureIgnoreCase)))
             {
                 result = "Running";
             }
-            else if (course.Schools.Any(s => s.Status.ToLower() == "n"))
+            else if (course.Schools.Any(s => String.Equals(s.Status, "n", StringComparison.InvariantCultureIgnoreCase)))
             {
                 result = "New – not yet running";
             }
-            else if (course.Schools.Any(s => s.Status.ToLower() == "d") || course.Schools.Any(s => s.Status.ToLower() == "s"))
+            else if (course.Schools.Any(s => String.Equals(s.Status, "d", StringComparison.InvariantCultureIgnoreCase)) || course.Schools.Any(s => String.Equals(s.Status, "s", StringComparison.InvariantCultureIgnoreCase)))
             {
                 result = "Not running";
             }
@@ -38,7 +50,7 @@ namespace GovUk.Education.ManageCourses.Ui.Helpers
         public static string GetSchoolStatus(this SchoolViewModel school)
         {
             var result = "";
-            switch (school.Status.ToLower())
+            switch ((school.Status ?? "").ToLower())
             {
                 case "d":
                     result = "Discontinued";
@@ -100,7 +112,7 @@ namespace GovUk.Education.ManageCourses.Ui.Helpers
 
         public static string GetStudyMode(this CourseVariantViewModel viewModel)
         {
-            return viewModel.StudyMode.Equals("F", StringComparison.InvariantCultureIgnoreCase) ? "Full time" : "Part time";
+            return UppercaseFirst(GetStudyModeText(viewModel.StudyMode));
         }
 
         public static string GetAgeRange(this CourseVariantViewModel viewModel)
@@ -175,6 +187,37 @@ namespace GovUk.Education.ManageCourses.Ui.Helpers
 
             return result;
         }
+        private static string GetStudyModeText(string studyMode)
+        {
+            var returnString = string.Empty;
+
+            if (string.IsNullOrWhiteSpace(studyMode))
+            {
+                return returnString;//TODO clarify what happens if study mode is missing
+            }
+
+            if (studyMode.Equals("F", StringComparison.InvariantCultureIgnoreCase))
+            {
+                returnString = "full time";
+            }
+            else if (studyMode.Equals("P", StringComparison.InvariantCultureIgnoreCase))
+            {
+                returnString = "part time";
+            }
+            else if (studyMode.Equals("B", StringComparison.InvariantCultureIgnoreCase))
+            {
+                returnString = "full time or part time";
+            }
+
+            return returnString;
+        }
+        private static string UppercaseFirst(string str)
+        {
+            if (string.IsNullOrEmpty(str))
+                return string.Empty;
+            return char.ToUpper(str[0]) + str.Substring(1).ToLower();
+        }
+
     }
 }
 

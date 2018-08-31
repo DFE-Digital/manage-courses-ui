@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using FluentAssertions;
 using GovUk.Education.ManageCourses.Ui.ViewModels;
+using GovUk.Education.ManageCourses.Ui.ViewModels.Enums;
 using NUnit.Framework;
 
 namespace ManageCoursesUi.Tests.ViewModels
@@ -19,14 +20,16 @@ namespace ManageCoursesUi.Tests.ViewModels
             {
                 AboutCourse = "AboutCourse",
                 Qualifications = "Qualifications",
-                HowSchoolPlacementsWork = "HowSchoolPlacementsWork"
+                HowSchoolPlacementsWork = "HowSchoolPlacementsWork",
+                SalaryDetails = "SalaryDetails",
+                CourseLength = CourseLength.Other,
+                FeeUkEu = 10000000
             };
 
             var validationResults = Validate(input);
 
             validationResults.Count.Should().Be(0);
         }
-
 
         [Test]
         public void Validation_Empty()
@@ -36,13 +39,15 @@ namespace ManageCoursesUi.Tests.ViewModels
 
             };
 
-
             var validationResults = Validate(input);
 
-            validationResults.Count.Should().Be(3);
+            validationResults.Count.Should().Be(6);
             AssertMessageFor(validationResults, "AboutCourse", "Enter details about this course");
             AssertMessageFor(validationResults, "Qualifications", "Enter details for about qualifications needed");
             AssertMessageFor(validationResults, "HowSchoolPlacementsWork", "Enter details about school placements");
+            AssertMessageFor(validationResults, "SalaryDetails", "Give details about salary");
+            AssertMessageFor(validationResults, "CourseLength", "Give details about course length");
+            AssertMessageFor(validationResults, "FeeUkEu", "Give details about the fee for UK and EU students");
         }
 
         [Test]
@@ -58,12 +63,16 @@ namespace ManageCoursesUi.Tests.ViewModels
                 PersonalQualities = Times("word ", 101),
                 OtherRequirements = Times("word ", 101),
                 FeeDetails = Times("word ", 251),
-                FinancialSupport = Times("word ", 251)
+                FinancialSupport = Times("word ", 251),
+                SalaryDetails = Times("word ", 251),
+                CourseLength = CourseLength.OneYear,
+                FeeUkEu = 12321
+
             };
 
             var validationResults = Validate(input);
 
-            validationResults.Count.Should().Be(8);
+            validationResults.Count.Should().Be(9);
 
             AssertMessageFor(validationResults, "AboutCourse", "Reduce the word count for about this course");
             AssertMessageFor(validationResults, "InterviewProcess", "Reduce the word count for interview process");
@@ -75,6 +84,8 @@ namespace ManageCoursesUi.Tests.ViewModels
 
             AssertMessageFor(validationResults, "FeeDetails", "Reduce the word count for fee details");
             AssertMessageFor(validationResults, "FinancialSupport", "Reduce the word count for financial support");
+
+            AssertMessageFor(validationResults, "SalaryDetails", "Reduce the word count for salary");
 
         }
 

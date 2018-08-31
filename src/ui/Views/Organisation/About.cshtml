@@ -89,6 +89,7 @@
         @switch(workflowStatus)
         {
           case WorkflowStatus.Blank :
+            <strong class="govuk-tag govuk-tag--blank">Empty</strong>
             <p class="govuk-body">You need to complete and publish this information.</p>
 
             <hr class="related__section-break">
@@ -101,35 +102,42 @@
             </form>
             break;
           case WorkflowStatus.InitialDraft :
+            <strong class="govuk-tag govuk-tag--draft">Draft</strong>
             <p class="govuk-body">You have unpublished changes.</p>
 
             <hr class="related__section-break">
             <h4 class="govuk-heading-m">Publish</h4>
-            <p class="govuk-body">New information will show on all @Model.TabViewModel.OrganisationName courses.</p>
+            <p class="govuk-body">This information will show on all your courses.</p>
+            <p class="govuk-body">Applicants will see published information from October.</p>
 
             <form asp-controller="Organisation" asp-action="about" method="post">
               <input type="submit" class="govuk-button" value="Publish" />
-              <input type="hidden" asp-for="@Model.PublishOrganisation" value="true"></input>
+              <input type="hidden" asp-for="@Model.PublishOrganisation" value="true" />
             </form>
             break;
           case WorkflowStatus.Published :
+            <strong class="govuk-tag govuk-tag--published">Published</strong>
             <p class="govuk-body">Last published on @Model.LastPublishedTimestampUtc.DateString()</p>
+            <p class="govuk-body">Applicants will see this on all your courses from October.</p>
 
             break;
           case WorkflowStatus.SubsequentDraft :
+            <strong class="govuk-tag govuk-tag--draft">Draft</strong>
             <p class="govuk-body">Last published on @Model.LastPublishedTimestampUtc.DateString()</p>
             <p class="govuk-body">You have unpublished changes.</p>
 
             <hr class="related__section-break">
             <h4 class="govuk-heading-m">Publish</h4>
-            <p class="govuk-body">New information will show on all @Model.TabViewModel.OrganisationName courses.</p>
+            <p class="govuk-body">This information will show on all your courses.</p>
+            <p class="govuk-body">Applicants will see published information from October.</p>
 
             <form asp-controller="Organisation" asp-action="about" method="post">
-              <input type="hidden" asp-for="@Model.PublishOrganisation" value="true"></input>
+              <input type="hidden" asp-for="@Model.PublishOrganisation" value="true" />
               <input type="submit" class="govuk-button" value="Publish" />
             </form>
             break;
           case WorkflowStatus.BlankSubsequentDraft :
+            <strong class="govuk-tag govuk-tag--draft">Empty</strong>
             <p class="govuk-body">Last published on @Model.LastPublishedTimestampUtc.DateString()</p>
             <p class="govuk-body">You have unpublished changes.</p>
 
@@ -138,7 +146,7 @@
             <p class="govuk-body">New information will show on all @Model.TabViewModel.OrganisationName courses.</p>
 
             <form asp-controller="Organisation" asp-action="about" method="post">
-              <input type="hidden" asp-for="@Model.PublishOrganisation" value="true"></input>
+              <input type="hidden" asp-for="@Model.PublishOrganisation" value="true" />
               <input type="submit" class="govuk-button" value="Publish" />
             </form>
             break;

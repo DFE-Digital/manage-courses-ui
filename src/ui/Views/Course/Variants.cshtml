@@ -10,6 +10,7 @@
 
 <a href="@Url.Action("Courses", "Organisation", new {ucasCode = Model.Course.UcasCode})" class="govuk-back-link">Back</a>
 
+@Html.Partial("~/Views/Shared/_Alerts.cshtml")
 @Html.Partial("Shared/ErrorSummary.cshtml")
 
 <main role="main" class="govuk-main-wrapper" id="main-content">
@@ -18,7 +19,26 @@
     @Model.Course.Name (@Model.Course.ProgrammeCode)
   </h1>
 
-  @Html.Partial("~/Views/Shared/_Alerts.cshtml")
+  @if(Model.Course.StatusAsEnum != CourseVariantStatus.Running)
+  {
+    <div class="govuk-notice-summary" role="alert">
+      <h3 class="govuk-notice-summary__title">
+        @if(Model.Course.StatusAsEnum == CourseVariantStatus.New)
+        {
+          <text>This course is new and not yet running.</text>
+        }
+        else 
+        {
+          <text>This course is not running.</text>
+        }
+      </h3>
+      <div class="govuk-notice-summary__body">
+        <p clas="govuk-body">
+          It won&#8217;t appear online. To publish it you need to set the status of at least one training location to &ldquo;running&rdquo; in <a href='https://update.ucas.co.uk/cgi-bin/hsrun.hse/NetUpdate/netupdate2/netupdate2.hjx;start=netupdate2.HsLoginPage.run'>UCAS web-link</a>.
+        </p>
+      </div>
+    </div>
+  }
 
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
@@ -67,6 +87,8 @@
           </dl>
         </div>
 
+      @if(Model.Course.StatusAsEnum != CourseVariantStatus.NotRunning)
+      {
         <div class="course-parts__item">
           <h3 class="course-parts__title">About this course</h3>
           <a class="course-parts__action" href="@Url.Action("About", "Course", Model.RouteData)">Edit</a>
@@ -92,7 +114,26 @@
           </dl>
         </div>
 
-        @if (!@Model.IsSalary) {
+        @if (@Model.IsSalary) {
+          <div class="course-parts__item">
+            <h3 class="course-parts__title">Course length and salary</h3>
+            <a class="course-parts__action" href="@Url.Action("Salary", "Course", Model.RouteData)">Edit</a>
+            <dl class="course-parts__fields">
+              <dt class="course-parts__fields__label">
+                Course length
+              </dt>
+              <dd class="course-parts__fields__value">
+                @courseEnrichment?.CourseLength.DisplayText()
+              </dd>
+              <dt class="course-parts__fields__label">
+                Salary
+              </dt>
+              <dd class="course-parts__fields__value">
+                @courseEnrichment?.SalaryDetails.DisplayText()
+              </dd>
+            </dl>
+          </div>
+        } else {
           <div class="course-parts__item">
             <h3 class="course-parts__title">Course length and fees</h3>
             <a class="course-parts__action" href="@Url.Action("Fees", "Course", Model.RouteData)">Edit</a>
@@ -155,6 +196,8 @@
             </dd>
           </dl>
         </div>
+      
+      }
 
         <div class="course-parts__item">
           <h3 class="course-parts__title">Training locations</h3>
@@ -185,7 +228,8 @@
     </div>
 
     <div class="govuk-grid-column-one-third">
-
+    @if(Model.Course.StatusAsEnum != CourseVariantStatus.NotRunning)
+    {
       <aside class="related">
         @switch(courseEnrichment.DeterminePublicationState())
         {
@@ -215,6 +259,7 @@
 
         @if (courseEnrichment.LastPublishedUtc.HasValue)
         {
+            <p class="govuk-body">Applicants will see this content from October.</p>
             <p class="govuk-body">Last published:<br />@courseEnrichment.LastPublishedUtc.DateString()</p>
             <hr class="related__section-break">
         }
@@ -235,7 +280,8 @@
             if(Model.AllowPublish)
             {
               <h4 class="govuk-heading-m">Publish</h4>
-              <p class="govuk-body">Publish your changes for applicants to see them.</p>
+              <p class="govuk-body">Publish your changes.</p>
+              <p class="govuk-body">Applicants will see published content from October.</p>
 
               <form asp-route="publish" method="post">
                 <input type="submit" class="govuk-button" value="Publish" />
@@ -252,6 +298,7 @@
           <p class="govuk-body"><a href="@Model.LiveSearchUrl">View on website</a></p>
         }
       </aside>
+    }
     </div>
   </div>
 </main>

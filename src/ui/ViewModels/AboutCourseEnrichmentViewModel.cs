@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using GovUk.Education.ManageCourses.ApiClient;
+
 namespace GovUk.Education.ManageCourses.Ui.ViewModels
 {
 
@@ -18,5 +20,18 @@ namespace GovUk.Education.ManageCourses.Ui.ViewModels
         public CourseRouteDataViewModel RouteData { get; set; }
 
         public CourseInfoViewModel CourseInfo { get; set; }
+
+        public bool IsEmpty() =>
+            string.IsNullOrEmpty(AboutCourse) && 
+            string.IsNullOrEmpty(InterviewProcess) && 
+            string.IsNullOrEmpty(HowSchoolPlacementsWork);
+
+        public void MapInto(ref CourseEnrichmentModel enrichmentModel)
+        {
+            enrichmentModel.AboutCourse = AboutCourse;
+            enrichmentModel.InterviewProcess = InterviewProcess;
+            enrichmentModel.HowSchoolPlacementsWork = HowSchoolPlacementsWork;            
+        }
+             
     }
 }
