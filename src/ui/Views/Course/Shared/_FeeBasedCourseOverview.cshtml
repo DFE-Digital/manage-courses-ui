@@ -18,7 +18,7 @@
       <dt class="course-parts__fields__label">
         Fee for UK and EU students
       </dt>
-      <dd class="course-parts__fields__value @(courseEnrichment == null ? "course-parts__fields__value--empty" : "")">
+      <dd class="course-parts__fields__value @(courseEnrichment.FeeUkEu == null ? "course-parts__fields__value--empty" : "")">
         @courseEnrichment?.FeeUkEu.DisplayText()
       </dd>
       <dt class="course-parts__fields__label">
