@@ -372,6 +372,8 @@ namespace ManageCoursesUi.Tests
             var controller = new OrganisationController(apiMock.Object);
             controller.ObjectValidator = objectValidator.Object;
 
+            controller.TempData = new Mock<ITempDataDictionary>().Object;
+
             var result = await controller.AboutPost(ucasCode, viewModel);
 
             apiMock.Verify(x => x.PublishEnrichmentOrganisation(ucasCode), Times.Once);
@@ -432,6 +434,8 @@ namespace ManageCoursesUi.Tests
                 .ReturnsAsync(true);
             var controller = new OrganisationController(apiMock.Object);
             controller.ObjectValidator = objectValidator.Object;
+
+            controller.TempData = new Mock<ITempDataDictionary>().Object;
 
             var result = await controller.AboutPost(ucasCode, viewModel);
 
