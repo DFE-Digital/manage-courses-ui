@@ -12,7 +12,7 @@ namespace GovUk.Education.ManageCourses.Ui.Helpers
 
         public static string DisplayText(this decimal? value, int maxLength = 100, string defaultEmpty = "This field is empty")
         {
-            var text = value.HasValue ? value.Value.ToString() : "";
+            var text = value.HasValue ? ("£" + value.Value.ToString("0.00").Replace(".00", "")) : "";
             var result = DisplayText(text, maxLength, defaultEmpty);
             return result;
         }
