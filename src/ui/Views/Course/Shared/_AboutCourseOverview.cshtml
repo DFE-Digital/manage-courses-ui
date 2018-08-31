@@ -3,8 +3,11 @@
 @{
   var courseEnrichment = Model;
   var routeData = Model.RouteData;
-  var about_course = ViewData.ModelState["AboutCourse"] != null && ViewData.ModelState["AboutCourse"].Errors.Any();
   var url = Url.Action("About", "Course", routeData);
+
+  var about_course = ViewData.ModelState["AboutCourse"] != null && ViewData.ModelState["AboutCourse"].Errors.Any();
+  var interview_process = ViewData.ModelState["InterviewProcess"] != null && ViewData.ModelState["InterviewProcess"].Errors.Any();
+  var school_placement = ViewData.ModelState["HowSchoolPlacementsWork"] != null && ViewData.ModelState["HowSchoolPlacementsWork"].Errors.Any();
 }
 
 <div class="course-parts__item">
@@ -16,20 +19,28 @@
     </dt>
     <dd asp-for="AboutCourse" class="course-parts__fields__value @(string.IsNullOrWhiteSpace(courseEnrichment.AboutCourse) ? "course-parts__fields__value--empty" : "")">
         @if (about_course) {
-          <a href="@url#AboutCourse-wrapper"><span class="govuk-error-message" asp-validation-for="AboutCourse" ></span></a>
+          <a href="@url#AboutCourse-wrapper" class="govuk-link"><span asp-validation-for="AboutCourse" ></span></a>
         }
         @courseEnrichment?.AboutCourse.DisplayText()
     </dd>
-    <dt class="course-parts__fields__label" id="section-InterviewProcess">
+
+    <dt class="course-parts__fields__label @(interview_process ? "course-parts__fields__label--error" : "")"" id="section-InterviewProcess">
         Interview process (optional)
     </dt>
-    <dd class="course-parts__fields__value @(string.IsNullOrWhiteSpace(courseEnrichment.HowSchoolPlacementsWork) ? "course-parts__fields__value--empty" : "")">
+    <dd class="course-parts__fields__value @(string.IsNullOrWhiteSpace(courseEnrichment.InterviewProcess) ? "course-parts__fields__value--empty" : "")">
+        @if (interview_process) {
+          <a href="@url#InterviewProcess-wrapper" class="govuk-link"><span asp-validation-for="InterviewProcess" ></span></a>
+        }
         @courseEnrichment?.InterviewProcess.DisplayText()
     </dd>
-    <dt class="course-parts__fields__label" id="section-HowSchoolPlacementsWork">
+
+    <dt class="course-parts__fields__label @(school_placement ? "course-parts__fields__label--error" : "")"  id="section-HowSchoolPlacementsWork">
         How school placements work
     </dt>
     <dd class="course-parts__fields__value @(string.IsNullOrWhiteSpace(courseEnrichment.HowSchoolPlacementsWork) ? "course-parts__fields__value--empty" : "")">
+        @if (school_placement) {
+          <a href="@url#HowSchoolPlacementsWork-wrapper" class="govuk-link"><span asp-validation-for="HowSchoolPlacementsWork" ></span></a>
+        }
         @courseEnrichment?.HowSchoolPlacementsWork.DisplayText()
     </dd>
   </dl>

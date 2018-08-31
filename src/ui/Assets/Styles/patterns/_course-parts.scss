@@ -69,13 +69,11 @@
       &--empty {
         color: $govuk-secondary-text-colour;
       }
-    }
-  }
 
-  &-error-message {
-    @include govuk-responsive-margin(1, "bottom");
-    color: $govuk-link-colour;
-    display: block;
-    text-decoration: underline;
+      .govuk-link {
+        display: block;
+        margin-bottom: govuk-spacing(1);
+      }
+    }
   }
 }
