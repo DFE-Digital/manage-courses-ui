@@ -15,7 +15,6 @@ namespace GovUk.Education.ManageCourses.Ui.ViewModels
         public string AccreditingProviderId { get; set; }
         public CourseVariantViewModel Course { get; set; }
         public BaseCourseEnrichmentViewModel CourseEnrichment { get; set; }
-        public CourseRouteDataViewModel RouteData { get; set; }
         public Uri LiveSearchUrl { get; set; }
         public bool IsSalary { get; set; }
     }

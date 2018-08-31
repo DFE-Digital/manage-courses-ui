@@ -59,16 +59,16 @@ namespace ManageCoursesUi.Tests
             Assert.IsNotNull(viewResult);
 
             var model = viewResult.Model as VariantViewModel;
-
+            var routeData = model.CourseEnrichment.RouteData;
             Assert.IsNotNull(model);
             Assert.AreEqual(TestHelper.TargetedCourseTitle, model.CourseTitle);
             Assert.AreEqual(TestHelper.OrganisationId, model.OrganisationId);
 
             Assert.AreEqual(TestHelper.OrganisationName, model.OrganisationName);
 
-            Assert.AreEqual(TestHelper.InstitutionCode, model.RouteData.InstCode);
-            Assert.AreEqual(TestHelper.AccreditedProviderId, model.RouteData.AccreditingProviderId);
-            Assert.AreEqual(TestHelper.TargetedUcasCode, model.RouteData.UcasCode);
+            Assert.AreEqual(TestHelper.InstitutionCode, routeData.InstCode);
+            Assert.AreEqual(TestHelper.AccreditedProviderId, routeData.AccreditingProviderId);
+            Assert.AreEqual(TestHelper.TargetedUcasCode, routeData.UcasCode);
 
             Assert.AreEqual(enrichmentModel.AboutCourse, model.CourseEnrichment.AboutCourse);
             Assert.AreEqual(enrichmentModel.InterviewProcess, model.CourseEnrichment.InterviewProcess);
@@ -236,7 +236,7 @@ namespace ManageCoursesUi.Tests
             mockApi.Setup(x => x.GetEnrichmentCourse(TestHelper.InstitutionCode, TestHelper.TargetedUcasCode)).ReturnsAsync(ucasCourseEnrichmentGetModel).Verifiable();
             mockApi.Setup(x => x.PublishEnrichmentCourse(TestHelper.InstitutionCode, TestHelper.TargetedUcasCode)).ReturnsAsync(true).Verifiable();
 
-            mockApi.Setup(x => x.GetCourseByUcasCode(TestHelper.InstitutionCode, TestHelper.TargetedUcasCode)).ReturnsAsync(new Course {ProgramType = ""}).Verifiable();
+            mockApi.Setup(x => x.GetCourseByUcasCode(TestHelper.InstitutionCode, TestHelper.TargetedUcasCode)).ReturnsAsync(new Course { ProgramType = "" }).Verifiable();
 
             var objectValidator = new Mock<IObjectModelValidator>();
             BaseCourseEnrichmentViewModel objectToVerify = null;

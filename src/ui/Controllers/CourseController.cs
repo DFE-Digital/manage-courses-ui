@@ -368,7 +368,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
                 };
 
             var isSalary = course.ProgramType.Equals("SS", StringComparison.InvariantCultureIgnoreCase);
-            var courseEnrichmentViewModel = GetCourseEnrichmentViewModel(ucasCourseEnrichmentGetModel, isSalary);
+            var courseEnrichmentViewModel = GetCourseEnrichmentViewModel(ucasCourseEnrichmentGetModel, isSalary, routeData);
             var viewModel = new VariantViewModel
             {
                 OrganisationName = org.OrganisationName,
@@ -378,7 +378,6 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
                 MultipleOrganisations = multipleOrganisations,
                 Course = courseVariant,
                 CourseEnrichment = courseEnrichmentViewModel,
-                RouteData = routeData,
                 LiveSearchUrl = searchAndCompareUrlService.GetCoursePageUri(org.UcasCode, courseVariant.ProgrammeCode),
                 AllowPreview = featureFlags.ShowCoursePreview,
                 AllowPublish = featureFlags.ShowCoursePublish,
@@ -388,7 +387,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             return viewModel;
         }
 
-        private static BaseCourseEnrichmentViewModel GetCourseEnrichmentViewModel(UcasCourseEnrichmentGetModel ucasCourseEnrichmentGetModel, bool isSalary)
+        private static BaseCourseEnrichmentViewModel GetCourseEnrichmentViewModel(UcasCourseEnrichmentGetModel ucasCourseEnrichmentGetModel,  bool isSalary, CourseRouteDataViewModel routeData = null)
         {
             BaseCourseEnrichmentViewModel result = null;
 
@@ -409,7 +408,8 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
                     CourseLength = enrichmentModel.CourseLength.GetCourseLength(),
                     SalaryDetails = enrichmentModel.SalaryDetails,
                     DraftLastUpdatedUtc = ucasCourseEnrichmentGetModel.UpdatedTimestampUtc,
-                    LastPublishedUtc = ucasCourseEnrichmentGetModel.LastPublishedTimestampUtc
+                    LastPublishedUtc = ucasCourseEnrichmentGetModel.LastPublishedTimestampUtc,
+                    RouteData = routeData
                 };
             }
             else
@@ -428,7 +428,8 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
                     FeeDetails = enrichmentModel.FeeDetails,
                     FinancialSupport = enrichmentModel.FinancialSupport,
                     DraftLastUpdatedUtc = ucasCourseEnrichmentGetModel.UpdatedTimestampUtc,
-                    LastPublishedUtc = ucasCourseEnrichmentGetModel.LastPublishedTimestampUtc
+                    LastPublishedUtc = ucasCourseEnrichmentGetModel.LastPublishedTimestampUtc,
+                    RouteData = routeData
                 };
             }
 

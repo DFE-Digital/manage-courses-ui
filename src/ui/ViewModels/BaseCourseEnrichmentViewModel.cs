@@ -50,5 +50,7 @@ namespace GovUk.Education.ManageCourses.Ui.ViewModels
                 return WorkflowStatus.Published;
             }
         }
+
+        public CourseRouteDataViewModel RouteData { get; set; }
     }
 }
