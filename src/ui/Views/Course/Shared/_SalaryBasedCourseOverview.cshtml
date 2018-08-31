@@ -12,13 +12,13 @@
       <dt class="course-parts__fields__label">
         Course length
       </dt>
-      <dd class="course-parts__fields__value">
+      <dd class="course-parts__fields__value @(courseEnrichment.CourseLength == null ? "course-parts__fields__value--empty" : "")">
         @courseEnrichment?.CourseLength.DisplayText()
       </dd>
       <dt class="course-parts__fields__label">
         Salary
       </dt>
-      <dd class="course-parts__fields__value">
+      <dd class="course-parts__fields__value @(string.IsNullOrWhiteSpace(courseEnrichment.SalaryDetails) ? "course-parts__fields__value--empty" : "")">
         @courseEnrichment?.SalaryDetails.DisplayText()
       </dd>
     </dl>

@@ -12,31 +12,31 @@
       <dt class="course-parts__fields__label">
         Course length
       </dt>
-      <dd class="course-parts__fields__value">
+      <dd class="course-parts__fields__value @(courseEnrichment.CourseLength == null ? "course-parts__fields__value--empty" : "")">
         @courseEnrichment?.CourseLength.DisplayText()
       </dd>
       <dt class="course-parts__fields__label">
         Fee for UK and EU students
       </dt>
-      <dd class="course-parts__fields__value">
+      <dd class="course-parts__fields__value @(courseEnrichment == null ? "course-parts__fields__value--empty" : "")">
         @courseEnrichment?.FeeUkEu.DisplayText()
       </dd>
       <dt class="course-parts__fields__label">
         Fee for international students (optional)
       </dt>
-      <dd class="course-parts__fields__value">
+      <dd class="course-parts__fields__value @(courseEnrichment.FeeInternational == null ? "course-parts__fields__value--empty" : "")">
         @courseEnrichment?.FeeInternational.DisplayText()
       </dd>
       <dt class="course-parts__fields__label">
         Fee details (optional)
       </dt>
-      <dd class="course-parts__fields__value">
+      <dd class="course-parts__fields__value @(string.IsNullOrWhiteSpace(courseEnrichment.FeeDetails) ? "course-parts__fields__value--empty" : "")">
         @courseEnrichment?.FeeDetails.DisplayText()
       </dd>
       <dt class="course-parts__fields__label">
         Financial support you offer (optional)
       </dt>
-      <dd class="course-parts__fields__value">
+      <dd class="course-parts__fields__value @(string.IsNullOrWhiteSpace(courseEnrichment.FinancialSupport) ? "course-parts__fields__value--empty" : "")">
         @courseEnrichment?.FinancialSupport.DisplayText()
       </dd>
     </dl>

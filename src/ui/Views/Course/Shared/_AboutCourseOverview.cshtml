@@ -12,19 +12,19 @@
     <dt class="course-parts__fields__label" id="section-AboutCourse">
         About this course
     </dt>
-    <dd asp-for="AboutCourse" class="course-parts__fields__value">
+    <dd asp-for="AboutCourse" class="course-parts__fields__value @(string.IsNullOrWhiteSpace(courseEnrichment.AboutCourse) ? "course-parts__fields__value--empty" : "")">
         @courseEnrichment?.AboutCourse.DisplayText()
     </dd>
     <dt class="course-parts__fields__label" id="section-InterviewProcess">
         Interview process (optional)
     </dt>
-    <dd class="course-parts__fields__value">
+    <dd class="course-parts__fields__value @(string.IsNullOrWhiteSpace(courseEnrichment.HowSchoolPlacementsWork) ? "course-parts__fields__value--empty" : "")">
         @courseEnrichment?.InterviewProcess.DisplayText()
     </dd>
     <dt class="course-parts__fields__label" id="section-HowSchoolPlacementsWork">
         How school placements work
     </dt>
-    <dd class="course-parts__fields__value">
+    <dd class="course-parts__fields__value @(string.IsNullOrWhiteSpace(courseEnrichment.HowSchoolPlacementsWork) ? "course-parts__fields__value--empty" : "")">
         @courseEnrichment?.HowSchoolPlacementsWork.DisplayText()
     </dd>
   </dl>

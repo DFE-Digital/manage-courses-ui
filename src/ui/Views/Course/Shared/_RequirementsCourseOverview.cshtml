@@ -12,19 +12,19 @@
     <dt class="course-parts__fields__label" id="section-Qualifications">
       Qualifications needed
     </dt>
-    <dd class="course-parts__fields__value">
+    <dd class="course-parts__fields__value @(string.IsNullOrWhiteSpace(courseEnrichment.Qualifications) ? "course-parts__fields__value--empty" : "")">
       @courseEnrichment?.Qualifications.DisplayText()
     </dd>
     <dt class="course-parts__fields__label" id="section-PersonalQualities">
       Personal qualities (optional)
     </dt>
-    <dd class="course-parts__fields__value">
+    <dd class="course-parts__fields__value @(string.IsNullOrWhiteSpace(courseEnrichment.PersonalQualities) ? "course-parts__fields__value--empty" : "")">
       @courseEnrichment?.PersonalQualities.DisplayText()
     </dd>
     <dt class="course-parts__fields__label"id="section-OtherRequirements">
       Other requirements (optional)
     </dt>
-    <dd class="course-parts__fields__value">
+    <dd class="course-parts__fields__value @(string.IsNullOrWhiteSpace(courseEnrichment.OtherRequirements) ? "course-parts__fields__value--empty" : "")">
       @courseEnrichment?.OtherRequirements.DisplayText()
     </dd>
   </dl>
