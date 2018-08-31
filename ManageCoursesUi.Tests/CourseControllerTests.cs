@@ -223,7 +223,8 @@ namespace ManageCoursesUi.Tests
         [Test]
         public void VariantsPublish()
         {
-            var enrichmentModel = new CourseEnrichmentModel {
+            var enrichmentModel = new CourseEnrichmentModel
+            {
                 AboutCourse = "AboutCourse",
                 InterviewProcess = "InterviewProcess",
                 HowSchoolPlacementsWork = "HowSchoolPlacementsWork"
@@ -235,18 +236,20 @@ namespace ManageCoursesUi.Tests
             mockApi.Setup(x => x.GetEnrichmentCourse(TestHelper.InstitutionCode, TestHelper.TargetedUcasCode)).ReturnsAsync(ucasCourseEnrichmentGetModel).Verifiable();
             mockApi.Setup(x => x.PublishEnrichmentCourse(TestHelper.InstitutionCode, TestHelper.TargetedUcasCode)).ReturnsAsync(true).Verifiable();
 
+            mockApi.Setup(x => x.GetCourseByUcasCode(TestHelper.InstitutionCode, TestHelper.TargetedUcasCode)).ReturnsAsync(new Course {ProgramType = ""}).Verifiable();
 
             var objectValidator = new Mock<IObjectModelValidator>();
-            CourseEnrichmentViewModel objectToVerify = null;
+            BaseCourseEnrichmentViewModel objectToVerify = null;
 
             objectValidator.Setup(o => o.Validate(It.IsAny<ActionContext>(),
-                                              It.IsAny<ValidationStateDictionary>(),
-                                              It.IsAny<string>(),
-                                              It.IsAny<Object>()))
-                            .Callback<ActionContext, ValidationStateDictionary, string, Object>((a,b,c,d) => {
-                                objectToVerify = d as CourseEnrichmentViewModel;
-                            })
-                            .Verifiable();
+                    It.IsAny<ValidationStateDictionary>(),
+                    It.IsAny<string>(),
+                    It.IsAny<Object>()))
+                .Callback<ActionContext, ValidationStateDictionary, string, Object>((a, b, c, d) =>
+                {
+                    objectToVerify = d as BaseCourseEnrichmentViewModel;
+                })
+                .Verifiable();
 
             var courseController = new CourseController(mockApi.Object, new CourseMapper(), new Mock<ISearchAndCompareUrlService>().Object, new MockFeatureFlags());
             courseController.ObjectValidator = objectValidator.Object;
@@ -293,7 +296,7 @@ namespace ManageCoursesUi.Tests
 
             manageApi.Setup(x => x.GetEnrichmentCourse(TestHelper.InstitutionCode, TestHelper.TargetedUcasCode)).ReturnsAsync(ucasCourseEnrichmentGetModel);
 
-            var testCourse = new Course() { Name = "Name",  CourseCode = "CourseCode" };
+            var testCourse = new Course() { Name = "Name", CourseCode = "CourseCode" };
 
             manageApi.Setup(x => x.GetCourseByUcasCode(TestHelper.InstitutionCode, TestHelper.TargetedUcasCode)).ReturnsAsync(testCourse);
 
@@ -322,7 +325,7 @@ namespace ManageCoursesUi.Tests
             var manageApi = new Mock<IManageApi>();
 
             var viewModel = new AboutCourseEnrichmentViewModel { AboutCourse = "AboutCourse", InterviewProcess = "InterviewProcess", HowSchoolPlacementsWork = "HowSchoolPlacementsWork" };
-            var testCourse = new Course() { Name = "Name",  CourseCode = "CourseCode" };
+            var testCourse = new Course() { Name = "Name", CourseCode = "CourseCode" };
 
             manageApi.Setup(x => x.GetCourseByUcasCode(TestHelper.InstitutionCode, TestHelper.TargetedUcasCode)).ReturnsAsync(testCourse);
 
@@ -395,7 +398,7 @@ namespace ManageCoursesUi.Tests
 
             manageApi.Setup(x => x.GetEnrichmentCourse(TestHelper.InstitutionCode, TestHelper.TargetedUcasCode)).ReturnsAsync(ucasCourseEnrichmentGetModel);
 
-            var testCourse = new Course() { Name = "Name",  CourseCode = "CourseCode" };
+            var testCourse = new Course() { Name = "Name", CourseCode = "CourseCode" };
 
             manageApi.Setup(x => x.GetCourseByUcasCode(TestHelper.InstitutionCode, TestHelper.TargetedUcasCode)).ReturnsAsync(testCourse);
 
@@ -425,7 +428,7 @@ namespace ManageCoursesUi.Tests
 
             var viewModel = new CourseRequirementsEnrichmentViewModel { Qualifications = "Qualifications", PersonalQualities = "PersonalQualities", OtherRequirements = "OtherRequirements" };
 
-            var testCourse = new Course() { Name = "Name",  CourseCode = "CourseCode" };
+            var testCourse = new Course() { Name = "Name", CourseCode = "CourseCode" };
 
             manageApi.Setup(x => x.GetCourseByUcasCode(TestHelper.InstitutionCode, TestHelper.TargetedUcasCode)).ReturnsAsync(testCourse);
 
@@ -493,8 +496,9 @@ namespace ManageCoursesUi.Tests
         {
             var manageApi = new Mock<IManageApi>();
 
-            var enrichmentModel = new CourseEnrichmentModel {
-                 CourseLength = null, SalaryDetails = "SalaryDetails"
+            var enrichmentModel = new CourseEnrichmentModel
+            {
+                CourseLength = null, SalaryDetails = "SalaryDetails"
             };
             var ucasCourseEnrichmentGetModel = new UcasCourseEnrichmentGetModel { EnrichmentModel = enrichmentModel };
 
@@ -570,7 +574,6 @@ namespace ManageCoursesUi.Tests
 
             var tempDataMock = new Mock<ITempDataDictionary>();
 
-
             var controller = new CourseController(manageApi.Object, new CourseMapper(), new SearchAndCompareUrlService("http://www.example.com"), new MockFeatureFlags());
 
             controller.TempData = tempDataMock.Object;
@@ -594,13 +597,13 @@ namespace ManageCoursesUi.Tests
             manageApi.Verify(x => x.SaveEnrichmentCourse(TestHelper.InstitutionCode, TestHelper.TargetedUcasCode, It.Is<CourseEnrichmentModel>(c => Check(c, viewModel))), Times.Once());
         }
 
-
         [Test]
         public async Task Fees()
         {
             var manageApi = new Mock<IManageApi>();
 
-            var enrichmentModel = new CourseEnrichmentModel {
+            var enrichmentModel = new CourseEnrichmentModel
+            {
                 FeeUkEu = 123.45m, FeeInternational = 543.21m, FeeDetails = "FeeDetails", CourseLength = null, FinancialSupport = "FinancialSupport"
             };
             var ucasCourseEnrichmentGetModel = new UcasCourseEnrichmentGetModel { EnrichmentModel = enrichmentModel };
@@ -682,7 +685,6 @@ namespace ManageCoursesUi.Tests
             manageApi.Setup(x => x.GetEnrichmentCourse(TestHelper.InstitutionCode, TestHelper.TargetedUcasCode)).ReturnsAsync(ucasCourseEnrichmentGetModel);
 
             var tempDataMock = new Mock<ITempDataDictionary>();
-
 
             var controller = new CourseController(manageApi.Object, new CourseMapper(), new SearchAndCompareUrlService("http://www.example.com"), new MockFeatureFlags());
 
