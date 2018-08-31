@@ -259,6 +259,7 @@
 
         @if (courseEnrichment.LastPublishedUtc.HasValue)
         {
+            <p class="govuk-body">Applicants will see this content from October.</p>
             <p class="govuk-body">Last published:<br />@courseEnrichment.LastPublishedUtc.DateString()</p>
             <hr class="related__section-break">
         }
@@ -279,7 +280,8 @@
             if(Model.AllowPublish)
             {
               <h4 class="govuk-heading-m">Publish</h4>
-              <p class="govuk-body">Publish your changes for applicants to see them.</p>
+              <p class="govuk-body">Publish your changes.</p>
+              <p class="govuk-body">Applicants will see published content from October.</p>
 
               <form asp-route="publish" method="post">
                 <input type="submit" class="govuk-button" value="Publish" />

@@ -105,7 +105,8 @@
 
             <hr class="related__section-break">
             <h4 class="govuk-heading-m">Publish</h4>
-            <p class="govuk-body">New information will show on all @Model.TabViewModel.OrganisationName courses.</p>
+            <p class="govuk-body">This information will show on all your courses.</p>
+            <p class="govuk-body">Applicants will see published information from October.</p>
 
             <form asp-controller="Organisation" asp-action="about" method="post">
               <input type="submit" class="govuk-button" value="Publish" />
@@ -114,6 +115,7 @@
             break;
           case WorkflowStatus.Published :
             <p class="govuk-body">Last published on @Model.LastPublishedTimestampUtc.DateString()</p>
+            <p class="govuk-body">Applicants will see this on all your courses from October.</p>
 
             break;
           case WorkflowStatus.SubsequentDraft :
@@ -122,7 +124,8 @@
 
             <hr class="related__section-break">
             <h4 class="govuk-heading-m">Publish</h4>
-            <p class="govuk-body">New information will show on all @Model.TabViewModel.OrganisationName courses.</p>
+            <p class="govuk-body">This information will show on all your courses.</p>
+            <p class="govuk-body">Applicants will see published information from October.</p>
 
             <form asp-controller="Organisation" asp-action="about" method="post">
               <input type="hidden" asp-for="@Model.PublishOrganisation" value="true" />
