@@ -210,6 +210,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
 
                     TempData["MessageType"] = "success";
                     TempData["MessageTitle"] = "Your changes have been published";
+                    TempData["MessageBodyHtml"] = "<p class=\"govuk-body\">Applicants will see this on all your courses from October.</p>";
 
                     return RedirectToAction("About", new { ucasCode });
                 }
