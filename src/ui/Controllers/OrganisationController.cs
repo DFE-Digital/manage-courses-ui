@@ -204,6 +204,10 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
 
                 if (result)
                 {
+
+                    TempData["MessageType"] = "success";
+                    TempData["MessageTitle"] = "Your changes have been published";
+
                     return RedirectToAction("About", new { ucasCode });
                 }
                 else
@@ -242,13 +246,13 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
                     }));
 
                 if (enrichmentModel == null)
-                {                
+                {
                     var editIsEmpty = string.IsNullOrEmpty(model.TrainWithUs)
                         && string.IsNullOrEmpty(model.TrainWithDisability)
                         && !model.AboutTrainingProviders.Any(x => !string.IsNullOrEmpty(x.Description));
 
                     if (editIsEmpty)
-                    {                        
+                    {
                         // Draft state is "New" and no changes have been made - don't insert a draft
                         return RedirectToAction("About", "Organisation", new { ucasCode });
                     }
