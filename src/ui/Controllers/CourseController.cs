@@ -323,7 +323,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
         {
             TempData.Add("MessageType", "success");
             TempData.Add("MessageTitle", message ?? "Your changes have been saved");
-            TempData.Add("MessageBodyHtml", "<p class=\"govuk-body\">Preview your course to check for mistakes before publishing.</p>";);
+            TempData.Add("MessageBodyHtml", "<p class=\"govuk-body\">Preview your course to check for mistakes before publishing.</p>");
         }
 
         private VariantViewModel LoadViewModel(UserOrganisation org, ApiClient.Course course, bool multipleOrganisations, UcasCourseEnrichmentGetModel ucasCourseEnrichmentGetModel, CourseRouteDataViewModel routeData)
