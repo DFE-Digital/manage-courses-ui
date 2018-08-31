@@ -42,7 +42,7 @@
     &__value {
       @include govuk-font($size: 19, $weight: normal);
       @include govuk-responsive-margin(4, "bottom");
-      color: $govuk-secondary-text-colour;
+      color: $govuk-text-colour;
       margin-left: 0;
       max-width: 500px;
       overflow: hidden;
@@ -51,6 +51,10 @@
 
       &:last-of-type {
         margin-bottom: 0;
+      }
+
+      &--empty {
+        color: $govuk-secondary-text-colour;
       }
     }
   }

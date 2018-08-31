@@ -27,7 +27,7 @@
         {
           <text>This course is new and not yet running.</text>
         }
-        else 
+        else
         {
           <text>This course is not running.</text>
         }
@@ -96,20 +96,20 @@
             <dt class="course-parts__fields__label" id="section-AboutCourse">
                 About this course
             </dt>
-            <dd class="course-parts__fields__value">
-                @courseEnrichment?.AboutCourse.DisplayText()
+            <dd class="course-parts__fields__value @(string.IsNullOrWhiteSpace(courseEnrichment.AboutCourse) ? "course-parts__fields__value--empty" : "")">
+              @courseEnrichment?.AboutCourse.DisplayText()
             </dd>
             <dt class="course-parts__fields__label" id="section-InterviewProcess">
-                Interview process (optional)
+              Interview process (optional)
             </dt>
-            <dd class="course-parts__fields__value">
-                @courseEnrichment?.InterviewProcess.DisplayText()
+            <dd class="course-parts__fields__value @(string.IsNullOrWhiteSpace(courseEnrichment.InterviewProcess) ? "course-parts__fields__value--empty" : "")">
+              @courseEnrichment?.InterviewProcess.DisplayText()
             </dd>
             <dt class="course-parts__fields__label" id="section-HowSchoolPlacementsWork">
-                How school placements work
+              How school placements work
             </dt>
-            <dd class="course-parts__fields__value">
-                @courseEnrichment?.HowSchoolPlacementsWork.DisplayText()
+            <dd class="course-parts__fields__value @(string.IsNullOrWhiteSpace(courseEnrichment.HowSchoolPlacementsWork) ? "course-parts__fields__value--empty" : "")">
+              @courseEnrichment?.HowSchoolPlacementsWork.DisplayText()
             </dd>
           </dl>
         </div>
@@ -122,13 +122,13 @@
               <dt class="course-parts__fields__label">
                 Course length
               </dt>
-              <dd class="course-parts__fields__value">
+              <dd class="course-parts__fields__value @(string.IsNullOrWhiteSpace(courseEnrichment.CourseLength.ToString()) ? "course-parts__fields__value--empty" : "")">
                 @courseEnrichment?.CourseLength.DisplayText()
               </dd>
               <dt class="course-parts__fields__label">
                 Salary
               </dt>
-              <dd class="course-parts__fields__value">
+              <dd class="course-parts__fields__value @(string.IsNullOrWhiteSpace(courseEnrichment.SalaryDetails) ? "course-parts__fields__value--empty" : "")">
                 @courseEnrichment?.SalaryDetails.DisplayText()
               </dd>
             </dl>
@@ -141,31 +141,31 @@
               <dt class="course-parts__fields__label">
                 Course length
               </dt>
-              <dd class="course-parts__fields__value">
+              <dd class="course-parts__fields__value @(string.IsNullOrWhiteSpace(courseEnrichment.CourseLength.ToString()) ? "course-parts__fields__value--empty" : "")">
                 @courseEnrichment?.CourseLength.DisplayText()
               </dd>
               <dt class="course-parts__fields__label">
                 Fee for UK and EU students
               </dt>
-              <dd class="course-parts__fields__value">
+              <dd class="course-parts__fields__value @(string.IsNullOrWhiteSpace(courseEnrichment.FeeUkEu.ToString()) ? "course-parts__fields__value--empty" : "")">
                 @courseEnrichment?.FeeUkEu.DisplayText()
               </dd>
               <dt class="course-parts__fields__label">
                 Fee for international students (optional)
               </dt>
-              <dd class="course-parts__fields__value">
+              <dd class="course-parts__fields__value @(string.IsNullOrWhiteSpace(courseEnrichment.FeeInternational.ToString()) ? "course-parts__fields__value--empty" : "")">
                 @courseEnrichment?.FeeInternational.DisplayText()
               </dd>
               <dt class="course-parts__fields__label">
                 Fee details (optional)
               </dt>
-              <dd class="course-parts__fields__value">
+              <dd class="course-parts__fields__value @(string.IsNullOrWhiteSpace(courseEnrichment.FeeDetails) ? "course-parts__fields__value--empty" : "")">
                 @courseEnrichment?.FeeDetails.DisplayText()
               </dd>
               <dt class="course-parts__fields__label">
                 Financial support you offer (optional)
               </dt>
-              <dd class="course-parts__fields__value">
+              <dd class="course-parts__fields__value @(string.IsNullOrWhiteSpace(courseEnrichment.FinancialSupport) ? "course-parts__fields__value--empty" : "")">
                 @courseEnrichment?.FinancialSupport.DisplayText()
               </dd>
             </dl>
@@ -179,24 +179,24 @@
             <dt class="course-parts__fields__label" id="section-Qualifications">
               Qualifications needed
             </dt>
-            <dd class="course-parts__fields__value">
+            <dd class="course-parts__fields__value @(string.IsNullOrWhiteSpace(courseEnrichment.Qualifications) ? "course-parts__fields__value--empty" : "")">
               @courseEnrichment?.Qualifications.DisplayText()
             </dd>
             <dt class="course-parts__fields__label" id="section-PersonalQualities">
               Personal qualities (optional)
             </dt>
-            <dd class="course-parts__fields__value">
+            <dd class="course-parts__fields__value @(string.IsNullOrWhiteSpace(courseEnrichment.OtherRequirements) ? "course-parts__fields__value--empty" : "")">
               @courseEnrichment?.PersonalQualities.DisplayText()
             </dd>
             <dt class="course-parts__fields__label"id="section-OtherRequirements">
               Other requirements (optional)
             </dt>
-            <dd class="course-parts__fields__value">
+            <dd class="course-parts__fields__value @(string.IsNullOrWhiteSpace(courseEnrichment.OtherRequirements) ? "course-parts__fields__value--empty" : "")">
               @courseEnrichment?.OtherRequirements.DisplayText()
             </dd>
           </dl>
         </div>
-      
+
       }
 
         <div class="course-parts__item">
