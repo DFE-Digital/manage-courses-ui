@@ -1,28 +1,31 @@
 ﻿@model CourseListViewModel
 
 @{
-  Layout = "Shared/_TabViewLayout";
+  Layout = "Shared/_OrganisationDetailsViewLayout";
   ViewBag.Title = Model.InstitutionName;
 }
 
-<section class="govuk-tabs__panel--without-border">
-  <h2 class="govuk-heading-l">Check your courses</h2>
-  <div class="govuk-grid-row">
-    <div class="govuk-grid-column-two-thirds">
-      <p class="govuk-body">
-        Check that your course information is correct. If there are any problems, you should <a href="mailto:becomingateacher@digital.education.gov.uk?subject=Publish%20teacher%20training%20courses%20problem">contact the Becoming a Teacher team</a> to let us know.
-      </p>
-      <p class="govuk-body">
-        To make any changes, for now you’ll still need to use UCAS web-link. Changes on UCAS will normally show here within one working day.
-      </p>
-      <p class="govuk-body">
-        Soon you’ll be able to add extra content to tell applicants more about you and your courses. <a href="https://afdebatmanageui.blob.core.windows.net/public-assets/How%20to%20prepare%20the%20rest%20of%20your%20course%20information.pdf">Find out more about this here</a>.
-      </p>
-      <p class="govuk-body">
-        In the future, you’ll be able to edit all course information here.
-      </p>
-    </div>
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
+    <h2 class="govuk-heading-l">Step 1. About your organisation</h2>
+    <p class="govuk-body">You need to add a description of your organisation - this is a chance to tell applicants why they should train with you. You should also say what you do for candidates with disabilities and other needs, and check your contact details to make sure they're correct.</p>
+    <p class="govuk-body">Once you’ve published your organisation information, it will show on each of your course pages. You’ll have to add your course details separately in Step 2 below.</p>
+    <p class="govuk-body"><a class="govuk-link" href="@Url.Action("About", "Organisation")">Fill in your organisation information</a></p>
   </div>
+</div>
+
+<hr class="govuk-section-break govuk-section-break--visible govuk-section-break--l">
+
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
+    <h2 class="govuk-heading-l">Step 2. Course details</h2>
+    <h3 class="govuk-heading-m">Preview and publish courses</h3>
+    <p class="govuk-body">Give more details about each of your courses - including their structure and content, information about fees and financial help, and the qualifications needed for them.</p>
+    <p class="govuk-body">Make sure you preview each course before you publish it, to see how it will look online to applicants. Your courses won’t be seen by applicants until the search service, Find postgraduate teacher training, is launched in October.</p>
+  </div>
+</div>
+
+<hr class="govuk-section-break govuk-section-break--m">
 
   @foreach (var provider in Model.Providers)
   {
@@ -60,3 +63,13 @@
     </table>
   }
 </section>
+
+<hr class="govuk-section-break govuk-section-break--visible govuk-section-break--xl">
+
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
+    <h2 class="govuk-heading-l">Request access for someone else</h2>
+    <p class="govuk-body">You can request a DfE Sign-in account for others who manage your courses.</p>
+    <p class="govuk-body"><a class="govuk-link" href="@Url.Action("RequestAccess", "Organisation")">Request access for someone else</a></p>
+  </div>
+</div>
