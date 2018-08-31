@@ -61,13 +61,13 @@
               @switch(course.EnrichmentWorkflowStatus)
               {
                 case GovUk.Education.ManageCourses.ApiClient.EnumStatus.Draft:
-                  <div class="govuk-tag--draft">draft</div>
+                  <div class="govuk-tag govuk-tag__inline govuk-tag--draft">draft</div>
                   break;
                 case GovUk.Education.ManageCourses.ApiClient.EnumStatus.Published:              
-                  <div class="govuk-tag--published">published</div>
+                  <div class="govuk-tag govuk-tag__inline govuk-tag--published">published</div>
                   break;
                 default:
-                  <div class="govuk-tag--blank">empty</div>
+                  <div class="govuk-tag govuk-tag__inline govuk-tag--blank">empty</div>
                   break;
               }
             }

@@ -1,5 +1,8 @@
 .govuk-tag {
   margin-bottom: govuk-spacing(3);
+  &__inline {
+    margin-bottom: 0;
+  }
 }
 
 .govuk-tag--blank {

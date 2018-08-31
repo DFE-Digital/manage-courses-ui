@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using GovUk.Education.ManageCourses.ApiClient;
 
 namespace GovUk.Education.ManageCourses.Ui.ViewModels
 {
@@ -17,5 +18,28 @@ namespace GovUk.Education.ManageCourses.Ui.ViewModels
         public CourseRouteDataViewModel RouteData { get; set; }
 
         public CourseInfoViewModel CourseInfo { get; set; }
+
+        public void CopyFrom(CourseEnrichmentModel model)
+        {
+            if (model == null)
+            {
+                return;
+            }
+
+            if (!string.IsNullOrEmpty(model.Qualifications))
+            {
+                Qualifications = model.Qualifications;
+            }
+
+            if (!string.IsNullOrEmpty(model.PersonalQualities))
+            {
+                PersonalQualities = model.PersonalQualities;
+            }
+
+            if (!string.IsNullOrEmpty(model.OtherRequirements))
+            {
+                OtherRequirements = model.OtherRequirements;
+            }
+        }
     }
 }

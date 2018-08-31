@@ -1,5 +1,7 @@
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using GovUk.Education.ManageCourses.ApiClient;
 using GovUk.Education.ManageCourses.Ui.ViewModels.Enums;
 
 namespace GovUk.Education.ManageCourses.Ui.ViewModels
@@ -14,5 +16,23 @@ namespace GovUk.Education.ManageCourses.Ui.ViewModels
         public CourseRouteDataViewModel RouteData { get; set; }
 
         public CourseInfoViewModel CourseInfo { get; set; }
+
+        public void CopyFrom(CourseEnrichmentModel model)
+        {
+            if (model == null)
+            {
+                return;
+            }
+
+            if(Enum.TryParse(model.CourseLength, out CourseLength courseLength))
+            {
+                CourseLength = courseLength;
+            }
+            
+            if(!string.IsNullOrEmpty(model.SalaryDetails))
+            {
+                SalaryDetails = model.SalaryDetails;
+            }
+        }
     }
 }
