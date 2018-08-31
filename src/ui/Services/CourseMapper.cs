@@ -41,7 +41,7 @@ namespace GovUk.Education.ManageCourses.Ui.Services
 
             var mappedCourse = new SearchAndCompare.Domain.Models.Course
             {
-                Duration = courseEnrichmentModel.CourseLength,
+                Duration = MapCourseLength(courseEnrichmentModel.CourseLength),
                 Name = ucasCourseData.Name,
                 ProgrammeCode = ucasCourseData.CourseCode,
                 Provider = provider,                
@@ -106,6 +106,8 @@ namespace GovUk.Education.ManageCourses.Ui.Services
 
                 FullTime = ucasCourseData.StudyMode == "P" ? VacancyStatus.NA : VacancyStatus.Vacancies,
                 PartTime = ucasCourseData.StudyMode == "F" ? VacancyStatus.NA : VacancyStatus.Vacancies, 
+
+                Mod = ucasCourseData.GetCourseVariantType(),
                                 
                 // todo update CourseEnrichmentModel
                 Salary = new Salary
@@ -148,7 +150,10 @@ namespace GovUk.Education.ManageCourses.Ui.Services
             mappedCourse.DescriptionSections.Add(new CourseDescriptionSection{
                 Name = CourseDetailsSections.EntryRequirementsOther,
                 Text = courseEnrichmentModel.OtherRequirements});
-                
+            
+            mappedCourse.DescriptionSections.Add(new CourseDescriptionSection{
+                Name = CourseDetailsSections.FinancialSupport,
+                Text = courseEnrichmentModel.FinancialSupport});
             
             mappedCourse.DescriptionSections.Add(new CourseDescriptionSection{
                 Name = CourseDetailsSections.AboutSchools,
@@ -173,9 +178,21 @@ namespace GovUk.Education.ManageCourses.Ui.Services
             return mappedCourse;
         }
 
+        private string MapCourseLength(string courseLength)
+        {
+            return courseLength == "OneYear" ? "One year"
+                : "TwoYears" ? "Up to two years"
+                : null;
+        }
+
         private string GetAccreditingProviderEnrichment(string accreditingProviderId, InstitutionEnrichmentModel enrichmentModel)
         {
             if (string.IsNullOrWhiteSpace(accreditingProviderId))
+            {
+                return "";
+            }
+
+            if (enrichmentModel.AccreditingProviderEnrichments == null)
             {
                 return "";
             }
