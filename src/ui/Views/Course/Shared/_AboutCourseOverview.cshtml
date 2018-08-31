@@ -10,17 +10,15 @@
   <h3 class="course-parts__title">About this course</h3>
   <a class="course-parts__action" href="@Url.Action("About", "Course", routeData)">Edit</a>
   <dl class="course-parts__fields">
-    <div class="@(about_course ? "couse-parts__error" : "")">
-      <dt class="course-parts__fields__label" id="section-AboutCourse">
-          About this course
-      </dt>
-      <dd asp-for="AboutCourse" class="course-parts__fields__value @(string.IsNullOrWhiteSpace(courseEnrichment.AboutCourse) ? "course-parts__fields__value--empty" : "")">
-          @if (about_course) {
-            <span asp-validation-for="AboutCourse" class="govuk-error-message"></span>
-          }
-          @courseEnrichment?.AboutCourse.DisplayText()
-      </dd>
-    </div>
+    <dt class="course-parts__fields__label @(about_course ? "course-parts__fields__label--error" : "")" id="section-AboutCourse">
+        About this course
+    </dt>
+    <dd asp-for="AboutCourse" class="course-parts__fields__value @(string.IsNullOrWhiteSpace(courseEnrichment.AboutCourse) ? "course-parts__fields__value--empty" : "")">
+        @if (about_course) {
+          <span asp-validation-for="AboutCourse" class="course-parts-error-message"></span>
+        }
+        @courseEnrichment?.AboutCourse.DisplayText()
+    </dd>
     <dt class="course-parts__fields__label" id="section-InterviewProcess">
         Interview process (optional)
     </dt>
