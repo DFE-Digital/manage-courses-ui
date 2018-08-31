@@ -109,7 +109,7 @@
 
             <form asp-controller="Organisation" asp-action="about" method="post">
               <input type="submit" class="govuk-button" value="Publish" />
-              <input type="hidden" asp-for="@Model.PublishOrganisation" value="true"></input>
+              <input type="hidden" asp-for="@Model.PublishOrganisation" value="true" />
             </form>
             break;
           case WorkflowStatus.Published :
@@ -125,7 +125,7 @@
             <p class="govuk-body">New information will show on all @Model.TabViewModel.OrganisationName courses.</p>
 
             <form asp-controller="Organisation" asp-action="about" method="post">
-              <input type="hidden" asp-for="@Model.PublishOrganisation" value="true"></input>
+              <input type="hidden" asp-for="@Model.PublishOrganisation" value="true" />
               <input type="submit" class="govuk-button" value="Publish" />
             </form>
             break;
@@ -138,7 +138,7 @@
             <p class="govuk-body">New information will show on all @Model.TabViewModel.OrganisationName courses.</p>
 
             <form asp-controller="Organisation" asp-action="about" method="post">
-              <input type="hidden" asp-for="@Model.PublishOrganisation" value="true"></input>
+              <input type="hidden" asp-for="@Model.PublishOrganisation" value="true" />
               <input type="submit" class="govuk-button" value="Publish" />
             </form>
             break;
