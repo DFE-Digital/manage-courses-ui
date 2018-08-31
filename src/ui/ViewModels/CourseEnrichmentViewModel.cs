@@ -6,15 +6,15 @@ namespace GovUk.Education.ManageCourses.Ui.ViewModels
 {
     public class CourseEnrichmentViewModel
     {
-        [RegularExpression(@"^\s*(\S+\s+|\S+$){0,400}$", ErrorMessage = "Reduce the word count for details about the course")]
-        [Required(ErrorMessage = "Give details about the course")]
+        [RegularExpression(@"^\s*(\S+\s+|\S+$){0,400}$", ErrorMessage = "Reduce the word count for about this course")]
+        [Required(ErrorMessage = "Enter details about this course")]
         public string AboutCourse { get; set; }
 
-        [RegularExpression(@"^\s*(\S+\s+|\S+$){0,250}$", ErrorMessage = "Reduce the word count for details about the interview process")]
+        [RegularExpression(@"^\s*(\S+\s+|\S+$){0,250}$", ErrorMessage = "Reduce the word count for interview process")]
         public string InterviewProcess { get; set; }
 
-        [RegularExpression(@"^\s*(\S+\s+|\S+$){0,350}$", ErrorMessage = "Reduce the word count for details about school placements")]
-        [Required(ErrorMessage = "Give details about school placements")]
+        [RegularExpression(@"^\s*(\S+\s+|\S+$){0,350}$", ErrorMessage = "Reduce the word count for how school placements work")]
+        [Required(ErrorMessage = "Enter details about school placements")]
         public string HowSchoolPlacementsWork { get; set; }
 
         // course length and fees
@@ -30,14 +30,14 @@ namespace GovUk.Education.ManageCourses.Ui.ViewModels
         public string FinancialSupport { get; set; }
 
         // course requirements
-        [RegularExpression(@"^\s*(\S+\s+|\S+$){0,100}$", ErrorMessage = "Reduce the word count for details about the required qualifications")]
-        [Required(ErrorMessage = "Give details about the required qualifications")]
+        [RegularExpression(@"^\s*(\S+\s+|\S+$){0,100}$", ErrorMessage = "Reduce the word count for qualifications needed")]
+        [Required(ErrorMessage = "Enter details for about qualifications needed")]
         public string Qualifications { get; set; }
 
-        [RegularExpression(@"^\s*(\S+\s+|\S+$){0,100}$", ErrorMessage = "Reduce the word count for details about personal qualities")]
+        [RegularExpression(@"^\s*(\S+\s+|\S+$){0,100}$", ErrorMessage = "Reduce the word count for personal qualities")]
         public string PersonalQualities { get; set; }
 
-        [RegularExpression(@"^\s*(\S+\s+|\S+$){0,100}$", ErrorMessage = "Reduce the word count for details about other requirements")]
+        [RegularExpression(@"^\s*(\S+\s+|\S+$){0,100}$", ErrorMessage = "Reduce the word count for other requirements")]
         public string OtherRequirements { get; set; }
         public DateTime? DraftLastUpdatedUtc { get; internal set; }
         public DateTime? LastPublishedUtc { get; internal set; }
