@@ -40,9 +40,9 @@ namespace ManageCoursesUi.Tests.ViewModels
             var validationResults = Validate(input);
 
             validationResults.Count.Should().Be(3);
-            AssertMessageFor(validationResults, "AboutCourse", "Give details about the course");
-            AssertMessageFor(validationResults, "Qualifications", "Give details about the required qualifications");
-            AssertMessageFor(validationResults, "HowSchoolPlacementsWork", "Give details about school placements");
+            AssertMessageFor(validationResults, "AboutCourse", "Enter details about this course");
+            AssertMessageFor(validationResults, "Qualifications", "Enter details for about qualifications needed");
+            AssertMessageFor(validationResults, "HowSchoolPlacementsWork", "Enter details about school placements");
         }
 
         [Test]
@@ -65,13 +65,13 @@ namespace ManageCoursesUi.Tests.ViewModels
 
             validationResults.Count.Should().Be(8);
 
-            AssertMessageFor(validationResults, "AboutCourse", "Reduce the word count for details about the course");
-            AssertMessageFor(validationResults, "InterviewProcess", "Reduce the word count for details about the interview process");
-            AssertMessageFor(validationResults, "HowSchoolPlacementsWork", "Reduce the word count for details about school placements");
+            AssertMessageFor(validationResults, "AboutCourse", "Reduce the word count for about this course");
+            AssertMessageFor(validationResults, "InterviewProcess", "Reduce the word count for interview process");
+            AssertMessageFor(validationResults, "HowSchoolPlacementsWork", "Reduce the word count for how school placements work");
 
-            AssertMessageFor(validationResults, "Qualifications", "Reduce the word count for details about the required qualifications");
-            AssertMessageFor(validationResults, "PersonalQualities", "Reduce the word count for details about personal qualities");
-            AssertMessageFor(validationResults, "OtherRequirements", "Reduce the word count for details about other requirements");
+            AssertMessageFor(validationResults, "Qualifications", "Reduce the word count for qualifications needed");
+            AssertMessageFor(validationResults, "PersonalQualities", "Reduce the word count for personal qualities");
+            AssertMessageFor(validationResults, "OtherRequirements", "Reduce the word count for other requirements");
 
             AssertMessageFor(validationResults, "FeeDetails", "Reduce the word count for fee details");
             AssertMessageFor(validationResults, "FinancialSupport", "Reduce the word count for financial support");
