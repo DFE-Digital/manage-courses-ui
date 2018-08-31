@@ -34,14 +34,16 @@
         @courseEnrichment?.InterviewProcess.DisplayText()
     </dd>
 
-    <dt class="course-parts__fields__label @(school_placement ? "course-parts__fields__label--error" : "")"  id="section-HowSchoolPlacementsWork">
+    <dt class="course-parts__fields__label @(school_placement ? "course-parts__fields__label--error" : "")" id="section-HowSchoolPlacementsWork">
         How school placements work
     </dt>
-    <dd class="course-parts__fields__value @(string.IsNullOrWhiteSpace(courseEnrichment.HowSchoolPlacementsWork) ? "course-parts__fields__value--empty" : "")">
+    <dd asp-for="HowSchoolPlacementsWork" class="course-parts__fields__value @(string.IsNullOrWhiteSpace(courseEnrichment.HowSchoolPlacementsWork) ? "course-parts__fields__value--empty" : "")">
         @if (school_placement) {
-          <a href="@url#HowSchoolPlacementsWork-wrapper" class="govuk-link"><span asp-validation-for="HowSchoolPlacementsWork" ></span></a>
+          <a href="@url#HowSchoolPlacementsWork-wrapper" class="govuk-link">
+            <span asp-validation-for="HowSchoolPlacementsWork" >@ViewData.ModelState["HowSchoolPlacementsWork"].Errors.First().ErrorMessage</span></a>
         }
         @courseEnrichment?.HowSchoolPlacementsWork.DisplayText()
     </dd>
+
   </dl>
 </div>
