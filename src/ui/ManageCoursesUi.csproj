@@ -35,7 +35,7 @@
     <PackageReference Include="GovUk.Education.SearchAndCompare.Ui.Shared" Version="0.3.0" />
   </ItemGroup>
   <Target Name="Webpack" BeforeTargets="AfterBuild">
-    <!-- <Exec Command="npm install" />
-    <Exec Command="npm run build" /> -->
+    <Exec Command="npm install" />
+    <Exec Command="npm run build" />
   </Target>
 </Project>
