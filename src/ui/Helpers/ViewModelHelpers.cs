@@ -47,6 +47,12 @@ namespace GovUk.Education.ManageCourses.Ui.Helpers
             }
             return result;
         }
+
+        public static bool CanHaveEnrichment(this Course course)
+        {
+            return course != null && course.GetCourseStatus() != "Not running";
+        }
+        
         public static string GetSchoolStatus(this SchoolViewModel school)
         {
             var result = "";
