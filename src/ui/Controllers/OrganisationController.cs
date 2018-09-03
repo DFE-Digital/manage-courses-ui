@@ -108,10 +108,10 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             await _manageApi.LogAccessRequest(new AccessRequest()
             {
                 FirstName = model.FirstName,
-                    LastName = model.LastName,
-                    EmailAddress = model.EmailAddress,
-                    Organisation = model.Organisation,
-                    Reason = model.Reason,
+                LastName = model.LastName,
+                EmailAddress = model.EmailAddress,
+                Organisation = model.Organisation,
+                Reason = model.Reason,
             });
 
             this.TempData.Add("RequestAccess_To_Name", $"{model.FirstName} {model.LastName}");
@@ -141,7 +141,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
                             var aboutTrainingProviders = (model.AboutTrainingProviders ?? new List<TrainingProviderViewModel>());
 
                             description = aboutTrainingProviders.FirstOrDefault(
-                                atp =>(atp.InstitutionCode.Equals(x.AccreditingProviderId, StringComparison.InvariantCultureIgnoreCase)))?.Description ?? description;
+                                atp => (atp.InstitutionCode.Equals(x.AccreditingProviderId, StringComparison.InvariantCultureIgnoreCase)))?.Description ?? description;
                         }
 
                         var tpvm = new TrainingProviderViewModel()
@@ -246,7 +246,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
                     model.AboutTrainingProviders.Select(x => new AccreditingProviderEnrichment
                     {
                         UcasInstitutionCode = x.InstitutionCode,
-                            Description = x.Description
+                        Description = x.Description
                     }));
 
                 if (enrichmentModel == null)

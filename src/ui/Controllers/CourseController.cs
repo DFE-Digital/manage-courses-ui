@@ -115,9 +115,9 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             return View(new SearchAndCompare.UI.Shared.ViewModels.CourseDetailsViewModel
             {
                 AboutYourOrgLink = Url.Action("About", "Organisation", new { ucasCode = instCode }),
-                    PreviewMode = true,
-                    Course = course,
-                    Finance = new FinanceViewModel(course, new FeeCaps())
+                PreviewMode = true,
+                Course = course,
+                Finance = new FinanceViewModel(course, new FeeCaps())
             });
         }
 
@@ -332,41 +332,41 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
                 new CourseVariantViewModel
                 {
                     Name = course.Name,
-                        Type = course.GetCourseVariantType(),
-                        Accrediting = course.AccreditingProviderName,
-                        ProviderCode = course.AccreditingProviderId,
-                        ProgrammeCode = course.CourseCode,
-                        UcasCode = course.InstCode,
-                        AgeRange = course.AgeRange,
-                        Route = course.ProgramType,
-                        Qualifications = course.ProfpostFlag,
-                        StudyMode = course.StudyMode,
-                        Subjects = course.Subjects,
-                        Status = course.GetCourseStatus(),
-                        Schools = course.Schools.Select(campus =>
-                        {
-                            var addressLines = (new List<string>()
-                                {
+                    Type = course.GetCourseVariantType(),
+                    Accrediting = course.AccreditingProviderName,
+                    ProviderCode = course.AccreditingProviderId,
+                    ProgrammeCode = course.CourseCode,
+                    UcasCode = course.InstCode,
+                    AgeRange = course.AgeRange,
+                    Route = course.ProgramType,
+                    Qualifications = course.ProfpostFlag,
+                    StudyMode = course.StudyMode,
+                    Subjects = course.Subjects,
+                    Status = course.GetCourseStatus(),
+                    Schools = course.Schools.Select(campus =>
+                    {
+                        var addressLines = (new List<string>()
+                            {
                                     campus.Address1,
                                         campus.Address2,
                                         campus.Address3,
                                         campus.Address4,
                                         campus.PostCode
-                                })
-                                .Where(line => !String.IsNullOrEmpty(line));
+                            })
+                            .Where(line => !String.IsNullOrEmpty(line));
 
-                            var address = addressLines.Count() > 0 ? addressLines.Where(line => !String.IsNullOrEmpty(line))
-                                .Aggregate((current, next) => current + ", " + next) : "";
+                        var address = addressLines.Count() > 0 ? addressLines.Where(line => !String.IsNullOrEmpty(line))
+                            .Aggregate((current, next) => current + ", " + next) : "";
 
-                            return new SchoolViewModel
-                            {
-                                ApplicationsAcceptedFrom = campus.ApplicationsAcceptedFrom,
-                                    Code = campus.Code,
-                                    LocationName = campus.LocationName,
-                                    Address = address,
-                                    Status = campus.Status
-                            };
-                        })
+                        return new SchoolViewModel
+                        {
+                            ApplicationsAcceptedFrom = campus.ApplicationsAcceptedFrom,
+                            Code = campus.Code,
+                            LocationName = campus.LocationName,
+                            Address = address,
+                            Status = campus.Status
+                        };
+                    })
                 };
 
             var isSalary = course.ProgramType.Equals("SS", StringComparison.InvariantCultureIgnoreCase);
@@ -445,8 +445,8 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             return new CourseRouteDataViewModel
             {
                 InstCode = instCode,
-                    AccreditingProviderId = accreditingProviderId,
-                    UcasCode = ucasCode
+                AccreditingProviderId = accreditingProviderId,
+                UcasCode = ucasCode
             };
         }
     }
