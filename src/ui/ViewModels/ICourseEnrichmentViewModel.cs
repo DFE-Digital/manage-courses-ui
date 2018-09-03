@@ -10,5 +10,4 @@ namespace GovUk.Education.ManageCourses.Ui.ViewModels
         void MapInto(ref CourseEnrichmentModel enrichmentModel);
         void CopyFrom(CourseEnrichmentModel model);
     }
-    }
 }
