@@ -30,5 +30,7 @@ namespace GovUk.Education.ManageCourses.Ui.ViewModels
         public EnumStatus Status { get; set; }
 
         public bool PublishOrganisation { get; set; }
+
+        public bool AllowPreview { get; set; }
     }
 }
