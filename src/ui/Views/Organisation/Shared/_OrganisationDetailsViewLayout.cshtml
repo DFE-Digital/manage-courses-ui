@@ -5,10 +5,4 @@
   var viewModel = Model.TabViewModel;
 }
 
-<a href="@Url.Action("Courses", "Organisation", new {ucasCode = viewModel.UcasCode})" class="govuk-back-link">Back</a>
-
-<main role="main" class="govuk-main-wrapper" id="main-content">
-  @Html.Partial("~/Views/Organisation/Shared/RequestAccessSuccess.cshtml")
-  @Html.Partial("~/Views/Shared/_Alerts.cshtml")
-  @RenderBody()
-</main>
+@RenderBody()
