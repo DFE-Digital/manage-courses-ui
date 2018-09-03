@@ -273,6 +273,10 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
 
                 TempData["MessageType"] = "success";
                 TempData["MessageTitle"] = "Your changes have been saved";
+                if (_featureFlags.ShowCoursePreview)
+                {
+                    TempData["MessageBodyHtml"] = "<p class=\"govuk-body\">Preview any course to see how it will look to applicants.</p>";
+                }
 
                 return RedirectToAction("About", "Organisation", new { ucasCode });
             }
