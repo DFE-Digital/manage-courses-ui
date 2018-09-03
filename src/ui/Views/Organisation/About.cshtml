@@ -12,7 +12,7 @@
 <a href="@Url.Action("Courses", "Organisation", new {ucasCode = @Model.TabViewModel.UcasCode})" class="govuk-back-link">Back</a>
 
 <main role="main" class="govuk-main-wrapper" id="main-content">
-  @Html.Partial("~/Views/Shared/_Alerts.cshtml")
+  @await Html.PartialAsync("~/Views/Shared/_Alerts.cshtml")
 
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
