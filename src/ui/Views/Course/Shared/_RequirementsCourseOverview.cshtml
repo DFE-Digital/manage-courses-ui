@@ -1,0 +1,49 @@
+﻿@model BaseCourseEnrichmentViewModel
+
+@{
+  var courseEnrichment = Model;
+  var routeData = Model.RouteData;
+  var url = Url.Action("Requirements", "Course", routeData);
+
+  var qualifications = ViewData.ModelState["Qualifications"] != null && ViewData.ModelState["Qualifications"].Errors.Any();
+  var personal_qualities = ViewData.ModelState["PersonalQualities"] != null && ViewData.ModelState["PersonalQualities"].Errors.Any();
+  var other_requirements = ViewData.ModelState["OtherRequirements"] != null && ViewData.ModelState["OtherRequirements"].Errors.Any();
+}
+
+<div class="course-parts__item">
+  <h3 class="course-parts__title">Requirements and eligbility</h3>
+  <a class="course-parts__action" href="@url">Edit</a>
+  <dl class="course-parts__fields">
+    <dt class="course-parts__fields__label @(qualifications ? "course-parts__fields__label--error" : "")" id="section-Qualifications">
+      Qualifications needed
+    </dt>
+    <dd class="course-parts__fields__value @(string.IsNullOrWhiteSpace(courseEnrichment.Qualifications) ? "course-parts__fields__value--empty" : "")">
+      @if (qualifications) {
+          <a href="@url#Qualifications-wrapper" class="govuk-link"><span asp-validation-for="Qualifications" ></span></a>
+        }
+
+      @courseEnrichment?.Qualifications.DisplayText()
+    </dd>
+    <dt class="course-parts__fields__label @(personal_qualities ? "course-parts__fields__label--error" : "")" id="section-PersonalQualities">
+      Personal qualities (optional)
+    </dt>
+    <dd class="course-parts__fields__value @(string.IsNullOrWhiteSpace(courseEnrichment.PersonalQualities) ? "course-parts__fields__value--empty" : "")">
+      @if (personal_qualities) {
+          <a href="@url#PersonalQualities-wrapper" class="govuk-link"><span asp-validation-for="PersonalQualities" ></span></a>
+        }
+
+      @courseEnrichment?.PersonalQualities.DisplayText()
+    </dd>
+    <dt class="course-parts__fields__label @(other_requirements ? "course-parts__fields__label--error" : "")"id="section-OtherRequirements">
+      Other requirements (optional)
+    </dt>
+    <dd class="course-parts__fields__value @(string.IsNullOrWhiteSpace(courseEnrichment.OtherRequirements) ? "course-parts__fields__value--empty" : "")">
+      @if (other_requirements) {
+          <a href="@url#OtherRequirements-wrapper" class="govuk-link"><span asp-validation-for="OtherRequirements" ></span></a>
+        }
+
+      @courseEnrichment?.OtherRequirements.DisplayText()
+    </dd>
+  </dl>
+</div>
+

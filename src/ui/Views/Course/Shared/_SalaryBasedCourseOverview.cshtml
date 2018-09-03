@@ -1,0 +1,36 @@
+﻿@model SalaryBasedCourseEnrichmentViewModel
+
+@{
+  var courseEnrichment = Model;
+  var routeData = Model.RouteData;
+
+  var url = Url.Action("Salary", "Course", routeData);
+
+  var course_length = ViewData.ModelState["CourseLength"] != null && ViewData.ModelState["CourseLength"].Errors.Any();
+  var salary = ViewData.ModelState["SalaryDetails"] != null && ViewData.ModelState["SalaryDetails"].Errors.Any();
+}
+
+  <div class="course-parts__item">
+    <h3 class="course-parts__title">Course length and salary</h3>
+    <a class="course-parts__action" href="@url">Edit</a>
+    <dl class="course-parts__fields">
+      <dt class="course-parts__fields__label @(course_length ? "course-parts__fields__label--error" : "")">
+        Course length
+      </dt>
+      <dd class="course-parts__fields__value @(courseEnrichment.CourseLength == null ? "course-parts__fields__value--empty" : "")">
+        @if (course_length) {
+          <a href="@url#CourseLength-wrapper" class="govuk-link"><span asp-validation-for="CourseLength" ></span></a>
+        }
+        @courseEnrichment?.CourseLength.DisplayText()
+      </dd>
+      <dt class="course-parts__fields__label @(salary ? "course-parts__fields__label--error" : "")">
+        Salary
+      </dt>
+      <dd class="course-parts__fields__value @(string.IsNullOrWhiteSpace(courseEnrichment.SalaryDetails) ? "course-parts__fields__value--empty" : "")">
+        @if (salary) {
+          <a href="@url#SalaryDetails-wrapper" class="govuk-link"><span asp-validation-for="SalaryDetails" ></span></a>
+        }
+        @courseEnrichment?.SalaryDetails.DisplayText()
+      </dd>
+    </dl>
+  </div>

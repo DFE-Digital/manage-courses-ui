@@ -2,9 +2,10 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using GovUk.Education.ManageCourses.Ui.ViewModels.Enums;
+
 namespace GovUk.Education.ManageCourses.Ui.ViewModels
 {
-    public class CourseEnrichmentViewModel
+    public abstract class BaseCourseEnrichmentViewModel
     {
         [RegularExpression(@"^\s*(\S+\s+|\S+$){0,400}$", ErrorMessage = "Reduce the word count for about this course")]
         [Required(ErrorMessage = "Enter details about this course")]
@@ -21,23 +22,6 @@ namespace GovUk.Education.ManageCourses.Ui.ViewModels
         [Required(ErrorMessage = "Give details about course length")]// course length and fees
         public CourseLength? CourseLength { get; set; }
 
-        [Required(ErrorMessage = "Give details about the fee for UK and EU students")]
-        public decimal? FeeUkEu { get; set; }
-        public decimal? FeeInternational { get; set; }
-
-
-        [RegularExpression(@"^\s*(\S+\s+|\S+$){0,250}$", ErrorMessage = "Reduce the word count for fee details")]
-        public string FeeDetails { get; set; }
-
-        [RegularExpression(@"^\s*(\S+\s+|\S+$){0,250}$", ErrorMessage = "Reduce the word count for financial support")]
-
-        public string FinancialSupport { get; set; }
-
-        // course salary
-        [RegularExpression(@"^\s*(\S+\s+|\S+$){0,250}$", ErrorMessage = "Reduce the word count for salary")]
-        [Required(ErrorMessage = "Give details about salary")]
-        public string SalaryDetails { get; set; }
-
         // course requirements
         [RegularExpression(@"^\s*(\S+\s+|\S+$){0,100}$", ErrorMessage = "Reduce the word count for qualifications needed")]
         [Required(ErrorMessage = "Enter details for about qualifications needed")]
@@ -48,6 +32,7 @@ namespace GovUk.Education.ManageCourses.Ui.ViewModels
 
         [RegularExpression(@"^\s*(\S+\s+|\S+$){0,100}$", ErrorMessage = "Reduce the word count for other requirements")]
         public string OtherRequirements { get; set; }
+
         public DateTime? DraftLastUpdatedUtc { get; internal set; }
         public DateTime? LastPublishedUtc { get; internal set; }
 
@@ -66,5 +51,9 @@ namespace GovUk.Education.ManageCourses.Ui.ViewModels
                 return WorkflowStatus.Published;
             }
         }
+
+        public CourseRouteDataViewModel RouteData { get; set; }
+        public List<string> GetAboutCourseFields() => new List<string> { nameof(this.AboutCourse), nameof(this.InterviewProcess), nameof(this.HowSchoolPlacementsWork) };
+        public List<string> GetRequirementsFields() => new List<string> { nameof(this.Qualifications), nameof(this.PersonalQualities), nameof(this.OtherRequirements) };
     }
 }
