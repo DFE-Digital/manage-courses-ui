@@ -1,6 +1,3 @@
-  &--inline {
-    margin-bottom: 0;
-  }
 .govuk-tag--blank {
   background: govuk-colour("white");
   color: govuk-colour("grey-1");
@@ -16,4 +13,8 @@
 .govuk-tag--published {
   background: govuk-colour("green");
   margin-bottom: govuk-spacing(3);
+}
+
+.govuk-tag--inline {
+  margin-bottom: 0;
 }
