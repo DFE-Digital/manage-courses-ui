@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using GovUk.Education.ManageCourses.ApiClient;
 using GovUk.Education.ManageCourses.Ui;
@@ -13,9 +14,11 @@ using ManageCoursesUi.Tests.Helpers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Moq;
 using NUnit.Framework;
+
 
 namespace ManageCoursesUi.Tests
 {
@@ -365,9 +368,16 @@ namespace ManageCoursesUi.Tests
             manageApi.Setup(x => x.GetEnrichmentCourse(TestHelper.InstitutionCode, TestHelper.TargetedUcasCode)).ReturnsAsync(ucasCourseEnrichmentGetModel);
 
             var tempDataMock = new Mock<ITempDataDictionary>();
+            var urlHelperMock = new Mock<IUrlHelper>();
+
+            var previewLink = "preview-link";
+            
+            Expression<Func<IUrlHelper, string>> urlSetup = url => url.Action(It.Is<UrlActionContext>(uac => uac.Action == "Preview"));
+            urlHelperMock.Setup(urlSetup).Returns(previewLink);
 
             var controller = new CourseController(manageApi.Object, new CourseMapper(), new SearchAndCompareUrlService("http://www.example.com"), new MockFeatureFlags());
             controller.TempData = tempDataMock.Object;
+            controller.Url = urlHelperMock.Object;
             var result = await controller.AboutPost(TestHelper.InstitutionCode, TestHelper.AccreditedProviderId, TestHelper.TargetedUcasCode, viewModel);
 
             var redirectToActionResult = result as RedirectToActionResult;
@@ -378,6 +388,11 @@ namespace ManageCoursesUi.Tests
 
             tempDataMock.Verify(x => x.Add("MessageType", "success"), Times.Once);
             tempDataMock.Verify(x => x.Add("MessageTitle", "Your changes have been saved"), Times.Once);
+            tempDataMock.Verify(x => x.Add("MessageBodyHtml", $@"
+                    <p class=""govuk-body"">
+                        <a href='{previewLink}'>Preview your course</a>
+                        to check for mistakes before publishing.
+                    </p>"), Times.Once);
 
             var routeValues = redirectToActionResult.RouteValues;
 
@@ -468,9 +483,18 @@ namespace ManageCoursesUi.Tests
             manageApi.Setup(x => x.GetEnrichmentCourse(TestHelper.InstitutionCode, TestHelper.TargetedUcasCode)).ReturnsAsync(ucasCourseEnrichmentGetModel);
 
             var tempDataMock = new Mock<ITempDataDictionary>();
+            var urlHelperMock = new Mock<IUrlHelper>();
+
+            var previewLink = "preview-link";
+
+            Expression<Func<IUrlHelper, string>> urlSetup = url => url.Action(It.Is<UrlActionContext>(uac => uac.Action == "Preview"));
+            urlHelperMock.Setup(urlSetup).Returns(previewLink);
 
             var controller = new CourseController(manageApi.Object, new CourseMapper(), new SearchAndCompareUrlService("http://www.example.com"), new MockFeatureFlags());
+
             controller.TempData = tempDataMock.Object;
+            controller.Url = urlHelperMock.Object;
+
             var result = await controller.RequirementsPost(TestHelper.InstitutionCode, TestHelper.AccreditedProviderId, TestHelper.TargetedUcasCode, viewModel);
 
             var redirectToActionResult = result as RedirectToActionResult;
@@ -481,6 +505,11 @@ namespace ManageCoursesUi.Tests
 
             tempDataMock.Verify(x => x.Add("MessageType", "success"), Times.Once);
             tempDataMock.Verify(x => x.Add("MessageTitle", "Your changes have been saved"), Times.Once);
+            tempDataMock.Verify(x => x.Add("MessageBodyHtml", $@"
+                    <p class=""govuk-body"">
+                        <a href='{previewLink}'>Preview your course</a>
+                        to check for mistakes before publishing.
+                    </p>"), Times.Once);
 
             var routeValues = redirectToActionResult.RouteValues;
 
@@ -573,10 +602,18 @@ namespace ManageCoursesUi.Tests
             manageApi.Setup(x => x.GetEnrichmentCourse(TestHelper.InstitutionCode, TestHelper.TargetedUcasCode)).ReturnsAsync(ucasCourseEnrichmentGetModel);
 
             var tempDataMock = new Mock<ITempDataDictionary>();
+            var urlHelperMock = new Mock<IUrlHelper>();
+
+            var previewLink = "preview-link";
+
+            Expression<Func<IUrlHelper, string>> urlSetup = url => url.Action(It.Is<UrlActionContext>(uac => uac.Action == "Preview"));
+            urlHelperMock.Setup(urlSetup).Returns(previewLink);
 
             var controller = new CourseController(manageApi.Object, new CourseMapper(), new SearchAndCompareUrlService("http://www.example.com"), new MockFeatureFlags());
 
             controller.TempData = tempDataMock.Object;
+            controller.Url = urlHelperMock.Object;
+
             var result = await controller.SalaryPost(TestHelper.InstitutionCode, TestHelper.AccreditedProviderId, TestHelper.TargetedUcasCode, viewModel);
 
             var redirectToActionResult = result as RedirectToActionResult;
@@ -587,6 +624,11 @@ namespace ManageCoursesUi.Tests
 
             tempDataMock.Verify(x => x.Add("MessageType", "success"), Times.Once);
             tempDataMock.Verify(x => x.Add("MessageTitle", "Your changes have been saved"), Times.Once);
+            tempDataMock.Verify(x => x.Add("MessageBodyHtml", $@"
+                    <p class=""govuk-body"">
+                        <a href='{previewLink}'>Preview your course</a>
+                        to check for mistakes before publishing.
+                    </p>"), Times.Once);
 
             var routeValues = redirectToActionResult.RouteValues;
 
@@ -685,10 +727,18 @@ namespace ManageCoursesUi.Tests
             manageApi.Setup(x => x.GetEnrichmentCourse(TestHelper.InstitutionCode, TestHelper.TargetedUcasCode)).ReturnsAsync(ucasCourseEnrichmentGetModel);
 
             var tempDataMock = new Mock<ITempDataDictionary>();
+            var urlHelperMock = new Mock<IUrlHelper>();
+
+            var previewLink = "preview-link";
+
+            Expression<Func<IUrlHelper, string>> urlSetup = url => url.Action(It.Is<UrlActionContext>(uac => uac.Action == "Preview"));
+            urlHelperMock.Setup(urlSetup).Returns(previewLink);
 
             var controller = new CourseController(manageApi.Object, new CourseMapper(), new SearchAndCompareUrlService("http://www.example.com"), new MockFeatureFlags());
 
             controller.TempData = tempDataMock.Object;
+            controller.Url = urlHelperMock.Object;
+
             var result = await controller.FeesPost(TestHelper.InstitutionCode, TestHelper.AccreditedProviderId, TestHelper.TargetedUcasCode, viewModel);
 
             var redirectToActionResult = result as RedirectToActionResult;
@@ -699,6 +749,11 @@ namespace ManageCoursesUi.Tests
 
             tempDataMock.Verify(x => x.Add("MessageType", "success"), Times.Once);
             tempDataMock.Verify(x => x.Add("MessageTitle", "Your changes have been saved"), Times.Once);
+            tempDataMock.Verify(x => x.Add("MessageBodyHtml", $@"
+                    <p class=""govuk-body"">
+                        <a href='{previewLink}'>Preview your course</a>
+                        to check for mistakes before publishing.
+                    </p>"), Times.Once);
 
             var routeValues = redirectToActionResult.RouteValues;
 

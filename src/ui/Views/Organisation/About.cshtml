@@ -9,194 +9,200 @@
   var workflowStatus = Model.GetWorkflowStatus();
 }
 
-<div class="govuk-grid-row">
-  <div class="govuk-grid-column-two-thirds">
-    <div class="course-basicinfo govuk-!-margin-bottom-9">
-      <h1 class="govuk-heading-xl">
-        <span class="govuk-caption-xl">@Model.TabViewModel.OrganisationName</span>
-        About your organisation
-      </h1>
+<a href="@Url.Action("Courses", "Organisation", new {ucasCode = @Model.TabViewModel.UcasCode})" class="govuk-back-link">Back</a>
+
+<main role="main" class="govuk-main-wrapper" id="main-content">
+  @await Html.PartialAsync("~/Views/Shared/_Alerts.cshtml")
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <div class="course-basicinfo govuk-!-margin-bottom-9">
+        <h1 class="govuk-heading-xl">
+          <span class="govuk-caption-xl">@Model.TabViewModel.OrganisationName</span>
+          About your organisation
+        </h1>
+      </div>
     </div>
   </div>
-</div>
 
-<div class="govuk-grid-row">
-  <div class="govuk-grid-column-two-thirds">
-    <form asp-controller="Organisation" asp-action="About" method="post" data-module="form">
-      <input type="hidden" asp-for="@Model.PublishOrganisation" value="false"></input>
-      <input type="hidden" asp-for="@Model.InstitutionCode"></input>
-      @Html.Partial("Shared/ErrorSummary")
-      <p class="govuk-body">This is your chance to tell applicants why they should choose to train with you. You could describe any advantages and special
-      features of you as a training provider.</p>
-      <p class="govuk-body">You must be specific and factual with any claims you make, and support them with evidence. For example:</p>
-      <ul class="govuk-list govuk-list--bullet">
-        <li>don’t say “our students are some of the happiest in the country”</li>
-        <li> do say “the Times Educational Supplement ranked our students as 4th happiest in the country”</li>
-      </ul>
-      <div class="govuk-character-count" data-module="character-count" data-maxwords="250">
-        <div id="TrainWithUs-wrapper" class="govuk-form-group @(train_with_us ? "govuk-form-group--error" : " ")">
-          <label asp-for="TrainWithUs" class="govuk-label govuk-!-font-weight-bold">Training with you</label>
-          @if (train_with_us) {
-            <span asp-validation-for="TrainWithUs" class="govuk-error-message"></span>
-          }
-          <textarea asp-for="TrainWithUs" class="govuk-textarea js-character-count" rows="15" data-module="character-count"></textarea>
-        </div>
-      </div>
-
-      @if(Model.AboutTrainingProviders.Any()) {
-        <h2 class="govuk-heading-l">About your accredited provider</h2>
-        <p class="govuk-body">Describe any advantages and special features of your accredited provider. You must be specific and factual with any claims you make, and support them with evidence.</p>
-
-        @for (int i = 0; i < Model.AboutTrainingProviders.Count; i++) {
-            var aboutTrainingProviderKey = "AboutTrainingProviders_"+i+"__Description";
-            var hasErrored = ViewData.ModelState[aboutTrainingProviderKey] != null && ViewData.ModelState[aboutTrainingProviderKey].Errors.Any();
-          <div class="govuk-character-count" data-module="character-count" data-maxwords="100">
-              <div id="@aboutTrainingProviderKey-wrapper" class="govuk-form-group @(hasErrored ? "govuk-form-group--error" : " ")">
-                  <input type="hidden" asp-for="@Model.AboutTrainingProviders[i].InstitutionCode" />
-                  <input type="hidden" asp-for="@Model.AboutTrainingProviders[i].InstitutionName" />
-                  <label class="govuk-label govuk-!-font-weight-bold" asp-for="@Model.AboutTrainingProviders[i].Description">
-                      @Model.AboutTrainingProviders[i].InstitutionName (optional)
-                  </label>
-                  @if (hasErrored)
-                  {
-                      <span asp-validation-for="@Model.AboutTrainingProviders[i].Description" class="govuk-error-message">@Model.AboutTrainingProviders[i].ValidationMessage</span>
-                  }
-                  <textarea class="govuk-textarea js-character-count" rows="10" asp-for="@Model.AboutTrainingProviders[i].Description"></textarea>
-              </div>
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <form asp-controller="Organisation" asp-action="About" method="post" data-module="form">
+        <input type="hidden" asp-for="@Model.PublishOrganisation" value="false"></input>
+        <input type="hidden" asp-for="@Model.InstitutionCode"></input>
+        @Html.Partial("Shared/ErrorSummary")
+        <p class="govuk-body">This is your chance to tell applicants why they should choose to train with you. You could describe any advantages and special
+        features of you as a training provider.</p>
+        <p class="govuk-body">You must be specific and factual with any claims you make, and support them with evidence. For example:</p>
+        <ul class="govuk-list govuk-list--bullet">
+          <li>don’t say “our students are some of the happiest in the country”</li>
+          <li> do say “the Times Educational Supplement ranked our students as 4th happiest in the country”</li>
+        </ul>
+        <div class="govuk-character-count" data-module="character-count" data-maxwords="250">
+          <div id="TrainWithUs-wrapper" class="govuk-form-group @(train_with_us ? "govuk-form-group--error" : " ")">
+            <label asp-for="TrainWithUs" class="govuk-label govuk-!-font-weight-bold">Training with you</label>
+            @if (train_with_us) {
+              <span asp-validation-for="TrainWithUs" class="govuk-error-message"></span>
+            }
+            <textarea asp-for="TrainWithUs" class="govuk-textarea js-character-count" rows="15" data-module="character-count"></textarea>
           </div>
-        }
-      }
-
-      <h2 class="govuk-heading-l">Training with disabilities and other needs</h2>
-      <p class="govuk-body">Say how you support candidates with disabilities and other needs. This could include candidates with:</p>
-      <ul class="govuk-list govuk-list--bullet">
-        <li>dyslexia</li>
-        <li>physical, hearing and visual impairments</li>
-        <li>mental health conditions</li>
-      </ul>
-      <p class="govuk-body">If accessibility varies between locations, give details. It’s also useful for applicants to know how you’ve accommodated others with specific access needs in the past.</p>
-      <div class="govuk-character-count" data-module="character-count" data-maxwords="250">
-        <div id="TrainWithDisability-wrapper" class="govuk-form-group @(train_with_disability ? "govuk-form-group--error" : "")">
-          <label asp-for="TrainWithDisability" class="govuk-label govuk-!-font-weight-bold">Training with disabilities and other needs</label>
-          @if (train_with_disability) {
-            @Html.ValidationMessageFor(m => m.TrainWithDisability, "", new { @class="govuk-error-message" })
-          }
-          <textarea asp-for="TrainWithDisability" class="govuk-textarea js-character-count" rows="15"></textarea>
         </div>
-      </div>
-      <div class="form-group">
-        <input type="submit" class="govuk-button" value="Save" />
-      </div>
-      <div class="form-group">
-        <p class="govuk-body"><a href="@Url.Action("About", "Organisation")" class="govuk-link">Cancel changes</a></p>
-      </div>
-    </form>
+
+        @if(Model.AboutTrainingProviders.Any()) {
+          <h2 class="govuk-heading-l">About your accredited provider</h2>
+          <p class="govuk-body">Describe any advantages and special features of your accredited provider. You must be specific and factual with any claims you make, and support them with evidence.</p>
+
+          @for (int i = 0; i < Model.AboutTrainingProviders.Count; i++) {
+              var aboutTrainingProviderKey = "AboutTrainingProviders_"+i+"__Description";
+              var hasErrored = ViewData.ModelState[aboutTrainingProviderKey] != null && ViewData.ModelState[aboutTrainingProviderKey].Errors.Any();
+            <div class="govuk-character-count" data-module="character-count" data-maxwords="100">
+                <div id="@aboutTrainingProviderKey-wrapper" class="govuk-form-group @(hasErrored ? "govuk-form-group--error" : " ")">
+                    <input type="hidden" asp-for="@Model.AboutTrainingProviders[i].InstitutionCode" />
+                    <input type="hidden" asp-for="@Model.AboutTrainingProviders[i].InstitutionName" />
+                    <label class="govuk-label govuk-!-font-weight-bold" asp-for="@Model.AboutTrainingProviders[i].Description">
+                        @Model.AboutTrainingProviders[i].InstitutionName (optional)
+                    </label>
+                    @if (hasErrored)
+                    {
+                        <span asp-validation-for="@Model.AboutTrainingProviders[i].Description" class="govuk-error-message">@Model.AboutTrainingProviders[i].ValidationMessage</span>
+                    }
+                    <textarea class="govuk-textarea js-character-count" rows="10" asp-for="@Model.AboutTrainingProviders[i].Description"></textarea>
+                </div>
+            </div>
+          }
+        }
+
+        <h2 class="govuk-heading-l">Training with disabilities and other needs</h2>
+        <p class="govuk-body">Say how you support candidates with disabilities and other needs. This could include candidates with:</p>
+        <ul class="govuk-list govuk-list--bullet">
+          <li>dyslexia</li>
+          <li>physical, hearing and visual impairments</li>
+          <li>mental health conditions</li>
+        </ul>
+        <p class="govuk-body">If accessibility varies between locations, give details. It’s also useful for applicants to know how you’ve accommodated others with specific access needs in the past.</p>
+        <div class="govuk-character-count" data-module="character-count" data-maxwords="250">
+          <div id="TrainWithDisability-wrapper" class="govuk-form-group @(train_with_disability ? "govuk-form-group--error" : "")">
+            <label asp-for="TrainWithDisability" class="govuk-label govuk-!-font-weight-bold">Training with disabilities and other needs</label>
+            @if (train_with_disability) {
+              @Html.ValidationMessageFor(m => m.TrainWithDisability, "", new { @class="govuk-error-message" })
+            }
+            <textarea asp-for="TrainWithDisability" class="govuk-textarea js-character-count" rows="15"></textarea>
+          </div>
+        </div>
+        <div class="form-group">
+          <input type="submit" class="govuk-button" value="Save" />
+        </div>
+        <div class="form-group">
+          <p class="govuk-body"><a href="@Url.Action("About", "Organisation")" class="govuk-link">Cancel changes</a></p>
+        </div>
+      </form>
+    </div>
+    <div class="govuk-grid-column-one-third">
+
+      <aside class="related">
+        @switch(workflowStatus)
+        {
+          case WorkflowStatus.Blank :
+            <strong class="govuk-tag govuk-tag--blank">Empty</strong>
+            <p class="govuk-body">You need to complete and publish this information.</p>
+
+            @if (Model.AllowPreview)
+            {
+              <hr class="related__section-break" />
+              <h4 class="govuk-heading-m">Preview</h4>
+              <p class="govuk-body">This information will show on all your courses.</p>
+              <p class="govuk-body">Preview any course to see how it will look to applicants.</p>
+            }
+
+            <hr class="related__section-break">
+            <h4 class="govuk-heading-m">Publish</h4>
+            <p class="govuk-body">Applicants will see published information from October.</p>
+
+            <form asp-controller="Organisation" asp-action="about" method="post">
+              <input type="submit" class="govuk-button" value="Publish" />
+              <input type="hidden" asp-for="@Model.PublishOrganisation" value="true" />
+            </form>
+            break;
+          case WorkflowStatus.InitialDraft :
+            <strong class="govuk-tag govuk-tag--draft">Draft</strong>
+            <p class="govuk-body">You have unpublished changes.</p>
+
+            @if (Model.AllowPreview)
+            {
+              <hr class="related__section-break" />
+              <h4 class="govuk-heading-m">Preview</h4>
+              <p class="govuk-body">This information will show on all your courses.</p>
+              <p class="govuk-body">Preview any course to see how it will look to applicants.</p>
+            }
+
+            <hr class="related__section-break">
+            <h4 class="govuk-heading-m">Publish</h4>
+            <p class="govuk-body">Applicants will see published information from October.</p>
+
+            <form asp-controller="Organisation" asp-action="about" method="post">
+              <input type="submit" class="govuk-button" value="Publish" />
+              <input type="hidden" asp-for="@Model.PublishOrganisation" value="true" />
+            </form>
+            break;
+          case WorkflowStatus.Published :
+            <strong class="govuk-tag govuk-tag--published">Published</strong>
+            <p class="govuk-body">Applicants will see this on all your courses from October.</p>
+            <p class="govuk-body">Last published on @Model.LastPublishedTimestampUtc.DateString()</p>
+
+            break;
+          case WorkflowStatus.SubsequentDraft :
+            <strong class="govuk-tag govuk-tag--draft">Draft</strong>
+            <p class="govuk-body">Last published on @Model.LastPublishedTimestampUtc.DateString()</p>
+            <p class="govuk-body">You have unpublished changes.</p>
+
+            @if (Model.AllowPreview)
+            {
+              <hr class="related__section-break" />
+              <h4 class="govuk-heading-m">Preview</h4>
+              <p class="govuk-body">This information will show on all your courses.</p>
+              <p class="govuk-body">Preview any course to see how it will look to applicants.</p>
+            }
+
+            <hr class="related__section-break">
+            <h4 class="govuk-heading-m">Publish</h4>
+            <p class="govuk-body">Applicants will see published information from October.</p>
+
+            <form asp-controller="Organisation" asp-action="about" method="post">
+              <input type="hidden" asp-for="@Model.PublishOrganisation" value="true" />
+              <input type="submit" class="govuk-button" value="Publish" />
+            </form>
+            break;
+          case WorkflowStatus.BlankSubsequentDraft :
+            <strong class="govuk-tag govuk-tag--draft">Empty</strong>
+            <p class="govuk-body">Last published on @Model.LastPublishedTimestampUtc.DateString()</p>
+            <p class="govuk-body">You have unpublished changes.</p>
+
+            @if (Model.AllowPreview)
+            {
+              <hr class="related__section-break" />
+              <h4 class="govuk-heading-m">Preview</h4>
+              <p class="govuk-body">This information will show on all your courses.</p>
+              <p class="govuk-body">Preview any course to see how it will look to applicants.</p>
+            }
+
+            <hr class="related__section-break">
+            <h4 class="govuk-heading-m">Publish</h4>
+            <p class="govuk-body">Applicants will see published information from October.</p>
+
+            <form asp-controller="Organisation" asp-action="about" method="post">
+              <input type="hidden" asp-for="@Model.PublishOrganisation" value="true" />
+              <input type="submit" class="govuk-button" value="Publish" />
+            </form>
+            break;
+          default:
+            break;
+        }
+
+        <hr class="related__section-break">
+
+        @Html.Partial("FormattingAdvice")
+      </aside>
+
+    </div>
   </div>
-  <div class="govuk-grid-column-one-third">
-
-    <aside class="related">
-      @switch(workflowStatus)
-      {
-        case WorkflowStatus.Blank :
-          <strong class="govuk-tag govuk-tag--blank">Empty</strong>
-          <p class="govuk-body">You need to complete and publish this information.</p>
-
-          @if (Model.AllowPreview)
-          {
-            <hr class="related__section-break" />
-            <h4 class="govuk-heading-m">Preview</h4>
-            <p class="govuk-body">This information will show on all your courses.</p>
-            <p class="govuk-body">Preview any course to see how it will look to applicants.</p>
-          }
-
-          <hr class="related__section-break">
-          <h4 class="govuk-heading-m">Publish</h4>
-          <p class="govuk-body">Applicants will see published information from October.</p>
-
-          <form asp-controller="Organisation" asp-action="about" method="post">
-            <input type="submit" class="govuk-button" value="Publish" />
-            <input type="hidden" asp-for="@Model.PublishOrganisation" value="true" />
-          </form>
-          break;
-        case WorkflowStatus.InitialDraft :
-          <strong class="govuk-tag govuk-tag--draft">Draft</strong>
-          <p class="govuk-body">You have unpublished changes.</p>
-
-          @if (Model.AllowPreview)
-          {
-            <hr class="related__section-break" />
-            <h4 class="govuk-heading-m">Preview</h4>
-            <p class="govuk-body">This information will show on all your courses.</p>
-            <p class="govuk-body">Preview any course to see how it will look to applicants.</p>
-          }
-
-          <hr class="related__section-break">
-          <h4 class="govuk-heading-m">Publish</h4>
-          <p class="govuk-body">Applicants will see published information from October.</p>
-
-          <form asp-controller="Organisation" asp-action="about" method="post">
-            <input type="submit" class="govuk-button" value="Publish" />
-            <input type="hidden" asp-for="@Model.PublishOrganisation" value="true" />
-          </form>
-          break;
-        case WorkflowStatus.Published :
-          <strong class="govuk-tag govuk-tag--published">Published</strong>
-          <p class="govuk-body">Applicants will see this on all your courses from October.</p>
-          <p class="govuk-body">Last published on @Model.LastPublishedTimestampUtc.DateString()</p>
-
-          break;
-        case WorkflowStatus.SubsequentDraft :
-          <strong class="govuk-tag govuk-tag--draft">Draft</strong>
-          <p class="govuk-body">Last published on @Model.LastPublishedTimestampUtc.DateString()</p>
-          <p class="govuk-body">You have unpublished changes.</p>
-
-          @if (Model.AllowPreview)
-          {
-            <hr class="related__section-break" />
-            <h4 class="govuk-heading-m">Preview</h4>
-            <p class="govuk-body">This information will show on all your courses.</p>
-            <p class="govuk-body">Preview any course to see how it will look to applicants.</p>
-          }
-
-          <hr class="related__section-break">
-          <h4 class="govuk-heading-m">Publish</h4>
-          <p class="govuk-body">Applicants will see published information from October.</p>
-
-          <form asp-controller="Organisation" asp-action="about" method="post">
-            <input type="hidden" asp-for="@Model.PublishOrganisation" value="true" />
-            <input type="submit" class="govuk-button" value="Publish" />
-          </form>
-          break;
-        case WorkflowStatus.BlankSubsequentDraft :
-          <strong class="govuk-tag govuk-tag--draft">Empty</strong>
-          <p class="govuk-body">Last published on @Model.LastPublishedTimestampUtc.DateString()</p>
-          <p class="govuk-body">You have unpublished changes.</p>
-
-          @if (Model.AllowPreview)
-          {
-            <hr class="related__section-break" />
-            <h4 class="govuk-heading-m">Preview</h4>
-            <p class="govuk-body">This information will show on all your courses.</p>
-            <p class="govuk-body">Preview any course to see how it will look to applicants.</p>
-          }
-
-          <hr class="related__section-break">
-          <h4 class="govuk-heading-m">Publish</h4>
-          <p class="govuk-body">Applicants will see published information from October.</p>
-
-          <form asp-controller="Organisation" asp-action="about" method="post">
-            <input type="hidden" asp-for="@Model.PublishOrganisation" value="true" />
-            <input type="submit" class="govuk-button" value="Publish" />
-          </form>
-          break;
-        default:
-          break;
-      }
-
-      <hr class="related__section-break">
-
-      @Html.Partial("FormattingAdvice")
-    </aside>
-
-  </div>
-</div>
+</main>

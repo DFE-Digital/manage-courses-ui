@@ -82,7 +82,18 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
 
             if (result)
             {
-                SetSucessMessage("Your course has been published");
+                TempData.Add("MessageType", "success");
+                TempData.Add("MessageTitle", "Your course has been published");
+                var searchUrl = searchAndCompareUrlService.GetCoursePageUri(course.InstCode, course.CourseCode);
+                if (featureFlags.ShowCourseLiveView)
+                {
+                    TempData.Add("MessageBodyHtml", $@"
+                        <p class=""govuk-body"">
+                            See how this course looks to applicants:
+                            <br />
+                            <a href='{searchUrl}'>View on website</a>
+                        </p>");
+                }
             }
 
             return RedirectToAction("Variants", new { instCode, accreditingProviderId, ucasCode });
@@ -115,9 +126,9 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             return View(new SearchAndCompare.UI.Shared.ViewModels.CourseDetailsViewModel
             {
                 AboutYourOrgLink = Url.Action("About", "Organisation", new { ucasCode = instCode }),
-                    PreviewMode = true,
-                    Course = course,
-                    Finance = new FinanceViewModel(course, new FeeCaps())
+                PreviewMode = true,
+                Course = course,
+                Finance = new FinanceViewModel(course, new FeeCaps())
             });
         }
 
@@ -175,7 +186,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
 
             if (await SaveEnrichment(instCode, ucasCode, viewModel))
             {
-                SetSucessMessage();
+                CourseSavedMessage();
             }
 
             return RedirectToAction("Variants", new { instCode, accreditingProviderId, ucasCode });
@@ -228,7 +239,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
 
             if (await SaveEnrichment(instCode, ucasCode, viewModel))
             {
-                SetSucessMessage();
+                CourseSavedMessage();
             }
 
             return RedirectToAction("Variants", new { instCode, accreditingProviderId, ucasCode });
@@ -279,7 +290,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             }
             if (await SaveEnrichment(instCode, ucasCode, viewModel))
             {
-                SetSucessMessage();
+                CourseSavedMessage();
             }
             return RedirectToAction("Variants", new { instCode, accreditingProviderId, ucasCode });
         }
@@ -331,7 +342,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             }
             if (await SaveEnrichment(instCode, ucasCode, viewModel))
             {
-                SetSucessMessage();
+                CourseSavedMessage();
             }
             return RedirectToAction("Variants", new { instCode, accreditingProviderId, ucasCode });
         }
@@ -360,10 +371,19 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             if (string.IsNullOrEmpty(ucasCode)) { throw new ArgumentNullException(ucasCode, "ucasCode cannot be null or empty"); }
         }
 
-        private void SetSucessMessage(string message = null)
+        private void CourseSavedMessage()
         {
             TempData.Add("MessageType", "success");
-            TempData.Add("MessageTitle", message ?? "Your changes have been saved");
+            TempData.Add("MessageTitle", "Your changes have been saved");
+            if (featureFlags.ShowCoursePreview)
+            {
+                var previewLink = Url.Action("Preview");
+                TempData.Add("MessageBodyHtml", $@"
+                    <p class=""govuk-body"">
+                        <a href='{previewLink}'>Preview your course</a>
+                        to check for mistakes before publishing.
+                    </p>");
+            }
         }
 
         private VariantViewModel LoadViewModel(UserOrganisation org, ApiClient.Course course, bool multipleOrganisations, UcasCourseEnrichmentGetModel ucasCourseEnrichmentGetModel, CourseRouteDataViewModel routeData)
@@ -372,41 +392,41 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
                 new CourseVariantViewModel
                 {
                     Name = course.Name,
-                        Type = course.GetCourseVariantType(),
-                        Accrediting = course.AccreditingProviderName,
-                        ProviderCode = course.AccreditingProviderId,
-                        ProgrammeCode = course.CourseCode,
-                        UcasCode = course.InstCode,
-                        AgeRange = course.AgeRange,
-                        Route = course.ProgramType,
-                        Qualifications = course.ProfpostFlag,
-                        StudyMode = course.StudyMode,
-                        Subjects = course.Subjects,
-                        Status = course.GetCourseStatus(),
-                        Schools = course.Schools.Select(campus =>
-                        {
-                            var addressLines = (new List<string>()
-                                {
+                    Type = course.GetCourseVariantType(),
+                    Accrediting = course.AccreditingProviderName,
+                    ProviderCode = course.AccreditingProviderId,
+                    ProgrammeCode = course.CourseCode,
+                    UcasCode = course.InstCode,
+                    AgeRange = course.AgeRange,
+                    Route = course.ProgramType,
+                    Qualifications = course.ProfpostFlag,
+                    StudyMode = course.StudyMode,
+                    Subjects = course.Subjects,
+                    Status = course.GetCourseStatus(),
+                    Schools = course.Schools.Select(campus =>
+                    {
+                        var addressLines = (new List<string>()
+                            {
                                     campus.Address1,
                                         campus.Address2,
                                         campus.Address3,
                                         campus.Address4,
                                         campus.PostCode
-                                })
-                                .Where(line => !String.IsNullOrEmpty(line));
+                            })
+                            .Where(line => !String.IsNullOrEmpty(line));
 
-                            var address = addressLines.Count() > 0 ? addressLines.Where(line => !String.IsNullOrEmpty(line))
-                                .Aggregate((current, next) => current + ", " + next) : "";
+                        var address = addressLines.Count() > 0 ? addressLines.Where(line => !String.IsNullOrEmpty(line))
+                            .Aggregate((current, next) => current + ", " + next) : "";
 
-                            return new SchoolViewModel
-                            {
-                                ApplicationsAcceptedFrom = campus.ApplicationsAcceptedFrom,
-                                    Code = campus.Code,
-                                    LocationName = campus.LocationName,
-                                    Address = address,
-                                    Status = campus.Status
-                            };
-                        })
+                        return new SchoolViewModel
+                        {
+                            ApplicationsAcceptedFrom = campus.ApplicationsAcceptedFrom,
+                            Code = campus.Code,
+                            LocationName = campus.LocationName,
+                            Address = address,
+                            Status = campus.Status
+                        };
+                    })
                 };
 
             var isSalary = course.ProgramType.Equals("SS", StringComparison.InvariantCultureIgnoreCase);
@@ -485,8 +505,8 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             return new CourseRouteDataViewModel
             {
                 InstCode = instCode,
-                    AccreditingProviderId = accreditingProviderId,
-                    UcasCode = ucasCode
+                AccreditingProviderId = accreditingProviderId,
+                UcasCode = ucasCode
             };
         }
     }

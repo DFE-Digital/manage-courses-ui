@@ -37,11 +37,11 @@ namespace GovUk.Education.ManageCourses.Ui.Services
 
             // todo refactor out from Extension Method
             var routeName = new CourseVariantViewModel { Route = ucasCourseData?.ProgramType ?? "" }.GetRoute();
-            var isSalaried = routeName.IndexOf("salaried") > -1;
+            var isSalaried = string.Equals(ucasCourseData?.ProgramType, "ss", StringComparison.InvariantCultureIgnoreCase);
 
             var mappedCourse = new SearchAndCompare.Domain.Models.Course
             {
-                Duration = courseEnrichmentModel.CourseLength,
+                Duration = MapCourseLength(courseEnrichmentModel.CourseLength),
                 Name = ucasCourseData.Name,
                 ProgrammeCode = ucasCourseData.CourseCode,
                 Provider = provider,                
@@ -106,14 +106,14 @@ namespace GovUk.Education.ManageCourses.Ui.Services
 
                 FullTime = ucasCourseData.StudyMode == "P" ? VacancyStatus.NA : VacancyStatus.Vacancies,
                 PartTime = ucasCourseData.StudyMode == "F" ? VacancyStatus.NA : VacancyStatus.Vacancies, 
-                                
-                // todo update CourseEnrichmentModel
-                Salary = new Salary
-                {
-                    // ???
-                },
 
+                Mod = ucasCourseData.GetCourseVariantType(),
+                                
                 // no longer needed?
+                // Salary = new Salary
+                // {
+                
+                // },
                 // todo refine Domain Model to include Mid Range
                 //AgeRange = ucasCourseData.AgeRange.Trim().ToLowerInvariant() == "p" ? AgeRange.Primary 
                 //    : ucasCourseData.AgeRange.Trim().ToLowerInvariant() == "m" ? AgeRange.MiddleYears
@@ -135,7 +135,11 @@ namespace GovUk.Education.ManageCourses.Ui.Services
 
             mappedCourse.DescriptionSections.Add(new CourseDescriptionSection{
                 Name = CourseDetailsSections.AboutFees,
-                Text = courseEnrichmentModel.FeeDetails});            
+                Text = courseEnrichmentModel.FeeDetails});      
+            
+            mappedCourse.DescriptionSections.Add(new CourseDescriptionSection{
+                Name = CourseDetailsSections.AboutSalary,
+                Text = courseEnrichmentModel.SalaryDetails});        
 
             mappedCourse.DescriptionSections.Add(new CourseDescriptionSection{
                 Name = CourseDetailsSections.EntryRequirementsQualifications,
@@ -148,7 +152,10 @@ namespace GovUk.Education.ManageCourses.Ui.Services
             mappedCourse.DescriptionSections.Add(new CourseDescriptionSection{
                 Name = CourseDetailsSections.EntryRequirementsOther,
                 Text = courseEnrichmentModel.OtherRequirements});
-                
+            
+            mappedCourse.DescriptionSections.Add(new CourseDescriptionSection{
+                Name = CourseDetailsSections.FinancialSupport,
+                Text = courseEnrichmentModel.FinancialSupport});
             
             mappedCourse.DescriptionSections.Add(new CourseDescriptionSection{
                 Name = CourseDetailsSections.AboutSchools,
@@ -173,9 +180,21 @@ namespace GovUk.Education.ManageCourses.Ui.Services
             return mappedCourse;
         }
 
+        private string MapCourseLength(string courseLength)
+        {
+            return courseLength == "OneYear" ? "One year"
+                : courseLength == "TwoYears" ? "Up to two years"
+                : null;
+        }
+
         private string GetAccreditingProviderEnrichment(string accreditingProviderId, InstitutionEnrichmentModel enrichmentModel)
         {
             if (string.IsNullOrWhiteSpace(accreditingProviderId))
+            {
+                return "";
+            }
+
+            if (enrichmentModel.AccreditingProviderEnrichments == null)
             {
                 return "";
             }

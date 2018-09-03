@@ -5,90 +5,108 @@
   ViewBag.Title = Model.InstitutionName;
 }
 
-<div class="govuk-grid-row">
-  <div class="govuk-grid-column-two-thirds">
-    <h1 class="govuk-heading-xl">@Model.TabViewModel.OrganisationName</h1>
-    <h2 class="govuk-heading-l">Step 1. About your organisation</h2>
-    <p class="govuk-body">You need to add a description of your organisation - this is a chance to tell applicants why they should train with you. You should also say what you do for candidates with disabilities and other needs, and check your contact details to make sure they're correct.</p>
-    <p class="govuk-body">Once you’ve published your organisation information, it will show on each of your course pages. You’ll have to add your course details separately in Step 2 below.</p>
-    <p class="govuk-body"><a class="govuk-link" href="@Url.Action("About", "Organisation")">Fill in your organisation information</a></p>
+@if (Model.TabViewModel.MultipleOrganisations) {
+  <nav class="govuk-breadcrumbs">
+    <ol class="govuk-breadcrumbs__list">
+      <li class="govuk-breadcrumbs__list-item">
+        <a href="@Url.Action("index", "Organisations")" class="govuk-breadcrumbs__link">Organisations</a>
+      </li>
+      <li class="govuk-breadcrumbs__list-item" aria-current="page">
+        @Model.TabViewModel.OrganisationName
+      </li>
+    </ol>
+  </nav>
+}
+
+<main role="main" class="govuk-main-wrapper" id="main-content">
+  @Html.Partial("~/Views/Organisation/Shared/RequestAccessSuccess.cshtml")
+  @await Html.PartialAsync("~/Views/Shared/_Alerts.cshtml")
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <h1 class="govuk-heading-xl">@Model.TabViewModel.OrganisationName</h1>
+      <h2 class="govuk-heading-l">Step 1. About your organisation</h2>
+      <p class="govuk-body">You need to add a description of your organisation - this is a chance to tell applicants why they should train with you. You should also say what you do for candidates with disabilities and other needs, and check your contact details to make sure they're correct.</p>
+      <p class="govuk-body">Once you’ve published your organisation information, it will show on each of your course pages. You’ll have to add your course details separately in Step 2 below.</p>
+      <p class="govuk-body"><a class="govuk-link" href="@Url.Action("About", "Organisation")">Fill in your organisation information</a></p>
+    </div>
   </div>
-</div>
 
-<hr class="govuk-section-break govuk-section-break--visible govuk-section-break--l">
+  <hr class="govuk-section-break govuk-section-break--visible govuk-section-break--l">
 
-<div class="govuk-grid-row">
-  <div class="govuk-grid-column-two-thirds">
-    <h2 class="govuk-heading-l">Step 2. Course details</h2>
-    <h3 class="govuk-heading-m">Preview and publish courses</h3>
-    <p class="govuk-body">Give more details about each of your courses - including their structure and content, information about fees and financial help, and the qualifications needed for them.</p>
-    <p class="govuk-body">Make sure you preview each course before you publish it, to see how it will look online to applicants. Your courses won’t be seen by applicants until the search service, Find postgraduate teacher training, is launched in October.</p>
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <h2 class="govuk-heading-l">Step 2. Course details</h2>
+      <h3 class="govuk-heading-m">Preview and publish courses</h3>
+      <p class="govuk-body">Give more details about each of your courses - including their structure and content, information about fees and financial help, and the qualifications needed for them.</p>
+      <p class="govuk-body">Make sure you preview each course before you publish it, to see how it will look online to applicants. Your courses won’t be seen by applicants until the search service, Find postgraduate teacher training, is launched in October.</p>
+    </div>
   </div>
-</div>
 
-<hr class="govuk-section-break govuk-section-break--m">
+  <hr class="govuk-section-break govuk-section-break--m">
 
-  @foreach (var provider in Model.Providers)
-  {
-    if (!string.IsNullOrWhiteSpace(provider.ProviderId))
+    @foreach (var provider in Model.Providers)
     {
-      <h3 class="govuk-heading-m">
-        <span class="govuk-caption-m">Accredited provider</span>
-        @provider.ProviderName
-      </h3>
-    }
-
-    <table class="ucas-info-table govuk-table">
-      <thead class="govuk-table__head">
-        <tr class="govuk-table__row">
-          <th class="govuk-table__header ucas-info-table__code-col" scope="col">Code</th>
-          <th class="govuk-table__header ucas-info-table__subject-col" scope="col">Subject</th>
-          <th class="govuk-table__header ucas-info-table__type-col" scope="col">Type</th>
-          <th class="govuk-table__header ucas-info-table__type-col" scope="col">Status</th>
-          <th class="govuk-table__header ucas-info-table__type-col" scope="col">Course content</th>
-        </tr>
-      </thead>
-      <tbody class="govuk-table__body">
-      @foreach (var course in provider.Courses)
+      if (!string.IsNullOrWhiteSpace(provider.ProviderId))
       {
-        <tr class="govuk-table__row">
-          <td class="govuk-table__cell">@course.CourseCode</td>
-
-          <td class="govuk-table__cell">
-            <a href="@Url.Action("variants", "course", new {instCode = Model.InstitutionId, accreditingProviderId = course.AccreditingProviderId, ucasCode = course.CourseCode})" class="govuk-link">@course.Name</a>
-          </td>
-          <td class="govuk-table__cell">@course.GetCourseVariantType()</td>
-          <td class="govuk-table__cell">@course.GetCourseStatus()</td>
-          <td class="govuk-table__cell">
-            @if(course.CanHaveEnrichment())
-            {
-              @switch(course.EnrichmentWorkflowStatus)
-              {
-                case GovUk.Education.ManageCourses.ApiClient.EnumStatus.Draft:
-                  <div class="govuk-tag govuk-tag--inline govuk-tag--draft">draft</div>
-                  break;
-                case GovUk.Education.ManageCourses.ApiClient.EnumStatus.Published:              
-                  <div class="govuk-tag govuk-tag--inline govuk-tag--published">published</div>
-                  break;
-                default:
-                  <div class="govuk-tag govuk-tag--inline govuk-tag--blank">empty</div>
-                  break;
-              }
-            }
-          </td>
-        </tr>
+        <h3 class="govuk-heading-m">
+          <span class="govuk-caption-m">Accredited provider</span>
+          @provider.ProviderName
+        </h3>
       }
-      </tbody>
-    </table>
-  }
-</section>
 
-<hr class="govuk-section-break govuk-section-break--visible govuk-section-break--xl">
+      <table class="ucas-info-table govuk-table">
+        <thead class="govuk-table__head">
+          <tr class="govuk-table__row">
+            <th class="govuk-table__header ucas-info-table__code-col" scope="col">Code</th>
+            <th class="govuk-table__header ucas-info-table__subject-col" scope="col">Subject</th>
+            <th class="govuk-table__header ucas-info-table__type-col" scope="col">Type</th>
+            <th class="govuk-table__header ucas-info-table__type-col" scope="col">Status</th>
+            <th class="govuk-table__header ucas-info-table__type-col" scope="col">Course content</th>
+          </tr>
+        </thead>
+        <tbody class="govuk-table__body">
+        @foreach (var course in provider.Courses)
+        {
+          <tr class="govuk-table__row">
+            <td class="govuk-table__cell">@course.CourseCode</td>
 
-<div class="govuk-grid-row">
-  <div class="govuk-grid-column-two-thirds">
-    <h2 class="govuk-heading-l">Request access for someone else</h2>
-    <p class="govuk-body">You can request a DfE Sign-in account for others who manage your courses.</p>
-    <p class="govuk-body"><a class="govuk-link" href="@Url.Action("RequestAccess", "Organisation")">Request access for someone else</a></p>
+            <td class="govuk-table__cell">
+              <a href="@Url.Action("variants", "course", new {instCode = Model.InstitutionId, accreditingProviderId = course.AccreditingProviderId, ucasCode = course.CourseCode})" class="govuk-link">@course.Name</a>
+            </td>
+            <td class="govuk-table__cell">@course.GetCourseVariantType()</td>
+            <td class="govuk-table__cell">@course.GetCourseStatus()</td>
+            <td class="govuk-table__cell">
+              @if(course.CanHaveEnrichment())
+              {
+                @switch(course.EnrichmentWorkflowStatus)
+                {
+                  case GovUk.Education.ManageCourses.ApiClient.EnumStatus.Draft:
+                    <div class="govuk-tag govuk-tag--inline govuk-tag--draft">draft</div>
+                    break;
+                  case GovUk.Education.ManageCourses.ApiClient.EnumStatus.Published:
+                    <div class="govuk-tag govuk-tag--inline govuk-tag--published">published</div>
+                    break;
+                  default:
+                    <div class="govuk-tag govuk-tag--inline govuk-tag--blank">empty</div>
+                    break;
+                }
+              }
+            </td>
+          </tr>
+        }
+        </tbody>
+      </table>
+    }
+  </section>
+
+  <hr class="govuk-section-break govuk-section-break--visible govuk-section-break--xl">
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <h2 class="govuk-heading-l">Request access for someone else</h2>
+      <p class="govuk-body">You can request a DfE Sign-in account for others who manage your courses.</p>
+      <p class="govuk-body"><a class="govuk-link" href="@Url.Action("RequestAccess", "Organisation")">Request access for someone else</a></p>
+    </div>
   </div>
-</div>
+</main>
