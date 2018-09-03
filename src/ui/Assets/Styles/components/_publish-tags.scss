@@ -1,20 +1,19 @@
-.govuk-tag {
-  margin-bottom: govuk-spacing(3);
   &--inline {
     margin-bottom: 0;
   }
-}
-
 .govuk-tag--blank {
   background: govuk-colour("white");
   color: govuk-colour("grey-1");
   border: 2px solid govuk-colour("grey-2");
+  margin-bottom: govuk-spacing(3);
 }
 
 .govuk-tag--draft {
   background: govuk-colour("orange");
+  margin-bottom: govuk-spacing(3);
 }
 
 .govuk-tag--published {
-  background: govuk-colour("blue");
+  background: govuk-colour("green");
+  margin-bottom: govuk-spacing(3);
 }

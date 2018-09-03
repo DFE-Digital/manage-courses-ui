@@ -19,6 +19,18 @@ namespace GovUk.Education.ManageCourses.Ui.ViewModels
 
         public CourseInfoViewModel CourseInfo { get; set; }
 
+        public bool IsEmpty() =>
+            string.IsNullOrEmpty(Qualifications) &&
+            string.IsNullOrEmpty(PersonalQualities) &&
+            string.IsNullOrEmpty(OtherRequirements);
+
+        public void MapInto(ref CourseEnrichmentModel enrichmentModel)
+        {        
+            enrichmentModel.Qualifications = Qualifications;
+            enrichmentModel.PersonalQualities = PersonalQualities;
+            enrichmentModel.OtherRequirements = OtherRequirements;
+        }
+
         public void CopyFrom(CourseEnrichmentModel model)
         {
             if (model == null)

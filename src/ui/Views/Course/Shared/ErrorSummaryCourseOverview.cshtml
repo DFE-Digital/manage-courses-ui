@@ -1,0 +1,43 @@
+﻿@model VariantViewModel
+@using Microsoft.AspNetCore.Mvc.ModelBinding;
+@using System.Linq;
+
+
+@if (!@ViewContext.ModelState.IsValid)
+{
+    <div class="govuk-error-summary" role="alert" aria-labelledby="error-summary-heading" tabindex="-1">
+        <h2 class="govuk-heading-m govuk-error-summary__title" id="error-summary-heading">
+            You&#8217;ll need to correct some information.
+        </h2>
+
+        <div class="govuk-error-summary__body">
+            <ul class="govuk-list govuk-error-summary__list">
+
+@{
+    //Url.Action("About", "Course", routeData)"
+    var routeData = Model.CourseEnrichment.RouteData;
+    var failed = ViewContext.ModelState.Where(state => Model.CourseEnrichment.GetAboutCourseFields().Contains(state.Key)).Select(state => new {ActionName= "About", FieldName=state.Key, Errors = state.Value.Errors});
+
+    var derivedFields = Model.IsSalary ? ((SalaryBasedCourseEnrichmentViewModel)Model.CourseEnrichment).GetSalaryFields() : ((FeeBasedCourseEnrichmentViewModel)Model.CourseEnrichment).GetFeesFields();
+
+    var derivedActionName = Model.IsSalary ? "Salary" : "Fees";
+    failed = failed.Concat(
+        ViewContext.ModelState.Where(state => derivedFields.Contains(state.Key))
+        .Select(state => new {ActionName= derivedActionName, FieldName=state.Key, Errors = state.Value.Errors})
+        );
+
+    failed = failed.Concat(ViewContext.ModelState.Where(state => Model.CourseEnrichment.GetRequirementsFields().Contains(state.Key)).Select(state => new {ActionName= "Requirements", FieldName=state.Key, Errors = state.Value.Errors}));
+}
+                @foreach (var state in failed)
+                {
+                    foreach (var error in state.Errors)
+                    {
+                        <li>
+                            <a href="@Url.Action(state.ActionName, "Course", routeData)#@state.FieldName-wrapper">@error.ErrorMessage</a></li>
+                    }
+                }
+
+            </ul>
+        </div>
+    </div>
+}

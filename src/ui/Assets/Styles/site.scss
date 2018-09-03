@@ -64,4 +64,10 @@ $govuk-global-styles: true;
   &__code-col {
     width: 5%;
   }
+
+  .govuk-table__row:last-child {
+    .govuk-table__cell {
+      border-bottom: 0;
+    }
+  }
 }

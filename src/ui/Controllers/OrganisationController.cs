@@ -19,10 +19,12 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
     public class OrganisationController : CommonAttributesControllerBase
     {
         private readonly IManageApi _manageApi;
+        private readonly IFeatureFlags _featureFlags;
 
-        public OrganisationController(IManageApi manageApi)
+        public OrganisationController(IManageApi manageApi, IFeatureFlags featureFlags)
         {
             _manageApi = manageApi;
+            this._featureFlags = featureFlags;
         }
 
         [Route("{ucasCode}/courses")]
@@ -48,6 +50,8 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
         public async Task<IActionResult> About(string ucasCode)
         {
             var ucasInstitutionEnrichmentGetModel = await _manageApi.GetEnrichmentOrganisation(ucasCode);
+
+            ucasInstitutionEnrichmentGetModel = ucasInstitutionEnrichmentGetModel ?? new UcasInstitutionEnrichmentGetModel { EnrichmentModel = new InstitutionEnrichmentModel() { AccreditingProviderEnrichments = new ObservableCollection<AccreditingProviderEnrichment>() } };
 
             var tabViewModel = await GetTabViewModelAsync(ucasCode, "about");
 
@@ -124,7 +128,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
                     false == string.Equals(x.AccreditingProviderId, ucasCode, StringComparison.InvariantCultureIgnoreCase) &&
                     false == string.IsNullOrWhiteSpace(x.AccreditingProviderId))
                 .Distinct(new AccreditingProviderIdComparer()).ToList();
-            var accreditingProviderEnrichments = enrichmentModel.AccreditingProviderEnrichments;
+            var accreditingProviderEnrichments = enrichmentModel?.AccreditingProviderEnrichments ?? new ObservableCollection<AccreditingProviderEnrichment>();
 
             var result = accreditingProviders.Select(x =>
 
@@ -166,7 +170,8 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
                 TrainWithDisability = enrichmentModel.TrainWithDisability,
                 LastPublishedTimestampUtc = ucasInstitutionEnrichmentGetModel.LastPublishedTimestampUtc,
                 Status = ucasInstitutionEnrichmentGetModel.Status,
-                PublishOrganisation = false
+                PublishOrganisation = false,
+                AllowPreview = _featureFlags.ShowCoursePreview
             };
 
             return result;
@@ -174,6 +179,8 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
 
         private async Task<ActionResult> PublishOrgansation(UcasInstitutionEnrichmentGetModel ucasInstitutionEnrichmentGetModel, OrganisationViewModel model, string ucasCode)
         {
+            ucasInstitutionEnrichmentGetModel = ucasInstitutionEnrichmentGetModel ?? new UcasInstitutionEnrichmentGetModel { EnrichmentModel = new InstitutionEnrichmentModel() { AccreditingProviderEnrichments = new ObservableCollection<AccreditingProviderEnrichment>() } };
+
             model = GetOrganisationViewModel(ucasCode, ucasInstitutionEnrichmentGetModel);
 
             var enrichmentModel = ucasInstitutionEnrichmentGetModel.EnrichmentModel;
@@ -200,6 +207,10 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
 
                 if (result)
                 {
+
+                    TempData["MessageType"] = "success";
+                    TempData["MessageTitle"] = "Your changes have been published";
+
                     return RedirectToAction("About", new { ucasCode });
                 }
                 else
@@ -212,7 +223,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
         private async Task<ActionResult> SaveOrgansation(UcasInstitutionEnrichmentGetModel ucasInstitutionEnrichmentGetModel, OrganisationViewModel model, string ucasCode)
         {
 
-            var enrichmentModel = ucasInstitutionEnrichmentGetModel.EnrichmentModel;
+            var enrichmentModel = ucasInstitutionEnrichmentGetModel?.EnrichmentModel;
             var aboutAccreditingTrainingProviders = await GetTrainingProviderViewModels(ucasCode, enrichmentModel, model);
 
             model.AboutTrainingProviders = aboutAccreditingTrainingProviders;
@@ -236,6 +247,20 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
                         UcasInstitutionCode = x.InstitutionCode,
                             Description = x.Description
                     }));
+
+                if (enrichmentModel == null)
+                {
+                    var editIsEmpty = string.IsNullOrEmpty(model.TrainWithUs)
+                        && string.IsNullOrEmpty(model.TrainWithDisability)
+                        && !model.AboutTrainingProviders.Any(x => !string.IsNullOrEmpty(x.Description));
+
+                    if (editIsEmpty)
+                    {
+                        // Draft state is "New" and no changes have been made - don't insert a draft
+                        return RedirectToAction("About", "Organisation", new { ucasCode });
+                    }
+                    enrichmentModel = new InstitutionEnrichmentModel();
+                }
 
                 enrichmentModel.TrainWithUs = model.TrainWithUs;
                 enrichmentModel.AccreditingProviderEnrichments = aboutTrainingProviders;

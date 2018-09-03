@@ -15,8 +15,7 @@ namespace GovUk.Education.ManageCourses.Ui.ViewModels
         public string CourseTitle { get; set; }
         public string AccreditingProviderId { get; set; }
         public CourseVariantViewModel Course { get; set; }
-        public CourseEnrichmentViewModel CourseEnrichment { get; set; }
-        public CourseRouteDataViewModel RouteData { get; set; }
+        public BaseCourseEnrichmentViewModel CourseEnrichment { get; set; }
         public Uri LiveSearchUrl { get; set; }
         public bool IsSalary { get; set; }
     }
@@ -37,15 +36,15 @@ namespace GovUk.Education.ManageCourses.Ui.ViewModels
         public string Regions { get; set; }
         public string Status { get; set; }
 
-        public CourseVariantStatus StatusAsEnum => 
+        public CourseVariantStatus StatusAsEnum =>
                 string.Equals("running", Status ?? "", StringComparison.InvariantCultureIgnoreCase) ? CourseVariantStatus.Running
               : string.Equals("not running", Status ?? "", StringComparison.InvariantCultureIgnoreCase) ? CourseVariantStatus.NotRunning
-              : CourseVariantStatus.New;            
-        
+              : CourseVariantStatus.New;
+
         public IEnumerable<SchoolViewModel> Schools { get; set; }
 
     }
-    
+
 
     public class SchoolViewModel
     {
