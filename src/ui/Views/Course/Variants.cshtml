@@ -37,11 +37,11 @@
         <p class="govuk-body">
           @if(Model.Course.StatusAsEnum == CourseVariantStatus.New)
           {
-            <text>It won&#8217;t appear online until one or more training locations are set to &ldquo;running&rdquo; in <a href='https://update.ucas.co.uk/cgi-bin/hsrun.hse/NetUpdate/netupdate2/netupdate2.hjx;start=netupdate2.HsLoginPage.run'>UCAS web-link</a>.</text>
+            <text>It won&#8217;t appear online until one or more training locations are set to &ldquo;running&rdquo; in <a href='https://update.ucas.co.uk/netupdate2/Welcome.htm'>UCAS web-link</a>.</text>
           }
           else
           {
-            <text>It won&#8217;t appear online. You can publish it by changing the status of one or more training locations to &ldquo;running&rdquo; in <a href='https://update.ucas.co.uk/cgi-bin/hsrun.hse/NetUpdate/netupdate2/netupdate2.hjx;start=netupdate2.HsLoginPage.run'>UCAS web-link</a>.</text>
+            <text>It won&#8217;t appear online. You can publish it by changing the status of one or more training locations to &ldquo;running&rdquo; in <a href='https://update.ucas.co.uk/netupdate2/Welcome.htm'>UCAS web-link</a>.</text>
           }
         </p>
       </div>
@@ -53,6 +53,8 @@
       <div class="course-parts">
         <div class="course-parts__item">
           <h3 class="course-parts__title">Information from UCAS</h3>
+
+          <p class="govuk-body">You can only change this information using <a href="https://update.ucas.co.uk/netupdate2/Welcome.htm">UCAS web-link</a>. Changes will usually appear here within one working day.</p>
 
           <dl class="govuk-list govuk-list--description">
             @if (!string.IsNullOrEmpty(@Model.Course.Status))
