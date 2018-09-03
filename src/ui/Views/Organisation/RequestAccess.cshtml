@@ -8,53 +8,59 @@
   var rv = ViewData.ModelState["Reason"] != null && ViewData.ModelState["Reason"].Errors.Any();
 }
 
-<div class="govuk-grid-row">
-  <div class="govuk-grid-column-two-thirds">
-    <div class="course-basicinfo govuk-!-margin-bottom-9">
-      <h1 class="govuk-heading-xl">Request access for &nbsp; someone else</h1>
-      <p class="govuk-body">You can request a DfE Sign-in account for others who manage your courses.</p>
+<a href="@Url.Action("Courses", "Organisation", new {ucasCode = @Model.TabViewModel.UcasCode})" class="govuk-back-link">Back</a>
+
+<main role="main" class="govuk-main-wrapper" id="main-content">
+  @Html.Partial("~/Views/Shared/_Alerts.cshtml")
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <div class="course-basicinfo govuk-!-margin-bottom-9">
+        <h1 class="govuk-heading-xl">Request access for &nbsp; someone else</h1>
+        <p class="govuk-body">You can request a DfE Sign-in account for others who manage your courses.</p>
+      </div>
+      <h2 class="govuk-heading-m">Request an account for:</h2>
+      <form asp-controller="Organisation" asp-action="RequestAccess" method="post">
+        @Html.Partial("ErrorSummary")
+        <div id="FirstName-wrapper" class="govuk-form-group @(fnv ? "govuk-form-group--error" : "")">
+          <label asp-for="FirstName" class="govuk-label">First name</label>
+          @if (fnv) {
+            <span asp-validation-for="FirstName" class="govuk-error-message"></span>
+          }
+          <input asp-for="FirstName" class="govuk-input govuk-!-width-one-half" />
+        </div>
+        <div id="LastName-wrapper" class="govuk-form-group @(lnv ? "govuk-form-group--error" : "")">
+          <label asp-for="LastName" class="govuk-label">Last name</label>
+          @if (lnv) {
+            <span asp-validation-for="LastName" class="govuk-error-message"></span>
+          }
+          <input asp-for="LastName" class="govuk-input govuk-!-width-one-half" />
+        </div>
+        <div id="EmailAddress-wrapper" class="govuk-form-group @(eav ? " govuk-form-group--error " : " ")">
+          <label asp-for="EmailAddress" class="govuk-label">Email address</label>
+          @if (eav) {
+            <span asp-validation-for="EmailAddress" class="govuk-error-message"></span>
+          }
+          <input asp-for="EmailAddress" class="govuk-input govuk-!-width-one-half" />
+        </div>
+        <div id="Organisation-wrapper" class="govuk-form-group @(ov ? "govuk-form-group--error" : "")">
+          <label asp-for="Organisation" class="govuk-label">Their organisation</label>
+          @if (ov) {
+            <span asp-validation-for="Organisation" class="govuk-error-message"></span>
+          }
+          <input asp-for="Organisation" class="govuk-input govuk-!-width-one-half" />
+        </div>
+        <div id="Reason-wrapper" class="govuk-form-group @(rv ? "govuk-form-group--error" : "")">
+          <label asp-for="Reason" class="govuk-label">Reason they need access</label>
+          @if (rv) {
+            <span asp-validation-for="Reason" class="govuk-error-message"></span>
+          }
+          <textarea asp-for="Reason" class="govuk-textarea govuk-!-width-two-thirds"></textarea>
+        </div>
+        <div class="form-group">
+          <input type="submit" class="govuk-button" value="Request access" />
+        </div>
+      </form>
     </div>
-    <h2 class="govuk-heading-m">Request an account for:</h2>
-    <form asp-controller="Organisation" asp-action="RequestAccess" method="post">
-      @Html.Partial("ErrorSummary")
-      <div id="FirstName-wrapper" class="govuk-form-group @(fnv ? "govuk-form-group--error" : "")">
-        <label asp-for="FirstName" class="govuk-label">First name</label>
-        @if (fnv) {
-          <span asp-validation-for="FirstName" class="govuk-error-message"></span>
-        }
-        <input asp-for="FirstName" class="govuk-input govuk-!-width-one-half" />
-      </div>
-      <div id="LastName-wrapper" class="govuk-form-group @(lnv ? "govuk-form-group--error" : "")">
-        <label asp-for="LastName" class="govuk-label">Last name</label>
-        @if (lnv) {
-          <span asp-validation-for="LastName" class="govuk-error-message"></span>
-        }
-        <input asp-for="LastName" class="govuk-input govuk-!-width-one-half" />
-      </div>
-      <div id="EmailAddress-wrapper" class="govuk-form-group @(eav ? " govuk-form-group--error " : " ")">
-        <label asp-for="EmailAddress" class="govuk-label">Email address</label>
-        @if (eav) {
-          <span asp-validation-for="EmailAddress" class="govuk-error-message"></span>
-        }
-        <input asp-for="EmailAddress" class="govuk-input govuk-!-width-one-half" />
-      </div>
-      <div id="Organisation-wrapper" class="govuk-form-group @(ov ? "govuk-form-group--error" : "")">
-        <label asp-for="Organisation" class="govuk-label">Their organisation</label>
-        @if (ov) {
-          <span asp-validation-for="Organisation" class="govuk-error-message"></span>
-        }
-        <input asp-for="Organisation" class="govuk-input govuk-!-width-one-half" />
-      </div>
-      <div id="Reason-wrapper" class="govuk-form-group @(rv ? "govuk-form-group--error" : "")">
-        <label asp-for="Reason" class="govuk-label">Reason they need access</label>
-        @if (rv) {
-          <span asp-validation-for="Reason" class="govuk-error-message"></span>
-        }
-        <textarea asp-for="Reason" class="govuk-textarea govuk-!-width-two-thirds"></textarea>
-      </div>
-      <div class="form-group">
-        <input type="submit" class="govuk-button" value="Request access" />
-      </div>
-    </form>
   </div>
-</div>
+</main>
