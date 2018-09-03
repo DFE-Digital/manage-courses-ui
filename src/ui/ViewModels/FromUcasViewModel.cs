@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using GovUk.Education.ManageCourses.ApiClient;
 
 namespace GovUk.Education.ManageCourses.Ui.ViewModels
 {

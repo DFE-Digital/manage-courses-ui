@@ -8,5 +8,6 @@ namespace GovUk.Education.ManageCourses.Ui.ViewModels
     { 
         bool IsEmpty();
         void MapInto(ref CourseEnrichmentModel enrichmentModel);
+        void CopyFrom(CourseEnrichmentModel model);
     }
 }

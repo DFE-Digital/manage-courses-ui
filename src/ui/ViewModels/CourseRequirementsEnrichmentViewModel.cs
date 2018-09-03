@@ -30,5 +30,28 @@ namespace GovUk.Education.ManageCourses.Ui.ViewModels
             enrichmentModel.PersonalQualities = PersonalQualities;
             enrichmentModel.OtherRequirements = OtherRequirements;
         }
+
+        public void CopyFrom(CourseEnrichmentModel model)
+        {
+            if (model == null)
+            {
+                return;
+            }
+
+            if (!string.IsNullOrEmpty(model.Qualifications))
+            {
+                Qualifications = model.Qualifications;
+            }
+
+            if (!string.IsNullOrEmpty(model.PersonalQualities))
+            {
+                PersonalQualities = model.PersonalQualities;
+            }
+
+            if (!string.IsNullOrEmpty(model.OtherRequirements))
+            {
+                OtherRequirements = model.OtherRequirements;
+            }
+        }
     }
 }
