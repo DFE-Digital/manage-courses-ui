@@ -5,28 +5,9 @@
   var viewModel = Model.TabViewModel;
 }
 
-@if (viewModel.MultipleOrganisations)
-{
-  <nav class="govuk-breadcrumbs">
-    <ol class="govuk-breadcrumbs__list">
-      <li class="govuk-breadcrumbs__list-item">
-        <a href="@Url.Action("index", "Organisations")" class="govuk-breadcrumbs__link">Organisations</a>
-      </li>
-      <li class="govuk-breadcrumbs__list-item" aria-current="page">
-        @viewModel.OrganisationName
-      </li>
-    </ol>
-  </nav>
-}
+<a href="@Url.Action("Courses", "Organisation", new {ucasCode = viewModel.UcasCode})" class="govuk-back-link">Back</a>
 
 <main role="main" class="govuk-main-wrapper" id="main-content">
-  <div class="govuk-grid-row">
-    <div class="govuk-grid-column-two-thirds">
-      <h1 class="govuk-heading-xl">
-        @viewModel.OrganisationName
-      </h1>
-    </div>
-  </div>
   @Html.Partial("~/Views/Organisation/Shared/RequestAccessSuccess.cshtml")
   @Html.Partial("~/Views/Shared/_Alerts.cshtml")
   @RenderBody()
