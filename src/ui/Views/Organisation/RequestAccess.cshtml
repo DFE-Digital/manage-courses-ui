@@ -17,7 +17,7 @@
       </div>
       <h2 class="govuk-heading-m">Request an account for:</h2>
       <form asp-controller="Organisation" asp-action="RequestAccess" method="post">
-        @Html.Partial("ErrorSummary")
+        @Html.PartialAsync("ErrorSummary")
         <div id="FirstName-wrapper" class="govuk-form-group @(fnv ? "govuk-form-group--error" : "")">
           <label asp-for="FirstName" class="govuk-label">First name</label>
           @if (fnv) {

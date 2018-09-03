@@ -16,7 +16,7 @@
           <span class="govuk-caption-xl">@Model.CourseInfo.Name (@Model.CourseInfo.ProgrammeCode)</span>
           About this course
         </h1>
-        @Html.Partial("ErrorSummary")
+        @Html.PartialAsync("ErrorSummary")
          <p class="govuk-body">Give applicants a short description of the course.</p>
         <p class="govuk-body">You could include:</p>
         <ul class="govuk-list govuk-list--bullet">
@@ -86,8 +86,8 @@
     </div>
     <div class="govuk-grid-column-one-third">
       <aside class="related">
-        @Html.Partial("CopyCourseContent")
-        @Html.Partial("FormattingAdvice")
+        @Html.PartialAsync("CopyCourseContent")
+        @Html.PartialAsync("FormattingAdvice")
       </aside>
     </div>
   </div>

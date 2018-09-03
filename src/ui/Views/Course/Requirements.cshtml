@@ -16,7 +16,7 @@
           <span class="govuk-caption-xl">@Model.CourseInfo.Name (@Model.CourseInfo.ProgrammeCode)</span>
           Requirements and eligibility
         </h1>
-        @Html.Partial("ErrorSummary")
+        @Html.PartialAsync("ErrorSummary")
         <h3 class="govuk-heading-l">Qualifications needed</h3>
         <p class="govuk-body">State the minimum academic qualifications needed for this course, in addition to the basic national requirements.</p>
         <div class="govuk-character-count" data-module="character-count" data-maxwords="100">
@@ -62,8 +62,8 @@
     </div>
     <div class="govuk-grid-column-one-third">
       <aside class="related">
-        @Html.Partial("CopyCourseContent")
-        @Html.Partial("FormattingAdvice")
+        @Html.PartialAsync("CopyCourseContent")
+        @Html.PartialAsync("FormattingAdvice")
       </aside>
     </div>
   </div>

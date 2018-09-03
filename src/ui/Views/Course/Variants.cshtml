@@ -10,8 +10,8 @@
 
 <a href="@Url.Action("Courses", "Organisation", new {ucasCode = Model.Course.UcasCode})" class="govuk-back-link">Back</a>
 
-@Html.Partial("~/Views/Shared/_Alerts.cshtml")
-@Html.Partial("Shared/ErrorSummary.cshtml")
+@Html.PartialAsync("~/Views/Shared/_Alerts.cshtml")
+@Html.PartialAsync("Shared/ErrorSummary.cshtml")
 
 <main role="main" class="govuk-main-wrapper" id="main-content">
   <h1 class="govuk-heading-xl">
