@@ -10,7 +10,7 @@ namespace ManageCoursesUi.Tests.Mocks
 {
     public class OrganisationControllerMockedValidation : OrganisationController
     {
-        public OrganisationControllerMockedValidation(IManageApi manageApi) : base(manageApi) { }
+        public OrganisationControllerMockedValidation(IManageApi manageApi, IFeatureFlags featureFlags) : base(manageApi, featureFlags) { }
         public override bool TryValidateModel(object model)
         {
             this.ModelState.AddModelError("you", "failed");

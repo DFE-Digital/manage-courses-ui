@@ -19,10 +19,12 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
     public class OrganisationController : CommonAttributesControllerBase
     {
         private readonly IManageApi _manageApi;
+        private readonly IFeatureFlags featureFlags;
 
-        public OrganisationController(IManageApi manageApi)
+        public OrganisationController(IManageApi manageApi, IFeatureFlags featureFlags)
         {
             _manageApi = manageApi;
+            this.featureFlags = featureFlags;
         }
 
         [Route("{ucasCode}/courses")]
@@ -168,7 +170,8 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
                 TrainWithDisability = enrichmentModel.TrainWithDisability,
                 LastPublishedTimestampUtc = ucasInstitutionEnrichmentGetModel.LastPublishedTimestampUtc,
                 Status = ucasInstitutionEnrichmentGetModel.Status,
-                PublishOrganisation = false
+                PublishOrganisation = false,
+                AllowPreview = featureFlags.ShowCoursePreview
             };
 
             return result;
