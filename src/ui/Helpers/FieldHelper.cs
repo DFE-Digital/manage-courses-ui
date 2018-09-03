@@ -1,4 +1,5 @@
 using System;
+using System.Globalization;
 using GovUk.Education.ManageCourses.Ui.ViewModels.Enums;
 namespace GovUk.Education.ManageCourses.Ui.Helpers
 {
@@ -12,7 +13,7 @@ namespace GovUk.Education.ManageCourses.Ui.Helpers
 
         public static string DisplayText(this decimal? value, int maxLength = 100, string defaultEmpty = "This field is empty")
         {
-            var text = value.HasValue ? value.Value.ToString() : "";
+            var text = value.HasValue ? string.Format(CultureInfo.InvariantCulture, "£{0:n0}", (int) value.Value) : "";
             var result = DisplayText(text, maxLength, defaultEmpty);
             return result;
         }

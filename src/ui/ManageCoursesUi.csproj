@@ -32,7 +32,7 @@
     <PackageReference Include="GovUk.Education.ManageCourses.ApiClient" Version="0.9.2.*" />
   </ItemGroup>
   <ItemGroup Condition="Exists('$(ProjectDir)dev-sc-shared.targets')==false">    
-    <PackageReference Include="GovUk.Education.SearchAndCompare.Ui.Shared" Version="0.2.0" />
+    <PackageReference Include="GovUk.Education.SearchAndCompare.Ui.Shared" Version="0.4.0" />
   </ItemGroup>
   <Target Name="Webpack" BeforeTargets="AfterBuild">
     <Exec Command="npm install" />
