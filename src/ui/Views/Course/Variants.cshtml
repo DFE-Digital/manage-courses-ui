@@ -228,7 +228,7 @@
     </div>
 
     <div class="govuk-grid-column-one-third">
-    @if(Model.Course.StatusAsEnum != CourseVariantStatus.NotRunning)
+    @if(Model.AllowPreview && Model.Course.StatusAsEnum != CourseVariantStatus.NotRunning)
     {
       <aside class="related">
         @switch(courseEnrichment.DeterminePublicationState())
