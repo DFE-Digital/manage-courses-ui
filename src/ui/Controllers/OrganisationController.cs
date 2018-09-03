@@ -19,12 +19,12 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
     public class OrganisationController : CommonAttributesControllerBase
     {
         private readonly IManageApi _manageApi;
-        private readonly IFeatureFlags featureFlags;
+        private readonly IFeatureFlags _featureFlags;
 
         public OrganisationController(IManageApi manageApi, IFeatureFlags featureFlags)
         {
             _manageApi = manageApi;
-            this.featureFlags = featureFlags;
+            this._featureFlags = featureFlags;
         }
 
         [Route("{ucasCode}/courses")]
@@ -171,7 +171,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
                 LastPublishedTimestampUtc = ucasInstitutionEnrichmentGetModel.LastPublishedTimestampUtc,
                 Status = ucasInstitutionEnrichmentGetModel.Status,
                 PublishOrganisation = false,
-                AllowPreview = featureFlags.ShowCoursePreview
+                AllowPreview = _featureFlags.ShowCoursePreview
             };
 
             return result;
