@@ -94,7 +94,7 @@
           </dl>
         </div>
 
-      @if(Model.Course.StatusAsEnum != CourseVariantStatus.NotRunning)
+      @if(Model.AllowPreview && Model.Course.StatusAsEnum != CourseVariantStatus.NotRunning)
       {
         <div class="course-parts__item">
           <h3 class="course-parts__title">About this course</h3>
@@ -235,7 +235,7 @@
     </div>
 
     <div class="govuk-grid-column-one-third">
-    @if(Model.Course.StatusAsEnum != CourseVariantStatus.NotRunning)
+    @if(Model.AllowPreview && Model.Course.StatusAsEnum != CourseVariantStatus.NotRunning)
     {
       <aside class="related">
         @switch(courseEnrichment.DeterminePublicationState())
