@@ -82,7 +82,18 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
 
             if (result)
             {
-                SetSucessMessage("Your course has been published");
+                TempData.Add("MessageType", "success");
+                TempData.Add("MessageTitle", "Your course has been published");
+                var searchUrl = searchAndCompareUrlService.GetCoursePageUri(course.InstCode, course.CourseCode);
+                if (featureFlags.ShowCourseLiveView)
+                {
+                    TempData.Add("MessageBodyHtml", $@"
+                        <p class=""govuk-body"">
+                            See how this course looks to applicants:
+                            <br />
+                            <a href='{searchUrl}'>View on website</a>
+                        </p>");
+                }
             }
 
             return RedirectToAction("Variants", new { instCode, accreditingProviderId, ucasCode });
@@ -159,7 +170,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
 
             if (await SaveEnrichment(instCode, ucasCode, viewModel))
             {
-                SetSucessMessage();
+                CourseSavedMessage();
             }
 
             return RedirectToAction("Variants", new { instCode, accreditingProviderId, ucasCode });
@@ -204,7 +215,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
 
             if (await SaveEnrichment(instCode, ucasCode, viewModel))
             {
-                SetSucessMessage();
+                CourseSavedMessage();
             }
 
             return RedirectToAction("Variants", new { instCode, accreditingProviderId, ucasCode });
@@ -246,7 +257,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             }
             if (await SaveEnrichment(instCode, ucasCode, viewModel))
             {
-                SetSucessMessage();
+                CourseSavedMessage();
             }
             return RedirectToAction("Variants", new { instCode, accreditingProviderId, ucasCode });
         }
@@ -290,7 +301,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             }
             if (await SaveEnrichment(instCode, ucasCode, viewModel))
             {
-                SetSucessMessage();
+                CourseSavedMessage();
             }
             return RedirectToAction("Variants", new { instCode, accreditingProviderId, ucasCode });
         }
@@ -319,11 +330,19 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             if (string.IsNullOrEmpty(ucasCode)) { throw new ArgumentNullException(ucasCode, "ucasCode cannot be null or empty"); }
         }
 
-        private void SetSucessMessage(string message = null)
+        private void CourseSavedMessage()
         {
             TempData.Add("MessageType", "success");
-            TempData.Add("MessageTitle", message ?? "Your changes have been saved");
-            TempData.Add("MessageBodyHtml", "<p class=\"govuk-body\">Preview your course to check for mistakes before publishing.</p>");
+            TempData.Add("MessageTitle", "Your changes have been saved");
+            if (featureFlags.ShowCoursePreview)
+            {
+                var previewLink = Url.Action("Preview");
+                TempData.Add("MessageBodyHtml", $@"
+                    <p class=""govuk-body"">
+                        <a href='{previewLink}'>Preview your course</a>
+                        to check for mistakes before publishing.
+                    </p>");
+            }
         }
 
         private VariantViewModel LoadViewModel(UserOrganisation org, ApiClient.Course course, bool multipleOrganisations, UcasCourseEnrichmentGetModel ucasCourseEnrichmentGetModel, CourseRouteDataViewModel routeData)
