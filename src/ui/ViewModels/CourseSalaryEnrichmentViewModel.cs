@@ -17,21 +17,23 @@ namespace GovUk.Education.ManageCourses.Ui.ViewModels
 
         public CourseInfoViewModel CourseInfo { get; set; }
 
-        public void CopyFrom(CourseEnrichmentModel model)
+        public IEnumerable<string> CopyFrom(CourseEnrichmentModel model)
         {
             if (model == null)
             {
-                return;
+                yield break;
             }
 
             if(Enum.TryParse(model.CourseLength, out CourseLength courseLength))
             {
                 CourseLength = courseLength;
+                yield return CourseEnrichmentFieldNames.CourseLength;
             }
             
             if(!string.IsNullOrEmpty(model.SalaryDetails))
             {
                 SalaryDetails = model.SalaryDetails;
+                yield return CourseEnrichmentFieldNames.SalaryDetails;
             }
         }
     }

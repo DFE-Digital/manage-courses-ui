@@ -1,5 +1,6 @@
 @{
   IEnumerable<GovUk.Education.ManageCourses.ApiClient.Course> copyables = ViewBag.CopyableCourses as IEnumerable<GovUk.Education.ManageCourses.ApiClient.Course> ?? new List<GovUk.Education.ManageCourses.ApiClient.Course>();
+  IEnumerable<string> copied = ViewBag.CopiedFields as IEnumerable<string>;
 }
 
 @if(!copyables.Any())
@@ -11,6 +12,22 @@ else
 {  
   <h4 class="govuk-heading-m">Use content from another course</h4>
   <p class="govuk-body">Fill in this page with content from another course.</p>
+  @if(copied.Any())
+  {
+    <div class="success-summary success-summary-small js-success-copy" role="alert" aria-labelledby="success-summary-heading-example-1" tabindex="-1" style="">
+      <h3 class="heading-small success-summary-heading add-bottom-margin remove-top-margin" id="success-summary-heading-example-1">
+        Fields copied:
+      </h3>
+      <div class="js-what-copied">
+        <ul class="list remove-bottom-margin">
+          @foreach(var copiedField in copied)
+          {
+            <li>@copiedField</li>
+          }
+        </ul>
+      </div>
+    </div>
+  }
   <form class="govuk-form" method="GET">
     <div class="govuk-form-group">
       <label class="govuk-label govuk-label--s" for="copy-from">Copy from</label>

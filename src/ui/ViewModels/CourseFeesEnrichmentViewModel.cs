@@ -22,36 +22,41 @@ namespace GovUk.Education.ManageCourses.Ui.ViewModels
 
         public CourseInfoViewModel CourseInfo { get; set; }
 
-        public void CopyFrom(CourseEnrichmentModel model)
+        public IEnumerable<string> CopyFrom(CourseEnrichmentModel model)
         {
             if (model == null)
             {
-                return;
+                yield break;
             }
 
             if (Enum.TryParse(model.CourseLength ?? "", out CourseLength courseLength))
             {
                 CourseLength = courseLength;
+                yield return CourseEnrichmentFieldNames.CourseLength;
             }
 
             if(model.FeeUkEu.HasValue)
             {
                 FeeUkEu = model.FeeUkEu;
+                yield return CourseEnrichmentFieldNames.FeesUkEu;
             }
 
             if(model.FeeInternational.HasValue)
             {
                 FeeInternational = model.FeeInternational;
+                yield return CourseEnrichmentFieldNames.FeesInternational;
             }
             
             if(!string.IsNullOrEmpty(model.FeeDetails))
             {
                 FeeDetails = model.FeeDetails;
+                yield return CourseEnrichmentFieldNames.FeeDetails;
             }
                         
             if(!string.IsNullOrEmpty(model.FinancialSupport))
             {
                 FinancialSupport = model.FinancialSupport;
+                yield return CourseEnrichmentFieldNames.FinancialSupport;
             }
         }
     }

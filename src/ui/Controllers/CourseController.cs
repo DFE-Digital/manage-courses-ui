@@ -142,7 +142,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             if (!string.IsNullOrEmpty(copyFrom))
             {
                 var copiedEnrichment = await _manageApi.GetEnrichmentCourse(instCode, copyFrom); 
-                model.CopyFrom(copiedEnrichment?.EnrichmentModel);                
+                ViewBag.CopiedFields = model.CopyFrom(copiedEnrichment?.EnrichmentModel);                
             }
 
             await LoadCopyableCoursesIntoViewBag(instCode, ucasCode);
@@ -203,7 +203,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             if (!string.IsNullOrEmpty(copyFrom))
             {
                 var copiedEnrichment = await _manageApi.GetEnrichmentCourse(instCode, copyFrom); 
-                model.CopyFrom(copiedEnrichment?.EnrichmentModel);                
+                ViewBag.CopiedFields = model.CopyFrom(copiedEnrichment?.EnrichmentModel);                
             }
 
             await LoadCopyableCoursesIntoViewBag(instCode, ucasCode);
@@ -253,7 +253,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             if (!string.IsNullOrEmpty(copyFrom))
             {
                 var copiedEnrichment = await _manageApi.GetEnrichmentCourse(instCode, copyFrom); 
-                model.CopyFrom(copiedEnrichment?.EnrichmentModel);                
+                ViewBag.CopiedFields = model.CopyFrom(copiedEnrichment?.EnrichmentModel);                
             }
 
             await LoadCopyableCoursesIntoViewBag(instCode, ucasCode);
@@ -304,7 +304,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             if (!string.IsNullOrEmpty(copyFrom))
             {
                 var copiedEnrichment = await _manageApi.GetEnrichmentCourse(instCode, copyFrom); 
-                model.CopyFrom(copiedEnrichment?.EnrichmentModel);                
+                ViewBag.CopiedFields = model.CopyFrom(copiedEnrichment?.EnrichmentModel);                
             }
 
             await LoadCopyableCoursesIntoViewBag(instCode, ucasCode);

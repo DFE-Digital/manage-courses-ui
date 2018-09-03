@@ -6,6 +6,6 @@ namespace GovUk.Education.ManageCourses.Ui.ViewModels
 {
     public interface ICourseEnrichmentViewModel 
     {
-        void CopyFrom(CourseEnrichmentModel model);
+        IEnumerable<string> CopyFrom(CourseEnrichmentModel model);
     }
 }
