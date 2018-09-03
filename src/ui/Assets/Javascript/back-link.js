@@ -16,7 +16,7 @@ BackLink.prototype.init = function () {
       var $link = document.createElement("a");
       $link.setAttribute("href", "javascript:history.back()");
       $link.setAttribute("class", "govuk-back-link")
-      $link.textContent = "Back to search results";
+      $link.textContent = "Back to course";
 
       $module.appendChild($link);
     }
