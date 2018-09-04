@@ -183,7 +183,8 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
                 var courseInfo = new CourseInfoViewModel { ProgrammeCode = courseDetails.CourseCode, Name = courseDetails.Name };
                 var routeData = GetCourseRouteDataViewModel(instCode, accreditingProviderId, ucasCode);
                 viewModel.RouteData = routeData;
-                viewModel.CourseInfo = courseInfo;
+                viewModel.CourseInfo = courseInfo;                
+                await LoadCopyableCoursesIntoViewBag(instCode, ucasCode);
                 return View("About", viewModel);
             }
 
@@ -237,6 +238,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
                 var routeData = GetCourseRouteDataViewModel(instCode, accreditingProviderId, ucasCode);
                 viewModel.RouteData = routeData;
                 viewModel.CourseInfo = courseInfo;
+                await LoadCopyableCoursesIntoViewBag(instCode, ucasCode);
                 return View("Requirements", viewModel);
             }
 
@@ -289,6 +291,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
                 var courseInfo = new CourseInfoViewModel { ProgrammeCode = courseDetails.CourseCode, Name = courseDetails.Name };
                 viewModel.RouteData = routeData;
                 viewModel.CourseInfo = courseInfo;
+                await LoadCopyableCoursesIntoViewBag(instCode, ucasCode);
                 return View("Salary", viewModel);
             }
             if (await SaveEnrichment(instCode, ucasCode, viewModel))
@@ -341,6 +344,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
                 var courseInfo = new CourseInfoViewModel { ProgrammeCode = courseDetails.CourseCode, Name = courseDetails.Name };
                 viewModel.RouteData = routeData;
                 viewModel.CourseInfo = courseInfo;
+                await LoadCopyableCoursesIntoViewBag(instCode, ucasCode);
                 return View("Fees", viewModel);
             }
             if (await SaveEnrichment(instCode, ucasCode, viewModel))
