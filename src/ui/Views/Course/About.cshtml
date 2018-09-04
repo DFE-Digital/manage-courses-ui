@@ -1,6 +1,7 @@
 @model AboutCourseEnrichmentViewModel
  @{
   Layout = "_Layout";
+  ViewBag.Title = $"About course {Model.CourseInfo.Name} ({Model.CourseInfo.ProgrammeCode})";
   var about_course = ViewData.ModelState["AboutCourse"] != null && ViewData.ModelState["AboutCourse"].Errors.Any();
   var interview_process = ViewData.ModelState["InterviewProcess"] != null && ViewData.ModelState["InterviewProcess"].Errors.Any();
   var school_placement = ViewData.ModelState["HowSchoolPlacementsWork"] != null && ViewData.ModelState["HowSchoolPlacementsWork"].Errors.Any();
