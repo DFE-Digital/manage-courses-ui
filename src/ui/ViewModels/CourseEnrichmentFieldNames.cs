@@ -14,8 +14,6 @@ namespace GovUk.Education.ManageCourses.Ui.ViewModels
         public const string Qualifications = "Qualifications needed";
         public const string PersonalQualities = "Personal qualities";
         public const string OtherRequirements = "Other requirements";
-        public const string AboutTheTrainingProvider = "About the provider";
-        public const string AboutTheTrainingProvider = "About the provider";
-
+        public const string SalaryDetails = "Salary";
     }
 }
