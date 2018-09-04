@@ -1,6 +1,6 @@
 @model CourseFeesEnrichmentViewModel
 @{
-  Layout = "_Layout";  
+  Layout = "_Layout";
   ViewBag.Title = $"Fees for course {Model.CourseInfo.Name} ({Model.CourseInfo.ProgrammeCode})";
   var course_length = ViewData.ModelState["CourseLength"] != null && ViewData.ModelState["CourseLength"].Errors.Any();
   var fee_uk_eu = ViewData.ModelState["FeeUkEu"] != null && ViewData.ModelState["FeeUkEu"].Errors.Any();
@@ -10,9 +10,9 @@
 }
 
 <a href="@Url.Action("Variants", "Course", Model.RouteData)" class="govuk-back-link">Back</a>
-@await Html.PartialAsync("CopyCourseContentMessage")
 
 <main role="main" class="govuk-main-wrapper" id="main-content">
+  @await Html.PartialAsync("CopyCourseContentMessage")
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
       <h1 class="govuk-heading-xl">
@@ -20,6 +20,10 @@
         Course length and fees
       </h1>
       @await Html.PartialAsync("ErrorSummary")
+    </div>
+  </div>
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
       <form asp-controller="Course" asp-action="Fees" method="post" data-module="form">
         <div class="govuk-form-group">
           <fieldset class="govuk-fieldset">
