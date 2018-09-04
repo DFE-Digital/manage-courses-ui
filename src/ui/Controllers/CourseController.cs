@@ -123,8 +123,6 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
                 orgEnrichmentData?.EnrichmentModel,
                 courseEnrichmentData?.EnrichmentModel);
 
-            ViewBag.Title = $"Preview of course {ucasCourseData.Name} ({ucasCourseData.CourseCode})";
-
             return View(new SearchAndCompare.UI.Shared.ViewModels.CourseDetailsViewModel
             {
                 AboutYourOrgLink = Url.Action("About", "Organisation", new { ucasCode = instCode }),

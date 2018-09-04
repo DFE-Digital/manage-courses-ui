@@ -1,6 +1,7 @@
 @model CourseRequirementsEnrichmentViewModel
 @{
-  Layout = "_Layout";
+  Layout = "_Layout";  
+  ViewBag.Title = $"Requirements for course {Model.CourseInfo.Name} ({Model.CourseInfo.ProgrammeCode})";
   var qualifications = ViewData.ModelState["Qualifications"] != null && ViewData.ModelState["Qualifications"].Errors.Any();
   var personal_qualities = ViewData.ModelState["PersonalQualities"] != null && ViewData.ModelState["PersonalQualities"].Errors.Any();
   var other_requirements = ViewData.ModelState["OtherRequirements"] != null && ViewData.ModelState["OtherRequirements"].Errors.Any();

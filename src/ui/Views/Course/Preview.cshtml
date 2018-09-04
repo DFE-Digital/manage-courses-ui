@@ -1,7 +1,8 @@
 @model GovUk.Education.SearchAndCompare.UI.Shared.ViewModels.CourseDetailsViewModel
 
  @{
-  Layout = "_Layout";
+  Layout = "_Layout";  
+  ViewBag.Title = $"Preview of course {Model.Course.Name} ({Model.Course.ProgrammeCode})"
 }
 
 <!-- CourseDetails is a dependency from SearchAndCompareUi.Shared -->

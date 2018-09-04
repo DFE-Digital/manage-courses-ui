@@ -1,6 +1,7 @@
 @model CourseSalaryEnrichmentViewModel
 @{
   Layout = "_Layout";
+  ViewBag.Title = $"Salary for course {Model.CourseInfo.Name} ({Model.CourseInfo.ProgrammeCode})";
   var course_length = ViewData.ModelState["CourseLength"] != null && ViewData.ModelState["CourseLength"].Errors.Any();
   var salary = ViewData.ModelState["SalaryDetails"] != null && ViewData.ModelState["SalaryDetails"].Errors.Any();
 }
