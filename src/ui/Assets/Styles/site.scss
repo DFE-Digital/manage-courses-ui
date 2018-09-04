@@ -58,6 +58,12 @@ $govuk-global-styles: true;
   border: 4px solid govuk-colour("red");
 }
 
+// custom table header border tickness
+.govuk-table__header {
+  border-bottom-width: 2px;
+  border-bottom-color: govuk-colour("black");
+}
+
 // Custom styles for courses data table
 .ucas-info-table {
   .govuk-table__header {
@@ -71,5 +77,11 @@ $govuk-global-styles: true;
 
   &__code-col {
     width: 5%;
+  }
+
+  .govuk-table__row:last-child {
+    .govuk-table__cell {
+      border-bottom: 0;
+    }
   }
 }

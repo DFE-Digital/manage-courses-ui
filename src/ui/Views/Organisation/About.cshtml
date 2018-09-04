@@ -1,7 +1,7 @@
 @model OrganisationViewModel
 
 @{
-  Layout = "Shared/_TabViewLayout";
+  Layout = "Shared/_OrganisationDetailsViewLayout";
   ViewBag.Title = Model.TabViewModel.OrganisationName;
   var train_with_us = ViewData.ModelState["TrainWithUs"] != null && ViewData.ModelState["TrainWithUs"].Errors.Any();
   var about_training_provider = ViewData.ModelState["AboutTrainingProvider"] != null && ViewData.ModelState["AboutTrainingProvider"].Errors.Any();
@@ -9,10 +9,24 @@
   var workflowStatus = Model.GetWorkflowStatus();
 }
 
-<section class="govuk-tabs__panel--without-border">
+<a href="@Url.Action("Courses", "Organisation", new {ucasCode = @Model.TabViewModel.UcasCode})" class="govuk-back-link">Back</a>
+
+<main role="main" class="govuk-main-wrapper" id="main-content">
+  @await Html.PartialAsync("~/Views/Shared/_Alerts.cshtml")
+
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
-      <h2 class="govuk-heading-l">About your organisation</h2>
+      <div class="course-basicinfo govuk-!-margin-bottom-9">
+        <h1 class="govuk-heading-xl">
+          <span class="govuk-caption-xl">@Model.TabViewModel.OrganisationName</span>
+          About your organisation
+        </h1>
+      </div>
+    </div>
+  </div>
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
       <form asp-controller="Organisation" asp-action="About" method="post" data-module="form">
         <input type="hidden" asp-for="@Model.PublishOrganisation" value="false"></input>
         <input type="hidden" asp-for="@Model.InstitutionCode"></input>
@@ -20,7 +34,7 @@
         <p class="govuk-body">This is your chance to tell applicants why they should choose to train with you. You could describe any advantages and special
         features of you as a training provider.</p>
         <p class="govuk-body">You must be specific and factual with any claims you make, and support them with evidence. For example:</p>
-        <ul>
+        <ul class="govuk-list govuk-list--bullet">
           <li>don’t say “our students are some of the happiest in the country”</li>
           <li> do say “the Times Educational Supplement ranked our students as 4th happiest in the country”</li>
         </ul>
@@ -79,7 +93,7 @@
           <input type="submit" class="govuk-button" value="Save" />
         </div>
         <div class="form-group">
-          <a href="@Url.Action("About", "Organisation")" class="govuk-link">Cancel changes</a>
+          <p class="govuk-body"><a href="@Url.Action("About", "Organisation")" class="govuk-link">Cancel changes</a></p>
         </div>
       </form>
     </div>
@@ -89,56 +103,94 @@
         @switch(workflowStatus)
         {
           case WorkflowStatus.Blank :
+            <strong class="govuk-tag govuk-tag--blank">Empty</strong>
             <p class="govuk-body">You need to complete and publish this information.</p>
+
+            @if (Model.AllowPreview)
+            {
+              <hr class="related__section-break" />
+              <h4 class="govuk-heading-m">Preview</h4>
+              <p class="govuk-body">This information will show on all your courses.</p>
+              <p class="govuk-body">Preview any course to see how it will look to applicants.</p>
+            }
 
             <hr class="related__section-break">
             <h4 class="govuk-heading-m">Publish</h4>
-            <p class="govuk-body">New information will show on all @Model.TabViewModel.OrganisationName courses.</p>
+            <p class="govuk-body">Applicants will see published information from October.</p>
 
             <form asp-controller="Organisation" asp-action="about" method="post">
               <input type="submit" class="govuk-button" value="Publish" />
-              <input type="hidden" asp-for="@Model.PublishOrganisation" value="true"></input>
+              <input type="hidden" asp-for="@Model.PublishOrganisation" value="true" />
             </form>
             break;
           case WorkflowStatus.InitialDraft :
+            <strong class="govuk-tag govuk-tag--draft">Draft</strong>
             <p class="govuk-body">You have unpublished changes.</p>
+
+            @if (Model.AllowPreview)
+            {
+              <hr class="related__section-break" />
+              <h4 class="govuk-heading-m">Preview</h4>
+              <p class="govuk-body">This information will show on all your courses.</p>
+              <p class="govuk-body">Preview any course to see how it will look to applicants.</p>
+            }
 
             <hr class="related__section-break">
             <h4 class="govuk-heading-m">Publish</h4>
-            <p class="govuk-body">New information will show on all @Model.TabViewModel.OrganisationName courses.</p>
+            <p class="govuk-body">Applicants will see published information from October.</p>
 
             <form asp-controller="Organisation" asp-action="about" method="post">
               <input type="submit" class="govuk-button" value="Publish" />
-              <input type="hidden" asp-for="@Model.PublishOrganisation" value="true"></input>
+              <input type="hidden" asp-for="@Model.PublishOrganisation" value="true" />
             </form>
             break;
           case WorkflowStatus.Published :
+            <strong class="govuk-tag govuk-tag--published">Published</strong>
+            <p class="govuk-body">Applicants will see this on all your courses from October.</p>
             <p class="govuk-body">Last published on @Model.LastPublishedTimestampUtc.DateString()</p>
 
             break;
           case WorkflowStatus.SubsequentDraft :
+            <strong class="govuk-tag govuk-tag--draft">Draft</strong>
             <p class="govuk-body">Last published on @Model.LastPublishedTimestampUtc.DateString()</p>
             <p class="govuk-body">You have unpublished changes.</p>
 
+            @if (Model.AllowPreview)
+            {
+              <hr class="related__section-break" />
+              <h4 class="govuk-heading-m">Preview</h4>
+              <p class="govuk-body">This information will show on all your courses.</p>
+              <p class="govuk-body">Preview any course to see how it will look to applicants.</p>
+            }
+
             <hr class="related__section-break">
             <h4 class="govuk-heading-m">Publish</h4>
-            <p class="govuk-body">New information will show on all @Model.TabViewModel.OrganisationName courses.</p>
+            <p class="govuk-body">Applicants will see published information from October.</p>
 
             <form asp-controller="Organisation" asp-action="about" method="post">
-              <input type="hidden" asp-for="@Model.PublishOrganisation" value="true"></input>
+              <input type="hidden" asp-for="@Model.PublishOrganisation" value="true" />
               <input type="submit" class="govuk-button" value="Publish" />
             </form>
             break;
           case WorkflowStatus.BlankSubsequentDraft :
+            <strong class="govuk-tag govuk-tag--draft">Empty</strong>
             <p class="govuk-body">Last published on @Model.LastPublishedTimestampUtc.DateString()</p>
             <p class="govuk-body">You have unpublished changes.</p>
 
+            @if (Model.AllowPreview)
+            {
+              <hr class="related__section-break" />
+              <h4 class="govuk-heading-m">Preview</h4>
+              <p class="govuk-body">This information will show on all your courses.</p>
+              <p class="govuk-body">Preview any course to see how it will look to applicants.</p>
+            }
+
             <hr class="related__section-break">
             <h4 class="govuk-heading-m">Publish</h4>
-            <p class="govuk-body">New information will show on all @Model.TabViewModel.OrganisationName courses.</p>
+            <p class="govuk-body">Applicants will see published information from October.</p>
 
             <form asp-controller="Organisation" asp-action="about" method="post">
-              <input type="hidden" asp-for="@Model.PublishOrganisation" value="true"></input>
+              <input type="hidden" asp-for="@Model.PublishOrganisation" value="true" />
               <input type="submit" class="govuk-button" value="Publish" />
             </form>
             break;
@@ -153,4 +205,4 @@
 
     </div>
   </div>
-</section>
+</main>

@@ -17,6 +17,18 @@ namespace GovUk.Education.ManageCourses.Ui.ViewModels
 
         public CourseInfoViewModel CourseInfo { get; set; }
 
+        public bool IsEmpty() =>
+            !CourseLength.HasValue &&
+            string.IsNullOrEmpty(SalaryDetails);
+
+        public void MapInto(ref CourseEnrichmentModel enrichmentModel)
+        {
+            var courseLength = CourseLength.HasValue ? CourseLength.Value.ToString() : null;
+
+            enrichmentModel.CourseLength = courseLength;
+            enrichmentModel.SalaryDetails = SalaryDetails;
+        }
+
         public IEnumerable<string> CopyFrom(CourseEnrichmentModel model)
         {
             var res = new List<string>();

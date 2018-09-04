@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using GovUk.Education.ManageCourses.ApiClient;
 using GovUk.Education.ManageCourses.Ui;
@@ -13,9 +14,11 @@ using ManageCoursesUi.Tests.Helpers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Moq;
 using NUnit.Framework;
+
 
 namespace ManageCoursesUi.Tests
 {
@@ -59,16 +62,16 @@ namespace ManageCoursesUi.Tests
             Assert.IsNotNull(viewResult);
 
             var model = viewResult.Model as VariantViewModel;
-
+            var routeData = model.CourseEnrichment.RouteData;
             Assert.IsNotNull(model);
             Assert.AreEqual(TestHelper.TargetedCourseTitle, model.CourseTitle);
             Assert.AreEqual(TestHelper.OrganisationId, model.OrganisationId);
 
             Assert.AreEqual(TestHelper.OrganisationName, model.OrganisationName);
 
-            Assert.AreEqual(TestHelper.InstitutionCode, model.RouteData.InstCode);
-            Assert.AreEqual(TestHelper.AccreditedProviderId, model.RouteData.AccreditingProviderId);
-            Assert.AreEqual(TestHelper.TargetedUcasCode, model.RouteData.UcasCode);
+            Assert.AreEqual(TestHelper.InstitutionCode, routeData.InstCode);
+            Assert.AreEqual(TestHelper.AccreditedProviderId, routeData.AccreditingProviderId);
+            Assert.AreEqual(TestHelper.TargetedUcasCode, routeData.UcasCode);
 
             Assert.AreEqual(enrichmentModel.AboutCourse, model.CourseEnrichment.AboutCourse);
             Assert.AreEqual(enrichmentModel.InterviewProcess, model.CourseEnrichment.InterviewProcess);
@@ -223,7 +226,8 @@ namespace ManageCoursesUi.Tests
         [Test]
         public void VariantsPublish()
         {
-            var enrichmentModel = new CourseEnrichmentModel {
+            var enrichmentModel = new CourseEnrichmentModel
+            {
                 AboutCourse = "AboutCourse",
                 InterviewProcess = "InterviewProcess",
                 HowSchoolPlacementsWork = "HowSchoolPlacementsWork"
@@ -235,18 +239,20 @@ namespace ManageCoursesUi.Tests
             mockApi.Setup(x => x.GetEnrichmentCourse(TestHelper.InstitutionCode, TestHelper.TargetedUcasCode)).ReturnsAsync(ucasCourseEnrichmentGetModel).Verifiable();
             mockApi.Setup(x => x.PublishEnrichmentCourse(TestHelper.InstitutionCode, TestHelper.TargetedUcasCode)).ReturnsAsync(true).Verifiable();
 
+            mockApi.Setup(x => x.GetCourseByUcasCode(TestHelper.InstitutionCode, TestHelper.TargetedUcasCode)).ReturnsAsync(new Course { ProgramType = "" }).Verifiable();
 
             var objectValidator = new Mock<IObjectModelValidator>();
-            CourseEnrichmentViewModel objectToVerify = null;
+            BaseCourseEnrichmentViewModel objectToVerify = null;
 
             objectValidator.Setup(o => o.Validate(It.IsAny<ActionContext>(),
-                                              It.IsAny<ValidationStateDictionary>(),
-                                              It.IsAny<string>(),
-                                              It.IsAny<Object>()))
-                            .Callback<ActionContext, ValidationStateDictionary, string, Object>((a,b,c,d) => {
-                                objectToVerify = d as CourseEnrichmentViewModel;
-                            })
-                            .Verifiable();
+                    It.IsAny<ValidationStateDictionary>(),
+                    It.IsAny<string>(),
+                    It.IsAny<Object>()))
+                .Callback<ActionContext, ValidationStateDictionary, string, Object>((a, b, c, d) =>
+                {
+                    objectToVerify = d as BaseCourseEnrichmentViewModel;
+                })
+                .Verifiable();
 
             var courseController = new CourseController(mockApi.Object, new CourseMapper(), new Mock<ISearchAndCompareUrlService>().Object, new MockFeatureFlags());
             courseController.ObjectValidator = objectValidator.Object;
@@ -293,7 +299,7 @@ namespace ManageCoursesUi.Tests
 
             manageApi.Setup(x => x.GetEnrichmentCourse(TestHelper.InstitutionCode, TestHelper.TargetedUcasCode)).ReturnsAsync(ucasCourseEnrichmentGetModel);
 
-            var testCourse = new Course() { Name = "Name",  CourseCode = "CourseCode" };
+            var testCourse = new Course() { Name = "Name", CourseCode = "CourseCode" };
 
             manageApi.Setup(x => x.GetCourseByUcasCode(TestHelper.InstitutionCode, TestHelper.TargetedUcasCode)).ReturnsAsync(testCourse);
 
@@ -322,7 +328,7 @@ namespace ManageCoursesUi.Tests
             var manageApi = new Mock<IManageApi>();
 
             var viewModel = new AboutCourseEnrichmentViewModel { AboutCourse = "AboutCourse", InterviewProcess = "InterviewProcess", HowSchoolPlacementsWork = "HowSchoolPlacementsWork" };
-            var testCourse = new Course() { Name = "Name",  CourseCode = "CourseCode" };
+            var testCourse = new Course() { Name = "Name", CourseCode = "CourseCode" };
 
             manageApi.Setup(x => x.GetCourseByUcasCode(TestHelper.InstitutionCode, TestHelper.TargetedUcasCode)).ReturnsAsync(testCourse);
 
@@ -362,9 +368,16 @@ namespace ManageCoursesUi.Tests
             manageApi.Setup(x => x.GetEnrichmentCourse(TestHelper.InstitutionCode, TestHelper.TargetedUcasCode)).ReturnsAsync(ucasCourseEnrichmentGetModel);
 
             var tempDataMock = new Mock<ITempDataDictionary>();
+            var urlHelperMock = new Mock<IUrlHelper>();
+
+            var previewLink = "preview-link";
+            
+            Expression<Func<IUrlHelper, string>> urlSetup = url => url.Action(It.Is<UrlActionContext>(uac => uac.Action == "Preview"));
+            urlHelperMock.Setup(urlSetup).Returns(previewLink);
 
             var controller = new CourseController(manageApi.Object, new CourseMapper(), new SearchAndCompareUrlService("http://www.example.com"), new MockFeatureFlags());
             controller.TempData = tempDataMock.Object;
+            controller.Url = urlHelperMock.Object;
             var result = await controller.AboutPost(TestHelper.InstitutionCode, TestHelper.AccreditedProviderId, TestHelper.TargetedUcasCode, viewModel);
 
             var redirectToActionResult = result as RedirectToActionResult;
@@ -375,6 +388,11 @@ namespace ManageCoursesUi.Tests
 
             tempDataMock.Verify(x => x.Add("MessageType", "success"), Times.Once);
             tempDataMock.Verify(x => x.Add("MessageTitle", "Your changes have been saved"), Times.Once);
+            tempDataMock.Verify(x => x.Add("MessageBodyHtml", $@"
+                    <p class=""govuk-body"">
+                        <a href='{previewLink}'>Preview your course</a>
+                        to check for mistakes before publishing.
+                    </p>"), Times.Once);
 
             var routeValues = redirectToActionResult.RouteValues;
 
@@ -395,7 +413,7 @@ namespace ManageCoursesUi.Tests
 
             manageApi.Setup(x => x.GetEnrichmentCourse(TestHelper.InstitutionCode, TestHelper.TargetedUcasCode)).ReturnsAsync(ucasCourseEnrichmentGetModel);
 
-            var testCourse = new Course() { Name = "Name",  CourseCode = "CourseCode" };
+            var testCourse = new Course() { Name = "Name", CourseCode = "CourseCode" };
 
             manageApi.Setup(x => x.GetCourseByUcasCode(TestHelper.InstitutionCode, TestHelper.TargetedUcasCode)).ReturnsAsync(testCourse);
 
@@ -425,7 +443,7 @@ namespace ManageCoursesUi.Tests
 
             var viewModel = new CourseRequirementsEnrichmentViewModel { Qualifications = "Qualifications", PersonalQualities = "PersonalQualities", OtherRequirements = "OtherRequirements" };
 
-            var testCourse = new Course() { Name = "Name",  CourseCode = "CourseCode" };
+            var testCourse = new Course() { Name = "Name", CourseCode = "CourseCode" };
 
             manageApi.Setup(x => x.GetCourseByUcasCode(TestHelper.InstitutionCode, TestHelper.TargetedUcasCode)).ReturnsAsync(testCourse);
 
@@ -465,9 +483,18 @@ namespace ManageCoursesUi.Tests
             manageApi.Setup(x => x.GetEnrichmentCourse(TestHelper.InstitutionCode, TestHelper.TargetedUcasCode)).ReturnsAsync(ucasCourseEnrichmentGetModel);
 
             var tempDataMock = new Mock<ITempDataDictionary>();
+            var urlHelperMock = new Mock<IUrlHelper>();
+
+            var previewLink = "preview-link";
+
+            Expression<Func<IUrlHelper, string>> urlSetup = url => url.Action(It.Is<UrlActionContext>(uac => uac.Action == "Preview"));
+            urlHelperMock.Setup(urlSetup).Returns(previewLink);
 
             var controller = new CourseController(manageApi.Object, new CourseMapper(), new SearchAndCompareUrlService("http://www.example.com"), new MockFeatureFlags());
+
             controller.TempData = tempDataMock.Object;
+            controller.Url = urlHelperMock.Object;
+
             var result = await controller.RequirementsPost(TestHelper.InstitutionCode, TestHelper.AccreditedProviderId, TestHelper.TargetedUcasCode, viewModel);
 
             var redirectToActionResult = result as RedirectToActionResult;
@@ -478,6 +505,11 @@ namespace ManageCoursesUi.Tests
 
             tempDataMock.Verify(x => x.Add("MessageType", "success"), Times.Once);
             tempDataMock.Verify(x => x.Add("MessageTitle", "Your changes have been saved"), Times.Once);
+            tempDataMock.Verify(x => x.Add("MessageBodyHtml", $@"
+                    <p class=""govuk-body"">
+                        <a href='{previewLink}'>Preview your course</a>
+                        to check for mistakes before publishing.
+                    </p>"), Times.Once);
 
             var routeValues = redirectToActionResult.RouteValues;
 
@@ -493,8 +525,9 @@ namespace ManageCoursesUi.Tests
         {
             var manageApi = new Mock<IManageApi>();
 
-            var enrichmentModel = new CourseEnrichmentModel {
-                 CourseLength = null, SalaryDetails = "SalaryDetails"
+            var enrichmentModel = new CourseEnrichmentModel
+            {
+                CourseLength = null, SalaryDetails = "SalaryDetails"
             };
             var ucasCourseEnrichmentGetModel = new UcasCourseEnrichmentGetModel { EnrichmentModel = enrichmentModel };
 
@@ -569,11 +602,18 @@ namespace ManageCoursesUi.Tests
             manageApi.Setup(x => x.GetEnrichmentCourse(TestHelper.InstitutionCode, TestHelper.TargetedUcasCode)).ReturnsAsync(ucasCourseEnrichmentGetModel);
 
             var tempDataMock = new Mock<ITempDataDictionary>();
+            var urlHelperMock = new Mock<IUrlHelper>();
 
+            var previewLink = "preview-link";
+
+            Expression<Func<IUrlHelper, string>> urlSetup = url => url.Action(It.Is<UrlActionContext>(uac => uac.Action == "Preview"));
+            urlHelperMock.Setup(urlSetup).Returns(previewLink);
 
             var controller = new CourseController(manageApi.Object, new CourseMapper(), new SearchAndCompareUrlService("http://www.example.com"), new MockFeatureFlags());
 
             controller.TempData = tempDataMock.Object;
+            controller.Url = urlHelperMock.Object;
+
             var result = await controller.SalaryPost(TestHelper.InstitutionCode, TestHelper.AccreditedProviderId, TestHelper.TargetedUcasCode, viewModel);
 
             var redirectToActionResult = result as RedirectToActionResult;
@@ -584,6 +624,11 @@ namespace ManageCoursesUi.Tests
 
             tempDataMock.Verify(x => x.Add("MessageType", "success"), Times.Once);
             tempDataMock.Verify(x => x.Add("MessageTitle", "Your changes have been saved"), Times.Once);
+            tempDataMock.Verify(x => x.Add("MessageBodyHtml", $@"
+                    <p class=""govuk-body"">
+                        <a href='{previewLink}'>Preview your course</a>
+                        to check for mistakes before publishing.
+                    </p>"), Times.Once);
 
             var routeValues = redirectToActionResult.RouteValues;
 
@@ -594,13 +639,13 @@ namespace ManageCoursesUi.Tests
             manageApi.Verify(x => x.SaveEnrichmentCourse(TestHelper.InstitutionCode, TestHelper.TargetedUcasCode, It.Is<CourseEnrichmentModel>(c => Check(c, viewModel))), Times.Once());
         }
 
-
         [Test]
         public async Task Fees()
         {
             var manageApi = new Mock<IManageApi>();
 
-            var enrichmentModel = new CourseEnrichmentModel {
+            var enrichmentModel = new CourseEnrichmentModel
+            {
                 FeeUkEu = 123.45m, FeeInternational = 543.21m, FeeDetails = "FeeDetails", CourseLength = null, FinancialSupport = "FinancialSupport"
             };
             var ucasCourseEnrichmentGetModel = new UcasCourseEnrichmentGetModel { EnrichmentModel = enrichmentModel };
@@ -682,11 +727,18 @@ namespace ManageCoursesUi.Tests
             manageApi.Setup(x => x.GetEnrichmentCourse(TestHelper.InstitutionCode, TestHelper.TargetedUcasCode)).ReturnsAsync(ucasCourseEnrichmentGetModel);
 
             var tempDataMock = new Mock<ITempDataDictionary>();
+            var urlHelperMock = new Mock<IUrlHelper>();
 
+            var previewLink = "preview-link";
+
+            Expression<Func<IUrlHelper, string>> urlSetup = url => url.Action(It.Is<UrlActionContext>(uac => uac.Action == "Preview"));
+            urlHelperMock.Setup(urlSetup).Returns(previewLink);
 
             var controller = new CourseController(manageApi.Object, new CourseMapper(), new SearchAndCompareUrlService("http://www.example.com"), new MockFeatureFlags());
 
             controller.TempData = tempDataMock.Object;
+            controller.Url = urlHelperMock.Object;
+
             var result = await controller.FeesPost(TestHelper.InstitutionCode, TestHelper.AccreditedProviderId, TestHelper.TargetedUcasCode, viewModel);
 
             var redirectToActionResult = result as RedirectToActionResult;
@@ -697,6 +749,11 @@ namespace ManageCoursesUi.Tests
 
             tempDataMock.Verify(x => x.Add("MessageType", "success"), Times.Once);
             tempDataMock.Verify(x => x.Add("MessageTitle", "Your changes have been saved"), Times.Once);
+            tempDataMock.Verify(x => x.Add("MessageBodyHtml", $@"
+                    <p class=""govuk-body"">
+                        <a href='{previewLink}'>Preview your course</a>
+                        to check for mistakes before publishing.
+                    </p>"), Times.Once);
 
             var routeValues = redirectToActionResult.RouteValues;
 

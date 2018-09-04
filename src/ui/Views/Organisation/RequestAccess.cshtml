@@ -1,6 +1,6 @@
 @model RequestAccessViewModel
 @{
-  Layout = "Shared/_TabViewLayout";
+  Layout = "Shared/_OrganisationDetailsViewLayout";
   var fnv = ViewData.ModelState["FirstName"] != null && ViewData.ModelState["FirstName"].Errors.Any();
   var lnv = ViewData.ModelState["LastName"] != null && ViewData.ModelState["LastName"].Errors.Any();
   var eav = ViewData.ModelState["EmailAddress"] != null && ViewData.ModelState["EmailAddress"].Errors.Any();
@@ -8,11 +8,15 @@
   var rv = ViewData.ModelState["Reason"] != null && ViewData.ModelState["Reason"].Errors.Any();
 }
 
-<section class="govuk-tabs__panel--without-border">
+<a href="@Url.Action("Courses", "Organisation", new {ucasCode = @Model.TabViewModel.UcasCode})" class="govuk-back-link">Back</a>
+
+<main role="main" class="govuk-main-wrapper" id="main-content">
+  @await Html.PartialAsync("~/Views/Shared/_Alerts.cshtml")
+
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
       <div class="course-basicinfo govuk-!-margin-bottom-9">
-        <h1 class="govuk-heading-l">Request access for someone else</h1>
+        <h1 class="govuk-heading-xl">Request access for &nbsp; someone else</h1>
         <p class="govuk-body">You can request a DfE Sign-in account for others who manage your courses.</p>
       </div>
       <h2 class="govuk-heading-m">Request an account for:</h2>
@@ -59,4 +63,4 @@
       </form>
     </div>
   </div>
-</section>
+</main>

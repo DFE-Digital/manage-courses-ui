@@ -79,7 +79,7 @@ namespace ManageCoursesUi.Tests.Services
                     AboutCourse = "AboutCourse",
                     InterviewProcess = "InterviewProcess",
                     HowSchoolPlacementsWork = "HowSchoolPlacementsWork",
-                    CourseLength = "CourseLength",
+                    CourseLength = "OneYear",
                     FeeUkEu = 123,
                     FeeInternational = 123000,
                     FeeDetails = "FeeDetails",
@@ -90,7 +90,7 @@ namespace ManageCoursesUi.Tests.Services
                 }
             );
 
-            res.Duration.Should().Be("CourseLength");
+            res.Duration.Should().Be("One year");
             res.Name.Should().Be("Course.Name");
             res.ProgrammeCode.Should().Be("CourseCode");
             res.ProviderCodeName.Should().Be("MYINST");

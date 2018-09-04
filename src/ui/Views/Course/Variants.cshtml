@@ -6,14 +6,15 @@
   var link = "mailto:becomingateacher@digital.education.gov.uk?subject=Problem%20with%20course%20" + Model.Course.ProgrammeCode;
 
   var courseEnrichment = Model.CourseEnrichment;
+  var routeData = courseEnrichment.RouteData;
 }
 
 <a href="@Url.Action("Courses", "Organisation", new {ucasCode = Model.Course.UcasCode})" class="govuk-back-link">Back</a>
 
-@await Html.PartialAsync("~/Views/Shared/_Alerts.cshtml")
-@await Html.PartialAsync("Shared/ErrorSummary.cshtml")
-
 <main role="main" class="govuk-main-wrapper" id="main-content">
+    @await Html.PartialAsync("~/Views/Shared/_Alerts.cshtml")
+    @await Html.PartialAsync("Shared/ErrorSummaryCourseOverview.cshtml")
+
   <h1 class="govuk-heading-xl">
     <span class="govuk-caption-xl">@Model.Course.Type</span>
     @Model.Course.Name (@Model.Course.ProgrammeCode)
@@ -27,14 +28,21 @@
         {
           <text>This course is new and not yet running.</text>
         }
-        else 
+        else
         {
           <text>This course is not running.</text>
         }
       </h3>
       <div class="govuk-notice-summary__body">
-        <p clas="govuk-body">
-          It won&#8217;t appear online. To publish it you need to set the status of at least one training location to &ldquo;running&rdquo; in <a href='https://update.ucas.co.uk/cgi-bin/hsrun.hse/NetUpdate/netupdate2/netupdate2.hjx;start=netupdate2.HsLoginPage.run'>UCAS web-link</a>.
+        <p class="govuk-body">
+          @if(Model.Course.StatusAsEnum == CourseVariantStatus.New)
+          {
+            <text>It won&#8217;t appear online until one or more training locations are set to &ldquo;running&rdquo; in <a href='https://update.ucas.co.uk/netupdate2/Welcome.htm'>UCAS web-link</a>.</text>
+          }
+          else
+          {
+            <text>It won&#8217;t appear online. You can publish it by changing the status of one or more training locations to &ldquo;running&rdquo; in <a href='https://update.ucas.co.uk/netupdate2/Welcome.htm'>UCAS web-link</a>.</text>
+          }
         </p>
       </div>
     </div>
@@ -45,6 +53,8 @@
       <div class="course-parts">
         <div class="course-parts__item">
           <h3 class="course-parts__title">Information from UCAS</h3>
+
+          <p class="govuk-body">You can only change this information using <a href="https://update.ucas.co.uk/netupdate2/Welcome.htm">UCAS web-link</a>. Changes will usually appear here within one working day.</p>
 
           <dl class="govuk-list govuk-list--description">
             @if (!string.IsNullOrEmpty(@Model.Course.Status))
@@ -87,116 +97,14 @@
           </dl>
         </div>
 
-      @if(Model.Course.StatusAsEnum != CourseVariantStatus.NotRunning)
+      @if(Model.AllowPreview && Model.Course.StatusAsEnum != CourseVariantStatus.NotRunning)
       {
-        <div class="course-parts__item">
-          <h3 class="course-parts__title">About this course</h3>
-          <a class="course-parts__action" href="@Url.Action("About", "Course", Model.RouteData)">Edit</a>
-          <dl class="course-parts__fields">
-            <dt class="course-parts__fields__label" id="section-AboutCourse">
-                About this course
-            </dt>
-            <dd class="course-parts__fields__value">
-                @courseEnrichment?.AboutCourse.DisplayText()
-            </dd>
-            <dt class="course-parts__fields__label" id="section-InterviewProcess">
-                Interview process (optional)
-            </dt>
-            <dd class="course-parts__fields__value">
-                @courseEnrichment?.InterviewProcess.DisplayText()
-            </dd>
-            <dt class="course-parts__fields__label" id="section-HowSchoolPlacementsWork">
-                How school placements work
-            </dt>
-            <dd class="course-parts__fields__value">
-                @courseEnrichment?.HowSchoolPlacementsWork.DisplayText()
-            </dd>
-          </dl>
-        </div>
+        @await Html.PartialAsync("shared/_AboutCourseOverview", Model.CourseEnrichment)
 
-        @if (@Model.IsSalary) {
-          <div class="course-parts__item">
-            <h3 class="course-parts__title">Course length and salary</h3>
-            <a class="course-parts__action" href="@Url.Action("Salary", "Course", Model.RouteData)">Edit</a>
-            <dl class="course-parts__fields">
-              <dt class="course-parts__fields__label">
-                Course length
-              </dt>
-              <dd class="course-parts__fields__value">
-                @courseEnrichment?.CourseLength.DisplayText()
-              </dd>
-              <dt class="course-parts__fields__label">
-                Salary
-              </dt>
-              <dd class="course-parts__fields__value">
-                @courseEnrichment?.SalaryDetails.DisplayText()
-              </dd>
-            </dl>
-          </div>
-        } else {
-          <div class="course-parts__item">
-            <h3 class="course-parts__title">Course length and fees</h3>
-            <a class="course-parts__action" href="@Url.Action("Fees", "Course", Model.RouteData)">Edit</a>
-            <dl class="course-parts__fields">
-              <dt class="course-parts__fields__label">
-                Course length
-              </dt>
-              <dd class="course-parts__fields__value">
-                @courseEnrichment?.CourseLength.DisplayText()
-              </dd>
-              <dt class="course-parts__fields__label">
-                Fee for UK and EU students
-              </dt>
-              <dd class="course-parts__fields__value">
-                @courseEnrichment?.FeeUkEu.DisplayText()
-              </dd>
-              <dt class="course-parts__fields__label">
-                Fee for international students (optional)
-              </dt>
-              <dd class="course-parts__fields__value">
-                @courseEnrichment?.FeeInternational.DisplayText()
-              </dd>
-              <dt class="course-parts__fields__label">
-                Fee details (optional)
-              </dt>
-              <dd class="course-parts__fields__value">
-                @courseEnrichment?.FeeDetails.DisplayText()
-              </dd>
-              <dt class="course-parts__fields__label">
-                Financial support you offer (optional)
-              </dt>
-              <dd class="course-parts__fields__value">
-                @courseEnrichment?.FinancialSupport.DisplayText()
-              </dd>
-            </dl>
-          </div>
-        }
+        var partialName = Model.IsSalary ? "shared/_SalaryBasedCourseOverview" : "shared/_FeeBasedCourseOverview";
+        @await Html.PartialAsync(partialName, Model.CourseEnrichment)
 
-        <div class="course-parts__item">
-          <h3 class="course-parts__title">Requirements and eligbility</h3>
-          <a class="course-parts__action" href="@Url.Action("Requirements", "Course", Model.RouteData)">Edit</a>
-          <dl class="course-parts__fields">
-            <dt class="course-parts__fields__label" id="section-Qualifications">
-              Qualifications needed
-            </dt>
-            <dd class="course-parts__fields__value">
-              @courseEnrichment?.Qualifications.DisplayText()
-            </dd>
-            <dt class="course-parts__fields__label" id="section-PersonalQualities">
-              Personal qualities (optional)
-            </dt>
-            <dd class="course-parts__fields__value">
-              @courseEnrichment?.PersonalQualities.DisplayText()
-            </dd>
-            <dt class="course-parts__fields__label"id="section-OtherRequirements">
-              Other requirements (optional)
-            </dt>
-            <dd class="course-parts__fields__value">
-              @courseEnrichment?.OtherRequirements.DisplayText()
-            </dd>
-          </dl>
-        </div>
-      
+        @await Html.PartialAsync("shared/_RequirementsCourseOverview", Model.CourseEnrichment)
       }
 
         <div class="course-parts__item">
@@ -228,7 +136,7 @@
     </div>
 
     <div class="govuk-grid-column-one-third">
-    @if(Model.Course.StatusAsEnum != CourseVariantStatus.NotRunning)
+    @if(Model.AllowPreview && Model.Course.StatusAsEnum != CourseVariantStatus.NotRunning)
     {
       <aside class="related">
         @switch(courseEnrichment.DeterminePublicationState())
@@ -259,6 +167,7 @@
 
         @if (courseEnrichment.LastPublishedUtc.HasValue)
         {
+            <p class="govuk-body">Applicants will see this content from October.</p>
             <p class="govuk-body">Last published:<br />@courseEnrichment.LastPublishedUtc.DateString()</p>
             <hr class="related__section-break">
         }
@@ -279,7 +188,8 @@
             if(Model.AllowPublish)
             {
               <h4 class="govuk-heading-m">Publish</h4>
-              <p class="govuk-body">Publish your changes for applicants to see them.</p>
+              <p class="govuk-body">Publish your changes.</p>
+              <p class="govuk-body">Applicants will see published content from October.</p>
 
               <form asp-route="publish" method="post">
                 <input type="submit" class="govuk-button" value="Publish" />

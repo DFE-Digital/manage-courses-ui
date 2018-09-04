@@ -36,13 +36,26 @@
 
     &__label {
       @include govuk-font($size: 19, $weight: bold);
-      @include govuk-responsive-margin(1, "bottom");
+      @include govuk-responsive-padding(1, "bottom");
+
+      &--error {
+        color: $govuk-error-colour;
+        border-left: 5px solid $govuk-error-colour;
+        padding-bottom: 0;
+        padding-left: govuk-spacing(2);
+        padding-top: govuk-spacing(1);
+
+        + .course-parts__fields__value {
+          border-left: 5px solid $govuk-error-colour;
+          padding-left: govuk-spacing(2);
+        }
+      }
     }
 
     &__value {
       @include govuk-font($size: 19, $weight: normal);
       @include govuk-responsive-margin(4, "bottom");
-      color: $govuk-secondary-text-colour;
+      color: $govuk-text-colour;
       margin-left: 0;
       max-width: 500px;
       overflow: hidden;
@@ -51,6 +64,15 @@
 
       &:last-of-type {
         margin-bottom: 0;
+      }
+
+      &--empty {
+        color: $govuk-secondary-text-colour;
+      }
+
+      .govuk-link {
+        display: block;
+        margin-bottom: govuk-spacing(1);
       }
     }
   }
