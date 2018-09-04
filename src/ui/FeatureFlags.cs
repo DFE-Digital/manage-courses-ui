@@ -22,6 +22,6 @@ namespace GovUk.Education.ManageCourses.Ui
 
         public bool ShowCourseLiveView => ShouldShow(FEATURE_COURSE_LIVEVIEW);
 
-        private bool ShouldShow(string key) => _config.GetValue(key, false);
+        private bool ShouldShow(string key) => _config.GetValue(key, true);
     }
 }

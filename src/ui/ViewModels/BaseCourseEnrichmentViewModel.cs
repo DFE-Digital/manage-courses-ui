@@ -21,6 +21,7 @@ namespace GovUk.Education.ManageCourses.Ui.ViewModels
 
         [Required(ErrorMessage = "Give details about course length")]// course length and fees
         public CourseLength? CourseLength { get; set; }
+        public string CourseLengthOther { get; set; }
 
         // course requirements
         [RegularExpression(@"^\s*(\S+\s+|\S+$){0,100}$", ErrorMessage = "Reduce the word count for qualifications needed")]

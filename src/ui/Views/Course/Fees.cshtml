@@ -38,6 +38,14 @@
                     <input type="radio" id="@keyString" class="govuk-radios__input" asp-for="@Model.CourseLength" check="@optionChecked" value="@option.Key" />
                     <label for="@keyString" class="govuk-label govuk-radios__label">@option.Value</label>
                   </div>
+                  if (option.Value == "Other" && optionChecked)
+                   {
+                     <div id="CourseFees-wrapper1" class="govuk-form-group">
+                       <label asp-for="CourseLengthOther" class="govuk-label">Course Length</label>
+                       <input asp-for="CourseLengthOther" type="text" class="govuk-currency-input__inner__input govuk-input govuk-input--width-10"/>
+                     </div>
+
+                   }
                 }
               }
             </div>

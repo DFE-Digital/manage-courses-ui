@@ -35,9 +35,39 @@
                     <input type="radio" id="@keyString" class="govuk-radios__input" asp-for="@Model.CourseLength" check="@optionChecked" value="@option.Key" />
                     <label for="@keyString" class="govuk-label govuk-radios__label">@option.Value</label>
                   </div>
+                  if (option.Value == "Other" && optionChecked)
+                  {
+                    <div id="CourseFees-wrapper1" class="govuk-form-group">
+                      <label asp-for="CourseLengthOther" class="govuk-label">Course Length</label>
+                      <input asp-for="CourseLengthOther" type="text" class="govuk-currency-input__inner__input govuk-input govuk-input--width-10"/>
+                    </div>
+
+                  }
+
                 }
               }
+              
+              <div class="govuk-radios__item">
+                <input id="location-Unset" class="govuk-radios__input" type="radio" name="l" value="test1"/>
+                <label for="location-Unset" class="govuk-label govuk-radios__label">Across England</label>
+              </div>
+              <div class="govuk-radios__item">
+                <input id="location-Specific" class="govuk-radios__input" type="radio" name="l" value="TestRadio" data-aria-controls="query-container">
+                <label for="location-Specific" class="govuk-label govuk-radios__label">Test Radio Button</label>
+              </div>
+
             </div>
+            <div class="govuk-radios__conditional" id="query-container">
+              <div class"form-group">
+                <label class="govuk-label" for="query">
+                  test container
+                </label>
+                <input class="govuk-input typeahead" name="query" type="text" id="query" value="test">
+              </div>
+            </div>
+            
+            
+
           </fieldset>
         </div>
         <hr class="govuk-section-break govuk-section-break--l">

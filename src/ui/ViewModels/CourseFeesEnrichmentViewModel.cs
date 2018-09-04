@@ -9,6 +9,7 @@ namespace GovUk.Education.ManageCourses.Ui.ViewModels
     public class CourseFeesEnrichmentViewModel : ICourseEnrichmentViewModel
     {
         public CourseLength? CourseLength { get; set; }
+        public string CourseLengthOther { get; set; }
         public decimal? FeeUkEu { get; set; }
         public decimal? FeeInternational { get; set; }
 
@@ -32,7 +33,7 @@ namespace GovUk.Education.ManageCourses.Ui.ViewModels
         public void MapInto(ref CourseEnrichmentModel enrichmentModel)
         {
             var courseLength = CourseLength.HasValue ? CourseLength.Value.ToString() : null;
-
+            enrichmentModel.CourseLengthOther = CourseLengthOther;
             enrichmentModel.CourseLength = courseLength;
             enrichmentModel.FeeUkEu = FeeUkEu;
             enrichmentModel.FeeInternational = FeeInternational;

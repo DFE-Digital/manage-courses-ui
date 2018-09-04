@@ -9,6 +9,7 @@ namespace GovUk.Education.ManageCourses.Ui.ViewModels
     public class CourseSalaryEnrichmentViewModel : ICourseEnrichmentViewModel
     {
         public CourseLength? CourseLength { get; set; }
+        public string CourseLengthOther { get; set; }
 
         [RegularExpression(@"^\s*(\S+\s+|\S+$){0,250}$", ErrorMessage = "Reduce the word count for salary")]
         public string SalaryDetails { get; set; }
@@ -24,7 +25,7 @@ namespace GovUk.Education.ManageCourses.Ui.ViewModels
         public void MapInto(ref CourseEnrichmentModel enrichmentModel)
         {
             var courseLength = CourseLength.HasValue ? CourseLength.Value.ToString() : null;
-
+            enrichmentModel.CourseLengthOther = CourseLengthOther;
             enrichmentModel.CourseLength = courseLength;
             enrichmentModel.SalaryDetails = SalaryDetails;
         }
@@ -40,8 +41,11 @@ namespace GovUk.Education.ManageCourses.Ui.ViewModels
             {
                 CourseLength = courseLength;
             }
-            
-            if(!string.IsNullOrEmpty(model.SalaryDetails))
+            if (!string.IsNullOrEmpty(model.CourseLengthOther))
+            {
+                CourseLengthOther = model.CourseLengthOther;
+            }
+            if (!string.IsNullOrEmpty(model.SalaryDetails))
             {
                 SalaryDetails = model.SalaryDetails;
             }
