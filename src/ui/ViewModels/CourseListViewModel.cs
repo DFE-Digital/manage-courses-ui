@@ -12,7 +12,5 @@ namespace GovUk.Education.ManageCourses.Ui.ViewModels
         public string InstitutionId { get; set; }
 
         public List<Provider> Providers { get; set; }
-
-        public string Status { get; set; }
     }
 }

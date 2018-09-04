@@ -41,20 +41,16 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
         [Route("{ucasCode}")]
         public async Task<IActionResult> Show(string ucasCode)
         {
-            var ucasInstitutionEnrichmentGetModel = await _manageApi.GetEnrichmentOrganisation(ucasCode);
             var institutionCourses = await _manageApi.GetCoursesByOrganisation(ucasCode);
             var tabViewModel = await GetTabViewModelAsync(ucasCode, "courses");
             var providers = GetProviders(institutionCourses);
-
-            var status = ucasInstitutionEnrichmentGetModel?.Status.ToString() ?? "Empty";
 
             var model = new CourseListViewModel
             {
                 InstitutionName = institutionCourses.InstitutionName,
                 InstitutionId = institutionCourses.InstitutionCode,
                 Providers = providers,
-                TabViewModel = tabViewModel,
-                Status = status
+                TabViewModel = tabViewModel
             };
 
             return View(model);

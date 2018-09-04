@@ -124,7 +124,7 @@
             </form>
             break;
           case WorkflowStatus.InitialDraft :
-            <strong class="govuk-tag govuk-tag--empty">Draft</strong>
+            <strong class="govuk-tag govuk-tag--draft">Draft</strong>
             <p class="govuk-body">You have unpublished changes.</p>
 
             @if (Model.AllowPreview)
@@ -151,7 +151,7 @@
 
             break;
           case WorkflowStatus.SubsequentDraft :
-            <strong class="govuk-tag govuk-tag--empty">Draft</strong>
+            <strong class="govuk-tag govuk-tag--draft">Draft</strong>
             <p class="govuk-body">Last published on @Model.LastPublishedTimestampUtc.DateString()</p>
             <p class="govuk-body">You have unpublished changes.</p>
 
@@ -173,7 +173,7 @@
             </form>
             break;
           case WorkflowStatus.BlankSubsequentDraft :
-            <strong class="govuk-tag govuk-tag--empty">Empty</strong>
+            <strong class="govuk-tag govuk-tag--draft">Empty</strong>
             <p class="govuk-body">Last published on @Model.LastPublishedTimestampUtc.DateString()</p>
             <p class="govuk-body">You have unpublished changes.</p>
 
