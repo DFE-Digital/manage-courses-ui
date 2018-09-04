@@ -131,7 +131,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
 
             this.TempData.Add("RequestAccess_To_Name", $"{model.FirstName} {model.LastName}");
 
-            return new RedirectToActionResult("RequestAccess", "Organisation", new { ucasCode });
+            return new RedirectToActionResult("Show", "Organisation", new { ucasCode });
         }
 
         private async Task<List<TrainingProviderViewModel>> GetTrainingProviderViewModels(string ucasCode, InstitutionEnrichmentModel enrichmentModel, OrganisationViewModel model = null)
