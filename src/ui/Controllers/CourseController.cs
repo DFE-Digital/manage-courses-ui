@@ -82,17 +82,17 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
 
             if (result)
             {
-                TempData.Add("MessageType", "success");
-                TempData.Add("MessageTitle", "Your course has been published");
+                TempData["MessageType"] = "success";
+                TempData["MessageTitle"] = "Your course has been published";
                 var searchUrl = searchAndCompareUrlService.GetCoursePageUri(course.InstCode, course.CourseCode);
                 if (featureFlags.ShowCourseLiveView)
                 {
-                    TempData.Add("MessageBodyHtml", $@"
+                    TempData["MessageBodyHtml"] = $@"
                         <p class=""govuk-body"">
                             See how this course looks to applicants:
                             <br />
                             <a href='{searchUrl}'>View on website</a>
-                        </p>");
+                        </p>";
                 }
             }
 
@@ -406,16 +406,16 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
 
         private void CourseSavedMessage()
         {
-            TempData.Add("MessageType", "success");
-            TempData.Add("MessageTitle", "Your changes have been saved");
+            TempData["MessageType"] = "success";
+            TempData["MessageTitle"] = "Your changes have been saved";
             if (featureFlags.ShowCoursePreview)
             {
                 var previewLink = Url.Action("Preview");
-                TempData.Add("MessageBodyHtml", $@"
+                TempData["MessageBodyHtml"] = $@"
                     <p class=""govuk-body"">
                         <a href='{previewLink}'>Preview your course</a>
                         to check for mistakes before publishing.
-                    </p>");
+                    </p>";
             }
         }
 
