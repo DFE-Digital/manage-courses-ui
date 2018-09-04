@@ -19,22 +19,26 @@ namespace GovUk.Education.ManageCourses.Ui.ViewModels
 
         public IEnumerable<string> CopyFrom(CourseEnrichmentModel model)
         {
+            var res = new List<string>();
+
             if (model == null)
             {
-                yield break;
+                return res;
             }
 
             if(Enum.TryParse(model.CourseLength, out CourseLength courseLength))
             {
                 CourseLength = courseLength;
-                yield return CourseEnrichmentFieldNames.CourseLength;
+                res.Add(CourseEnrichmentFieldNames.CourseLength);
             }
             
             if(!string.IsNullOrEmpty(model.SalaryDetails))
             {
                 SalaryDetails = model.SalaryDetails;
-                yield return CourseEnrichmentFieldNames.SalaryDetails;
+                res.Add(CourseEnrichmentFieldNames.SalaryDetails);
             }
+            
+            return res;            
         }
     }
 }

@@ -12,20 +12,25 @@ else
 {  
   <h4 class="govuk-heading-m">Use content from another course</h4>
   <p class="govuk-body">Fill in this page with content from another course.</p>
-  @if(copied.Any())
+  @if(copied != null)
   {
-    <div class="success-summary success-summary-small js-success-copy" role="alert" aria-labelledby="success-summary-heading-example-1" tabindex="-1" style="">
-      <h3 class="heading-small success-summary-heading add-bottom-margin remove-top-margin" id="success-summary-heading-example-1">
+    <div class="govuk-inset-text govuk-inset-text--success" role="alert" aria-labelledby="success-summary-heading-example-1">
+      <h3 class="govuk-heading-s" id="success-summary-heading-example-1">
         Fields copied:
       </h3>
-      <div class="js-what-copied">
-        <ul class="list remove-bottom-margin">
-          @foreach(var copiedField in copied)
+      <ul class="govuk-list">
+        @if(copied.Any())
+        {
+          foreach(var copiedField in copied)
           {
             <li>@copiedField</li>
           }
-        </ul>
-      </div>
+        }
+        else
+        {
+          <li>None</li>
+        }
+      </ul>
     </div>
   }
   <form class="govuk-form" method="GET">

@@ -45,6 +45,14 @@ $govuk-global-styles: true;
   }
 }
 
+// inset success
+.govuk-inset-text--success{
+  border-left-width: 5px;
+  border-left-color: govuk-colour("green");
+  padding-top: 0;
+  padding-bottom:0;
+}
+
 // Add a red border to .form-control-group if validation fails
 .input-validation-error {
   border: 4px solid govuk-colour("red");

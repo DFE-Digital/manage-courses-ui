@@ -21,28 +21,31 @@ namespace GovUk.Education.ManageCourses.Ui.ViewModels
 
         public IEnumerable<string> CopyFrom(CourseEnrichmentModel model)
         {
+            var res = new List<string>();
             if (model == null)
             {
-                yield break;
+                return res;
             }
 
             if (!string.IsNullOrEmpty(model.Qualifications))
             {
                 Qualifications = model.Qualifications;
-                yield return CourseEnrichmentFieldNames.Qualifications;
+                res.Add(CourseEnrichmentFieldNames.Qualifications);
             }
 
             if (!string.IsNullOrEmpty(model.PersonalQualities))
             {
                 PersonalQualities = model.PersonalQualities;
-                yield return CourseEnrichmentFieldNames.PersonalQualities;
+                res.Add(CourseEnrichmentFieldNames.PersonalQualities);
             }
 
             if (!string.IsNullOrEmpty(model.OtherRequirements))
             {
                 OtherRequirements = model.OtherRequirements;
-                yield return CourseEnrichmentFieldNames.OtherRequirements;
+                res.Add(CourseEnrichmentFieldNames.OtherRequirements);
             }
+
+            return res;
         }
     }
 }

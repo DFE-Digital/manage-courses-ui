@@ -16,7 +16,7 @@
       <form asp-controller="Organisation" asp-action="About" method="post" data-module="form">
         <input type="hidden" asp-for="@Model.PublishOrganisation" value="false"></input>
         <input type="hidden" asp-for="@Model.InstitutionCode"></input>
-        @Html.PartialAsync("Shared/ErrorSummary")
+        @await Html.PartialAsync("Shared/ErrorSummary")
         <p class="govuk-body">This is your chance to tell applicants why they should choose to train with you. You could describe any advantages and special
         features of you as a training provider.</p>
         <p class="govuk-body">You must be specific and factual with any claims you make, and support them with evidence. For example:</p>
@@ -148,7 +148,7 @@
 
         <hr class="related__section-break">
 
-        @Html.PartialAsync("FormattingAdvice")
+        @await Html.PartialAsync("FormattingAdvice")
       </aside>
 
     </div>

@@ -24,40 +24,44 @@ namespace GovUk.Education.ManageCourses.Ui.ViewModels
 
         public IEnumerable<string> CopyFrom(CourseEnrichmentModel model)
         {
+            var res = new List<string>();
+
             if (model == null)
             {
-                yield break;
+                return res;
             }
 
             if (Enum.TryParse(model.CourseLength ?? "", out CourseLength courseLength))
             {
                 CourseLength = courseLength;
-                yield return CourseEnrichmentFieldNames.CourseLength;
+                res.Add(CourseEnrichmentFieldNames.CourseLength);
             }
 
             if(model.FeeUkEu.HasValue)
             {
                 FeeUkEu = model.FeeUkEu;
-                yield return CourseEnrichmentFieldNames.FeesUkEu;
+                res.Add(CourseEnrichmentFieldNames.FeesUkEu);
             }
 
             if(model.FeeInternational.HasValue)
             {
                 FeeInternational = model.FeeInternational;
-                yield return CourseEnrichmentFieldNames.FeesInternational;
+                res.Add(CourseEnrichmentFieldNames.FeesInternational);
             }
             
             if(!string.IsNullOrEmpty(model.FeeDetails))
             {
                 FeeDetails = model.FeeDetails;
-                yield return CourseEnrichmentFieldNames.FeeDetails;
+                res.Add(CourseEnrichmentFieldNames.FeeDetails);
             }
                         
             if(!string.IsNullOrEmpty(model.FinancialSupport))
             {
                 FinancialSupport = model.FinancialSupport;
-                yield return CourseEnrichmentFieldNames.FinancialSupport;
+                res.Add(CourseEnrichmentFieldNames.FinancialSupport);
             }
+
+            return res;
         }
     }
 }

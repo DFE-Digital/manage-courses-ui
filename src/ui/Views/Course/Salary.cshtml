@@ -14,7 +14,7 @@
         <span class="govuk-caption-xl">@Model.CourseInfo.Name (@Model.CourseInfo.ProgrammeCode)</span>
         Course length and fees
       </h1>
-      @Html.PartialAsync("ErrorSummary")
+      @await Html.PartialAsync("ErrorSummary")
       <form asp-controller="Course" asp-action="Salary" method="post" data-module="form">
         <div class="govuk-form-group">
           <fieldset class="govuk-fieldset">
@@ -67,8 +67,8 @@
     </div>
     <div class="govuk-grid-column-one-third">
       <aside class="related">
-        @Html.PartialAsync("CopyCourseContent")
-        @Html.PartialAsync("FormattingAdvice")
+        @await Html.PartialAsync("CopyCourseContent")
+        @await Html.PartialAsync("FormattingAdvice")
       </aside>
     </div>
   </div>
