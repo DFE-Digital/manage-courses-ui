@@ -4,7 +4,6 @@ using GovUk.Education.ManageCourses.ApiClient;
 
 namespace GovUk.Education.ManageCourses.Ui.ViewModels
 {
-
     public class AboutCourseEnrichmentViewModel : ICourseEnrichmentViewModel
     {
 
@@ -32,9 +31,10 @@ namespace GovUk.Education.ManageCourses.Ui.ViewModels
             enrichmentModel.InterviewProcess = InterviewProcess;
             enrichmentModel.HowSchoolPlacementsWork = HowSchoolPlacementsWork;            
         }
-        public IEnumerable<string> CopyFrom(CourseEnrichmentModel model)
+
+        public IEnumerable<CopiedField> CopyFrom(CourseEnrichmentModel model)
         {
-            var res = new List<string>();
+            var res = new List<CopiedField>();
 
             if (model == null)
             {
@@ -44,19 +44,19 @@ namespace GovUk.Education.ManageCourses.Ui.ViewModels
             if (!string.IsNullOrWhiteSpace(model.AboutCourse))
             {
                 AboutCourse = model.AboutCourse;
-                res.Add(CourseEnrichmentFieldNames.AboutCourse);
+                res.Add(new CopiedField(nameof(model.AboutCourse), CourseEnrichmentFieldNames.AboutCourse));
             }
 
             if (!string.IsNullOrWhiteSpace(model.InterviewProcess))
             {
                 InterviewProcess = model.InterviewProcess;
-                res.Add(CourseEnrichmentFieldNames.InterviewProcess);
+                res.Add(new CopiedField(nameof(model.InterviewProcess), CourseEnrichmentFieldNames.InterviewProcess));
             }
 
             if (!string.IsNullOrWhiteSpace(model.HowSchoolPlacementsWork))
             {
                 HowSchoolPlacementsWork = model.HowSchoolPlacementsWork;
-                res.Add(CourseEnrichmentFieldNames.HowSchoolPlacementsWork);
+                res.Add(new CopiedField(nameof(model.HowSchoolPlacementsWork), CourseEnrichmentFieldNames.HowSchoolPlacementsWork));
             }
             
             return res;

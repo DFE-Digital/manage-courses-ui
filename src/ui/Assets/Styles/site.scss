@@ -13,6 +13,7 @@ $govuk-global-styles: true;
 @import "patterns/course-parts";
 @import "patterns/success-summary";
 @import "patterns/notice-summary";
+@import "patterns/warning-summary";
 @import "patterns/definition-list";
 @import "patterns/currency-input";
 
@@ -43,21 +44,6 @@ $govuk-global-styles: true;
     content: "(";
     margin-left: govuk-spacing(1);
   }
-}
-
-// inset success
-.govuk-inset-text--success,
-.govuk-inset-text--failure {
-  border-left-width: 5px;
-  padding-top: 0;
-  padding-bottom:0;
-}
-
-.govuk-inset-text--success {
-  border-left-color: govuk-colour("green");
-}
-.govuk-inset-text--failure {
-  border-left-color: govuk-colour("red");
 }
 
 // Add a red border to .form-control-group if validation fails

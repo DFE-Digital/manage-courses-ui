@@ -29,9 +29,9 @@ namespace GovUk.Education.ManageCourses.Ui.ViewModels
             enrichmentModel.SalaryDetails = SalaryDetails;
         }
 
-        public IEnumerable<string> CopyFrom(CourseEnrichmentModel model)
+        public IEnumerable<CopiedField> CopyFrom(CourseEnrichmentModel model)
         {
-            var res = new List<string>();
+            var res = new List<CopiedField>();
 
             if (model == null)
             {
@@ -41,13 +41,13 @@ namespace GovUk.Education.ManageCourses.Ui.ViewModels
             if(Enum.TryParse(model.CourseLength, out CourseLength courseLength))
             {
                 CourseLength = courseLength;
-                res.Add(CourseEnrichmentFieldNames.CourseLength);
+                res.Add(new CopiedField(nameof(model.CourseLength), CourseEnrichmentFieldNames.CourseLength));
             }
             
             if(!string.IsNullOrEmpty(model.SalaryDetails))
             {
                 SalaryDetails = model.SalaryDetails;
-                res.Add(CourseEnrichmentFieldNames.SalaryDetails);
+                res.Add(new CopiedField(nameof(model.SalaryDetails), CourseEnrichmentFieldNames.SalaryDetails));
             }
             
             return res;            
