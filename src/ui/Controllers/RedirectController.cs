@@ -9,7 +9,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
   public class RedirectController : CommonAttributesControllerBase
   {
     [Authorize]
-    [Route("organisations/{ucasCode}/courses")]
+    [Route("organisation/{ucasCode}/courses")]
     public async Task<IActionResult> LegacyCoursePage(string ucasCode)
     {
       return RedirectToAction("Show", "Organisation", new { ucasCode });
