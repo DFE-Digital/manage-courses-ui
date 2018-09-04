@@ -20,39 +20,38 @@
     @Model.Course.Name (@Model.Course.ProgrammeCode)
   </h1>
 
-  @if(Model.Course.StatusAsEnum != CourseVariantStatus.Running)
-  {
-    <div class="govuk-notice-summary" role="alert">
-      <h3 class="govuk-notice-summary__title">
-        @if(Model.Course.StatusAsEnum == CourseVariantStatus.New)
-        {
-          <text>This course is new and not yet running.</text>
-        }
-        else
-        {
-          <text>This course is not running.</text>
-        }
-      </h3>
-      <div class="govuk-notice-summary__body">
-        <p class="govuk-body">
-          @if(Model.Course.StatusAsEnum == CourseVariantStatus.New)
-          {
-            <text>It won&#8217;t appear online until one or more training locations are set to &ldquo;running&rdquo; in <a href='https://update.ucas.co.uk/netupdate2/Welcome.htm'>UCAS web-link</a>.</text>
-          }
-          else
-          {
-            <text>It won&#8217;t appear online. You can publish it by changing the status of one or more training locations to &ldquo;running&rdquo; in <a href='https://update.ucas.co.uk/netupdate2/Welcome.htm'>UCAS web-link</a>.</text>
-          }
-        </p>
-      </div>
-    </div>
-  }
-
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
       <div class="course-parts">
         <div class="course-parts__item">
           <h3 class="course-parts__title">Information from UCAS</h3>
+
+          @if(Model.Course.StatusAsEnum != CourseVariantStatus.Running)
+          {
+            <div class="govuk-warning-text govuk-warning-text--inline">
+              <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
+              <strong class="govuk-warning-text__text">
+                @if(Model.Course.StatusAsEnum == CourseVariantStatus.New)
+                {
+                  <text>This course is new and not yet running.</text>
+                }
+                else
+                {
+                  <text>This course is not running.</text>
+                }
+              </strong>
+            </div>
+            <p class="govuk-body">
+              @if(Model.Course.StatusAsEnum == CourseVariantStatus.New)
+              {
+                <text>It won&#8217;t appear online until one or more training locations are set to &ldquo;running&rdquo; in <a href='https://update.ucas.co.uk/netupdate2/Welcome.htm'>UCAS web-link</a>.</text>
+              }
+              else
+              {
+                <text>It won&#8217;t appear online. You can publish it by changing the status of one or more training locations to &ldquo;running&rdquo; in <a href='https://update.ucas.co.uk/netupdate2/Welcome.htm'>UCAS web-link</a>.</text>
+              }
+            </p>
+          }
 
           <p class="govuk-body">You can only change this information using <a href="https://update.ucas.co.uk/netupdate2/Welcome.htm">UCAS web-link</a>. Changes will usually appear here within one working day.</p>
 

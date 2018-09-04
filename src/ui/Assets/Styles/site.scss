@@ -78,3 +78,12 @@ $govuk-global-styles: true;
     }
   }
 }
+
+.govuk-warning-text--inline {
+  margin-bottom: 0;
+
+  + .govuk-body {
+    padding-left: govuk-spacing(8);
+    margin-bottom: govuk-spacing(6);
+  }
+}
