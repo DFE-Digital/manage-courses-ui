@@ -41,6 +41,17 @@ if ($copyWarningMessage) {
   }
 }
 
+var $copyCourseTrigger = document.querySelector('[data-module="copy-course-form"]');
+if ($copyCourseTrigger && $form) {
+  if (serialize($form).length) {
+    $copyCourseTrigger.addEventListener("submit", function(event) {
+      if (!confirm('Are you sure you want to replace your existing content')) {
+        event.preventDefault();
+      }
+    });
+  }
+}
+
 if (process.env.NODE_ENV == 'development') {
   module.hot.accept();
 }
