@@ -172,7 +172,7 @@ namespace ManageCoursesUi.Tests
             var actionResult = result as RedirectToActionResult;
 
             Assert.IsNotNull(actionResult);
-            Assert.AreEqual("RequestAccess", actionResult.ActionName);
+            Assert.AreEqual("Show", actionResult.ActionName);
             Assert.AreEqual("Organisation", actionResult.ControllerName);
             Assert.AreEqual(ucasCode, actionResult.RouteValues[ucasCode]);
         }
