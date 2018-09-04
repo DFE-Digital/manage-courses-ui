@@ -32,28 +32,34 @@ namespace GovUk.Education.ManageCourses.Ui.ViewModels
             enrichmentModel.InterviewProcess = InterviewProcess;
             enrichmentModel.HowSchoolPlacementsWork = HowSchoolPlacementsWork;            
         }
-
-        public void CopyFrom(CourseEnrichmentModel model)
+        public IEnumerable<string> CopyFrom(CourseEnrichmentModel model)
         {
+            var res = new List<string>();
+
             if (model == null)
             {
-                return;
+                return res;
             }
 
             if (!string.IsNullOrWhiteSpace(model.AboutCourse))
             {
                 AboutCourse = model.AboutCourse;
+                res.Add(CourseEnrichmentFieldNames.AboutCourse);
             }
 
             if (!string.IsNullOrWhiteSpace(model.InterviewProcess))
             {
                 InterviewProcess = model.InterviewProcess;
+                res.Add(CourseEnrichmentFieldNames.InterviewProcess);
             }
 
             if (!string.IsNullOrWhiteSpace(model.HowSchoolPlacementsWork))
             {
                 HowSchoolPlacementsWork = model.HowSchoolPlacementsWork;
+                res.Add(CourseEnrichmentFieldNames.HowSchoolPlacementsWork);
             }
+            
+            return res;
         }
     }
 }
