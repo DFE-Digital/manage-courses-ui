@@ -1,0 +1,36 @@
+@{
+  IEnumerable<CopiedField> copied = ViewBag.CopiedFields as IEnumerable<CopiedField>;
+  CourseInfoViewModel copiedFrom = ViewBag.CopiedFrom as CourseInfoViewModel;
+}
+
+@if(copied != null && copied.Any())
+{
+  <div class="govuk-success-summary govuk-success-summary--warning" role="alert" aria-labelledby="success-summary-heading">
+    <h2 class="govuk-heading-m" id="success-summary-heading">
+      Your changes are not yet saved
+    </h2>
+    
+    <p class="govuk-body">
+      We&#8217;ve copied these field from @copiedFrom?.Name (@copiedFrom?.ProgrammeCode):
+    </p>
+    
+    <ul class="govuk-list govuk-list--bullet">
+        @foreach(var copiedField in copied)
+        {
+          <li><a href="#@copiedField.Id-wrapper">@copiedField.Name</a></li>
+        }        
+    </ul>
+      
+    <p class="govuk-body">
+      Please check them and make your changes before saving.
+    </p>    
+  </div>
+}
+else if (copied != null)
+{
+  <div class="govuk-error-summary" role="alert" aria-labelledby="error-summary-heading" tabindex="-1">
+    <span class="govuk-body govuk-body-l govuk-!-font-weight-bold" id="error-summary-heading">
+      There was no content to copy from course @copiedFrom?.Name (@copiedFrom?.ProgrammeCode)
+    </span>
+  </div>
+}

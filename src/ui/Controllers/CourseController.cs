@@ -152,14 +152,21 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
                 RouteData = routeData,
                 CourseInfo = courseInfo
             };
-            
+                        
+            await LoadCopyableCoursesIntoViewBag(instCode, ucasCode);
+
             if (!string.IsNullOrEmpty(copyFrom))
             {
-                var copiedEnrichment = await _manageApi.GetEnrichmentCourse(instCode, copyFrom); 
+                copyFrom = copyFrom.ToUpper();
+                var copiedEnrichment = await _manageApi.GetEnrichmentCourse(instCode, copyFrom);
+                ViewBag.CopiedFrom = new CourseInfoViewModel { 
+                    ProgrammeCode = copyFrom, 
+                    Name = (ViewBag.CopyableCourses as IEnumerable<ApiClient.Course>).SingleOrDefault(x => x.CourseCode == copyFrom)?.Name
+                };
+
                 ViewBag.CopiedFields = model.CopyFrom(copiedEnrichment?.EnrichmentModel);                
             }
 
-            await LoadCopyableCoursesIntoViewBag(instCode, ucasCode);
 
             return View(model);
         }
@@ -216,13 +223,19 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
                 CourseInfo = courseInfo
             };
 
+            await LoadCopyableCoursesIntoViewBag(instCode, ucasCode);
+
             if (!string.IsNullOrEmpty(copyFrom))
             {
-                var copiedEnrichment = await _manageApi.GetEnrichmentCourse(instCode, copyFrom); 
+                copyFrom = copyFrom.ToUpper();
+                var copiedEnrichment = await _manageApi.GetEnrichmentCourse(instCode, copyFrom);
+                ViewBag.CopiedFrom = new CourseInfoViewModel { 
+                    ProgrammeCode = copyFrom, 
+                    Name = (ViewBag.CopyableCourses as IEnumerable<ApiClient.Course>).SingleOrDefault(x => x.CourseCode == copyFrom)?.Name
+                };
+
                 ViewBag.CopiedFields = model.CopyFrom(copiedEnrichment?.EnrichmentModel);                
             }
-
-            await LoadCopyableCoursesIntoViewBag(instCode, ucasCode);
 
             return View(model);
         }
@@ -269,13 +282,19 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
                 CourseInfo = courseInfo
             };
 
+            await LoadCopyableCoursesIntoViewBag(instCode, ucasCode);
+
             if (!string.IsNullOrEmpty(copyFrom))
             {
-                var copiedEnrichment = await _manageApi.GetEnrichmentCourse(instCode, copyFrom); 
+                copyFrom = copyFrom.ToUpper();
+                var copiedEnrichment = await _manageApi.GetEnrichmentCourse(instCode, copyFrom);
+                ViewBag.CopiedFrom = new CourseInfoViewModel { 
+                    ProgrammeCode = copyFrom, 
+                    Name = (ViewBag.CopyableCourses as IEnumerable<ApiClient.Course>).SingleOrDefault(x => x.CourseCode == copyFrom)?.Name
+                };
+
                 ViewBag.CopiedFields = model.CopyFrom(copiedEnrichment?.EnrichmentModel);                
             }
-
-            await LoadCopyableCoursesIntoViewBag(instCode, ucasCode);
 
             return View(model);
         }
@@ -323,13 +342,20 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
                 CourseInfo = courseInfo
             };
 
+            await LoadCopyableCoursesIntoViewBag(instCode, ucasCode);
+
             if (!string.IsNullOrEmpty(copyFrom))
             {
-                var copiedEnrichment = await _manageApi.GetEnrichmentCourse(instCode, copyFrom); 
+                copyFrom = copyFrom.ToUpper();
+                var copiedEnrichment = await _manageApi.GetEnrichmentCourse(instCode, copyFrom);
+                ViewBag.CopiedFrom = new CourseInfoViewModel { 
+                    ProgrammeCode = copyFrom, 
+                    Name = (ViewBag.CopyableCourses as IEnumerable<ApiClient.Course>).SingleOrDefault(x => x.CourseCode == copyFrom)?.Name
+                };
+
                 ViewBag.CopiedFields = model.CopyFrom(copiedEnrichment?.EnrichmentModel);                
             }
 
-            await LoadCopyableCoursesIntoViewBag(instCode, ucasCode);
             return View(model);
         }
 

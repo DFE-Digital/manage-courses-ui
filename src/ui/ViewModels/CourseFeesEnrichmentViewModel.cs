@@ -40,9 +40,9 @@ namespace GovUk.Education.ManageCourses.Ui.ViewModels
             enrichmentModel.FinancialSupport = FinancialSupport;
         }
 
-        public IEnumerable<string> CopyFrom(CourseEnrichmentModel model)
+        public IEnumerable<CopiedField> CopyFrom(CourseEnrichmentModel model)
         {
-            var res = new List<string>();
+            var res = new List<CopiedField>();
 
             if (model == null)
             {
@@ -52,31 +52,31 @@ namespace GovUk.Education.ManageCourses.Ui.ViewModels
             if (Enum.TryParse(model.CourseLength ?? "", out CourseLength courseLength))
             {
                 CourseLength = courseLength;
-                res.Add(CourseEnrichmentFieldNames.CourseLength);
+                res.Add(new CopiedField(nameof(model.CourseLength), CourseEnrichmentFieldNames.CourseLength));
             }
 
             if(model.FeeUkEu.HasValue)
             {
                 FeeUkEu = model.FeeUkEu;
-                res.Add(CourseEnrichmentFieldNames.FeesUkEu);
+                res.Add(new CopiedField(nameof(model.FeeUkEu), CourseEnrichmentFieldNames.FeesUkEu));
             }
 
             if(model.FeeInternational.HasValue)
             {
                 FeeInternational = model.FeeInternational;
-                res.Add(CourseEnrichmentFieldNames.FeesInternational);
+                res.Add(new CopiedField(nameof(model.FeeInternational), CourseEnrichmentFieldNames.FeesInternational));
             }
             
             if(!string.IsNullOrEmpty(model.FeeDetails))
             {
                 FeeDetails = model.FeeDetails;
-                res.Add(CourseEnrichmentFieldNames.FeeDetails);
+                res.Add(new CopiedField(nameof(model.FeeDetails), CourseEnrichmentFieldNames.FeeDetails));
             }
                         
             if(!string.IsNullOrEmpty(model.FinancialSupport))
             {
                 FinancialSupport = model.FinancialSupport;
-                res.Add(CourseEnrichmentFieldNames.FinancialSupport);
+                res.Add(new CopiedField(nameof(model.FinancialSupport), CourseEnrichmentFieldNames.FinancialSupport));
             }
 
             return res;

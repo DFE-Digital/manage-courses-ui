@@ -7,6 +7,10 @@
   }
 }
 
+.govuk-success-summary--warning {
+  border-color: govuk-colour("orange");
+}
+
 .govuk-success-summary__title {
   @extend .govuk-error-summary__title;
 }

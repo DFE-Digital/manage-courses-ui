@@ -31,9 +31,9 @@ namespace GovUk.Education.ManageCourses.Ui.ViewModels
             enrichmentModel.OtherRequirements = OtherRequirements;
         }
 
-        public IEnumerable<string> CopyFrom(CourseEnrichmentModel model)
+        public IEnumerable<CopiedField> CopyFrom(CourseEnrichmentModel model)
         {
-            var res = new List<string>();
+            var res = new List<CopiedField>();
             if (model == null)
             {
                 return res;
@@ -42,19 +42,19 @@ namespace GovUk.Education.ManageCourses.Ui.ViewModels
             if (!string.IsNullOrEmpty(model.Qualifications))
             {
                 Qualifications = model.Qualifications;
-                res.Add(CourseEnrichmentFieldNames.Qualifications);
+                res.Add(new CopiedField(nameof(model.Qualifications), CourseEnrichmentFieldNames.Qualifications));
             }
 
             if (!string.IsNullOrEmpty(model.PersonalQualities))
             {
                 PersonalQualities = model.PersonalQualities;
-                res.Add(CourseEnrichmentFieldNames.PersonalQualities);
+                res.Add(new CopiedField(nameof(model.PersonalQualities), CourseEnrichmentFieldNames.PersonalQualities));
             }
 
             if (!string.IsNullOrEmpty(model.OtherRequirements))
             {
                 OtherRequirements = model.OtherRequirements;
-                res.Add(CourseEnrichmentFieldNames.OtherRequirements);
+                res.Add(new CopiedField(nameof(model.OtherRequirements), CourseEnrichmentFieldNames.OtherRequirements));
             }
 
             return res;

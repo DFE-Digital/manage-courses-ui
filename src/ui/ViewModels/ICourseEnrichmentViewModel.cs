@@ -7,7 +7,7 @@ namespace GovUk.Education.ManageCourses.Ui.ViewModels
     public interface ICourseEnrichmentViewModel 
     { 
         bool IsEmpty();
-        IEnumerable<string> CopyFrom(CourseEnrichmentModel model);
+        IEnumerable<CopiedField> CopyFrom(CourseEnrichmentModel model);
         void MapInto(ref CourseEnrichmentModel enrichmentModel);
     }
 }
