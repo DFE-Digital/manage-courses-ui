@@ -9,7 +9,13 @@ namespace GovUk.Education.ManageCourses.Ui.ViewModels
     public class CourseFeesEnrichmentViewModel : ICourseEnrichmentViewModel
     {
         public CourseLength? CourseLength { get; set; }
+
+        [Range(0, 100000, ErrorMessage = "UK course fee must be less than £100,000")]
+        [RegularExpression(@"^[0-9]+$", ErrorMessage = "UK course fee must contain numbers only")]
         public decimal? FeeUkEu { get; set; }
+
+        [Range(0, 100000, ErrorMessage = "International course fee must be less than £100,000")]
+        [RegularExpression(@"^[0-9]+$", ErrorMessage = "International course fee must contain numbers only")]
         public decimal? FeeInternational { get; set; }
 
         [RegularExpression(@"^\s*(\S+\s+|\S+$){0,250}$", ErrorMessage = "Reduce the word count for fee details")]
@@ -22,10 +28,10 @@ namespace GovUk.Education.ManageCourses.Ui.ViewModels
 
         public CourseInfoViewModel CourseInfo { get; set; }
 
-        public bool IsEmpty() => 
-            !CourseLength.HasValue && 
-            !FeeUkEu.HasValue && 
-            !FeeInternational.HasValue && 
+        public bool IsEmpty() =>
+            !CourseLength.HasValue &&
+            !FeeUkEu.HasValue &&
+            !FeeInternational.HasValue &&
             string.IsNullOrEmpty(FeeDetails) &&
             string.IsNullOrEmpty(FinancialSupport);
 
@@ -66,13 +72,13 @@ namespace GovUk.Education.ManageCourses.Ui.ViewModels
                 FeeInternational = model.FeeInternational;
                 res.Add(new CopiedField(nameof(model.FeeInternational), CourseEnrichmentFieldNames.FeesInternational));
             }
-            
+
             if(!string.IsNullOrEmpty(model.FeeDetails))
             {
                 FeeDetails = model.FeeDetails;
                 res.Add(new CopiedField(nameof(model.FeeDetails), CourseEnrichmentFieldNames.FeeDetails));
             }
-                        
+
             if(!string.IsNullOrEmpty(model.FinancialSupport))
             {
                 FinancialSupport = model.FinancialSupport;
