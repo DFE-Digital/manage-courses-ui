@@ -27,8 +27,19 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             this._featureFlags = featureFlags;
         }
 
-        [Route("{ucasCode}/courses")]
-        public async Task<IActionResult> Courses(string ucasCode)
+        [Route("/organisations")]
+        public async Task<IActionResult> Index()
+        {
+            var orgs = await _manageApi.GetOrganisations();
+            var model = new OrganisationListViewModel
+            {
+                Oganisations = orgs
+            };
+            return View(model);
+        }
+
+        [Route("{ucasCode}")]
+        public async Task<IActionResult> Show(string ucasCode)
         {
             var institutionCourses = await _manageApi.GetCoursesByOrganisation(ucasCode);
             var tabViewModel = await GetTabViewModelAsync(ucasCode, "courses");

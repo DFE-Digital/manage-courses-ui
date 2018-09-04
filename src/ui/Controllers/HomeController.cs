@@ -48,7 +48,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
 
             if (userOrganisations.Count() > 1)
             {
-                return this.RedirectToAction("Index", "Organisations");
+                return this.RedirectToAction("Index", "Organisation");
             }
 
             return StatusCode(401);

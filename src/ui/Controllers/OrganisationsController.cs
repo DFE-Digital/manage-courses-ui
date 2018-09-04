@@ -1,32 +1,18 @@
-﻿using System.Linq;
+using System.Linq;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using GovUk.Education.ManageCourses.Ui;
-using GovUk.Education.ManageCourses.Ui.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GovUk.Education.ManageCourses.Ui.Controllers
 {
+  public class RedirectController : CommonAttributesControllerBase
+  {
     [Authorize]
-    [Route("organisations")]
-    public class OrganisationsController : CommonAttributesControllerBase
+    [Route("organisations/{ucasCode}/courses")]
+    public async Task<IActionResult> LegacyCoursePage(string ucasCode)
     {
-        private readonly IManageApi _manageApi;
-
-        public OrganisationsController(IManageApi manageApi)
-        {
-            _manageApi = manageApi;
-        }
-        [HttpGet]
-        public async Task<IActionResult> Index()
-        {
-            var orgs = await _manageApi.GetOrganisations();
-            var model = new OrganisationListViewModel
-            {
-                Oganisations = orgs
-            };
-            return View(model);
-        }
+      return RedirectToAction("Show", "Organisation", new { ucasCode });
     }
+  }
 }
