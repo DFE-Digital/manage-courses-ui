@@ -57,7 +57,7 @@ namespace ManageCoursesUi.Tests.Services
                             FullTimeVacancies = "",
                             PartTimeVacancies = ""
                         }
-                    }                    
+                    }
                 },
 
                 new InstitutionEnrichmentModel
@@ -90,7 +90,7 @@ namespace ManageCoursesUi.Tests.Services
                 }
             );
 
-            res.Duration.Should().Be("One year");
+            res.Duration.Should().Be("1 year");
             res.Name.Should().Be("Course.Name");
             res.ProgrammeCode.Should().Be("CourseCode");
             res.ProviderCodeName.Should().Be("MYINST");
@@ -127,7 +127,7 @@ namespace ManageCoursesUi.Tests.Services
 
             res.FullTime.Should().Be(VacancyStatus.Vacancies);
             res.PartTime.Should().Be(VacancyStatus.Vacancies);
-        } 
+        }
 
         [Test]
 
