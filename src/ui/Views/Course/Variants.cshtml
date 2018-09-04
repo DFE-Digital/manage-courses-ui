@@ -9,7 +9,7 @@
   var routeData = courseEnrichment.RouteData;
 }
 
-<a href="@Url.Action("Courses", "Organisation", new {ucasCode = Model.Course.UcasCode})" class="govuk-back-link">Back</a>
+<a href="@Url.Action("Show", "Organisation", new {ucasCode = Model.Course.UcasCode})" class="govuk-back-link">Back</a>
 
 <main role="main" class="govuk-main-wrapper" id="main-content">
     @await Html.PartialAsync("~/Views/Shared/_Alerts.cshtml")
