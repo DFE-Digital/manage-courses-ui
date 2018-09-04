@@ -8,16 +8,16 @@
   <p class="govuk-body">When you&#8217;ve added content to this page, you can copy it to other courses</p>
 }
 else
-{  
+{
   <h4 class="govuk-heading-m">Use content from another course</h4>
   <p class="govuk-body">Fill in this page with content from another course.</p>
   <form class="govuk-form" method="GET">
     <div class="govuk-form-group">
       <label class="govuk-label govuk-label--s" for="copy-from">Copy from</label>
       <select id="copy-from" name="copyFrom" class="govuk-select">
-        <option value="" selected="selected"></option>
+        <option value="" selected="selected">Pick a course</option>
         @foreach(var copyable in copyables)
-        {        
+        {
           <option value="@copyable.CourseCode">@copyable.Name (@copyable.CourseCode)</option>
         }
       </select>

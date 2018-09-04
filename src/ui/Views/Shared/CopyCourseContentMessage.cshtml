@@ -5,25 +5,25 @@
 
 @if(copied != null && copied.Any())
 {
-  <div class="govuk-success-summary govuk-success-summary--warning" role="alert" aria-labelledby="success-summary-heading">
-    <h2 class="govuk-heading-m" id="success-summary-heading">
+  <div class="govuk-warning-summary" role="alert" aria-labelledby="success-summary-heading">
+    <h2 class="govuk-warning-summary__title" id="success-summary-heading">
       Your changes are not yet saved
     </h2>
-    
-    <p class="govuk-body">
-      We&#8217;ve copied these field from @copiedFrom?.Name (@copiedFrom?.ProgrammeCode):
-    </p>
-    
-    <ul class="govuk-list govuk-list--bullet">
+
+    <div class="govuk-warning-summary__body">
+      <p class="govuk-body">
+        We&#8217;ve copied these field from @copiedFrom?.Name (@copiedFrom?.ProgrammeCode):
+      </p>
+      <ul class="govuk-list">
         @foreach(var copiedField in copied)
         {
           <li><a href="#@copiedField.Id-wrapper">@copiedField.Name</a></li>
-        }        
-    </ul>
-      
-    <p class="govuk-body">
-      Please check them and make your changes before saving.
-    </p>    
+        }
+      </ul>
+      <p class="govuk-body">
+        Please check them and make your changes before saving.
+      </p>
+    </div>
   </div>
 }
 else if (copied != null)
