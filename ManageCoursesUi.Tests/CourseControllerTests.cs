@@ -386,13 +386,13 @@ namespace ManageCoursesUi.Tests
 
             var tempData = controller.TempData;
 
-            tempDataMock.Verify(x => x.Add("MessageType", "success"), Times.Once);
-            tempDataMock.Verify(x => x.Add("MessageTitle", "Your changes have been saved"), Times.Once);
-            tempDataMock.Verify(x => x.Add("MessageBodyHtml", $@"
+            tempDataMock.VerifySet(x => x["MessageType"] = "success", Times.Once);
+            tempDataMock.VerifySet(x => x["MessageTitle"] = "Your changes have been saved", Times.Once);
+            tempDataMock.VerifySet(x => x["MessageBodyHtml"] = $@"
                     <p class=""govuk-body"">
                         <a href='{previewLink}'>Preview your course</a>
                         to check for mistakes before publishing.
-                    </p>"), Times.Once);
+                    </p>", Times.Once);
 
             var routeValues = redirectToActionResult.RouteValues;
 
@@ -503,13 +503,13 @@ namespace ManageCoursesUi.Tests
 
             var tempData = controller.TempData;
 
-            tempDataMock.Verify(x => x.Add("MessageType", "success"), Times.Once);
-            tempDataMock.Verify(x => x.Add("MessageTitle", "Your changes have been saved"), Times.Once);
-            tempDataMock.Verify(x => x.Add("MessageBodyHtml", $@"
+            tempDataMock.VerifySet(x => x["MessageType"] = "success", Times.Once);
+            tempDataMock.VerifySet(x => x["MessageTitle"] = "Your changes have been saved", Times.Once);
+            tempDataMock.VerifySet(x => x["MessageBodyHtml"] = $@"
                     <p class=""govuk-body"">
                         <a href='{previewLink}'>Preview your course</a>
                         to check for mistakes before publishing.
-                    </p>"), Times.Once);
+                    </p>", Times.Once);
 
             var routeValues = redirectToActionResult.RouteValues;
 
@@ -622,13 +622,13 @@ namespace ManageCoursesUi.Tests
 
             var tempData = controller.TempData;
 
-            tempDataMock.Verify(x => x.Add("MessageType", "success"), Times.Once);
-            tempDataMock.Verify(x => x.Add("MessageTitle", "Your changes have been saved"), Times.Once);
-            tempDataMock.Verify(x => x.Add("MessageBodyHtml", $@"
+            tempDataMock.VerifySet(x => x["MessageType"] = "success", Times.Once);
+            tempDataMock.VerifySet(x => x["MessageTitle"] = "Your changes have been saved", Times.Once);
+            tempDataMock.VerifySet(x => x["MessageBodyHtml"] = $@"
                     <p class=""govuk-body"">
                         <a href='{previewLink}'>Preview your course</a>
                         to check for mistakes before publishing.
-                    </p>"), Times.Once);
+                    </p>", Times.Once);
 
             var routeValues = redirectToActionResult.RouteValues;
 
@@ -747,13 +747,15 @@ namespace ManageCoursesUi.Tests
 
             var tempData = controller.TempData;
 
-            tempDataMock.Verify(x => x.Add("MessageType", "success"), Times.Once);
-            tempDataMock.Verify(x => x.Add("MessageTitle", "Your changes have been saved"), Times.Once);
-            tempDataMock.Verify(x => x.Add("MessageBodyHtml", $@"
+
+            tempDataMock.VerifySet(x => x["MessageType"] = "success", Times.Once);
+            tempDataMock.VerifySet(x => x["MessageType"] = "success", Times.Once);
+            tempDataMock.VerifySet(x => x["MessageTitle"] = "Your changes have been saved", Times.Once);
+            tempDataMock.VerifySet(x => x["MessageBodyHtml"] = $@"
                     <p class=""govuk-body"">
                         <a href='{previewLink}'>Preview your course</a>
                         to check for mistakes before publishing.
-                    </p>"), Times.Once);
+                    </p>", Times.Once);
 
             var routeValues = redirectToActionResult.RouteValues;
 
