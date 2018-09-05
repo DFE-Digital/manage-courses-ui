@@ -30,7 +30,7 @@ namespace GovUk.Education.ManageCourses.Ui
 {
     public class Startup
     {
-        private readonly ILogger _logger;
+        private readonly Microsoft.Extensions.Logging.ILogger _logger;
 
         public IConfiguration Configuration { get; }
 
