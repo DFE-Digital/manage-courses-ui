@@ -33,7 +33,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
         }
 
         [Route("{instCode}/course/{accreditingProviderId=self}/{ucasCode}")]
-        public async Task<IActionResult> Variants(string instCode, string accreditingProviderId, string ucasCode)
+        public async Task<IActionResult> Show(string instCode, string accreditingProviderId, string ucasCode)
         {
             Validate(instCode, accreditingProviderId, ucasCode);
 
@@ -54,16 +54,16 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
 
             var viewModel = LoadViewModel(org, course, multipleOrganisations, ucasCourseEnrichmentGetModel, routeData);
 
-            return View("Variants", viewModel);
+            return View("Show", viewModel);
         }
 
         [HttpPost]
         [Route("{instCode}/course/{accreditingProviderId=self}/{ucasCode}", Name = "publish")]
-        public async Task<IActionResult> VariantsPublish(string instCode, string accreditingProviderId, string ucasCode)
+        public async Task<IActionResult> ShowPublish(string instCode, string accreditingProviderId, string ucasCode)
         {
             if (!featureFlags.ShowCoursePublish)
             {
-                return RedirectToAction("Variants", new { instCode, accreditingProviderId, ucasCode });
+                return RedirectToAction("Show", new { instCode, accreditingProviderId, ucasCode });
             }
             var course = await _manageApi.GetCourseByUcasCode(instCode, ucasCode);
             var isSalary = course.ProgramType.Equals("SS", StringComparison.InvariantCultureIgnoreCase);
@@ -75,28 +75,28 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
 
             if (!ModelState.IsValid)
             {
-                return await Variants(instCode, accreditingProviderId, ucasCode);
+                return await Show(instCode, accreditingProviderId, ucasCode);
             }
 
             var result = await _manageApi.PublishEnrichmentCourse(instCode, ucasCode);
 
             if (result)
             {
-                TempData.Add("MessageType", "success");
-                TempData.Add("MessageTitle", "Your course has been published");
+                TempData["MessageType"] = "success";
+                TempData["MessageTitle"] = "Your course has been published";
                 var searchUrl = searchAndCompareUrlService.GetCoursePageUri(course.InstCode, course.CourseCode);
                 if (featureFlags.ShowCourseLiveView)
                 {
-                    TempData.Add("MessageBodyHtml", $@"
+                    TempData["MessageBodyHtml"] = $@"
                         <p class=""govuk-body"">
                             See how this course looks to applicants:
                             <br />
                             <a href='{searchUrl}'>View on website</a>
-                        </p>");
+                        </p>";
                 }
             }
 
-            return RedirectToAction("Variants", new { instCode, accreditingProviderId, ucasCode });
+            return RedirectToAction("Show", new { instCode, accreditingProviderId, ucasCode });
         }
 
         [Route("{instCode}/course/{accreditingProviderId=self}/{ucasCode}/preview")]
@@ -104,7 +104,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
         {
             if (!featureFlags.ShowCoursePreview)
             {
-                return RedirectToAction("Variants", new { instCode, accreditingProviderId, ucasCode });
+                return RedirectToAction("Show", new { instCode, accreditingProviderId, ucasCode });
             }
 
             var ucasInstData = _manageApi.GetUcasInstitution(instCode).Result;
@@ -152,22 +152,32 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
                 RouteData = routeData,
                 CourseInfo = courseInfo
             };
-            
+
+            await LoadCopyableCoursesIntoViewBag(instCode, ucasCode);
+
             if (!string.IsNullOrEmpty(copyFrom))
             {
-                var copiedEnrichment = await _manageApi.GetEnrichmentCourse(instCode, copyFrom); 
-                model.CopyFrom(copiedEnrichment?.EnrichmentModel);                
+                copyFrom = copyFrom.ToUpper();
+                var copiedEnrichment = await _manageApi.GetEnrichmentCourse(instCode, copyFrom);
+                ViewBag.CopiedFrom = new CourseInfoViewModel {
+                    ProgrammeCode = copyFrom,
+                    Name = (ViewBag.CopyableCourses as IEnumerable<ApiClient.Course>).SingleOrDefault(x => x.CourseCode == copyFrom)?.Name
+                };
+
+                ViewBag.CopiedFields = model.CopyFrom(copiedEnrichment?.EnrichmentModel);
             }
 
-            await LoadCopyableCoursesIntoViewBag(instCode);
 
             return View(model);
         }
 
-        private async Task LoadCopyableCoursesIntoViewBag(string ucasCode)
+        private async Task LoadCopyableCoursesIntoViewBag(string instCode, string ucasCode)
         {
-            var copyable = await _manageApi.GetCoursesByOrganisation(ucasCode);
-            ViewBag.CopyableCourses = copyable != null ? copyable.Courses.Where(x => x.EnrichmentWorkflowStatus != null) : new List<ApiClient.Course>();
+            instCode = instCode.ToUpper();
+            ucasCode = ucasCode.ToUpper();
+
+            var copyable = await _manageApi.GetCoursesByOrganisation(instCode);
+            ViewBag.CopyableCourses = copyable != null ? copyable.Courses.Where(x => x.EnrichmentWorkflowStatus != null && x.CourseCode != ucasCode) : new List<ApiClient.Course>();
         }
 
         [HttpPost]
@@ -181,6 +191,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
                 var routeData = GetCourseRouteDataViewModel(instCode, accreditingProviderId, ucasCode);
                 viewModel.RouteData = routeData;
                 viewModel.CourseInfo = courseInfo;
+                await LoadCopyableCoursesIntoViewBag(instCode, ucasCode);
                 return View("About", viewModel);
             }
 
@@ -189,7 +200,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
                 CourseSavedMessage();
             }
 
-            return RedirectToAction("Variants", new { instCode, accreditingProviderId, ucasCode });
+            return RedirectToAction("Show", new { instCode, accreditingProviderId, ucasCode });
         }
 
         [HttpGet]
@@ -212,13 +223,19 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
                 CourseInfo = courseInfo
             };
 
+            await LoadCopyableCoursesIntoViewBag(instCode, ucasCode);
+
             if (!string.IsNullOrEmpty(copyFrom))
             {
-                var copiedEnrichment = await _manageApi.GetEnrichmentCourse(instCode, copyFrom); 
-                model.CopyFrom(copiedEnrichment?.EnrichmentModel);                
-            }
+                copyFrom = copyFrom.ToUpper();
+                var copiedEnrichment = await _manageApi.GetEnrichmentCourse(instCode, copyFrom);
+                ViewBag.CopiedFrom = new CourseInfoViewModel {
+                    ProgrammeCode = copyFrom,
+                    Name = (ViewBag.CopyableCourses as IEnumerable<ApiClient.Course>).SingleOrDefault(x => x.CourseCode == copyFrom)?.Name
+                };
 
-            await LoadCopyableCoursesIntoViewBag(instCode);
+                ViewBag.CopiedFields = model.CopyFrom(copiedEnrichment?.EnrichmentModel);
+            }
 
             return View(model);
         }
@@ -234,6 +251,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
                 var routeData = GetCourseRouteDataViewModel(instCode, accreditingProviderId, ucasCode);
                 viewModel.RouteData = routeData;
                 viewModel.CourseInfo = courseInfo;
+                await LoadCopyableCoursesIntoViewBag(instCode, ucasCode);
                 return View("Requirements", viewModel);
             }
 
@@ -242,7 +260,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
                 CourseSavedMessage();
             }
 
-            return RedirectToAction("Variants", new { instCode, accreditingProviderId, ucasCode });
+            return RedirectToAction("Show", new { instCode, accreditingProviderId, ucasCode });
         }
 
         [HttpGet]
@@ -265,13 +283,19 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
                 CourseInfo = courseInfo
             };
 
+            await LoadCopyableCoursesIntoViewBag(instCode, ucasCode);
+
             if (!string.IsNullOrEmpty(copyFrom))
             {
-                var copiedEnrichment = await _manageApi.GetEnrichmentCourse(instCode, copyFrom); 
-                model.CopyFrom(copiedEnrichment?.EnrichmentModel);                
-            }
+                copyFrom = copyFrom.ToUpper();
+                var copiedEnrichment = await _manageApi.GetEnrichmentCourse(instCode, copyFrom);
+                ViewBag.CopiedFrom = new CourseInfoViewModel {
+                    ProgrammeCode = copyFrom,
+                    Name = (ViewBag.CopyableCourses as IEnumerable<ApiClient.Course>).SingleOrDefault(x => x.CourseCode == copyFrom)?.Name
+                };
 
-            await LoadCopyableCoursesIntoViewBag(instCode);
+                ViewBag.CopiedFields = model.CopyFrom(copiedEnrichment?.EnrichmentModel);
+            }
 
             return View(model);
         }
@@ -287,13 +311,14 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
                 var courseInfo = new CourseInfoViewModel { ProgrammeCode = courseDetails.CourseCode, Name = courseDetails.Name };
                 viewModel.RouteData = routeData;
                 viewModel.CourseInfo = courseInfo;
+                await LoadCopyableCoursesIntoViewBag(instCode, ucasCode);
                 return View("Salary", viewModel);
             }
             if (await SaveEnrichment(instCode, ucasCode, viewModel))
             {
                 CourseSavedMessage();
             }
-            return RedirectToAction("Variants", new { instCode, accreditingProviderId, ucasCode });
+            return RedirectToAction("Show", new { instCode, accreditingProviderId, ucasCode });
         }
 
         [HttpGet]
@@ -319,13 +344,20 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
                 CourseInfo = courseInfo
             };
 
+            await LoadCopyableCoursesIntoViewBag(instCode, ucasCode);
+
             if (!string.IsNullOrEmpty(copyFrom))
             {
-                var copiedEnrichment = await _manageApi.GetEnrichmentCourse(instCode, copyFrom); 
-                model.CopyFrom(copiedEnrichment?.EnrichmentModel);                
+                copyFrom = copyFrom.ToUpper();
+                var copiedEnrichment = await _manageApi.GetEnrichmentCourse(instCode, copyFrom);
+                ViewBag.CopiedFrom = new CourseInfoViewModel {
+                    ProgrammeCode = copyFrom,
+                    Name = (ViewBag.CopyableCourses as IEnumerable<ApiClient.Course>).SingleOrDefault(x => x.CourseCode == copyFrom)?.Name
+                };
+
+                ViewBag.CopiedFields = model.CopyFrom(copiedEnrichment?.EnrichmentModel);
             }
 
-            await LoadCopyableCoursesIntoViewBag(instCode);
             return View(model);
         }
 
@@ -340,13 +372,14 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
                 var courseInfo = new CourseInfoViewModel { ProgrammeCode = courseDetails.CourseCode, Name = courseDetails.Name };
                 viewModel.RouteData = routeData;
                 viewModel.CourseInfo = courseInfo;
+                await LoadCopyableCoursesIntoViewBag(instCode, ucasCode);
                 return View("Fees", viewModel);
             }
             if (await SaveEnrichment(instCode, ucasCode, viewModel))
             {
                 CourseSavedMessage();
             }
-            return RedirectToAction("Variants", new { instCode, accreditingProviderId, ucasCode });
+            return RedirectToAction("Show", new { instCode, accreditingProviderId, ucasCode });
         }
 
         private async Task<bool> SaveEnrichment(string instCode, string ucasCode, ICourseEnrichmentViewModel viewModel)
@@ -375,16 +408,16 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
 
         private void CourseSavedMessage()
         {
-            TempData.Add("MessageType", "success");
-            TempData.Add("MessageTitle", "Your changes have been saved");
+            TempData["MessageType"] = "success";
+            TempData["MessageTitle"] = "Your changes have been saved";
             if (featureFlags.ShowCoursePreview)
             {
                 var previewLink = Url.Action("Preview");
-                TempData.Add("MessageBodyHtml", $@"
+                TempData["MessageBodyHtml"] = $@"
                     <p class=""govuk-body"">
                         <a href='{previewLink}'>Preview your course</a>
                         to check for mistakes before publishing.
-                    </p>");
+                    </p>";
             }
         }
 

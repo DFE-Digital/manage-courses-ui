@@ -27,19 +27,34 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             this._featureFlags = featureFlags;
         }
 
-        [Route("{ucasCode}/courses")]
-        public async Task<IActionResult> Courses(string ucasCode)
+        [Route("/organisations")]
+        public async Task<IActionResult> Index()
         {
+            var orgs = await _manageApi.GetOrganisations();
+            var model = new OrganisationListViewModel
+            {
+                Oganisations = orgs
+            };
+            return View(model);
+        }
+
+        [Route("{ucasCode}")]
+        public async Task<IActionResult> Show(string ucasCode)
+        {
+            var ucasInstitutionEnrichmentGetModel = await _manageApi.GetEnrichmentOrganisation(ucasCode);
             var institutionCourses = await _manageApi.GetCoursesByOrganisation(ucasCode);
             var tabViewModel = await GetTabViewModelAsync(ucasCode, "courses");
             var providers = GetProviders(institutionCourses);
+
+            var status = ucasInstitutionEnrichmentGetModel?.Status.ToString() ?? "Empty";
 
             var model = new CourseListViewModel
             {
                 InstitutionName = institutionCourses.InstitutionName,
                 InstitutionId = institutionCourses.InstitutionCode,
                 Providers = providers,
-                TabViewModel = tabViewModel
+                TabViewModel = tabViewModel,
+                Status = status
             };
 
             return View(model);
@@ -116,7 +131,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
 
             this.TempData.Add("RequestAccess_To_Name", $"{model.FirstName} {model.LastName}");
 
-            return new RedirectToActionResult("RequestAccess", "Organisation", new { ucasCode });
+            return new RedirectToActionResult("Show", "Organisation", new { ucasCode });
         }
 
         private async Task<List<TrainingProviderViewModel>> GetTrainingProviderViewModels(string ucasCode, InstitutionEnrichmentModel enrichmentModel, OrganisationViewModel model = null)

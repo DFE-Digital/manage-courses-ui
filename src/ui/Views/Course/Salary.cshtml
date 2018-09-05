@@ -1,20 +1,26 @@
 @model CourseSalaryEnrichmentViewModel
 @{
   Layout = "_Layout";
+  ViewBag.Title = $"Salary for course {Model.CourseInfo.Name} ({Model.CourseInfo.ProgrammeCode})";
   var course_length = ViewData.ModelState["CourseLength"] != null && ViewData.ModelState["CourseLength"].Errors.Any();
   var salary = ViewData.ModelState["SalaryDetails"] != null && ViewData.ModelState["SalaryDetails"].Errors.Any();
 }
 
-<a href="@Url.Action("Variants", "Course", Model.RouteData)" class="govuk-back-link">Back</a>
+<a href="@Url.Action("Show", "Course", Model.RouteData)" class="govuk-back-link">Back</a>
 
 <main role="main" class="govuk-main-wrapper" id="main-content">
+  @await Html.PartialAsync("CopyCourseContentMessage")
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
       <h1 class="govuk-heading-xl">
         <span class="govuk-caption-xl">@Model.CourseInfo.Name (@Model.CourseInfo.ProgrammeCode)</span>
         Course length and fees
       </h1>
-      @Html.Partial("ErrorSummary")
+      @await Html.PartialAsync("ErrorSummary")
+    </div>
+  </div>
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
       <form asp-controller="Course" asp-action="Salary" method="post" data-module="form">
         <div class="govuk-form-group">
           <fieldset class="govuk-fieldset">
@@ -82,14 +88,14 @@
           <input type="submit" class="govuk-button" value="Save">
         </div>
         <p class="govuk-body">
-          <a href="@Url.Action("Variants", "Course", Model.RouteData)" class "govuk-link">Cancel changes</a>
+          <a href="@Url.Action("Show", "Course", Model.RouteData)" class "govuk-link">Cancel changes</a>
         </p>
       </form>
     </div>
     <div class="govuk-grid-column-one-third">
       <aside class="related">
-        @Html.Partial("CopyCourseContent")
-        @Html.Partial("FormattingAdvice")
+        @await Html.PartialAsync("CopyCourseContent")
+        @await Html.PartialAsync("FormattingAdvice")
       </aside>
     </div>
   </div>

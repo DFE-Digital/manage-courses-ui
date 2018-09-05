@@ -34,6 +34,13 @@ if ($form) {
   }
 }
 
+var $copyWarningMessage = document.querySelector('[data-module="copy-course-warning"]');
+if ($copyWarningMessage) {
+  window.onbeforeunload = function() {
+    return 'You have unsaved changes, are you sure you want to leave?'
+  }
+}
+
 if (process.env.NODE_ENV == 'development') {
   module.hot.accept();
 }

@@ -13,6 +13,7 @@ $govuk-global-styles: true;
 @import "patterns/course-parts";
 @import "patterns/success-summary";
 @import "patterns/notice-summary";
+@import "patterns/warning-summary";
 @import "patterns/definition-list";
 @import "patterns/currency-input";
 
@@ -67,13 +68,22 @@ $govuk-global-styles: true;
     text-align: right;
   }
 
-  &__code-col {
-    width: 5%;
+  &__subject-col {
+    width: 35%;
   }
 
   .govuk-table__row:last-child {
     .govuk-table__cell {
       border-bottom: 0;
     }
+  }
+}
+
+.govuk-warning-text--inline {
+  margin-bottom: 0;
+
+  + .govuk-body {
+    padding-left: govuk-spacing(8);
+    margin-bottom: govuk-spacing(6);
   }
 }

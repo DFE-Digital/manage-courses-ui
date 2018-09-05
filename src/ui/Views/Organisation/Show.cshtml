@@ -28,7 +28,7 @@
       <h2 class="govuk-heading-l">Step 1. About your organisation</h2>
       <p class="govuk-body">You need to add a description of your organisation - this is a chance to tell applicants why they should train with you. You should also say what you do for candidates with disabilities and other needs, and check your contact details to make sure they're correct.</p>
       <p class="govuk-body">Once you’ve published your organisation information, it will show on each of your course pages. You’ll have to add your course details separately in Step 2 below.</p>
-      <p class="govuk-body"><a class="govuk-link" href="@Url.Action("About", "Organisation")">Fill in your organisation information</a></p>
+      <p class="govuk-body"><strong class="govuk-tag govuk-tag--@Model.Status.ToLower() govuk-tag--inline">@Model.Status</strong> <a class="govuk-link" href="@Url.Action("About", "Organisation")">Fill in your organisation information</a></p>
     </div>
   </div>
 
@@ -58,7 +58,6 @@
       <table class="ucas-info-table govuk-table">
         <thead class="govuk-table__head">
           <tr class="govuk-table__row">
-            <th class="govuk-table__header ucas-info-table__code-col" scope="col">Code</th>
             <th class="govuk-table__header ucas-info-table__subject-col" scope="col">Subject</th>
             <th class="govuk-table__header ucas-info-table__type-col" scope="col">Type</th>
             <th class="govuk-table__header ucas-info-table__type-col" scope="col">Status</th>
@@ -69,10 +68,8 @@
         @foreach (var course in provider.Courses)
         {
           <tr class="govuk-table__row">
-            <td class="govuk-table__cell">@course.CourseCode</td>
-
             <td class="govuk-table__cell">
-              <a href="@Url.Action("variants", "course", new {instCode = Model.InstitutionId, accreditingProviderId = course.AccreditingProviderId, ucasCode = course.CourseCode})" class="govuk-link">@course.Name</a>
+              <a href="@Url.Action("show", "course", new {instCode = Model.InstitutionId, accreditingProviderId = course.AccreditingProviderId, ucasCode = course.CourseCode})" class="govuk-link">@course.Name (@course.CourseCode)</a>
             </td>
             <td class="govuk-table__cell">@course.GetCourseVariantType()</td>
             <td class="govuk-table__cell">@course.GetCourseStatus()</td>
@@ -88,7 +85,7 @@
                     <div class="govuk-tag govuk-tag--inline govuk-tag--published">published</div>
                     break;
                   default:
-                    <div class="govuk-tag govuk-tag--inline govuk-tag--blank">empty</div>
+                    <div class="govuk-tag govuk-tag--inline govuk-tag--empty">empty</div>
                     break;
                 }
               }

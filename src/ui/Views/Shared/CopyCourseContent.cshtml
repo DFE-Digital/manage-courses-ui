@@ -1,5 +1,7 @@
 @{
   IEnumerable<GovUk.Education.ManageCourses.ApiClient.Course> copyables = ViewBag.CopyableCourses as IEnumerable<GovUk.Education.ManageCourses.ApiClient.Course> ?? new List<GovUk.Education.ManageCourses.ApiClient.Course>();
+  var accreditedCopyables = copyables.GroupBy(x => x.AccreditingProviderId).Where(x => !string.IsNullOrEmpty(x.Key) && x.Any());
+  var selfAccreditedCopyables = copyables.GroupBy(x => x.AccreditingProviderId).SingleOrDefault(x => string.IsNullOrEmpty(x.Key));
 }
 
 @if(!copyables.Any())
@@ -8,17 +10,30 @@
   <p class="govuk-body">When you&#8217;ve added content to this page, you can copy it to other courses</p>
 }
 else
-{  
+{
   <h4 class="govuk-heading-m">Use content from another course</h4>
   <p class="govuk-body">Fill in this page with content from another course.</p>
+  <p class="govuk-body">This will replace any existing content.</p>
   <form class="govuk-form" method="GET">
     <div class="govuk-form-group">
       <label class="govuk-label govuk-label--s" for="copy-from">Copy from</label>
       <select id="copy-from" name="copyFrom" class="govuk-select">
-        <option value="" selected="selected"></option>
-        @foreach(var copyable in copyables)
-        {        
-          <option value="@copyable.CourseCode">@copyable.Name (@copyable.CourseCode)</option>
+        <option value="" selected="selected">Pick a course</option>
+        @if(selfAccreditedCopyables != null)
+        {
+          foreach(var copyable in selfAccreditedCopyables)
+          {
+              <option value="@copyable.CourseCode">@copyable.Name (@copyable.CourseCode)</option>
+          }
+        }
+        @foreach(var copyableSet in accreditedCopyables)
+        {
+          <optgroup label="@copyableSet.FirstOrDefault()?.AccreditingProviderName">
+            @foreach(var copyable in copyableSet)
+            {
+              <option value="@copyable.CourseCode">@copyable.Name (@copyable.CourseCode)</option>
+            }
+          </optgroup>
         }
       </select>
     </div>

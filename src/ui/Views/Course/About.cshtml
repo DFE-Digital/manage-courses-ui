@@ -1,22 +1,28 @@
 @model AboutCourseEnrichmentViewModel
  @{
   Layout = "_Layout";
+  ViewBag.Title = $"About course {Model.CourseInfo.Name} ({Model.CourseInfo.ProgrammeCode})";
   var about_course = ViewData.ModelState["AboutCourse"] != null && ViewData.ModelState["AboutCourse"].Errors.Any();
   var interview_process = ViewData.ModelState["InterviewProcess"] != null && ViewData.ModelState["InterviewProcess"].Errors.Any();
   var school_placement = ViewData.ModelState["HowSchoolPlacementsWork"] != null && ViewData.ModelState["HowSchoolPlacementsWork"].Errors.Any();
 }
 
-<a href="@Url.Action("Variants", "Course", Model.RouteData)" class="govuk-back-link">Back</a>
+<a href="@Url.Action("Show", "Course", Model.RouteData)" class="govuk-back-link">Back</a>
 
 <main role="main" class="govuk-main-wrapper" id="main-content">
+  @await Html.PartialAsync("CopyCourseContentMessage")
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <h1 class="govuk-heading-xl">
+        <span class="govuk-caption-xl">@Model.CourseInfo.Name (@Model.CourseInfo.ProgrammeCode)</span>
+        About this course
+      </h1>
+      @await Html.PartialAsync("ErrorSummary")
+    </div>
+  </div>
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
       <form asp-controller="Course" asp-action="About" method="post" data-module="form">
-        <h1 class="govuk-heading-xl">
-          <span class="govuk-caption-xl">@Model.CourseInfo.Name (@Model.CourseInfo.ProgrammeCode)</span>
-          About this course
-        </h1>
-        @Html.Partial("ErrorSummary")
          <p class="govuk-body">Give applicants a short description of the course.</p>
         <p class="govuk-body">You could include:</p>
         <ul class="govuk-list govuk-list--bullet">
@@ -80,14 +86,14 @@
           <input type="submit" class="govuk-button" value="Save">
         </div>
          <p class="govuk-body">
-          <a href="@Url.Action("Variants", "Course", Model.RouteData)" class "govuk-link">Cancel changes</a>
+          <a href="@Url.Action("Show", "Course", Model.RouteData)" class "govuk-link">Cancel changes</a>
         </p>
       </form>
     </div>
     <div class="govuk-grid-column-one-third">
       <aside class="related">
-        @Html.Partial("CopyCourseContent")
-        @Html.Partial("FormattingAdvice")
+        @await Html.PartialAsync("CopyCourseContent")
+        @await Html.PartialAsync("FormattingAdvice")
       </aside>
     </div>
   </div>

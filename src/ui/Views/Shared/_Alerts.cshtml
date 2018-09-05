@@ -6,8 +6,8 @@
 
 @if (type != null)
 {
-  <div class="govuk-@type-summary" role="alert">
-    <h3 class="govuk-@type-summary__title">@title</h3>
+  <div class="govuk-@type-summary" role="alert" aria-labelledby="@type-summary-heading" tabindex="-1" data-module="error-summary">
+    <h3 class="govuk-@type-summary__title" id="@type-summary-heading">@title</h3>
 
     @if (body != null)
     {

@@ -43,12 +43,12 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             var userOrganisations = orgs.ToList();
             if (userOrganisations.Count() == 1)
             {
-                return this.RedirectToAction("Courses", "Organisation", new { ucasCode = userOrganisations[0].UcasCode });
+                return this.RedirectToAction("Show", "Organisation", new { ucasCode = userOrganisations[0].UcasCode });
             }
 
             if (userOrganisations.Count() > 1)
             {
-                return this.RedirectToAction("Index", "Organisations");
+                return this.RedirectToAction("Index", "Organisation");
             }
 
             return StatusCode(401);

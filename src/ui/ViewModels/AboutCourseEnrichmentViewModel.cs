@@ -4,7 +4,6 @@ using GovUk.Education.ManageCourses.ApiClient;
 
 namespace GovUk.Education.ManageCourses.Ui.ViewModels
 {
-
     public class AboutCourseEnrichmentViewModel : ICourseEnrichmentViewModel
     {
 
@@ -33,27 +32,34 @@ namespace GovUk.Education.ManageCourses.Ui.ViewModels
             enrichmentModel.HowSchoolPlacementsWork = HowSchoolPlacementsWork;            
         }
 
-        public void CopyFrom(CourseEnrichmentModel model)
+        public IEnumerable<CopiedField> CopyFrom(CourseEnrichmentModel model)
         {
+            var res = new List<CopiedField>();
+
             if (model == null)
             {
-                return;
+                return res;
             }
 
             if (!string.IsNullOrWhiteSpace(model.AboutCourse))
             {
                 AboutCourse = model.AboutCourse;
+                res.Add(new CopiedField(nameof(model.AboutCourse), CourseEnrichmentFieldNames.AboutCourse));
             }
 
             if (!string.IsNullOrWhiteSpace(model.InterviewProcess))
             {
                 InterviewProcess = model.InterviewProcess;
+                res.Add(new CopiedField(nameof(model.InterviewProcess), CourseEnrichmentFieldNames.InterviewProcess));
             }
 
             if (!string.IsNullOrWhiteSpace(model.HowSchoolPlacementsWork))
             {
                 HowSchoolPlacementsWork = model.HowSchoolPlacementsWork;
+                res.Add(new CopiedField(nameof(model.HowSchoolPlacementsWork), CourseEnrichmentFieldNames.HowSchoolPlacementsWork));
             }
+            
+            return res;
         }
     }
 }

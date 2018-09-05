@@ -31,27 +31,33 @@ namespace GovUk.Education.ManageCourses.Ui.ViewModels
             enrichmentModel.OtherRequirements = OtherRequirements;
         }
 
-        public void CopyFrom(CourseEnrichmentModel model)
+        public IEnumerable<CopiedField> CopyFrom(CourseEnrichmentModel model)
         {
+            var res = new List<CopiedField>();
             if (model == null)
             {
-                return;
+                return res;
             }
 
             if (!string.IsNullOrEmpty(model.Qualifications))
             {
                 Qualifications = model.Qualifications;
+                res.Add(new CopiedField(nameof(model.Qualifications), CourseEnrichmentFieldNames.Qualifications));
             }
 
             if (!string.IsNullOrEmpty(model.PersonalQualities))
             {
                 PersonalQualities = model.PersonalQualities;
+                res.Add(new CopiedField(nameof(model.PersonalQualities), CourseEnrichmentFieldNames.PersonalQualities));
             }
 
             if (!string.IsNullOrEmpty(model.OtherRequirements))
             {
                 OtherRequirements = model.OtherRequirements;
+                res.Add(new CopiedField(nameof(model.OtherRequirements), CourseEnrichmentFieldNames.OtherRequirements));
             }
+
+            return res;
         }
     }
 }

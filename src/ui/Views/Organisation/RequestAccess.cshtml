@@ -8,7 +8,7 @@
   var rv = ViewData.ModelState["Reason"] != null && ViewData.ModelState["Reason"].Errors.Any();
 }
 
-<a href="@Url.Action("Courses", "Organisation", new {ucasCode = @Model.TabViewModel.UcasCode})" class="govuk-back-link">Back</a>
+<a href="@Url.Action("Show", "Organisation", new {ucasCode = @Model.TabViewModel.UcasCode})" class="govuk-back-link">Back</a>
 
 <main role="main" class="govuk-main-wrapper" id="main-content">
   @await Html.PartialAsync("~/Views/Shared/_Alerts.cshtml")
@@ -21,7 +21,7 @@
       </div>
       <h2 class="govuk-heading-m">Request an account for:</h2>
       <form asp-controller="Organisation" asp-action="RequestAccess" method="post">
-        @Html.Partial("ErrorSummary")
+        @await Html.PartialAsync("ErrorSummary")
         <div id="FirstName-wrapper" class="govuk-form-group @(fnv ? "govuk-form-group--error" : "")">
           <label asp-for="FirstName" class="govuk-label">First name</label>
           @if (fnv) {

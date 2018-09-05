@@ -1,9 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
+using System.Reflection;
+using System.Security.Claims;
+using System.Threading.Tasks;
 using GovUk.Education.ManageCourses.ApiClient;
+using GovUk.Education.ManageCourses.Ui;
 using GovUk.Education.ManageCourses.Ui.ActionFilters;
 using GovUk.Education.ManageCourses.Ui.Services;
+using GovUk.Education.SearchAndCompare.UI.Shared.ViewComponents;
+using IdentityModel.Client;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
@@ -11,25 +17,20 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.AspNetCore.Mvc.Razor;
+using Microsoft.AspNetCore.SpaServices.Webpack;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
-using GovUk.Education.ManageCourses.Ui;
-using System.Security.Claims;
-using System.Threading.Tasks;
-using IdentityModel.Client;
-using Microsoft.AspNetCore.SpaServices.Webpack;
-using GovUk.Education.SearchAndCompare.UI.Shared.ViewComponents;
-using System.Reflection;
-using Microsoft.AspNetCore.Mvc.Razor;
-using Microsoft.Extensions.FileProviders;
+using Serilog;
 
 namespace GovUk.Education.ManageCourses.Ui
 {
     public class Startup
     {
-        private readonly ILogger _logger;
+        private readonly Microsoft.Extensions.Logging.ILogger _logger;
 
         public IConfiguration Configuration { get; }
 
@@ -42,7 +43,10 @@ namespace GovUk.Education.ManageCourses.Ui
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            var sharedAssembly = typeof(CourseDetailsViewComponent).GetTypeInfo().Assembly; 
+            services.AddLogging(loggingBuilder =>
+                loggingBuilder.AddSerilog(dispose: true));
+
+            var sharedAssembly = typeof(CourseDetailsViewComponent).GetTypeInfo().Assembly;
             services.AddMvc(options =>
                 options.Filters.Add(typeof(McExceptionFilter))
             ).AddApplicationPart(sharedAssembly);
@@ -82,7 +86,7 @@ namespace GovUk.Education.ManageCourses.Ui
 
                         if (timeElapsed > timeRemaining)
                         {
-                            var identity = (ClaimsIdentity)x.Principal.Identity;
+                            var identity = (ClaimsIdentity) x.Principal.Identity;
                             var accessTokenClaim = identity.FindFirst("access_token");
                             var refreshTokenClaim = identity.FindFirst("refresh_token");
 
@@ -100,7 +104,7 @@ namespace GovUk.Education.ManageCourses.Ui
                             var tokenEndpoint = Configuration["auth:oidc:tokenEndpoint"];
 
                             var client = new TokenClient(tokenEndpoint, clientId, clientSecret);
-                            var response = await client.RequestRefreshTokenAsync(refreshToken, new {client_secret = clientSecret});
+                            var response = await client.RequestRefreshTokenAsync(refreshToken, new { client_secret = clientSecret });
 
                             if (!response.IsError)
                             {
@@ -108,10 +112,10 @@ namespace GovUk.Education.ManageCourses.Ui
                                 identity.RemoveClaim(accessTokenClaim);
                                 identity.RemoveClaim(refreshTokenClaim);
 
-                                identity.AddClaims(new[]
+                                identity.AddClaims(new []
                                 {
                                     new Claim("access_token", response.AccessToken),
-                                    new Claim("refresh_token", response.RefreshToken)
+                                        new Claim("refresh_token", response.RefreshToken)
                                 });
 
                                 // indicate to the cookie middleware to renew the session cookie
@@ -169,53 +173,53 @@ namespace GovUk.Education.ManageCourses.Ui
                 options.DisableTelemetry = true;
                 options.Events = new OpenIdConnectEvents
                 {
-                    
+
                     OnMessageReceived = context =>
-                    {
-                        var isSpuriousAuthCbRequest = 
-                            context.Request.Path == new Microsoft.AspNetCore.Http.PathString("/auth/cb")
-                            && context.Request.Method == "GET"
-                            && !context.Request.Query.ContainsKey("code");
-
-                        if (isSpuriousAuthCbRequest)
-                        {                            
-                            context.HandleResponse();
-                            context.Response.StatusCode = 302;
-                            context.Response.Headers["Location"] = "/";                                                        
-                        }
-                        
-                        return Task.CompletedTask;
-                    },
-
-                    OnRedirectToIdentityProvider = context =>
-                    {
-                        context.ProtocolMessage.Prompt = "consent";
-                        return Task.CompletedTask;
-                    },
-
-                    // that event is called after the OIDC middleware received the auhorisation code,
-                    // redeemed it for an access token and a refresh token,
-                    // and validated the identity token
-                    OnTokenValidated = x =>
-                    {
-                        // store both access and refresh token in the claims - hence in the cookie
-                        var identity = (ClaimsIdentity)x.Principal.Identity;
-                        identity.AddClaims(new[]
                         {
-                            new Claim("access_token", x.TokenEndpointResponse.AccessToken),
-                            new Claim("refresh_token", x.TokenEndpointResponse.RefreshToken)
-                        });
+                            var isSpuriousAuthCbRequest =
+                                context.Request.Path == new Microsoft.AspNetCore.Http.PathString("/auth/cb") &&
+                                context.Request.Method == "GET" &&
+                                !context.Request.Query.ContainsKey("code");
 
-                        // so that we don't issue a session cookie but one with a fixed expiration
-                        x.Properties.IsPersistent = true;
+                            if (isSpuriousAuthCbRequest)
+                            {
+                                context.HandleResponse();
+                                context.Response.StatusCode = 302;
+                                context.Response.Headers["Location"] = "/";
+                            }
 
-                        // align expiration of the cookie with expiration of the
-                        // access token
-                        var accessToken = new JwtSecurityToken(x.TokenEndpointResponse.IdToken);
-                        x.Properties.ExpiresUtc = accessToken.ValidTo;
+                            return Task.CompletedTask;
+                        },
 
-                        return Task.CompletedTask;
-                    }
+                        OnRedirectToIdentityProvider = context =>
+                        {
+                            context.ProtocolMessage.Prompt = "consent";
+                            return Task.CompletedTask;
+                        },
+
+                        // that event is called after the OIDC middleware received the auhorisation code,
+                        // redeemed it for an access token and a refresh token,
+                        // and validated the identity token
+                        OnTokenValidated = x =>
+                        {
+                            // store both access and refresh token in the claims - hence in the cookie
+                            var identity = (ClaimsIdentity) x.Principal.Identity;
+                            identity.AddClaims(new []
+                            {
+                                new Claim("access_token", x.TokenEndpointResponse.AccessToken),
+                                    new Claim("refresh_token", x.TokenEndpointResponse.RefreshToken)
+                            });
+
+                            // so that we don't issue a session cookie but one with a fixed expiration
+                            x.Properties.IsPersistent = true;
+
+                            // align expiration of the cookie with expiration of the
+                            // access token
+                            var accessToken = new JwtSecurityToken(x.TokenEndpointResponse.IdToken);
+                            x.Properties.ExpiresUtc = accessToken.ValidTo;
+
+                            return Task.CompletedTask;
+                        }
                 };
             });
 
@@ -237,7 +241,6 @@ namespace GovUk.Education.ManageCourses.Ui
                 return manageCoursesApiClient;
             });
         }
-
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, IServiceProvider serviceProvider)
@@ -288,11 +291,11 @@ namespace GovUk.Education.ManageCourses.Ui
                     config.RegisterCallbackPath,
                     new { controller = "Auth", action = "RegistrationComplete" });
                 routes.MapRoute("cookies", "cookies",
-                    defaults: new { controller = "Legal", action = "Cookies" });
+                    defaults : new { controller = "Legal", action = "Cookies" });
                 routes.MapRoute("privacy", "privacy-policy",
-                    defaults: new { controller = "Legal", action = "Privacy" });
+                    defaults : new { controller = "Legal", action = "Privacy" });
                 routes.MapRoute("tandc", "terms-conditions",
-                    defaults: new { controller = "Legal", action = "TandC" });
+                    defaults : new { controller = "Legal", action = "TandC" });
             });
         }
     }

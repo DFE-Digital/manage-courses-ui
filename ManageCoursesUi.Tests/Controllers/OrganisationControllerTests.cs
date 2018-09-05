@@ -22,7 +22,7 @@ namespace ManageCoursesUi.Tests
     public class OrganisationControllerTests
     {
         [Test]
-        public async Task Courses()
+        public async Task Show()
         {
             var ucasCode = "ucasCode";
             var organisationName = "organisationName";
@@ -57,7 +57,7 @@ namespace ManageCoursesUi.Tests
 
             var controller = new OrganisationController(apiMock.Object, new MockFeatureFlags());
 
-            var result = await controller.Courses(ucasCode);
+            var result = await controller.Show(ucasCode);
 
             var viewResult = result as ViewResult;
 
@@ -172,7 +172,7 @@ namespace ManageCoursesUi.Tests
             var actionResult = result as RedirectToActionResult;
 
             Assert.IsNotNull(actionResult);
-            Assert.AreEqual("RequestAccess", actionResult.ActionName);
+            Assert.AreEqual("Show", actionResult.ActionName);
             Assert.AreEqual("Organisation", actionResult.ControllerName);
             Assert.AreEqual(ucasCode, actionResult.RouteValues[ucasCode]);
         }

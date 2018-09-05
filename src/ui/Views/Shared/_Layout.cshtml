@@ -1,84 +1,90 @@
 ﻿@using GovUk.Education.ManageCourses.Ui
 @inject ManageCoursesConfig config
 @{
-    Layout = "~/Views/Shared/_Layout_base.cshtml";
-    ViewData["serviceName"] = "Publish teacher training courses";
+  Layout = "~/Views/Shared/_Layout_base.cshtml";
+  ViewData["serviceName"] = "Publish teacher training courses";
 
-    ViewBag.Title = (String.IsNullOrEmpty(ViewBag.Title) ? "" : ViewBag.Title + " - ")
-        + ViewData["serviceName"] + " - GOV.UK";
+  ViewBag.Title = (String.IsNullOrEmpty(ViewBag.Title) ? "" : ViewBag.Title + " - ") + ViewData["serviceName"] + " - GOV.UK";
 
-    var name = "";
-    if (User.Identity.IsAuthenticated)
-    {
-        var given_name = User.Claims.FirstOrDefault(c => c.Type == "given_name")?.Value;
-        var family_name = User.Claims.FirstOrDefault(c => c.Type == "family_name")?.Value;
-        name = $"{given_name} {family_name}";
-    }
-    var profileUrl = config.ProfileBaseUrl;
-    var registerUrl = config.ExternalRegistrationUrl;
+  var name = "";
+  if (User.Identity.IsAuthenticated)
+  {
+    var given_name = User.Claims.FirstOrDefault(c => c.Type == "given_name")?.Value;
+    var family_name = User.Claims.FirstOrDefault(c => c.Type == "family_name")?.Value;
+    name = $"{given_name} {family_name}";
+  }
+  var profileUrl = config.ProfileBaseUrl;
+  var registerUrl = config.ExternalRegistrationUrl;
 }
 
 @section head {
-    <meta name="ROBOTS" content="NOINDEX, NOFOLLOW">
+  <meta name="ROBOTS" content="NOINDEX, NOFOLLOW">
 
-    @if (ViewData["SEND_ANALYTICS"] != null)
-    {
-        <!-- Global site tag (gtag.js) - Google Analytics -->
-        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-112932657-2"></script>
-        <script src="~/scripts/analytics-config.js"></script>
-    }
+  @if (ViewData["SEND_ANALYTICS"] != null)
+  {
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+      ga('create', 'UA-112932657-2', 'auto');
+      ga('set', 'transport', 'beacon');
+      ga('set', 'anonymizeIp', true);
+      ga('send', 'pageview')
+    </script>
+  }
 }
 
 @section insideHeader {
-    <div class="govuk-header__content">
-        <a href="/" class="govuk-header__link govuk-header__link--service-name" role="link">@ViewData["serviceName"]</a>
-        <button role="button" class="govuk-header__menu-button js-header-toggle" aria-controls="navigation" aria-label="Show or hide Top Level Navigation">Menu</button>
-        <nav>
-            <ul id="navigation" class="govuk-header__navigation " aria-label="Top Level Navigation">
-                @if (User.Identity.IsAuthenticated)
-                {
-                    <li class="govuk-header__navigation-item">
-                        <a class="govuk-header__link" asp-controller="Auth" asp-action="Logout">Sign out</a> 
-                        <a class="govuk-header__link--profile"  href="@profileUrl">@name</a>
-                    </li>
-                }
-                else
-                {
-                    <li class="govuk-header__navigation-item">
-                        <a class="govuk-header__link" asp-controller="Auth" asp-action="Login">Login</a>
-                    </li>
-                    <li class="govuk-header__navigation-item">
-                        <a href="@registerUrl" class="govuk-header__link">Register</a>
-                    </li>
-                }
-            </ul>
-        </nav>
-    </div>
+  <div class="govuk-header__content">
+    <a href="/" class="govuk-header__link govuk-header__link--service-name" role="link">@ViewData["serviceName"]</a>
+    <button role="button" class="govuk-header__menu-button js-header-toggle" aria-controls="navigation" aria-label="Show or hide Top Level Navigation">Menu</button>
+    <nav>
+      <ul id="navigation" class="govuk-header__navigation " aria-label="Top Level Navigation">
+        @if (User.Identity.IsAuthenticated)
+        {
+          <li class="govuk-header__navigation-item">
+            <a class="govuk-header__link" asp-controller="Auth" asp-action="Logout">Sign out</a>
+            <a class="govuk-header__link--profile"  href="@profileUrl">@name</a>
+          </li>
+        }
+        else
+        {
+          <li class="govuk-header__navigation-item">
+            <a class="govuk-header__link" asp-controller="Auth" asp-action="Login">Login</a>
+          </li>
+          <li class="govuk-header__navigation-item">
+            <a href="@registerUrl" class="govuk-header__link">Register</a>
+          </li>
+        }
+      </ul>
+    </nav>
+  </div>
 }
 
 @section footerSupportLinks {
-    <h2 class="govuk-visually-hidden">Support links</h2>
-    <ul class="govuk-footer__inline-list">
-        <li class="govuk-footer__inline-list-item">
-            <a href="mailto:becomingateacher@digital.education.gov.uk?subject=Publish%20teacher%20training%20courses%20feedback" class="govuk-footer__link">Give feedback</a>
-        </li>
-        <li class="govuk-footer__inline-list-item">
-            <a href="/cookies" class="govuk-footer__link">Cookies</a>
-        </li>
-        <li class="govuk-footer__inline-list-item">
-            <a href="/privacy-policy" class="govuk-footer__link">Privacy Policy</a>
-        </li>
-        <li class="govuk-footer__inline-list-item">
-            <a href="/terms-conditions" class="govuk-footer__link">Terms and conditions</a>
-        </li>
-    </ul>
+  <h2 class="govuk-visually-hidden">Support links</h2>
+  <ul class="govuk-footer__inline-list">
+    <li class="govuk-footer__inline-list-item">
+      <a href="mailto:becomingateacher@digital.education.gov.uk?subject=Publish%20teacher%20training%20courses%20feedback" class="govuk-footer__link">Give feedback</a>
+    </li>
+    <li class="govuk-footer__inline-list-item">
+      <a href="/cookies" class="govuk-footer__link">Cookies</a>
+    </li>
+    <li class="govuk-footer__inline-list-item">
+      <a href="/privacy-policy" class="govuk-footer__link">Privacy Policy</a>
+    </li>
+    <li class="govuk-footer__inline-list-item">
+      <a href="/terms-conditions" class="govuk-footer__link">Terms and conditions</a>
+    </li>
+  </ul>
 }
 
 <div class="govuk-phase-banner">
-    <p class="govuk-phase-banner__content">
-        <strong class="govuk-tag govuk-phase-banner__content__tag ">BETA</strong>
-        <span class="govuk-phase-banner__text">This is a new service – your <a href="mailto:becomingateacher@digital.education.gov.uk?subject=Publish%20teacher%20training%20courses%20feedback">feedback</a> will help us to improve it.</span>
-    </p>
+  <p class="govuk-phase-banner__content">
+    <strong class="govuk-tag govuk-phase-banner__content__tag ">BETA</strong>
+    <span class="govuk-phase-banner__text">This is a new service – your <a href="mailto:becomingateacher@digital.education.gov.uk?subject=Publish%20teacher%20training%20courses%20feedback">feedback</a> will help us to improve it.</span>
+  </p>
 </div>
 
 @RenderBody()
