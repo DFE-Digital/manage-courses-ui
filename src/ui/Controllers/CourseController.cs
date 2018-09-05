@@ -334,8 +334,8 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             var model = new CourseFeesEnrichmentViewModel
             {
                 CourseLength = enrichmentModel?.CourseLength.GetCourseLength(),
-                FeeUkEu = enrichmentModel?.FeeUkEu,
-                FeeInternational = enrichmentModel?.FeeInternational,
+                FeeUkEu = enrichmentModel?.FeeUkEu.GetFeeValue(),
+                FeeInternational = enrichmentModel?.FeeInternational.GetFeeValue(),
                 FeeDetails = enrichmentModel?.FeeDetails,
                 FinancialSupport = enrichmentModel?.FinancialSupport,
                 RouteData = routeData,
@@ -519,8 +519,8 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
                     PersonalQualities = enrichmentModel.PersonalQualities,
                     OtherRequirements = enrichmentModel.OtherRequirements,
                     CourseLength = enrichmentModel.CourseLength.GetCourseLength(),
-                    FeeUkEu = enrichmentModel.FeeUkEu,
-                    FeeInternational = enrichmentModel.FeeInternational,
+                    FeeUkEu = enrichmentModel.FeeUkEu.GetFeeValue(),
+                    FeeInternational = enrichmentModel.FeeInternational.GetFeeValue(),
                     FeeDetails = enrichmentModel.FeeDetails,
                     FinancialSupport = enrichmentModel.FinancialSupport,
                     DraftLastUpdatedUtc = ucasCourseEnrichmentGetModel.UpdatedTimestampUtc,

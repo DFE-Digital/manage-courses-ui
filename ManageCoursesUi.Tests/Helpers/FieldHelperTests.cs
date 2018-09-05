@@ -7,18 +7,18 @@ namespace ManageCoursesUi.Tests.Helpers
 {
     [TestFixture]
     public class FieldHelperTests
-    {        
+    {
         [Test]
-        public void Decimal()
+        public void Integer()
         {
-            decimal? normal = 123.45M;
-            decimal? negative = -123.45M;
-            decimal? veryLarge = 10000000000000000000000000000.00M;
+            int? normal = 123;
+            int? negative = int.MinValue;
+            int? veryLarge = int.MaxValue;
 
             normal.DisplayText().Should().Be("£123");
-            negative.DisplayText().Should().Be("£-123");
-            veryLarge.DisplayText().Should().Be("£10,000,000,000,000,000,000,000,000,000");
-            veryLarge.DisplayText(3).Should().Be("£10");
+            negative.DisplayText().Should().Be("£-2,147,483,648");
+            veryLarge.DisplayText().Should().Be("£2,147,483,647");
+            veryLarge.DisplayText(6).Should().Be("£2,147");
         }
     }
 }
