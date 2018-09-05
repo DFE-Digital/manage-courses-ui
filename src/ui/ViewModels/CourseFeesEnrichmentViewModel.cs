@@ -32,9 +32,14 @@ namespace GovUk.Education.ManageCourses.Ui.ViewModels
 
         public void MapInto(ref CourseEnrichmentModel enrichmentModel)
         {
+
             var courseLength = CourseLength.HasValue ? CourseLength.Value.ToString() : null;
-            enrichmentModel.CourseLengthOther = CourseLengthOther;
-            enrichmentModel.CourseLength = courseLength;
+            enrichmentModel.CourseLengthOther = courseLength == "Other" ? CourseLengthOther : null;//remove this line for a single field
+
+            //enrichmentModel.CourseLength = courseLength == "Other" ? (string.IsNullOrEmpty(CourseLengthOther) ? null : CourseLengthOther) : courseLength;
+            //for a single field un-comment the line above and remove the one below
+            enrichmentModel.CourseLength = (courseLength == "Other" && string.IsNullOrEmpty(CourseLengthOther)) ? null : courseLength;//setting to null will trigger a validation
+
             enrichmentModel.FeeUkEu = FeeUkEu;
             enrichmentModel.FeeInternational = FeeInternational;
             enrichmentModel.FeeDetails = FeeDetails;
@@ -52,8 +57,16 @@ namespace GovUk.Education.ManageCourses.Ui.ViewModels
             {
                 CourseLength = courseLength;
             }
-
-            if(model.FeeUkEu.HasValue)
+            //if (!CourseLength.HasValue && !string.IsNullOrEmpty(model.CourseLength))
+            //{
+            //    CourseLengthOther = model.CourseLength;
+            //}
+            //if we want a single field then replace this line with the one above
+            if (!string.IsNullOrEmpty(model.CourseLengthOther))
+            {
+                CourseLengthOther = model.CourseLengthOther;
+            }
+            if (model.FeeUkEu.HasValue)
             {
                 FeeUkEu = model.FeeUkEu;
             }
