@@ -33,7 +33,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
         }
 
         [Route("{instCode}/course/{accreditingProviderId=self}/{ucasCode}")]
-        public async Task<IActionResult> Variants(string instCode, string accreditingProviderId, string ucasCode)
+        public async Task<IActionResult> Show(string instCode, string accreditingProviderId, string ucasCode)
         {
             Validate(instCode, accreditingProviderId, ucasCode);
 
@@ -54,16 +54,16 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
 
             var viewModel = LoadViewModel(org, course, multipleOrganisations, ucasCourseEnrichmentGetModel, routeData);
 
-            return View("Variants", viewModel);
+            return View("Show", viewModel);
         }
 
         [HttpPost]
         [Route("{instCode}/course/{accreditingProviderId=self}/{ucasCode}", Name = "publish")]
-        public async Task<IActionResult> VariantsPublish(string instCode, string accreditingProviderId, string ucasCode)
+        public async Task<IActionResult> ShowPublish(string instCode, string accreditingProviderId, string ucasCode)
         {
             if (!featureFlags.ShowCoursePublish)
             {
-                return RedirectToAction("Variants", new { instCode, accreditingProviderId, ucasCode });
+                return RedirectToAction("Show", new { instCode, accreditingProviderId, ucasCode });
             }
             var course = await _manageApi.GetCourseByUcasCode(instCode, ucasCode);
             var isSalary = course.ProgramType.Equals("SS", StringComparison.InvariantCultureIgnoreCase);
@@ -75,7 +75,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
 
             if (!ModelState.IsValid)
             {
-                return await Variants(instCode, accreditingProviderId, ucasCode);
+                return await Show(instCode, accreditingProviderId, ucasCode);
             }
 
             var result = await _manageApi.PublishEnrichmentCourse(instCode, ucasCode);
@@ -96,7 +96,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
                 }
             }
 
-            return RedirectToAction("Variants", new { instCode, accreditingProviderId, ucasCode });
+            return RedirectToAction("Show", new { instCode, accreditingProviderId, ucasCode });
         }
 
         [Route("{instCode}/course/{accreditingProviderId=self}/{ucasCode}/preview")]
@@ -104,7 +104,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
         {
             if (!featureFlags.ShowCoursePreview)
             {
-                return RedirectToAction("Variants", new { instCode, accreditingProviderId, ucasCode });
+                return RedirectToAction("Show", new { instCode, accreditingProviderId, ucasCode });
             }
 
             var ucasInstData = _manageApi.GetUcasInstitution(instCode).Result;
@@ -152,19 +152,19 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
                 RouteData = routeData,
                 CourseInfo = courseInfo
             };
-                        
+
             await LoadCopyableCoursesIntoViewBag(instCode, ucasCode);
 
             if (!string.IsNullOrEmpty(copyFrom))
             {
                 copyFrom = copyFrom.ToUpper();
                 var copiedEnrichment = await _manageApi.GetEnrichmentCourse(instCode, copyFrom);
-                ViewBag.CopiedFrom = new CourseInfoViewModel { 
-                    ProgrammeCode = copyFrom, 
+                ViewBag.CopiedFrom = new CourseInfoViewModel {
+                    ProgrammeCode = copyFrom,
                     Name = (ViewBag.CopyableCourses as IEnumerable<ApiClient.Course>).SingleOrDefault(x => x.CourseCode == copyFrom)?.Name
                 };
 
-                ViewBag.CopiedFields = model.CopyFrom(copiedEnrichment?.EnrichmentModel);                
+                ViewBag.CopiedFields = model.CopyFrom(copiedEnrichment?.EnrichmentModel);
             }
 
 
@@ -174,7 +174,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
         private async Task LoadCopyableCoursesIntoViewBag(string instCode, string ucasCode)
         {
             instCode = instCode.ToUpper();
-            ucasCode = ucasCode.ToUpper(); 
+            ucasCode = ucasCode.ToUpper();
 
             var copyable = await _manageApi.GetCoursesByOrganisation(instCode);
             ViewBag.CopyableCourses = copyable != null ? copyable.Courses.Where(x => x.EnrichmentWorkflowStatus != null && x.CourseCode != ucasCode) : new List<ApiClient.Course>();
@@ -190,7 +190,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
                 var courseInfo = new CourseInfoViewModel { ProgrammeCode = courseDetails.CourseCode, Name = courseDetails.Name };
                 var routeData = GetCourseRouteDataViewModel(instCode, accreditingProviderId, ucasCode);
                 viewModel.RouteData = routeData;
-                viewModel.CourseInfo = courseInfo;                
+                viewModel.CourseInfo = courseInfo;
                 await LoadCopyableCoursesIntoViewBag(instCode, ucasCode);
                 return View("About", viewModel);
             }
@@ -200,7 +200,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
                 CourseSavedMessage();
             }
 
-            return RedirectToAction("Variants", new { instCode, accreditingProviderId, ucasCode });
+            return RedirectToAction("Show", new { instCode, accreditingProviderId, ucasCode });
         }
 
         [HttpGet]
@@ -229,12 +229,12 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             {
                 copyFrom = copyFrom.ToUpper();
                 var copiedEnrichment = await _manageApi.GetEnrichmentCourse(instCode, copyFrom);
-                ViewBag.CopiedFrom = new CourseInfoViewModel { 
-                    ProgrammeCode = copyFrom, 
+                ViewBag.CopiedFrom = new CourseInfoViewModel {
+                    ProgrammeCode = copyFrom,
                     Name = (ViewBag.CopyableCourses as IEnumerable<ApiClient.Course>).SingleOrDefault(x => x.CourseCode == copyFrom)?.Name
                 };
 
-                ViewBag.CopiedFields = model.CopyFrom(copiedEnrichment?.EnrichmentModel);                
+                ViewBag.CopiedFields = model.CopyFrom(copiedEnrichment?.EnrichmentModel);
             }
 
             return View(model);
@@ -260,7 +260,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
                 CourseSavedMessage();
             }
 
-            return RedirectToAction("Variants", new { instCode, accreditingProviderId, ucasCode });
+            return RedirectToAction("Show", new { instCode, accreditingProviderId, ucasCode });
         }
 
         [HttpGet]
@@ -288,12 +288,12 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             {
                 copyFrom = copyFrom.ToUpper();
                 var copiedEnrichment = await _manageApi.GetEnrichmentCourse(instCode, copyFrom);
-                ViewBag.CopiedFrom = new CourseInfoViewModel { 
-                    ProgrammeCode = copyFrom, 
+                ViewBag.CopiedFrom = new CourseInfoViewModel {
+                    ProgrammeCode = copyFrom,
                     Name = (ViewBag.CopyableCourses as IEnumerable<ApiClient.Course>).SingleOrDefault(x => x.CourseCode == copyFrom)?.Name
                 };
 
-                ViewBag.CopiedFields = model.CopyFrom(copiedEnrichment?.EnrichmentModel);                
+                ViewBag.CopiedFields = model.CopyFrom(copiedEnrichment?.EnrichmentModel);
             }
 
             return View(model);
@@ -317,7 +317,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             {
                 CourseSavedMessage();
             }
-            return RedirectToAction("Variants", new { instCode, accreditingProviderId, ucasCode });
+            return RedirectToAction("Show", new { instCode, accreditingProviderId, ucasCode });
         }
 
         [HttpGet]
@@ -348,12 +348,12 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             {
                 copyFrom = copyFrom.ToUpper();
                 var copiedEnrichment = await _manageApi.GetEnrichmentCourse(instCode, copyFrom);
-                ViewBag.CopiedFrom = new CourseInfoViewModel { 
-                    ProgrammeCode = copyFrom, 
+                ViewBag.CopiedFrom = new CourseInfoViewModel {
+                    ProgrammeCode = copyFrom,
                     Name = (ViewBag.CopyableCourses as IEnumerable<ApiClient.Course>).SingleOrDefault(x => x.CourseCode == copyFrom)?.Name
                 };
 
-                ViewBag.CopiedFields = model.CopyFrom(copiedEnrichment?.EnrichmentModel);                
+                ViewBag.CopiedFields = model.CopyFrom(copiedEnrichment?.EnrichmentModel);
             }
 
             return View(model);
@@ -377,7 +377,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             {
                 CourseSavedMessage();
             }
-            return RedirectToAction("Variants", new { instCode, accreditingProviderId, ucasCode });
+            return RedirectToAction("Show", new { instCode, accreditingProviderId, ucasCode });
         }
 
         private async Task<bool> SaveEnrichment(string instCode, string ucasCode, ICourseEnrichmentViewModel viewModel)

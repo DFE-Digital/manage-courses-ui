@@ -6,7 +6,7 @@
   var salary = ViewData.ModelState["SalaryDetails"] != null && ViewData.ModelState["SalaryDetails"].Errors.Any();
 }
 
-<a href="@Url.Action("Variants", "Course", Model.RouteData)" class="govuk-back-link">Back</a>
+<a href="@Url.Action("Show", "Course", Model.RouteData)" class="govuk-back-link">Back</a>
 
 <main role="main" class="govuk-main-wrapper" id="main-content">
   @await Html.PartialAsync("CopyCourseContentMessage")
@@ -67,7 +67,7 @@
           <input type="submit" class="govuk-button" value="Save">
         </div>
         <p class="govuk-body">
-          <a href="@Url.Action("Variants", "Course", Model.RouteData)" class "govuk-link">Cancel changes</a>
+          <a href="@Url.Action("Show", "Course", Model.RouteData)" class "govuk-link">Cancel changes</a>
         </p>
       </form>
     </div>
