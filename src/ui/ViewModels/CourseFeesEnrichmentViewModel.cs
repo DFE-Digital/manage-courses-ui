@@ -10,10 +10,16 @@ namespace GovUk.Education.ManageCourses.Ui.ViewModels
     {
         public CourseLength? CourseLength { get; set; }
 
+        //
+        // IMPORTANT: If you change the range, also update the "min" and "max" attributes on the input in Fees.cshtml        
+        //
         [Range(0, 100000, ErrorMessage = "UK course fee must be less than £100,000")]
         [RegularExpression(@"^[0-9]+$", ErrorMessage = "UK course fee must contain numbers only")]
         public decimal? FeeUkEu { get; set; }
 
+        //
+        // IMPORTANT: If you change the range, also update the "min" and "max" attributes on the input in Fees.cshtml        
+        //
         [Range(0, 100000, ErrorMessage = "International course fee must be less than £100,000")]
         [RegularExpression(@"^[0-9]+$", ErrorMessage = "International course fee must contain numbers only")]
         public decimal? FeeInternational { get; set; }

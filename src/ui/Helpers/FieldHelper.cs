@@ -17,6 +17,7 @@ namespace GovUk.Education.ManageCourses.Ui.Helpers
             var result = DisplayText(text, maxLength, defaultEmpty);
             return result;
         }
+        
         public static string InputText(this decimal? value)
         {
             var text = value.HasValue ? string.Format(CultureInfo.InvariantCulture, "{0:G0}", value.Value) : "";
