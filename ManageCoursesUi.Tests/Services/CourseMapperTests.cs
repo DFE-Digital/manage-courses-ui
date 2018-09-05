@@ -90,7 +90,7 @@ namespace ManageCoursesUi.Tests.Services
                 }
             );
 
-            res.Duration.Should().Be("1 year");
+            res.Duration.Should().Be("One year");
             res.Name.Should().Be("Course.Name");
             res.ProgrammeCode.Should().Be("CourseCode");
             res.ProviderCodeName.Should().Be("MYINST");
