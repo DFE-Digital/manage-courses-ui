@@ -1,5 +1,7 @@
 @{
   IEnumerable<GovUk.Education.ManageCourses.ApiClient.Course> copyables = ViewBag.CopyableCourses as IEnumerable<GovUk.Education.ManageCourses.ApiClient.Course> ?? new List<GovUk.Education.ManageCourses.ApiClient.Course>();
+  var accreditedCopyables = copyables.GroupBy(x => x.AccreditingProviderId).Where(x => !string.IsNullOrEmpty(x.Key) && x.Any());
+  var selfAccreditedCopyables = copyables.GroupBy(x => x.AccreditingProviderId).SingleOrDefault(x => string.IsNullOrEmpty(x.Key));
 }
 
 @if(!copyables.Any())
@@ -17,9 +19,16 @@ else
       <label class="govuk-label govuk-label--s" for="copy-from">Copy from</label>
       <select id="copy-from" name="copyFrom" class="govuk-select">
         <option value="" selected="selected">Pick a course</option>
-        @foreach(var copyableSet in copyables.GroupBy(x => x.AccreditingProviderName))
+        @if(selfAccreditedCopyables != null)
         {
-          <optgroup label="@copyableSet.Key">
+          foreach(var copyable in selfAccreditedCopyables)
+          {
+              <option value="@copyable.CourseCode">@copyable.Name (@copyable.CourseCode)</option>
+          }
+        }
+        @foreach(var copyableSet in accreditedCopyables)
+        {
+          <optgroup label="@copyableSet.FirstOrDefault()?.AccreditingProviderName">
             @foreach(var copyable in copyableSet)
             {
               <option value="@copyable.CourseCode">@copyable.Name (@copyable.CourseCode)</option>
