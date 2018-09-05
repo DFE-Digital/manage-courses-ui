@@ -59,7 +59,7 @@
           <div class="govuk-currency-input">
             <div class="govuk-currency-input__inner">
               <span class="govuk-currency-input__inner__unit">£</span>
-              <input asp-for="FeeUkEu" type="number" class="govuk-currency-input__inner__input govuk-input govuk-input--width-10"></input>
+              <input asp-for="FeeUkEu" value="@Model.FeeUkEu.InputText()" type="number" class="govuk-currency-input__inner__input govuk-input govuk-input--width-10"></input>
             </div>
           </div>
         </div>
@@ -71,7 +71,7 @@
           <div class="govuk-currency-input">
             <div class="govuk-currency-input__inner">
               <span class="govuk-currency-input__inner__unit">£</span>
-              <input asp-for="FeeInternational" type="number" class="govuk-currency-input__inner__input govuk-input govuk-input--width-10"></input>
+              <input asp-for="FeeInternational" value="@Model.FeeInternational.InputText()" type="number" class="govuk-currency-input__inner__input govuk-input govuk-input--width-10"></input>
             </div>
           </div>
         </div>
