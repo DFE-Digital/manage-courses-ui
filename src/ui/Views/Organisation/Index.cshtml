@@ -15,7 +15,7 @@
           <li>
             <h3 class="govuk-heading-m">
               <a href="@Url.Action("Show", "Organisation", new {ucasCode = organisation.UcasCode})" class="govuk-link">@organisation.OrganisationName</a>
-              <span class="govuk-body govuk-!-font-weight-regular govuk-!-display-block">@organisation.TotalCourses courses</span>
+              <span class="govuk-body govuk-!-font-weight-regular govuk-!-display-block">@organisation.TotalCourses course@(organisation.TotalCourses == 1 ? "" : "s")</span>
             </h3>
           </li>
         }
