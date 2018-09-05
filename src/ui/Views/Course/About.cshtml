@@ -7,7 +7,7 @@
   var school_placement = ViewData.ModelState["HowSchoolPlacementsWork"] != null && ViewData.ModelState["HowSchoolPlacementsWork"].Errors.Any();
 }
 
-<a href="@Url.Action("Variants", "Course", Model.RouteData)" class="govuk-back-link">Back</a>
+<a href="@Url.Action("Show", "Course", Model.RouteData)" class="govuk-back-link">Back</a>
 
 <main role="main" class="govuk-main-wrapper" id="main-content">
   @await Html.PartialAsync("CopyCourseContentMessage")

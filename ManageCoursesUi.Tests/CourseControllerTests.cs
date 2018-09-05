@@ -28,7 +28,7 @@ namespace ManageCoursesUi.Tests
         [Test]
         [TestCase(EnumDataType.SingleVariantOneMatch)]
         [TestCase(EnumDataType.MultiVariantOneMatch)]
-        public async Task TestController_Variants_should_return_matched_model(EnumDataType type)
+        public async Task TestController_Show_should_return_matched_model(EnumDataType type)
         {
             var manageApi = new Mock<IManageApi>();
             var testData = TestHelper.GetTestData(type, null, null);
@@ -56,7 +56,7 @@ namespace ManageCoursesUi.Tests
             manageApi.Setup(x => x.GetEnrichmentCourse(TestHelper.InstitutionCode, TestHelper.TargetedUcasCode)).ReturnsAsync(ucasCourseEnrichmentGetModel);
 
             var controller = new CourseController(manageApi.Object, new CourseMapper(), new SearchAndCompareUrlService("http://www.example.com"), new MockFeatureFlags());
-            var result = await controller.Variants(TestHelper.InstitutionCode, TestHelper.AccreditedProviderId, TestHelper.TargetedUcasCode);
+            var result = await controller.Show(TestHelper.InstitutionCode, TestHelper.AccreditedProviderId, TestHelper.TargetedUcasCode);
 
             var viewResult = result as ViewResult;
             Assert.IsNotNull(viewResult);
@@ -81,7 +81,7 @@ namespace ManageCoursesUi.Tests
         [Test]
         [TestCase(EnumDataType.SingleVariantNoMatch)]
         [TestCase(EnumDataType.MultiVariantNoMatch)]
-        public void TestController_Variants_should_return_not_found(EnumDataType type)
+        public void TestController_Show_should_return_not_found(EnumDataType type)
         {
             var manageApi = new Mock<IManageApi>();
             var testData = TestHelper.GetTestData(type, null, null);
@@ -103,7 +103,7 @@ namespace ManageCoursesUi.Tests
 
             var controller = new CourseController(manageApi.Object, new CourseMapper(), new SearchAndCompareUrlService("http://www.example.com"), new MockFeatureFlags());
 
-            var res = controller.Variants(TestHelper.InstitutionCode, TestHelper.AccreditedProviderId, TestHelper.TargetedUcasCode).Result;
+            var res = controller.Show(TestHelper.InstitutionCode, TestHelper.AccreditedProviderId, TestHelper.TargetedUcasCode).Result;
 
             Assert.That(res is NotFoundObjectResult);
             Assert.AreEqual(404, (res as NotFoundObjectResult).StatusCode);
@@ -131,7 +131,7 @@ namespace ManageCoursesUi.Tests
 
             var controller = new CourseController(manageApi.Object, new CourseMapper(), new SearchAndCompareUrlService("http://www.example.com"), new MockFeatureFlags());
 
-            var result = await controller.Variants(TestHelper.InstitutionCode, TestHelper.AccreditedProviderId, TestHelper.TargetedUcasCode);
+            var result = await controller.Show(TestHelper.InstitutionCode, TestHelper.AccreditedProviderId, TestHelper.TargetedUcasCode);
 
             Assert.NotNull(result);
             Assert.IsInstanceOf(typeof(NotFoundResult), result);
@@ -144,7 +144,7 @@ namespace ManageCoursesUi.Tests
         [TestCase("2AT", null, "35L6")]
         [TestCase("2AT", "self", "")]
         [TestCase("2AT", "self", null)]
-        public void TestController_Variants_with_null_or_empty_parameters_should_return_exception(string institutionCode, string accreditedProviderId, string ucasCode)
+        public void TestController_Show_with_null_or_empty_parameters_should_return_exception(string institutionCode, string accreditedProviderId, string ucasCode)
         {
             var manageApi = new Mock<IManageApi>();
             var testData = TestHelper.GetTestData(EnumDataType.SingleVariantOneMatch, null, null);
@@ -165,7 +165,7 @@ namespace ManageCoursesUi.Tests
             manageApi.Setup(x => x.GetCourseByUcasCode(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(testCourse);
 
             var controller = new CourseController(manageApi.Object, new CourseMapper(), new SearchAndCompareUrlService("http://www.example.com"), new MockFeatureFlags());
-            Assert.ThrowsAsync<ArgumentNullException>(async() => await controller.Variants(institutionCode, accreditedProviderId, ucasCode));
+            Assert.ThrowsAsync<ArgumentNullException>(async() => await controller.Show(institutionCode, accreditedProviderId, ucasCode));
         }
 
         [Test]
@@ -177,7 +177,7 @@ namespace ManageCoursesUi.Tests
 
             var controller = new CourseController(manageApi.Object, new CourseMapper(), new SearchAndCompareUrlService("http://www.example.com"), new MockFeatureFlags());
 
-            Assert.ThrowsAsync<Exception>(async() => await controller.Variants(TestHelper.InstitutionCode, TestHelper.AccreditedProviderId, TestHelper.TargetedUcasCode));
+            Assert.ThrowsAsync<Exception>(async() => await controller.Show(TestHelper.InstitutionCode, TestHelper.AccreditedProviderId, TestHelper.TargetedUcasCode));
         }
 
         [Test]
@@ -203,7 +203,7 @@ namespace ManageCoursesUi.Tests
 
             var controller = new CourseController(manageApi.Object, new CourseMapper(), new SearchAndCompareUrlService("http://www.example.com"), new MockFeatureFlags());
 
-            Assert.ThrowsAsync<Exception>(async() => await controller.Variants(TestHelper.InstitutionCode, TestHelper.AccreditedProviderId, TestHelper.TargetedUcasCode));
+            Assert.ThrowsAsync<Exception>(async() => await controller.Show(TestHelper.InstitutionCode, TestHelper.AccreditedProviderId, TestHelper.TargetedUcasCode));
         }
 
         [Test]
@@ -217,14 +217,14 @@ namespace ManageCoursesUi.Tests
 
             flags.VerifyAll();
             Assert.NotNull(redirectResult);
-            Assert.AreEqual("Variants", redirectResult.ActionName);
+            Assert.AreEqual("Show", redirectResult.ActionName);
             Assert.AreEqual("abc", redirectResult.RouteValues["instCode"]);
             Assert.AreEqual("def", redirectResult.RouteValues["accreditingProviderId"]);
             Assert.AreEqual("ghi", redirectResult.RouteValues["ucasCode"]);
         }
 
         [Test]
-        public void VariantsPublish()
+        public void ShowPublish()
         {
             var enrichmentModel = new CourseEnrichmentModel
             {
@@ -258,7 +258,7 @@ namespace ManageCoursesUi.Tests
             courseController.ObjectValidator = objectValidator.Object;
             courseController.TempData = new TempDataDictionary(new DefaultHttpContext(), Mock.Of<ITempDataProvider>());
 
-            var res = courseController.VariantsPublish(TestHelper.InstitutionCode, "def", TestHelper.TargetedUcasCode).Result;
+            var res = courseController.ShowPublish(TestHelper.InstitutionCode, "def", TestHelper.TargetedUcasCode).Result;
 
             mockApi.VerifyAll();
             objectValidator.VerifyAll();
@@ -273,17 +273,17 @@ namespace ManageCoursesUi.Tests
         }
 
         [Test]
-        public void VariantsPublish_RespectsFeatureFlag()
+        public void ShowPublish_RespectsFeatureFlag()
         {
             var flags = new Mock<IFeatureFlags>();
             flags.Setup(x => x.ShowCoursePublish).Returns(false).Verifiable();
 
             var courseController = new CourseController(new Mock<IManageApi>().Object, new CourseMapper(), new Mock<ISearchAndCompareUrlService>().Object, flags.Object);
-            var redirectResult = courseController.VariantsPublish("abc", "def", "ghi").Result as RedirectToActionResult;
+            var redirectResult = courseController.ShowPublish("abc", "def", "ghi").Result as RedirectToActionResult;
 
             flags.VerifyAll();
             Assert.NotNull(redirectResult);
-            Assert.AreEqual("Variants", redirectResult.ActionName);
+            Assert.AreEqual("Show", redirectResult.ActionName);
             Assert.AreEqual("abc", redirectResult.RouteValues["instCode"]);
             Assert.AreEqual("def", redirectResult.RouteValues["accreditingProviderId"]);
             Assert.AreEqual("ghi", redirectResult.RouteValues["ucasCode"]);
@@ -371,7 +371,7 @@ namespace ManageCoursesUi.Tests
             var urlHelperMock = new Mock<IUrlHelper>();
 
             var previewLink = "preview-link";
-            
+
             Expression<Func<IUrlHelper, string>> urlSetup = url => url.Action(It.Is<UrlActionContext>(uac => uac.Action == "Preview"));
             urlHelperMock.Setup(urlSetup).Returns(previewLink);
 
@@ -382,7 +382,7 @@ namespace ManageCoursesUi.Tests
 
             var redirectToActionResult = result as RedirectToActionResult;
             Assert.IsNotNull(redirectToActionResult);
-            Assert.AreEqual("Variants", redirectToActionResult.ActionName);
+            Assert.AreEqual("Show", redirectToActionResult.ActionName);
 
             var tempData = controller.TempData;
 
@@ -499,7 +499,7 @@ namespace ManageCoursesUi.Tests
 
             var redirectToActionResult = result as RedirectToActionResult;
             Assert.IsNotNull(redirectToActionResult);
-            Assert.AreEqual("Variants", redirectToActionResult.ActionName);
+            Assert.AreEqual("Show", redirectToActionResult.ActionName);
 
             var tempData = controller.TempData;
 
@@ -618,7 +618,7 @@ namespace ManageCoursesUi.Tests
 
             var redirectToActionResult = result as RedirectToActionResult;
             Assert.IsNotNull(redirectToActionResult);
-            Assert.AreEqual("Variants", redirectToActionResult.ActionName);
+            Assert.AreEqual("Show", redirectToActionResult.ActionName);
 
             var tempData = controller.TempData;
 
@@ -743,7 +743,7 @@ namespace ManageCoursesUi.Tests
 
             var redirectToActionResult = result as RedirectToActionResult;
             Assert.IsNotNull(redirectToActionResult);
-            Assert.AreEqual("Variants", redirectToActionResult.ActionName);
+            Assert.AreEqual("Show", redirectToActionResult.ActionName);
 
             var tempData = controller.TempData;
 

@@ -9,7 +9,7 @@
   var financial_support = ViewData.ModelState["FinancialSupport"] != null && ViewData.ModelState["FinancialSupport"].Errors.Any();
 }
 
-<a href="@Url.Action("Variants", "Course", Model.RouteData)" class="govuk-back-link">Back</a>
+<a href="@Url.Action("Show", "Course", Model.RouteData)" class="govuk-back-link">Back</a>
 
 <main role="main" class="govuk-main-wrapper" id="main-content">
   @await Html.PartialAsync("CopyCourseContentMessage")
