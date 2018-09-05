@@ -17,6 +17,13 @@ namespace GovUk.Education.ManageCourses.Ui.Helpers
             var result = DisplayText(text, maxLength, defaultEmpty);
             return result;
         }
+        
+        public static string InputText(this decimal? value)
+        {
+            var text = value.HasValue ? string.Format(CultureInfo.InvariantCulture, "{0:G0}", value.Value) : "";
+            var result = DisplayText(text, 100, "");
+            return result;
+        }
 
         public static string DisplayText(this CourseLength? value, int maxLength = 100, string defaultEmpty = "This field is empty")
         {
