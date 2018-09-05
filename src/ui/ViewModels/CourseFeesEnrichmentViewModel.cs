@@ -9,6 +9,7 @@ namespace GovUk.Education.ManageCourses.Ui.ViewModels
     public class CourseFeesEnrichmentViewModel : ICourseEnrichmentViewModel
     {
         public CourseLength? CourseLength { get; set; }
+        public string CourseLengthOther { get; set; }
 
         //
         // IMPORTANT: If you change the range, also update the "min" and "max" attributes on the input in Fees.cshtml        
@@ -44,8 +45,12 @@ namespace GovUk.Education.ManageCourses.Ui.ViewModels
         public void MapInto(ref CourseEnrichmentModel enrichmentModel)
         {
             var courseLength = CourseLength.HasValue ? CourseLength.Value.ToString() : null;
+            enrichmentModel.CourseLengthOther = courseLength == "Other" ? CourseLengthOther : null;//remove this line for a single field
 
-            enrichmentModel.CourseLength = courseLength;
+            //enrichmentModel.CourseLength = courseLength == "Other" ? (string.IsNullOrEmpty(CourseLengthOther) ? null : CourseLengthOther) : courseLength;
+            //for a single field un-comment the line above and remove the one below
+            enrichmentModel.CourseLength = (courseLength == "Other" && string.IsNullOrEmpty(CourseLengthOther)) ? null : courseLength;//setting to null will trigger a validation
+
             enrichmentModel.FeeUkEu = FeeUkEu;
             enrichmentModel.FeeInternational = FeeInternational;
             enrichmentModel.FeeDetails = FeeDetails;
