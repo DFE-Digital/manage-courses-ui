@@ -10,7 +10,7 @@ namespace GovUk.Education.ManageCourses.Ui.Helpers
 
             if (date.HasValue && date > DateTime.MinValue)
             {
-                result = date.Value.ToString("dd MMMM yyyy");
+                result = date.Value.ToString("%d MMMM yyyy");
             }
 
             return result;
