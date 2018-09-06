@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using FluentAssertions;
+using GovUk.Education.ManageCourses.ApiClient;
 using GovUk.Education.ManageCourses.Ui.ViewModels;
 using GovUk.Education.ManageCourses.Ui.ViewModels.Enums;
 using NUnit.Framework;
@@ -149,7 +150,138 @@ namespace ManageCoursesUi.Tests.ViewModels
 
             AssertMessageFor(validationResults, "SalaryDetails", "Reduce the word count for salary");
         }
+        [Test]
+        public void TestCourseLengthCopyFromForOtherTextEntry_CourseSalaryEnrichmentViewModel()
+        {
+            const string textEnteredByUser = "text entered by users";
 
+            var viewModel = new CourseSalaryEnrichmentViewModel();
+            var enrichmentModel = new CourseEnrichmentModel {CourseLength = textEnteredByUser};
+
+            viewModel.CopyFrom(enrichmentModel);
+
+            viewModel.CourseLength.Should().Be(CourseLength.Other);
+            viewModel.CourseLengthOther.Should().BeEquivalentTo(textEnteredByUser);
+        }
+        [Test]
+        public void TestCourseLengthOneYearCopyFrom_CourseSalaryEnrichmentViewModel()
+        {
+            var viewModel = new CourseSalaryEnrichmentViewModel();
+            var enrichmentModel = new CourseEnrichmentModel { CourseLength = "OneYear" };
+
+            viewModel.CopyFrom(enrichmentModel);
+
+            viewModel.CourseLength.Should().Be(CourseLength.OneYear);
+            viewModel.CourseLengthOther.Should().BeNullOrEmpty();
+        }
+        [Test]
+        public void TestCourseLengthTwoYearsCopyFrom_CourseSalaryEnrichmentViewModel()
+        {
+            var viewModel = new CourseSalaryEnrichmentViewModel();
+            var enrichmentModel = new CourseEnrichmentModel { CourseLength = "TwoYears" };
+
+            viewModel.CopyFrom(enrichmentModel);
+
+            viewModel.CourseLength.Should().Be(CourseLength.TwoYears);
+            viewModel.CourseLengthOther.Should().BeNullOrEmpty();
+        }
+
+        [Test]
+        public void TestCourseLengthMapIntoForOtherTextEntry_CourseSalaryEnrichmentViewModel()
+        {
+            const string TextEnteredByUser = "text entered by users";
+            var viewModel = new CourseSalaryEnrichmentViewModel
+            {
+                CourseLength = CourseLength.Other,
+                CourseLengthOther =TextEnteredByUser
+            };
+
+            var enrichmentModel = new CourseEnrichmentModel();
+
+            viewModel.MapInto(ref enrichmentModel);
+
+            enrichmentModel.CourseLength.Should().BeEquivalentTo(TextEnteredByUser);
+        }
+        [Test]
+        [TestCase("")]
+        [TestCase("    ")]
+        [TestCase("xxxxxxxxxx")]
+        [TestCase(null)]
+        public void TestCourseLengthMapIntoForSelection_CourseSalaryEnrichmentViewModel(string courseLengthOther)
+        {
+            var viewModel = new CourseSalaryEnrichmentViewModel
+            {
+                CourseLength = CourseLength.OneYear,
+                CourseLengthOther = courseLengthOther
+            };
+
+            var enrichmentModel = new CourseEnrichmentModel();
+
+            viewModel.MapInto(ref enrichmentModel);
+
+            enrichmentModel.CourseLength.Should().BeEquivalentTo("OneYear");
+
+        }
+        [Test]
+        public void TestCourseLengthCopyFromForOtherTextEntry_CourseFeesEnrichmentViewModel()
+        {
+            const string textEnteredByUser = "text entered by users";
+
+            var viewModel = new CourseFeesEnrichmentViewModel();
+            var enrichmentModel = new CourseEnrichmentModel { CourseLength = textEnteredByUser };
+
+            viewModel.CopyFrom(enrichmentModel);
+
+            viewModel.CourseLength.Should().Be(CourseLength.Other);
+            viewModel.CourseLengthOther.Should().BeEquivalentTo(textEnteredByUser);
+        }
+        [Test]
+        public void TestCourseLengthOneYearCopyFrom_CourseFeesEnrichmentViewModel()
+        {
+            var viewModel = new CourseFeesEnrichmentViewModel();
+            var enrichmentModel = new CourseEnrichmentModel { CourseLength = "OneYear" };
+
+            viewModel.CopyFrom(enrichmentModel);
+
+            viewModel.CourseLength.Should().Be(CourseLength.OneYear);
+            viewModel.CourseLengthOther.Should().BeNullOrEmpty();
+        }
+        [Test]
+        public void TestCourseLengthMapIntoForOtherTextEntry_CourseFeesEnrichmentViewModel()
+        {
+            const string TextEnteredByUser = "text entered by users";
+            var viewModel = new CourseFeesEnrichmentViewModel
+            {
+                CourseLength = CourseLength.Other,
+                CourseLengthOther = TextEnteredByUser
+            };
+
+            var enrichmentModel = new CourseEnrichmentModel();
+
+            viewModel.MapInto(ref enrichmentModel);
+
+            enrichmentModel.CourseLength.Should().BeEquivalentTo(TextEnteredByUser);
+        }
+        [Test]
+        [TestCase("")]
+        [TestCase("    ")]
+        [TestCase("xxxxxxxxxx")]
+        [TestCase(null)]
+        public void TestCourseLengthMapIntoForSelection_CourseFeesEnrichmentViewModel(string courseLengthOther)
+        {
+            var viewModel = new CourseFeesEnrichmentViewModel()
+            {
+                CourseLength = CourseLength.OneYear,
+                CourseLengthOther = courseLengthOther
+            };
+
+            var enrichmentModel = new CourseEnrichmentModel();
+
+            viewModel.MapInto(ref enrichmentModel);
+
+            enrichmentModel.CourseLength.Should().BeEquivalentTo("OneYear");
+
+        }
         private static List<ValidationResult> Validate(BaseCourseEnrichmentViewModel input)
         {
             var feeBasedCourseEnrichmentViewModel = (input as FeeBasedCourseEnrichmentViewModel);

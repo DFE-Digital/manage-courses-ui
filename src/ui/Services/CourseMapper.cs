@@ -41,7 +41,7 @@ namespace GovUk.Education.ManageCourses.Ui.Services
 
             var mappedCourse = new SearchAndCompare.Domain.Models.Course
             {
-                Duration = MapCourseLength(courseEnrichmentModel.CourseLength, courseEnrichmentModel.CourseLengthOther),
+                Duration = MapCourseLength(courseEnrichmentModel.CourseLength),
                 Name = ucasCourseData.Name,
                 ProgrammeCode = ucasCourseData.CourseCode,
                 Provider = provider,                
@@ -180,12 +180,11 @@ namespace GovUk.Education.ManageCourses.Ui.Services
             return mappedCourse;
         }
 
-        private string MapCourseLength(string courseLength, string courseLengthOther)
+        private string MapCourseLength(string courseLength)
         {
-            return courseLength == "OneYear" ? "One year"
-                : courseLength == "TwoYears" ? "Up to two years"
-                : courseLength == "Other" ? courseLengthOther
-                : null;
+            return courseLength == "OneYear" ? "1 year"
+                : courseLength == "TwoYears" ? "Up to 2 years"
+                : courseLength;
         }
 
         private string GetAccreditingProviderEnrichment(string accreditingProviderId, InstitutionEnrichmentModel enrichmentModel)

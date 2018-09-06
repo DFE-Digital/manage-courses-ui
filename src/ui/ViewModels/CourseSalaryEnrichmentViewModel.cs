@@ -25,12 +25,8 @@ namespace GovUk.Education.ManageCourses.Ui.ViewModels
         public void MapInto(ref CourseEnrichmentModel enrichmentModel)
         {
             var courseLength = CourseLength.HasValue ? CourseLength.Value.ToString() : null;
-            enrichmentModel.CourseLengthOther = courseLength == "Other" ?  CourseLengthOther : null;//remove this line for a single field
 
-            //enrichmentModel.CourseLength = courseLength == "Other" ? (string.IsNullOrEmpty(CourseLengthOther) ? null : CourseLengthOther) : courseLength;
-            //for a single field un-comment the line above and remove the one below
-            enrichmentModel.CourseLength = (courseLength == "Other" && string.IsNullOrEmpty(CourseLengthOther)) ? null : courseLength;//setting to null will trigger a validation
-
+            enrichmentModel.CourseLength = courseLength == "Other" ? (string.IsNullOrEmpty(CourseLengthOther) ? null : CourseLengthOther) : courseLength;
             enrichmentModel.SalaryDetails = SalaryDetails;
         }
 
@@ -48,14 +44,10 @@ namespace GovUk.Education.ManageCourses.Ui.ViewModels
                 CourseLength = courseLength;
                 res.Add(new CopiedField(nameof(model.CourseLength), CourseEnrichmentFieldNames.CourseLength));
             }
-            //if (!CourseLength.HasValue && !string.IsNullOrEmpty(model.CourseLength))
-            //{
-            //    CourseLengthOther = model.CourseLength;
-            //}
-            //if we want a single field then replace this line with the one above
-            if (!string.IsNullOrEmpty(model.CourseLengthOther))
+            if (!CourseLength.HasValue && !string.IsNullOrEmpty(model.CourseLength))
             {
-                CourseLengthOther = model.CourseLengthOther;
+                CourseLengthOther = model.CourseLength;
+                CourseLength = Enums.CourseLength.Other;
             }
             if (!string.IsNullOrEmpty(model.SalaryDetails))
             {

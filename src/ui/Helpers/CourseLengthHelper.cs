@@ -21,7 +21,20 @@ namespace GovUk.Education.ManageCourses.Ui.Helpers
             {
                 result = parseValue;
             }
+            if(result == null && !string.IsNullOrWhiteSpace(value))
+            {
+                result = CourseLength.Other;
+            }
             return result;
+        }
+        public static string GetCourseLengthOther(this string value)
+        {
+            if (GetCourseLength(value) == CourseLength.Other)
+            {
+                return value;
+            }
+
+            return null;
         }
 
         public static string GetDisplayText(this CourseLength? value)

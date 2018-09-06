@@ -45,11 +45,7 @@ namespace GovUk.Education.ManageCourses.Ui.ViewModels
         public void MapInto(ref CourseEnrichmentModel enrichmentModel)
         {
             var courseLength = CourseLength.HasValue ? CourseLength.Value.ToString() : null;
-            enrichmentModel.CourseLengthOther = courseLength == "Other" ? CourseLengthOther : null;//remove this line for a single field
-
-            //enrichmentModel.CourseLength = courseLength == "Other" ? (string.IsNullOrEmpty(CourseLengthOther) ? null : CourseLengthOther) : courseLength;
-            //for a single field un-comment the line above and remove the one below
-            enrichmentModel.CourseLength = (courseLength == "Other" && string.IsNullOrEmpty(CourseLengthOther)) ? null : courseLength;//setting to null will trigger a validation
+            enrichmentModel.CourseLength = courseLength == "Other" ? (string.IsNullOrEmpty(CourseLengthOther) ? null : CourseLengthOther) : courseLength;
 
             enrichmentModel.FeeUkEu = FeeUkEu;
             enrichmentModel.FeeInternational = FeeInternational;
@@ -71,8 +67,12 @@ namespace GovUk.Education.ManageCourses.Ui.ViewModels
                 CourseLength = courseLength;
                 res.Add(new CopiedField(nameof(model.CourseLength), CourseEnrichmentFieldNames.CourseLength));
             }
-
-            if(model.FeeUkEu.HasValue)
+            if (!CourseLength.HasValue && !string.IsNullOrEmpty(model.CourseLength))
+            {
+                CourseLengthOther = model.CourseLength;
+                CourseLength = Enums.CourseLength.Other;
+            }
+            if (model.FeeUkEu.HasValue)
             {
                 FeeUkEu = model.FeeUkEu;
                 res.Add(new CopiedField(nameof(model.FeeUkEu), CourseEnrichmentFieldNames.FeesUkEu));
