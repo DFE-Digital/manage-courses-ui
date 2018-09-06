@@ -335,9 +335,9 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             var model = new CourseFeesEnrichmentViewModel
             {
                 CourseLength = enrichmentModel?.CourseLength.GetCourseLength(),
-                CourseLengthOther = enrichmentModel.CourseLength.GetCourseLengthOther(),
-                FeeUkEu = enrichmentModel?.FeeUkEu,
-                FeeInternational = enrichmentModel?.FeeInternational,
+		CourseLengthOther = enrichmentModel.CourseLength.GetCourseLengthOther(),
+		FeeUkEu = enrichmentModel?.FeeUkEu.GetFeeValue(),
+                FeeInternational = enrichmentModel?.FeeInternational.GetFeeValue(),
                 FeeDetails = enrichmentModel?.FeeDetails,
                 FinancialSupport = enrichmentModel?.FinancialSupport,
                 RouteData = routeData,
@@ -523,8 +523,8 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
                     OtherRequirements = enrichmentModel.OtherRequirements,
                     CourseLength = enrichmentModel.CourseLength.GetCourseLength(),
                     CourseLengthOther = enrichmentModel.CourseLength.GetCourseLengthOther(),
-                    FeeUkEu = enrichmentModel.FeeUkEu,
-                    FeeInternational = enrichmentModel.FeeInternational,
+                    FeeUkEu = enrichmentModel.FeeUkEu.GetFeeValue(),
+                    FeeInternational = enrichmentModel.FeeInternational.GetFeeValue(),
                     FeeDetails = enrichmentModel.FeeDetails,
                     FinancialSupport = enrichmentModel.FinancialSupport,
                     DraftLastUpdatedUtc = ucasCourseEnrichmentGetModel.UpdatedTimestampUtc,
