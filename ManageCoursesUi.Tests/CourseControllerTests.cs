@@ -5,6 +5,7 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 using GovUk.Education.ManageCourses.ApiClient;
 using GovUk.Education.ManageCourses.Ui;
+using GovUk.Education.ManageCourses.Ui.Helpers;
 using GovUk.Education.ManageCourses.Ui.Controllers;
 using GovUk.Education.ManageCourses.Ui.Services;
 using GovUk.Education.ManageCourses.Ui.ViewModels;
@@ -672,8 +673,8 @@ namespace ManageCoursesUi.Tests
 
             Assert.AreEqual(enrichmentModel.CourseLength, model.CourseLength);
             Assert.AreEqual(enrichmentModel.FeeDetails, model.FeeDetails);
-            Assert.AreEqual(enrichmentModel.FeeInternational, model.FeeInternational);
-            Assert.AreEqual(enrichmentModel.FeeUkEu, model.FeeUkEu);
+            Assert.AreEqual(enrichmentModel.FeeInternational.GetFeeValue(), model.FeeInternational);
+            Assert.AreEqual(enrichmentModel.FeeUkEu.GetFeeValue(), model.FeeUkEu);
             Assert.AreEqual(enrichmentModel.FinancialSupport, model.FinancialSupport);
         }
 
@@ -682,7 +683,7 @@ namespace ManageCoursesUi.Tests
         {
             var manageApi = new Mock<IManageApi>();
 
-            var viewModel = new CourseFeesEnrichmentViewModel { FeeUkEu = 123.45m, FeeInternational = 543.21m, FeeDetails = "FeeDetails", CourseLength = CourseLength.OneYear, FinancialSupport = "FinancialSupport" };
+            var viewModel = new CourseFeesEnrichmentViewModel { FeeUkEu = 123, FeeInternational = 543, FeeDetails = "FeeDetails", CourseLength = CourseLength.OneYear, FinancialSupport = "FinancialSupport" };
 
             var testCourse = new Course() { Name = "Name", CourseCode = "CourseCode" };
 
@@ -718,7 +719,7 @@ namespace ManageCoursesUi.Tests
         {
             var manageApi = new Mock<IManageApi>();
 
-            var viewModel = new CourseFeesEnrichmentViewModel { FeeUkEu = 123.45m, FeeInternational = 543.21m, FeeDetails = "FeeDetails", CourseLength = CourseLength.TwoYears, FinancialSupport = "FinancialSupport" };
+            var viewModel = new CourseFeesEnrichmentViewModel { FeeUkEu = 123, FeeInternational = 543, FeeDetails = "FeeDetails", CourseLength = CourseLength.TwoYears, FinancialSupport = "FinancialSupport" };
 
             var enrichmentModel = new CourseEnrichmentModel { FeeUkEu = 123.45m, FeeInternational = 543.21m, FeeDetails = "FeeDetails", CourseLength = null, FinancialSupport = "FinancialSupport" };
 

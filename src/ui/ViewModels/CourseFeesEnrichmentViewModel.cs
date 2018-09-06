@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using GovUk.Education.ManageCourses.ApiClient;
+using GovUk.Education.ManageCourses.Ui.Helpers;
 using GovUk.Education.ManageCourses.Ui.ViewModels.Enums;
 
 namespace GovUk.Education.ManageCourses.Ui.ViewModels
@@ -10,19 +11,13 @@ namespace GovUk.Education.ManageCourses.Ui.ViewModels
     {
         public CourseLength? CourseLength { get; set; }
 
-        //
-        // IMPORTANT: If you change the range, also update the "min" and "max" attributes on the input in Fees.cshtml        
-        //
-        [Range(0, 100000, ErrorMessage = "UK course fee must be less than £100,000")]
+        [Range(FieldHelper.FeeMin, FieldHelper.FeeMax, ErrorMessage = "UK course fee must be less than £100,000")]
         [RegularExpression(@"^[0-9]+$", ErrorMessage = "UK course fee must contain numbers only")]
-        public decimal? FeeUkEu { get; set; }
+        public int? FeeUkEu { get; set; }
 
-        //
-        // IMPORTANT: If you change the range, also update the "min" and "max" attributes on the input in Fees.cshtml        
-        //
-        [Range(0, 100000, ErrorMessage = "International course fee must be less than £100,000")]
+        [Range(FieldHelper.FeeMin, FieldHelper.FeeMax, ErrorMessage = "International course fee must be less than £100,000")]
         [RegularExpression(@"^[0-9]+$", ErrorMessage = "International course fee must contain numbers only")]
-        public decimal? FeeInternational { get; set; }
+        public int? FeeInternational { get; set; }
 
         [RegularExpression(@"^\s*(\S+\s+|\S+$){0,250}$", ErrorMessage = "Reduce the word count for fee details")]
         public string FeeDetails { get; set; }
@@ -67,25 +62,25 @@ namespace GovUk.Education.ManageCourses.Ui.ViewModels
                 res.Add(new CopiedField(nameof(model.CourseLength), CourseEnrichmentFieldNames.CourseLength));
             }
 
-            if(model.FeeUkEu.HasValue)
+            if (model.FeeUkEu.HasValue)
             {
-                FeeUkEu = model.FeeUkEu;
+                FeeUkEu = model.FeeUkEu.GetFeeValue();
                 res.Add(new CopiedField(nameof(model.FeeUkEu), CourseEnrichmentFieldNames.FeesUkEu));
             }
 
-            if(model.FeeInternational.HasValue)
+            if (model.FeeInternational.HasValue)
             {
-                FeeInternational = model.FeeInternational;
+                FeeInternational = model.FeeInternational.GetFeeValue();
                 res.Add(new CopiedField(nameof(model.FeeInternational), CourseEnrichmentFieldNames.FeesInternational));
             }
 
-            if(!string.IsNullOrEmpty(model.FeeDetails))
+            if (!string.IsNullOrEmpty(model.FeeDetails))
             {
                 FeeDetails = model.FeeDetails;
                 res.Add(new CopiedField(nameof(model.FeeDetails), CourseEnrichmentFieldNames.FeeDetails));
             }
 
-            if(!string.IsNullOrEmpty(model.FinancialSupport))
+            if (!string.IsNullOrEmpty(model.FinancialSupport))
             {
                 FinancialSupport = model.FinancialSupport;
                 res.Add(new CopiedField(nameof(model.FinancialSupport), CourseEnrichmentFieldNames.FinancialSupport));
