@@ -43,7 +43,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
         {
             var ucasInstitutionEnrichmentGetModel = await _manageApi.GetEnrichmentOrganisation(ucasCode);
             var institutionCourses = await _manageApi.GetCoursesByOrganisation(ucasCode);
-            var tabViewModel = await GetTabViewModelAsync(ucasCode, "courses");
+            var multipleOrganisations = (await _manageApi.GetOrganisations()).Count() > 1;
             var providers = GetProviders(institutionCourses);
 
             var status = ucasInstitutionEnrichmentGetModel?.Status.ToString() ?? "Empty";
@@ -53,7 +53,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
                 InstitutionName = institutionCourses.InstitutionName,
                 InstitutionId = institutionCourses.InstitutionCode,
                 Providers = providers,
-                TabViewModel = tabViewModel,
+                MultipleOrganisations = multipleOrganisations,
                 Status = status
             };
 
@@ -68,14 +68,12 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
 
             ucasInstitutionEnrichmentGetModel = ucasInstitutionEnrichmentGetModel ?? new UcasInstitutionEnrichmentGetModel { EnrichmentModel = new InstitutionEnrichmentModel() { AccreditingProviderEnrichments = new ObservableCollection<AccreditingProviderEnrichment>() } };
 
-            var tabViewModel = await GetTabViewModelAsync(ucasCode, "about");
-
             var enrichmentModel = ucasInstitutionEnrichmentGetModel.EnrichmentModel;
             var aboutAccreditingTrainingProviders = await GetTrainingProviderViewModels(ucasCode, enrichmentModel);
 
             var model = GetOrganisationViewModel(ucasCode, ucasInstitutionEnrichmentGetModel);
+            model.InstitutionName = (await _manageApi.GetOrganisations()).FirstOrDefault(x => x.UcasCode == ucasCode.ToUpperInvariant())?.OrganisationName;;
 
-            model.TabViewModel = tabViewModel;
             model.AboutTrainingProviders = aboutAccreditingTrainingProviders;
 
             return View(model);
@@ -103,10 +101,8 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
         [Route("{ucasCode}/request-access")]
         public async Task<ViewResult> RequestAccess(string ucasCode)
         {
-            var tabViewModel = await GetTabViewModelAsync(ucasCode, "request-access");
-            var model = new RequestAccessViewModel { TabViewModel = tabViewModel };
-
-            return View(model);
+            ViewBag.UcasCode = ucasCode;
+            return View(new RequestAccessViewModel() );
         }
 
         [HttpPost]
@@ -115,8 +111,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
         {
             if (!ModelState.IsValid)
             {
-                var tabViewModel = await GetTabViewModelAsync(ucasCode, "request-access");
-                model.TabViewModel = tabViewModel;
+                ViewBag.UcasCode = ucasCode;
                 return View("RequestAccess", model);
             }
 
@@ -211,8 +206,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
 
             if (!ModelState.IsValid)
             {
-                var tabViewModel = await GetTabViewModelAsync(ucasCode, "about");
-                model.TabViewModel = tabViewModel;
+                model.InstitutionName = (await _manageApi.GetOrganisations()).FirstOrDefault(x => x.UcasCode == ucasCode.ToUpperInvariant())?.OrganisationName;
 
                 return View("about", model);
             }
@@ -241,7 +235,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
 
             var enrichmentModel = ucasInstitutionEnrichmentGetModel?.EnrichmentModel;
             var aboutAccreditingTrainingProviders = await GetTrainingProviderViewModels(ucasCode, enrichmentModel, model);
-
+            
             model.AboutTrainingProviders = aboutAccreditingTrainingProviders;
 
             // The validation that needs to occurs are word count only on saving
@@ -250,8 +244,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
 
             if (!ModelState.IsValid)
             {
-                var tabViewModel = await GetTabViewModelAsync(ucasCode, "about");
-                model.TabViewModel = tabViewModel;
+                model.InstitutionName = (await _manageApi.GetOrganisations()).FirstOrDefault(x => x.UcasCode == ucasCode.ToUpperInvariant())?.OrganisationName;;
 
                 return View("about", model);
             }
@@ -321,21 +314,6 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
                 });
             }
             return providers;
-        }
-
-        private async Task<TabViewModel> GetTabViewModelAsync(string ucasCode, string currentTab)
-        {
-            var orgs = await _manageApi.GetOrganisations();
-            var organisationName = orgs.FirstOrDefault(o => ucasCode.Equals(o.UcasCode, StringComparison.InvariantCultureIgnoreCase))?.OrganisationName;
-            var result = new TabViewModel
-            {
-                CurrentTab = currentTab,
-                MultipleOrganisations = orgs.Count() > 1,
-                OrganisationName = organisationName,
-                UcasCode = ucasCode
-            };
-
-            return result;
         }
 
         public void ValidateModel(OrganisationViewModel model, bool wordCountValidationOnly)

@@ -24,7 +24,7 @@ namespace ManageCoursesUi.Tests
         [Test]
         public async Task Show()
         {
-            var ucasCode = "ucasCode";
+            var ucasCode = "UCASCODE";
             var organisationName = "organisationName";
             var currentTab = "courses";
             // Todo: fix this ObservableCollection.
@@ -67,17 +67,13 @@ namespace ManageCoursesUi.Tests
             Assert.NotNull(model);
             Assert.AreEqual(1, model.Providers.Count);
 
-            var tabViewModel = model.TabViewModel;
-            Assert.AreEqual(currentTab, tabViewModel.CurrentTab);
-            Assert.AreEqual(organisationName, tabViewModel.OrganisationName);
-            Assert.AreEqual(ucasCode, tabViewModel.UcasCode);
-            Assert.IsTrue(tabViewModel.MultipleOrganisations);
+            Assert.IsTrue(model.MultipleOrganisations);
         }
 
         [Test]
         public async Task RequestAccess()
         {
-            var ucasCode = "ucasCode";
+            var ucasCode = "UCASCODE";
             var organisationName = "organisationName";
             var currentTab = "request-access";
 
@@ -104,17 +100,13 @@ namespace ManageCoursesUi.Tests
             Assert.IsNotNull(viewResult);
             var model = viewResult.ViewData.Model as RequestAccessViewModel;
 
-            var tabViewModel = model.TabViewModel;
-            Assert.AreEqual(currentTab, tabViewModel.CurrentTab);
-            Assert.AreEqual(organisationName, tabViewModel.OrganisationName);
-            Assert.AreEqual(ucasCode, tabViewModel.UcasCode);
-            Assert.IsFalse(tabViewModel.MultipleOrganisations);
+            Assert.AreEqual(ucasCode, controller.ViewBag.UcasCode);
         }
 
         [Test]
         public async Task RequestAccessPost_invalid()
         {
-            var ucasCode = "ucasCode";
+            var ucasCode = "UCASCODE";
             var organisationName = "organisationName";
             var currentTab = "request-access";
 
@@ -141,17 +133,13 @@ namespace ManageCoursesUi.Tests
             Assert.IsNotNull(viewResult);
             var model = viewResult.ViewData.Model as RequestAccessViewModel;
 
-            var tabViewModel = model.TabViewModel;
-            Assert.AreEqual(currentTab, tabViewModel.CurrentTab);
-            Assert.AreEqual(organisationName, tabViewModel.OrganisationName);
-            Assert.AreEqual(ucasCode, tabViewModel.UcasCode);
-            Assert.IsFalse(tabViewModel.MultipleOrganisations);
+            Assert.AreEqual(ucasCode, controller.ViewBag.UcasCode);
         }
 
         [Test]
         public async Task RequestAccessPost()
         {
-            var ucasCode = "ucasCode";
+            var ucasCode = "UCASCODE";
             var viewModel = new RequestAccessViewModel { FirstName = "FirstName", LastName = "LastName" };
             var tempKey = "RequestAccess_To_Name";
 
@@ -180,7 +168,7 @@ namespace ManageCoursesUi.Tests
         [Test]
         public async Task About()
         {
-            var ucasCode = "ucasCode";
+            var ucasCode = "UCASCODE";
             var organisationName = "OrganisationName";
 
             var userOrganisations = new List<UserOrganisation>
@@ -192,7 +180,6 @@ namespace ManageCoursesUi.Tests
                 }
             };
 
-            var currentTab = "about";
             var trainWithUs = "TrainWithUs";
             var trainWithDisability = "TrainWithDisability";
 
@@ -246,16 +233,12 @@ namespace ManageCoursesUi.Tests
             Assert.IsNotNull(viewResult);
             var organisationViewModel = viewResult.ViewData.Model as OrganisationViewModel;
 
-            var tabViewModel = organisationViewModel.TabViewModel;
-            Assert.AreEqual(currentTab, tabViewModel.CurrentTab);
-            Assert.AreEqual(organisationName, tabViewModel.OrganisationName);
-            Assert.AreEqual(ucasCode, tabViewModel.UcasCode);
+            Assert.AreEqual(organisationName, organisationViewModel.InstitutionName);
             Assert.AreEqual(trainWithUs, organisationViewModel.TrainWithUs);
             Assert.AreEqual(2, organisationViewModel.AboutTrainingProviders.Count);
             Assert.AreEqual(description, organisationViewModel.AboutTrainingProviders.First(x => x.InstitutionCode == ucasCode + 2).Description);
             Assert.AreEqual(institutionName, organisationViewModel.AboutTrainingProviders.First(x => x.InstitutionCode == ucasCode + 1).InstitutionName);
             Assert.AreEqual(trainWithDisability, organisationViewModel.TrainWithDisability);
-            Assert.IsFalse(tabViewModel.MultipleOrganisations);
             Assert.AreEqual(now, organisationViewModel.LastPublishedTimestampUtc);
             Assert.AreEqual(EnumStatus.Published, organisationViewModel.Status);
         }
@@ -263,7 +246,7 @@ namespace ManageCoursesUi.Tests
         [Test]
         public async Task AboutPost_SaveOrganisation()
         {
-            var ucasCode = "ucasCode";
+            var ucasCode = "UCASCODE";
             var viewModel = new OrganisationViewModel
             {
                 AboutTrainingProviders = new List<TrainingProviderViewModel>()
@@ -325,7 +308,7 @@ namespace ManageCoursesUi.Tests
         [Test]
         public async Task AboutPost_PublishOrganisation_false()
         {
-            var ucasCode = "ucasCode";
+            var ucasCode = "UCASCODE";
             var institutionName = "InstitutionName";
 
             var viewModel = new OrganisationViewModel
@@ -389,7 +372,7 @@ namespace ManageCoursesUi.Tests
         [Test]
         public async Task AboutPost_PublishOrganisation_true()
         {
-            var ucasCode = "ucasCode";
+            var ucasCode = "UCASCODE";
             var viewModel = new OrganisationViewModel
             {
                 AboutTrainingProviders = new List<TrainingProviderViewModel>(),
@@ -449,7 +432,7 @@ namespace ManageCoursesUi.Tests
         [Test]
         public async Task AboutPost_PublishOrganisation_invalid()
         {
-            var ucasCode = "ucasCode";
+            var ucasCode = "UCASCODE";
 
             var organisationName = "OrganisationName";
 
@@ -504,6 +487,9 @@ namespace ManageCoursesUi.Tests
 
             var apiMock = new Mock<IManageApi>();
 
+            apiMock.Setup(x => x.GetOrganisation(ucasCode))
+                .ReturnsAsync(userOrganisations[0]);
+
             apiMock.Setup(x => x.GetOrganisations())
                 .ReturnsAsync(userOrganisations);
 
@@ -524,16 +510,12 @@ namespace ManageCoursesUi.Tests
             Assert.IsNotNull(viewResult);
             var organisationViewModel = viewResult.ViewData.Model as OrganisationViewModel;
 
-            var tabViewModel = organisationViewModel.TabViewModel;
-            Assert.AreEqual(currentTab, tabViewModel.CurrentTab);
-            Assert.AreEqual(organisationName, tabViewModel.OrganisationName);
-            Assert.AreEqual(ucasCode, tabViewModel.UcasCode);
+            Assert.AreEqual(organisationName, organisationViewModel.InstitutionName);
             Assert.AreEqual(trainWithUs, organisationViewModel.TrainWithUs);
             Assert.AreEqual(2, organisationViewModel.AboutTrainingProviders.Count);
             Assert.AreEqual(description, organisationViewModel.AboutTrainingProviders.First(x => x.InstitutionCode == ucasCode + 2).Description);
             Assert.AreEqual(institutionName, organisationViewModel.AboutTrainingProviders.First(x => x.InstitutionCode == ucasCode + 1).InstitutionName);
             Assert.AreEqual(trainWithDisability, organisationViewModel.TrainWithDisability);
-            Assert.IsFalse(tabViewModel.MultipleOrganisations);
             Assert.AreEqual(now, organisationViewModel.LastPublishedTimestampUtc);
             Assert.AreEqual(EnumStatus.Published, organisationViewModel.Status);
         }
@@ -541,7 +523,7 @@ namespace ManageCoursesUi.Tests
         [Test]
         public void AboutPost_ModelState_WordCount()
         {
-            var ucasCode = "ucasCode";
+            var ucasCode = "UCASCODE";
             var exceed100Words = "";
             for (int i = 0; i < 101; i++)
             {
@@ -582,6 +564,9 @@ namespace ManageCoursesUi.Tests
             {
                 EnrichmentModel = enrichmentModel
             };
+
+            apiMock.Setup(x => x.GetOrganisations())
+                .ReturnsAsync(new List<UserOrganisation> {new UserOrganisation()});
 
             apiMock.Setup(x => x.GetEnrichmentOrganisation(ucasCode))
                 .ReturnsAsync(ucasInstitutionEnrichmentGetModel);

@@ -1,18 +1,17 @@
 ﻿@model CourseListViewModel
 
 @{
-  Layout = "Shared/_OrganisationDetailsViewLayout";
   ViewBag.Title = Model.InstitutionName;
 }
 
-@if (Model.TabViewModel.MultipleOrganisations) {
+@if (Model.MultipleOrganisations) {
   <nav class="govuk-breadcrumbs">
     <ol class="govuk-breadcrumbs__list">
       <li class="govuk-breadcrumbs__list-item">
         <a href="@Url.Action("index", "Organisations")" class="govuk-breadcrumbs__link">Organisations</a>
       </li>
       <li class="govuk-breadcrumbs__list-item" aria-current="page">
-        @Model.TabViewModel.OrganisationName
+        @Model.InstitutionName
       </li>
     </ol>
   </nav>
@@ -24,7 +23,7 @@
 
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
-      <h1 class="govuk-heading-xl">@Model.TabViewModel.OrganisationName</h1>
+      <h1 class="govuk-heading-xl">@Model.InstitutionName</h1>
       <h2 class="govuk-heading-l">Step 1. About your organisation</h2>
       <p class="govuk-body">You need to add a description of your organisation - this is a chance to tell applicants why they should train with you. You should also say what you do for candidates with disabilities and other needs, and check your contact details to make sure they're correct.</p>
       <p class="govuk-body">Once you’ve published your organisation information, it will show on each of your course pages. You’ll have to add your course details separately in Step 2 below.</p>
