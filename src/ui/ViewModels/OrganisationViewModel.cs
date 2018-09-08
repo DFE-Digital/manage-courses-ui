@@ -6,7 +6,7 @@ using GovUk.Education.ManageCourses.Ui.ViewModels.Enums;
 
 namespace GovUk.Education.ManageCourses.Ui.ViewModels
 {
-    public class OrganisationViewModel : TabbedViewModel
+    public class OrganisationViewModel
     {
         public OrganisationViewModel()
         {
@@ -14,6 +14,8 @@ namespace GovUk.Education.ManageCourses.Ui.ViewModels
         }
 
         public string InstitutionCode { get; set; }
+
+        public string InstitutionName { get; set; }
 
         [RegularExpression(@"^\s*(\S+\s+|\S+$){0,250}$", ErrorMessage = "Reduce the word count in training with you")]
         [Required(ErrorMessage = "Enter details about training with you")]

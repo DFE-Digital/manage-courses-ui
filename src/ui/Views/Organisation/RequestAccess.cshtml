@@ -1,6 +1,5 @@
 @model RequestAccessViewModel
 @{
-  Layout = "Shared/_OrganisationDetailsViewLayout";
   var fnv = ViewData.ModelState["FirstName"] != null && ViewData.ModelState["FirstName"].Errors.Any();
   var lnv = ViewData.ModelState["LastName"] != null && ViewData.ModelState["LastName"].Errors.Any();
   var eav = ViewData.ModelState["EmailAddress"] != null && ViewData.ModelState["EmailAddress"].Errors.Any();
@@ -8,7 +7,7 @@
   var rv = ViewData.ModelState["Reason"] != null && ViewData.ModelState["Reason"].Errors.Any();
 }
 
-<a href="@Url.Action("Show", "Organisation", new {ucasCode = @Model.TabViewModel.UcasCode})" class="govuk-back-link">Back</a>
+<a href="@Url.Action("Show", "Organisation", new {ucasCode = @ViewBag.UcasCode})" class="govuk-back-link">Back</a>
 
 <main role="main" class="govuk-main-wrapper" id="main-content">
   @await Html.PartialAsync("~/Views/Shared/_Alerts.cshtml")
