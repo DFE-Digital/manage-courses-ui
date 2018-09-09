@@ -26,7 +26,6 @@ namespace ManageCoursesUi.Tests
         {
             var ucasCode = "UCASCODE";
             var organisationName = "organisationName";
-            var currentTab = "courses";
             // Todo: fix this ObservableCollection.
             var instCourses = new InstitutionCourses
             {
@@ -75,7 +74,6 @@ namespace ManageCoursesUi.Tests
         {
             var ucasCode = "UCASCODE";
             var organisationName = "organisationName";
-            var currentTab = "request-access";
 
             var orgs = new List<UserOrganisation>
             {
@@ -108,7 +106,6 @@ namespace ManageCoursesUi.Tests
         {
             var ucasCode = "UCASCODE";
             var organisationName = "organisationName";
-            var currentTab = "request-access";
 
             var orgs = new List<UserOrganisation>
             {
@@ -445,7 +442,6 @@ namespace ManageCoursesUi.Tests
                 }
             };
 
-            var currentTab = "about";
             var trainWithUs = "TrainWithUs";
             var trainWithDisability = "TrainWithDisability";
 
