@@ -297,7 +297,7 @@ namespace ManageCoursesUi.Tests
             var actionResult = result as RedirectToActionResult;
 
             Assert.IsNotNull(actionResult);
-            Assert.AreEqual("About", actionResult.ActionName);
+            Assert.AreEqual("Details", actionResult.ActionName);
             Assert.AreEqual("Organisation", actionResult.ControllerName);
             Assert.AreEqual(ucasCode, actionResult.RouteValues[ucasCode]);
         }
@@ -422,7 +422,7 @@ namespace ManageCoursesUi.Tests
             var actionResult = result as RedirectToActionResult;
 
             Assert.IsNotNull(actionResult);
-            Assert.AreEqual("About", actionResult.ActionName);
+            Assert.AreEqual("Details", actionResult.ActionName);
             Assert.AreEqual(ucasCode, actionResult.RouteValues[ucasCode]);
         }
 

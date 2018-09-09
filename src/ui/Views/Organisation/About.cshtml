@@ -8,10 +8,11 @@
   var workflowStatus = Model.GetWorkflowStatus();
 }
 
-<a href="@Url.Action("Show", "Organisation", new {ucasCode = Model.InstitutionCode})" class="govuk-back-link">Back</a>
+<a href="@Url.Action("Details", "Organisation", new {ucasCode = Model.InstitutionCode})" class="govuk-back-link">Back</a>
 
 <main role="main" class="govuk-main-wrapper" id="main-content">
   @await Html.PartialAsync("~/Views/Shared/_Alerts.cshtml")
+  @await Html.PartialAsync("ErrorSummary")
 
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
@@ -27,7 +28,6 @@
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
       <form asp-controller="Organisation" asp-action="About" method="post" data-module="form">
-        <input type="hidden" asp-for="@Model.PublishOrganisation" value="false"></input>
         <input type="hidden" asp-for="@Model.InstitutionCode"></input>
         @await Html.PartialAsync("Shared/ErrorSummary")
         <p class="govuk-body">This is your chance to tell applicants why they should choose to train with you. You could describe any advantages and special
@@ -92,105 +92,13 @@
           <input type="submit" class="govuk-button" value="Save" />
         </div>
         <div class="form-group">
-          <p class="govuk-body"><a href="@Url.Action("About", "Organisation")" class="govuk-link">Cancel changes</a></p>
+          <p class="govuk-body"><a href="@Url.Action("Details", "Organisation")" class="govuk-link">Cancel changes</a></p>
         </div>
       </form>
     </div>
     <div class="govuk-grid-column-one-third">
 
       <aside class="related">
-        @switch(workflowStatus)
-        {
-          case WorkflowStatus.Blank :
-            <strong class="govuk-tag govuk-tag--empty">Empty</strong>
-            <p class="govuk-body">You need to complete and publish this information.</p>
-
-            <hr class="related__section-break" />
-            <h4 class="govuk-heading-m">Preview on a course</h4>
-            <p class="govuk-body">This information will show on all your courses.</p>
-            <p class="govuk-body">Preview any course to see how it will look to applicants.</p>
-
-            <hr class="related__section-break">
-            <h4 class="govuk-heading-m">Publish</h4>
-            <p class="govuk-body">Applicants will see published information from October.</p>
-            <p class="govuk-body">You can make changes to this after publishing it.</p>
-
-            <form asp-controller="Organisation" asp-action="about" method="post">
-              <input type="submit" class="govuk-button" value="Publish" />
-              <input type="hidden" asp-for="@Model.PublishOrganisation" value="true" />
-            </form>
-            break;
-          case WorkflowStatus.InitialDraft :
-            <strong class="govuk-tag govuk-tag--draft">Draft</strong>
-            <p class="govuk-body">You have unpublished changes.</p>
-
-            <hr class="related__section-break" />
-            <h4 class="govuk-heading-m">Preview on a course</h4>
-            <p class="govuk-body">This information will show on all your courses.</p>
-            <p class="govuk-body">Preview any course to see how it will look to applicants.</p>
-
-            <hr class="related__section-break">
-            <h4 class="govuk-heading-m">Publish</h4>
-            <p class="govuk-body">Applicants will see published information from October.</p>
-            <p class="govuk-body">You can make changes to this after publishing it.</p>
-
-            <form asp-controller="Organisation" asp-action="about" method="post">
-              <input type="submit" class="govuk-button" value="Publish" />
-              <input type="hidden" asp-for="@Model.PublishOrganisation" value="true" />
-            </form>
-            break;
-          case WorkflowStatus.Published :
-            <strong class="govuk-tag govuk-tag--published">Published</strong>
-            <p class="govuk-body">Applicants will see this on all your courses from October.</p>
-            <p class="govuk-body">Last published on @Model.LastPublishedTimestampUtc.DateString()</p>
-
-            break;
-          case WorkflowStatus.SubsequentDraft :
-            <strong class="govuk-tag govuk-tag--draft">Draft</strong>
-            <p class="govuk-body">Last published on @Model.LastPublishedTimestampUtc.DateString()</p>
-            <p class="govuk-body">You have unpublished changes.</p>
-
-            <hr class="related__section-break" />
-            <h4 class="govuk-heading-m">Preview on a course</h4>
-            <p class="govuk-body">This information will show on all your courses.</p>
-            <p class="govuk-body">Preview any course to see how it will look to applicants.</p>
-
-            <hr class="related__section-break">
-            <h4 class="govuk-heading-m">Publish</h4>
-            <p class="govuk-body">Applicants will see published information from October.</p>
-            <p class="govuk-body">You can make changes to this after publishing it.</p>
-
-            <form asp-controller="Organisation" asp-action="about" method="post">
-              <input type="hidden" asp-for="@Model.PublishOrganisation" value="true" />
-              <input type="submit" class="govuk-button" value="Publish" />
-            </form>
-            break;
-          case WorkflowStatus.BlankSubsequentDraft :
-            <strong class="govuk-tag govuk-tag--draft">Empty</strong>
-            <p class="govuk-body">Last published on @Model.LastPublishedTimestampUtc.DateString()</p>
-            <p class="govuk-body">You have unpublished changes.</p>
-
-            <hr class="related__section-break" />
-            <h4 class="govuk-heading-m">Preview on a course</h4>
-            <p class="govuk-body">This information will show on all your courses.</p>
-            <p class="govuk-body">Preview any course to see how it will look to applicants.</p>
-
-            <hr class="related__section-break">
-            <h4 class="govuk-heading-m">Publish</h4>
-            <p class="govuk-body">Applicants will see published information from October.</p>
-            <p class="govuk-body">You can make changes to this after publishing it.</p>
-
-            <form asp-controller="Organisation" asp-action="about" method="post">
-              <input type="hidden" asp-for="@Model.PublishOrganisation" value="true" />
-              <input type="submit" class="govuk-button" value="Publish" />
-            </form>
-            break;
-          default:
-            break;
-        }
-
-        <hr class="related__section-break">
-
         @await Html.PartialAsync("FormattingAdvice")
       </aside>
 

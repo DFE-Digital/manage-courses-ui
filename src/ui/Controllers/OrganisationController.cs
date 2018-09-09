@@ -61,6 +61,25 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
         }
 
         [HttpGet]
+        [Route("{ucasCode}/details")]
+        public async Task<IActionResult> Details(string ucasCode)
+        {
+            var ucasInstitutionEnrichmentGetModel = await _manageApi.GetEnrichmentOrganisation(ucasCode);
+
+            ucasInstitutionEnrichmentGetModel = ucasInstitutionEnrichmentGetModel ?? new UcasInstitutionEnrichmentGetModel { EnrichmentModel = new InstitutionEnrichmentModel() { AccreditingProviderEnrichments = new ObservableCollection<AccreditingProviderEnrichment>() } };
+
+            var enrichmentModel = ucasInstitutionEnrichmentGetModel.EnrichmentModel;
+            var aboutAccreditingTrainingProviders = await GetTrainingProviderViewModels(ucasCode, enrichmentModel);
+
+            var model = GetOrganisationViewModel(ucasCode, ucasInstitutionEnrichmentGetModel);
+            model.InstitutionName = (await _manageApi.GetOrganisations()).FirstOrDefault(x => x.UcasCode == ucasCode.ToUpperInvariant())?.OrganisationName;;
+
+            model.AboutTrainingProviders = aboutAccreditingTrainingProviders;
+
+            return View(model);
+        }
+
+        [HttpGet]
         [Route("{ucasCode}/about")]
         public async Task<IActionResult> About(string ucasCode)
         {
@@ -207,7 +226,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             {
                 model.InstitutionName = (await _manageApi.GetOrganisations()).FirstOrDefault(x => x.UcasCode == ucasCode.ToUpperInvariant())?.OrganisationName;
 
-                return View("about", model);
+                return View("Details", model);
             }
             else
             {
@@ -220,7 +239,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
                     TempData["MessageTitle"] = "Your changes have been published";
                     TempData["MessageBodyHtml"] = "<p class=\"govuk-body\">Applicants will see this on all your courses from October.</p>";
 
-                    return RedirectToAction("About", new { ucasCode });
+                    return RedirectToAction("Details", new { ucasCode });
                 }
                 else
                 {
@@ -245,7 +264,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             {
                 model.InstitutionName = (await _manageApi.GetOrganisations()).FirstOrDefault(x => x.UcasCode == ucasCode.ToUpperInvariant())?.OrganisationName;;
 
-                return View("about", model);
+                return View("Details", model);
             }
             else
             {
@@ -265,7 +284,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
                     if (editIsEmpty)
                     {
                         // Draft state is "New" and no changes have been made - don't insert a draft
-                        return RedirectToAction("About", "Organisation", new { ucasCode });
+                        return RedirectToAction("Details", "Organisation", new { ucasCode });
                     }
                     enrichmentModel = new InstitutionEnrichmentModel();
                 }
@@ -281,7 +300,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
                 TempData["MessageType"] = "success";
                 TempData["MessageTitle"] = "Your changes have been saved";
                 TempData["MessageBodyHtml"] = "<p class=\"govuk-body\">Preview any course to see how it will look to applicants.</p>";
-                return RedirectToAction("About", "Organisation", new { ucasCode });
+                return RedirectToAction("Details", "Organisation", new { ucasCode });
             }
         }
 
