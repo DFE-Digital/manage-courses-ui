@@ -12,8 +12,8 @@
 <a href="@Url.Action("Show", "Organisation", new {ucasCode = Model.Course.UcasCode})" class="govuk-back-link">Back</a>
 
 <main role="main" class="govuk-main-wrapper" id="main-content">
-    @await Html.PartialAsync("~/Views/Shared/_Alerts.cshtml")
-    @await Html.PartialAsync("Shared/ErrorSummaryCourseOverview.cshtml")
+  @await Html.PartialAsync("~/Views/Shared/_Alerts.cshtml")
+  @await Html.PartialAsync("Shared/ErrorSummaryCourseOverview.cshtml")
 
   <h1 class="govuk-heading-xl">
     <span class="govuk-caption-xl">@Model.Course.Type</span>
@@ -96,7 +96,7 @@
           </dl>
         </div>
 
-      @if(Model.AllowPreview && Model.Course.StatusAsEnum != CourseVariantStatus.NotRunning)
+      @if(Model.Course.StatusAsEnum != CourseVariantStatus.NotRunning)
       {
         @await Html.PartialAsync("shared/_AboutCourseOverview", Model.CourseEnrichment)
 
@@ -135,7 +135,7 @@
     </div>
 
     <div class="govuk-grid-column-one-third">
-    @if(Model.AllowPreview && Model.Course.StatusAsEnum != CourseVariantStatus.NotRunning)
+    @if(Model.Course.StatusAsEnum != CourseVariantStatus.NotRunning)
     {
       <aside class="related">
         @switch(courseEnrichment.DeterminePublicationState())
@@ -153,49 +153,42 @@
 
         @if (courseEnrichment.DeterminePublicationState() == WorkflowStatus.Blank)
         {
-            <p class="govuk-body">You need to complete and publish this information.</p>
-            <hr class="related__section-break">
+          <p class="govuk-body">You need to complete and publish this information.</p>
+          <hr class="related__section-break">
         }
 
         @if (courseEnrichment.DeterminePublicationState() == WorkflowStatus.SubsequentDraft)
         {
-            <p class="govuk-body">You have unpublished changes.</p>
-            <p class="govuk-body">Last saved:<br />@courseEnrichment.DraftLastUpdatedUtc.DateString()</p>
-            <hr class="related__section-break">
+          <p class="govuk-body">You have unpublished changes.</p>
+          <p class="govuk-body">Last saved:<br />@courseEnrichment.DraftLastUpdatedUtc.DateString()</p>
+          <hr class="related__section-break">
         }
 
         @if (courseEnrichment.LastPublishedUtc.HasValue)
         {
-            <p class="govuk-body">Applicants will see this content from October.</p>
-            <p class="govuk-body">Last published:<br />@courseEnrichment.LastPublishedUtc.DateString()</p>
-            <hr class="related__section-break">
+          <p class="govuk-body">Applicants will see this content from October.</p>
+          <p class="govuk-body">Last published:<br />@courseEnrichment.LastPublishedUtc.DateString()</p>
+          <hr class="related__section-break">
         }
 
         @if (courseEnrichment.DeterminePublicationState() != WorkflowStatus.Published)
         {
+          <h4 class="govuk-heading-m">Preview</h4>
+          <p class="govuk-body">See how this course looks with your changes.</p>
+          <p class="govuk-body">Preview your course to check for mistakes before publishing.</p>
+          <p class="govuk-body"><a asp-action="Preview">Preview course</a></p>
 
-            if(Model.AllowPreview)
-            {
-              <h4 class="govuk-heading-m">Preview</h4>
-              <p class="govuk-body">See how this course looks with your changes.</p>
-              <p class="govuk-body">Preview your course to check for mistakes before publishing.</p>
-              <p class="govuk-body"><a asp-action="Preview">Preview course</a></p>
+          <hr class="related__section-break">
 
-              <hr class="related__section-break">
-            }
+          <h4 class="govuk-heading-m">Publish</h4>
+          <p class="govuk-body">Publish your changes.</p>
+          <p class="govuk-body">Applicants will see published content from October.</p>
 
-            if(Model.AllowPublish)
-            {
-              <h4 class="govuk-heading-m">Publish</h4>
-              <p class="govuk-body">Publish your changes.</p>
-              <p class="govuk-body">Applicants will see published content from October.</p>
+          <form asp-route="publish" method="post">
+            <input type="submit" class="govuk-button" value="Publish" />
+          </form>
 
-              <form asp-route="publish" method="post">
-                <input type="submit" class="govuk-button" value="Publish" />
-              </form>
-
-              <hr class="related__section-break">
-            }
+          <hr class="related__section-break">
         }
 
         @if(Model.AllowLiveView)
@@ -204,6 +197,7 @@
           <p class="govuk-body">See how this course currently looks to applicants:</p>
           <p class="govuk-body"><a href="@Model.LiveSearchUrl">View on website</a></p>
         }
+
       </aside>
     }
     </div>

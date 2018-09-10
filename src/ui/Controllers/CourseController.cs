@@ -61,10 +61,6 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
         [Route("{instCode}/course/{accreditingProviderId=self}/{ucasCode}", Name = "publish")]
         public async Task<IActionResult> ShowPublish(string instCode, string accreditingProviderId, string ucasCode)
         {
-            if (!featureFlags.ShowCoursePublish)
-            {
-                return RedirectToAction("Show", new { instCode, accreditingProviderId, ucasCode });
-            }
             var course = await _manageApi.GetCourseByUcasCode(instCode, ucasCode);
             var isSalary = course.ProgramType.Equals("SS", StringComparison.InvariantCultureIgnoreCase);
             var enrichment = await _manageApi.GetEnrichmentCourse(instCode, ucasCode);
@@ -102,11 +98,6 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
         [Route("{instCode}/course/{accreditingProviderId=self}/{ucasCode}/preview")]
         public IActionResult Preview(string instCode, string accreditingProviderId, string ucasCode)
         {
-            if (!featureFlags.ShowCoursePreview)
-            {
-                return RedirectToAction("Show", new { instCode, accreditingProviderId, ucasCode });
-            }
-
             var ucasInstData = _manageApi.GetUcasInstitution(instCode).Result;
             var ucasCourseData = _manageApi.GetCourseByUcasCode(instCode, ucasCode).Result;
             var orgEnrichmentData = _manageApi.GetEnrichmentOrganisation(instCode).Result;
@@ -410,15 +401,13 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
         {
             TempData["MessageType"] = "success";
             TempData["MessageTitle"] = "Your changes have been saved";
-            if (featureFlags.ShowCoursePreview)
-            {
-                var previewLink = Url.Action("Preview");
-                TempData["MessageBodyHtml"] = $@"
-                    <p class=""govuk-body"">
-                        <a href='{previewLink}'>Preview your course</a>
-                        to check for mistakes before publishing.
-                    </p>";
-            }
+            var previewLink = Url.Action("Preview");
+            var messageBodyHtml = $@"
+                <p class=""govuk-body"">
+                    <a href='{previewLink}'>Preview your course</a>
+                    to check for mistakes before publishing.
+                </p>";
+            TempData["MessageBodyHtml"] = messageBodyHtml;
         }
 
         private VariantViewModel LoadViewModel(UserOrganisation org, ApiClient.Course course, bool multipleOrganisations, UcasCourseEnrichmentGetModel ucasCourseEnrichmentGetModel, CourseRouteDataViewModel routeData)
@@ -476,8 +465,6 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
                 Course = courseVariant,
                 CourseEnrichment = courseEnrichmentViewModel,
                 LiveSearchUrl = searchAndCompareUrlService.GetCoursePageUri(org.UcasCode, courseVariant.ProgrammeCode),
-                AllowPreview = featureFlags.ShowCoursePreview,
-                AllowPublish = featureFlags.ShowCoursePublish,
                 AllowLiveView = featureFlags.ShowCourseLiveView,
                 IsSalary = isSalary
             };

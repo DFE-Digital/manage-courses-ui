@@ -208,23 +208,6 @@ namespace ManageCoursesUi.Tests
         }
 
         [Test]
-        public void Preview_RespectsFeatureFlag()
-        {
-            var flags = new Mock<IFeatureFlags>();
-            flags.Setup(x => x.ShowCoursePreview).Returns(false).Verifiable();
-
-            var courseController = new CourseController(new Mock<IManageApi>().Object, new CourseMapper(), new Mock<ISearchAndCompareUrlService>().Object, flags.Object);
-            var redirectResult = courseController.Preview("abc", "def", "ghi") as RedirectToActionResult;
-
-            flags.VerifyAll();
-            Assert.NotNull(redirectResult);
-            Assert.AreEqual("Show", redirectResult.ActionName);
-            Assert.AreEqual("abc", redirectResult.RouteValues["instCode"]);
-            Assert.AreEqual("def", redirectResult.RouteValues["accreditingProviderId"]);
-            Assert.AreEqual("ghi", redirectResult.RouteValues["ucasCode"]);
-        }
-
-        [Test]
         public void ShowPublish()
         {
             var enrichmentModel = new CourseEnrichmentModel
@@ -271,23 +254,6 @@ namespace ManageCoursesUi.Tests
             Assert.AreEqual("AboutCourse", objectToVerify.AboutCourse);
             Assert.AreEqual("InterviewProcess", objectToVerify.InterviewProcess);
             Assert.AreEqual("HowSchoolPlacementsWork", objectToVerify.HowSchoolPlacementsWork);
-        }
-
-        [Test]
-        public void ShowPublish_RespectsFeatureFlag()
-        {
-            var flags = new Mock<IFeatureFlags>();
-            flags.Setup(x => x.ShowCoursePublish).Returns(false).Verifiable();
-
-            var courseController = new CourseController(new Mock<IManageApi>().Object, new CourseMapper(), new Mock<ISearchAndCompareUrlService>().Object, flags.Object);
-            var redirectResult = courseController.ShowPublish("abc", "def", "ghi").Result as RedirectToActionResult;
-
-            flags.VerifyAll();
-            Assert.NotNull(redirectResult);
-            Assert.AreEqual("Show", redirectResult.ActionName);
-            Assert.AreEqual("abc", redirectResult.RouteValues["instCode"]);
-            Assert.AreEqual("def", redirectResult.RouteValues["accreditingProviderId"]);
-            Assert.AreEqual("ghi", redirectResult.RouteValues["ucasCode"]);
         }
 
         [Test]
@@ -387,14 +353,8 @@ namespace ManageCoursesUi.Tests
 
             var tempData = controller.TempData;
 
-            tempDataMock.VerifySet(x => x["MessageType"] = "success", Times.Once);
-            tempDataMock.VerifySet(x => x["MessageTitle"] = "Your changes have been saved", Times.Once);
-            tempDataMock.VerifySet(x => x["MessageBodyHtml"] = $@"
-                    <p class=""govuk-body"">
-                        <a href='{previewLink}'>Preview your course</a>
-                        to check for mistakes before publishing.
-                    </p>", Times.Once);
-
+            VerifyTempDataIsSet(tempDataMock, previewLink);
+            
             var routeValues = redirectToActionResult.RouteValues;
 
             Assert.AreEqual(TestHelper.InstitutionCode, routeValues["instCode"]);
@@ -504,13 +464,7 @@ namespace ManageCoursesUi.Tests
 
             var tempData = controller.TempData;
 
-            tempDataMock.VerifySet(x => x["MessageType"] = "success", Times.Once);
-            tempDataMock.VerifySet(x => x["MessageTitle"] = "Your changes have been saved", Times.Once);
-            tempDataMock.VerifySet(x => x["MessageBodyHtml"] = $@"
-                    <p class=""govuk-body"">
-                        <a href='{previewLink}'>Preview your course</a>
-                        to check for mistakes before publishing.
-                    </p>", Times.Once);
+            VerifyTempDataIsSet(tempDataMock, previewLink);
 
             var routeValues = redirectToActionResult.RouteValues;
 
@@ -623,14 +577,8 @@ namespace ManageCoursesUi.Tests
 
             var tempData = controller.TempData;
 
-            tempDataMock.VerifySet(x => x["MessageType"] = "success", Times.Once);
-            tempDataMock.VerifySet(x => x["MessageTitle"] = "Your changes have been saved", Times.Once);
-            tempDataMock.VerifySet(x => x["MessageBodyHtml"] = $@"
-                    <p class=""govuk-body"">
-                        <a href='{previewLink}'>Preview your course</a>
-                        to check for mistakes before publishing.
-                    </p>", Times.Once);
-
+            VerifyTempDataIsSet(tempDataMock, previewLink);
+           
             var routeValues = redirectToActionResult.RouteValues;
 
             Assert.AreEqual(TestHelper.InstitutionCode, routeValues["instCode"]);
@@ -639,7 +587,7 @@ namespace ManageCoursesUi.Tests
 
             manageApi.Verify(x => x.SaveEnrichmentCourse(TestHelper.InstitutionCode, TestHelper.TargetedUcasCode, It.Is<CourseEnrichmentModel>(c => Check(c, viewModel))), Times.Once());
         }
-
+        
         [Test]
         public async Task Fees()
         {
@@ -748,16 +696,8 @@ namespace ManageCoursesUi.Tests
 
             var tempData = controller.TempData;
 
-
-            tempDataMock.VerifySet(x => x["MessageType"] = "success", Times.Once);
-            tempDataMock.VerifySet(x => x["MessageType"] = "success", Times.Once);
-            tempDataMock.VerifySet(x => x["MessageTitle"] = "Your changes have been saved", Times.Once);
-            tempDataMock.VerifySet(x => x["MessageBodyHtml"] = $@"
-                    <p class=""govuk-body"">
-                        <a href='{previewLink}'>Preview your course</a>
-                        to check for mistakes before publishing.
-                    </p>", Times.Once);
-
+            VerifyTempDataIsSet(tempDataMock, previewLink);
+            
             var routeValues = redirectToActionResult.RouteValues;
 
             Assert.AreEqual(TestHelper.InstitutionCode, routeValues["instCode"]);
@@ -816,11 +756,18 @@ namespace ManageCoursesUi.Tests
 
         private class MockFeatureFlags : IFeatureFlags
         {
-            public bool ShowCoursePreview => true;
-
-            public bool ShowCoursePublish => true;
-
             public bool ShowCourseLiveView => true;
+        }
+
+        private void VerifyTempDataIsSet(Mock<ITempDataDictionary> tempDataMock, string previewLink)
+        {
+            tempDataMock.VerifySet(x => x["MessageType"] = "success", Times.Once);
+            tempDataMock.VerifySet(x => x["MessageTitle"] = "Your changes have been saved", Times.Once);
+            tempDataMock.VerifySet(x => x["MessageBodyHtml"] =  $@"
+                <p class=""govuk-body"">
+                    <a href='{previewLink}'>Preview your course</a>
+                    to check for mistakes before publishing.
+                </p>", Times.Once);
         }
     }
 }

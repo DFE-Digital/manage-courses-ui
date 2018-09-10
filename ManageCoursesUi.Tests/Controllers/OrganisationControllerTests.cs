@@ -600,10 +600,6 @@ namespace ManageCoursesUi.Tests
 
         private class MockFeatureFlags : IFeatureFlags
         {
-            public bool ShowCoursePreview => true;
-
-            public bool ShowCoursePublish => true;
-
             public bool ShowCourseLiveView => true;
         }
     }
