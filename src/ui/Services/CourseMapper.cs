@@ -38,6 +38,12 @@ namespace GovUk.Education.ManageCourses.Ui.Services
             // todo refactor out from Extension Method
             var routeName = new CourseVariantViewModel { Route = ucasCourseData?.ProgramType ?? "" }.GetRoute();
             var isSalaried = string.Equals(ucasCourseData?.ProgramType, "ss", StringComparison.InvariantCultureIgnoreCase);
+            var fees = courseEnrichmentModel.FeeUkEu.HasValue ? new Fees
+            {
+                Uk = (int) (courseEnrichmentModel.FeeUkEu ?? 0),
+                    Eu = (int) (courseEnrichmentModel.FeeUkEu ?? 0),
+                    International = (int) (courseEnrichmentModel.FeeInternational ?? 0),
+            } : null;
 
             var mappedCourse = new SearchAndCompare.Domain.Models.Course
             {
@@ -79,12 +85,7 @@ namespace GovUk.Education.ManageCourses.Ui.Services
                             }
 
                         }).ToList()),
-                Fees = new Fees
-                {
-                    Uk = (int) (courseEnrichmentModel.FeeUkEu ?? 0), 
-                    Eu = (int) (courseEnrichmentModel.FeeUkEu ?? 0),
-                    International = (int) (courseEnrichmentModel.FeeInternational ?? 0),
-                },
+                Fees = fees,
                 
                 IsSalaried = isSalaried,                
 

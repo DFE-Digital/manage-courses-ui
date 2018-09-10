@@ -1,15 +1,14 @@
 @model OrganisationViewModel
 
 @{
-  Layout = "Shared/_OrganisationDetailsViewLayout";
-  ViewBag.Title = Model.TabViewModel.OrganisationName;
+  ViewBag.Title = Model.InstitutionName;
   var train_with_us = ViewData.ModelState["TrainWithUs"] != null && ViewData.ModelState["TrainWithUs"].Errors.Any();
   var about_training_provider = ViewData.ModelState["AboutTrainingProvider"] != null && ViewData.ModelState["AboutTrainingProvider"].Errors.Any();
   var train_with_disability = ViewData.ModelState["TrainWithDisability"] != null && ViewData.ModelState["TrainWithDisability"].Errors.Any();
   var workflowStatus = Model.GetWorkflowStatus();
 }
 
-<a href="@Url.Action("Show", "Organisation", new {ucasCode = @Model.TabViewModel.UcasCode})" class="govuk-back-link">Back</a>
+<a href="@Url.Action("Show", "Organisation", new {ucasCode = Model.InstitutionCode})" class="govuk-back-link">Back</a>
 
 <main role="main" class="govuk-main-wrapper" id="main-content">
   @await Html.PartialAsync("~/Views/Shared/_Alerts.cshtml")
@@ -18,7 +17,7 @@
     <div class="govuk-grid-column-two-thirds">
       <div class="course-basicinfo govuk-!-margin-bottom-9">
         <h1 class="govuk-heading-xl">
-          <span class="govuk-caption-xl">@Model.TabViewModel.OrganisationName</span>
+          <span class="govuk-caption-xl">@Model.InstitutionName</span>
           About your organisation
         </h1>
       </div>

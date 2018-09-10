@@ -1,18 +1,17 @@
 ﻿@model CourseListViewModel
 
 @{
-  Layout = "Shared/_OrganisationDetailsViewLayout";
   ViewBag.Title = Model.InstitutionName;
 }
 
-@if (Model.TabViewModel.MultipleOrganisations) {
+@if (Model.MultipleOrganisations) {
   <nav class="govuk-breadcrumbs">
     <ol class="govuk-breadcrumbs__list">
       <li class="govuk-breadcrumbs__list-item">
         <a href="@Url.Action("index", "Organisations")" class="govuk-breadcrumbs__link">Organisations</a>
       </li>
       <li class="govuk-breadcrumbs__list-item" aria-current="page">
-        @Model.TabViewModel.OrganisationName
+        @Model.InstitutionName
       </li>
     </ol>
   </nav>
@@ -24,7 +23,7 @@
 
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
-      <h1 class="govuk-heading-xl">@Model.TabViewModel.OrganisationName</h1>
+      <h1 class="govuk-heading-xl">@Model.InstitutionName</h1>
       <h2 class="govuk-heading-l">Step 1. About your organisation</h2>
       <p class="govuk-body">You need to add a description of your organisation - this is a chance to tell applicants why they should train with you. You should also say what you do for candidates with disabilities and other needs, and check your contact details to make sure they're correct.</p>
       <p class="govuk-body">Once you’ve published your organisation information, it will show on each of your course pages. You’ll have to add your course details separately in Step 2 below.</p>
@@ -40,6 +39,9 @@
       <h3 class="govuk-heading-m">Preview and publish courses</h3>
       <p class="govuk-body">Give more details about each of your courses - including their structure and content, information about fees and financial help, and the qualifications needed for them.</p>
       <p class="govuk-body">Make sure you preview each course before you publish it, to see how it will look online to applicants. Your courses won’t be seen by applicants until the search service, Find postgraduate teacher training, is launched in October.</p>
+
+      <h3 class="govuk-heading-m">Copying content between courses</h3>
+      <p class="govuk-body">After you’ve saved your first course, when you’re completing the next you can use the ‘copy from course’ feature to fill in fields. This can be found on the ‘About this course’, ‘Course length and fees’ and ‘Requirements and eligibility’ pages.</p>
     </div>
   </div>
 

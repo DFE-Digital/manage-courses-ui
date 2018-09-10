@@ -6,7 +6,7 @@ using GovUk.Education.ManageCourses.ApiClient;
 
 namespace GovUk.Education.ManageCourses.Ui.ViewModels
 {
-    public class CourseListViewModel : TabbedViewModel
+    public class CourseListViewModel
     {
         public string InstitutionName { get; set; }
         public string InstitutionId { get; set; }
@@ -14,5 +14,7 @@ namespace GovUk.Education.ManageCourses.Ui.ViewModels
         public List<Provider> Providers { get; set; }
 
         public string Status { get; set; }
+
+        public bool MultipleOrganisations { get; set; }
     }
 }
