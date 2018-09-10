@@ -246,16 +246,13 @@ namespace GovUk.Education.ManageCourses.Ui
             if (env.IsDevelopment())
             {
                 app.UseBrowserLink();
-                app.UseDeveloperExceptionPage();
                 app.UseWebpackDevMiddleware(new WebpackDevMiddlewareOptions
                 {
                     HotModuleReplacement = true
                 });
             }
-            else
-            {
-                app.UseStatusCodePagesWithRedirects("/error/{0}");
-            }
+
+            app.UseStatusCodePagesWithReExecute("/error/{0}");
 
             app.UseStaticFiles();
 
