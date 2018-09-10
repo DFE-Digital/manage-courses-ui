@@ -5,12 +5,10 @@ using System.Reflection;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using GovUk.Education.ManageCourses.ApiClient;
-using GovUk.Education.ManageCourses.Ui;
 using GovUk.Education.ManageCourses.Ui.ActionFilters;
 using GovUk.Education.ManageCourses.Ui.Services;
 using GovUk.Education.SearchAndCompare.UI.Shared.ViewComponents;
 using IdentityModel.Client;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Builder;
@@ -86,7 +84,7 @@ namespace GovUk.Education.ManageCourses.Ui
 
                         if (timeElapsed > timeRemaining)
                         {
-                            var identity = (ClaimsIdentity) x.Principal.Identity;
+                            var identity = (ClaimsIdentity)x.Principal.Identity;
                             var accessTokenClaim = identity.FindFirst("access_token");
                             var refreshTokenClaim = identity.FindFirst("refresh_token");
 
@@ -112,7 +110,7 @@ namespace GovUk.Education.ManageCourses.Ui
                                 identity.RemoveClaim(accessTokenClaim);
                                 identity.RemoveClaim(refreshTokenClaim);
 
-                                identity.AddClaims(new []
+                                identity.AddClaims(new[]
                                 {
                                     new Claim("access_token", response.AccessToken),
                                         new Claim("refresh_token", response.RefreshToken)
@@ -191,35 +189,35 @@ namespace GovUk.Education.ManageCourses.Ui
                             return Task.CompletedTask;
                         },
 
-                        OnRedirectToIdentityProvider = context =>
-                        {
-                            context.ProtocolMessage.Prompt = "consent";
-                            return Task.CompletedTask;
-                        },
+                    OnRedirectToIdentityProvider = context =>
+                    {
+                        context.ProtocolMessage.Prompt = "consent";
+                        return Task.CompletedTask;
+                    },
 
-                        // that event is called after the OIDC middleware received the auhorisation code,
-                        // redeemed it for an access token and a refresh token,
-                        // and validated the identity token
-                        OnTokenValidated = x =>
+                    // that event is called after the OIDC middleware received the auhorisation code,
+                    // redeemed it for an access token and a refresh token,
+                    // and validated the identity token
+                    OnTokenValidated = x =>
+                    {
+                        // store both access and refresh token in the claims - hence in the cookie
+                        var identity = (ClaimsIdentity)x.Principal.Identity;
+                        identity.AddClaims(new[]
                         {
-                            // store both access and refresh token in the claims - hence in the cookie
-                            var identity = (ClaimsIdentity) x.Principal.Identity;
-                            identity.AddClaims(new []
-                            {
                                 new Claim("access_token", x.TokenEndpointResponse.AccessToken),
                                     new Claim("refresh_token", x.TokenEndpointResponse.RefreshToken)
-                            });
+                        });
 
-                            // so that we don't issue a session cookie but one with a fixed expiration
-                            x.Properties.IsPersistent = true;
+                        // so that we don't issue a session cookie but one with a fixed expiration
+                        x.Properties.IsPersistent = true;
 
-                            // align expiration of the cookie with expiration of the
-                            // access token
-                            var accessToken = new JwtSecurityToken(x.TokenEndpointResponse.IdToken);
-                            x.Properties.ExpiresUtc = accessToken.ValidTo;
+                        // align expiration of the cookie with expiration of the
+                        // access token
+                        var accessToken = new JwtSecurityToken(x.TokenEndpointResponse.IdToken);
+                        x.Properties.ExpiresUtc = accessToken.ValidTo;
 
-                            return Task.CompletedTask;
-                        }
+                        return Task.CompletedTask;
+                    }
                 };
             });
 
@@ -291,11 +289,11 @@ namespace GovUk.Education.ManageCourses.Ui
                     config.RegisterCallbackPath,
                     new { controller = "Auth", action = "RegistrationComplete" });
                 routes.MapRoute("cookies", "cookies",
-                    defaults : new { controller = "Legal", action = "Cookies" });
+                    defaults: new { controller = "Legal", action = "Cookies" });
                 routes.MapRoute("privacy", "privacy-policy",
-                    defaults : new { controller = "Legal", action = "Privacy" });
+                    defaults: new { controller = "Legal", action = "Privacy" });
                 routes.MapRoute("tandc", "terms-conditions",
-                    defaults : new { controller = "Legal", action = "TandC" });
+                    defaults: new { controller = "Legal", action = "TandC" });
             });
         }
     }
