@@ -11,9 +11,10 @@ namespace GovUk.Education.ManageCourses.Ui.ActionFilters
         public void OnException(ExceptionContext context)
         {
             var swaggerException = context.Exception as SwaggerException;
-            if (swaggerException?.StatusCode == (int) HttpStatusCode.Unauthorized)
+            
+            if (swaggerException?.StatusCode >= 400 && swaggerException?.StatusCode <= 404)
             {
-                context.Result = new RedirectToActionResult("Index", "Error", new { statusCode = 401 });
+                context.Result = new RedirectToActionResult("Index", "Error", new { statusCode = swaggerException?.StatusCode });
                 context.ExceptionHandled = true;
             }
             else if (swaggerException?.StatusCode == (int) HttpStatusCode.UnavailableForLegalReasons)
