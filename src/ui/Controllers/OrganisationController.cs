@@ -181,7 +181,6 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
                 LastPublishedTimestampUtc = ucasInstitutionEnrichmentGetModel.LastPublishedTimestampUtc,
                 Status = ucasInstitutionEnrichmentGetModel.Status,
                 PublishOrganisation = false,
-                AllowPreview = _featureFlags.ShowCoursePreview
             };
 
             return result;
@@ -235,7 +234,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
 
             var enrichmentModel = ucasInstitutionEnrichmentGetModel?.EnrichmentModel;
             var aboutAccreditingTrainingProviders = await GetTrainingProviderViewModels(ucasCode, enrichmentModel, model);
-            
+
             model.AboutTrainingProviders = aboutAccreditingTrainingProviders;
 
             // The validation that needs to occurs are word count only on saving
@@ -281,11 +280,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
 
                 TempData["MessageType"] = "success";
                 TempData["MessageTitle"] = "Your changes have been saved";
-                if (_featureFlags.ShowCoursePreview)
-                {
-                    TempData["MessageBodyHtml"] = "<p class=\"govuk-body\">Preview any course to see how it will look to applicants.</p>";
-                }
-
+                TempData["MessageBodyHtml"] = "<p class=\"govuk-body\">Preview any course to see how it will look to applicants.</p>";
                 return RedirectToAction("About", "Organisation", new { ucasCode });
             }
         }

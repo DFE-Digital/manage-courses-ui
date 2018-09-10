@@ -46,7 +46,7 @@ bug in ASP.NET MVC Core which is using inconsistent package versions.
 [The bug](https://github.com/aspnet/Mvc/issues/7969) has a fix promised in .NET Core 2.1.3
 
 ### App settings variables
-You will need to set the app settings (prefered to be store as `user-secrets`):
+You will need to set the app settings (preferred to be store as `user-secrets`):
 
 * **SearchAndCompare:UiBaseUrl** the location of the search and compare UI, for the purpose of linking, e.g. "https://find-postgraduate-teacher-training.gov.uk". Avoid trailing slash.
 * **ApiConnection:url** - the location of your [manage-courses-api](https://github.com/DFE-Digital/manage-courses-api) deployment. You can use a local one or perhaps [the one in the Dev Environment](https://manage-courses-ui-bat-development.e4ff.pro-eu-west-1.openshiftapps.com) if you are lazy
