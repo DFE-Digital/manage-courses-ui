@@ -27,7 +27,7 @@ namespace GovUk.Education.ManageCourses.Ui.Helpers
             }
             return result;
         }
-        public static string GetCourseLengthOther(this string value)
+        public static string GetCourseLengthInput(this string value)
         {
             if (GetCourseLength(value) == CourseLength.Other)
             {

@@ -20,7 +20,7 @@ namespace ManageCoursesUi.Tests.Helpers
             var enrichmentModel = new CourseEnrichmentModel {CourseLength = OtherUserEnteredText};
 
             var courseLengthResult = enrichmentModel.CourseLength.GetCourseLength();
-            var courseLengthOtherResult = enrichmentModel.CourseLength.GetCourseLengthOther();
+            var courseLengthOtherResult = enrichmentModel.CourseLength.GetCourseLengthInput();
 
             courseLengthResult.Should().BeEquivalentTo(CourseLength.Other);
             courseLengthOtherResult.Should().BeEquivalentTo(OtherUserEnteredText);
@@ -31,7 +31,7 @@ namespace ManageCoursesUi.Tests.Helpers
             var enrichmentModel = new CourseEnrichmentModel { CourseLength = "OneYear" };
 
             var courseLengthResult = enrichmentModel.CourseLength.GetCourseLength();
-            var courseLengthOtherResult = enrichmentModel.CourseLength.GetCourseLengthOther();
+            var courseLengthOtherResult = enrichmentModel.CourseLength.GetCourseLengthInput();
 
             courseLengthResult.Should().BeEquivalentTo(CourseLength.OneYear);
             courseLengthOtherResult.Should().BeNullOrEmpty();
@@ -42,7 +42,7 @@ namespace ManageCoursesUi.Tests.Helpers
             var enrichmentModel = new CourseEnrichmentModel { CourseLength = "TwoYears" };
 
             var courseLengthResult = enrichmentModel.CourseLength.GetCourseLength();
-            var courseLengthOtherResult = enrichmentModel.CourseLength.GetCourseLengthOther();
+            var courseLengthOtherResult = enrichmentModel.CourseLength.GetCourseLengthInput();
 
             courseLengthResult.Should().BeEquivalentTo(CourseLength.TwoYears);
             courseLengthOtherResult.Should().BeNullOrEmpty();
@@ -57,7 +57,7 @@ namespace ManageCoursesUi.Tests.Helpers
             var enrichmentModel = new CourseEnrichmentModel { CourseLength = courseLength };
 
             var courseLengthResult = enrichmentModel.CourseLength.GetCourseLength();
-            var courseLengthOtherResult = enrichmentModel.CourseLength.GetCourseLengthOther();
+            var courseLengthOtherResult = enrichmentModel.CourseLength.GetCourseLengthInput();
 
             courseLengthResult.Should().BeNull();
             courseLengthOtherResult.Should().BeNullOrEmpty();

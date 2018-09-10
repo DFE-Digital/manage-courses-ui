@@ -161,7 +161,7 @@ namespace ManageCoursesUi.Tests.ViewModels
             viewModel.CopyFrom(enrichmentModel);
 
             viewModel.CourseLength.Should().Be(CourseLength.Other);
-            viewModel.CourseLengthOther.Should().BeEquivalentTo(textEnteredByUser);
+            viewModel.CourseLengthInput.Should().BeEquivalentTo(textEnteredByUser);
         }
         [Test]
         public void TestCourseLengthOneYearCopyFrom_CourseSalaryEnrichmentViewModel()
@@ -172,7 +172,7 @@ namespace ManageCoursesUi.Tests.ViewModels
             viewModel.CopyFrom(enrichmentModel);
 
             viewModel.CourseLength.Should().Be(CourseLength.OneYear);
-            viewModel.CourseLengthOther.Should().BeNullOrEmpty();
+            viewModel.CourseLengthInput.Should().BeNullOrEmpty();
         }
         [Test]
         public void TestCourseLengthTwoYearsCopyFrom_CourseSalaryEnrichmentViewModel()
@@ -183,7 +183,7 @@ namespace ManageCoursesUi.Tests.ViewModels
             viewModel.CopyFrom(enrichmentModel);
 
             viewModel.CourseLength.Should().Be(CourseLength.TwoYears);
-            viewModel.CourseLengthOther.Should().BeNullOrEmpty();
+            viewModel.CourseLengthInput.Should().BeNullOrEmpty();
         }
 
         [Test]
@@ -193,7 +193,7 @@ namespace ManageCoursesUi.Tests.ViewModels
             var viewModel = new CourseSalaryEnrichmentViewModel
             {
                 CourseLength = CourseLength.Other,
-                CourseLengthOther =TextEnteredByUser
+                CourseLengthInput =TextEnteredByUser
             };
 
             var enrichmentModel = new CourseEnrichmentModel();
@@ -212,7 +212,7 @@ namespace ManageCoursesUi.Tests.ViewModels
             var viewModel = new CourseSalaryEnrichmentViewModel
             {
                 CourseLength = CourseLength.OneYear,
-                CourseLengthOther = courseLengthOther
+                CourseLengthInput = courseLengthOther
             };
 
             var enrichmentModel = new CourseEnrichmentModel();
@@ -233,7 +233,7 @@ namespace ManageCoursesUi.Tests.ViewModels
             viewModel.CopyFrom(enrichmentModel);
 
             viewModel.CourseLength.Should().Be(CourseLength.Other);
-            viewModel.CourseLengthOther.Should().BeEquivalentTo(textEnteredByUser);
+            viewModel.CourseLengthInput.Should().BeEquivalentTo(textEnteredByUser);
         }
         [Test]
         public void TestCourseLengthOneYearCopyFrom_CourseFeesEnrichmentViewModel()
@@ -244,7 +244,7 @@ namespace ManageCoursesUi.Tests.ViewModels
             viewModel.CopyFrom(enrichmentModel);
 
             viewModel.CourseLength.Should().Be(CourseLength.OneYear);
-            viewModel.CourseLengthOther.Should().BeNullOrEmpty();
+            viewModel.CourseLengthInput.Should().BeNullOrEmpty();
         }
         [Test]
         public void TestCourseLengthMapIntoForOtherTextEntry_CourseFeesEnrichmentViewModel()
@@ -253,7 +253,7 @@ namespace ManageCoursesUi.Tests.ViewModels
             var viewModel = new CourseFeesEnrichmentViewModel
             {
                 CourseLength = CourseLength.Other,
-                CourseLengthOther = TextEnteredByUser
+                CourseLengthInput = TextEnteredByUser
             };
 
             var enrichmentModel = new CourseEnrichmentModel();
@@ -272,7 +272,7 @@ namespace ManageCoursesUi.Tests.ViewModels
             var viewModel = new CourseFeesEnrichmentViewModel()
             {
                 CourseLength = CourseLength.OneYear,
-                CourseLengthOther = courseLengthOther
+                CourseLengthInput = courseLengthOther
             };
 
             var enrichmentModel = new CourseEnrichmentModel();

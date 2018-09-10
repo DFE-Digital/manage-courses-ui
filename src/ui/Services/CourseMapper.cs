@@ -45,7 +45,7 @@ namespace GovUk.Education.ManageCourses.Ui.Services
                 Name = ucasCourseData.Name,
                 ProgrammeCode = ucasCourseData.CourseCode,
                 Provider = provider,                
-                ProviderCodeName = ucasInstData.InstBig, // ???   
+                ProviderCodeName = ucasInstData.InstBig,   
                 AccreditingProvider = accreditingProvider,
                 Route = new Route
                 {
