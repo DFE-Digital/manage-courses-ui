@@ -30,20 +30,41 @@
             @if (course_length) {
               <span asp-validation-for="CourseLength" class="govuk-error-message"></span>
             }
-            <div class="govuk-radios">
-              @{
-                var options = CourseLengthHelper.Lookup;
+              <div class="govuk-radios" data-module="radios">
+                @{
+                    var options = CourseLengthHelper.Lookup;
 
-                foreach (var option in options){
-                  var keyString = option.Key.ToString();
-                  var optionChecked = Model.CourseLength.HasValue && option.Key == Model.CourseLength.Value;
-                  <div class="govuk-radios__item">
-                    <input type="radio" id="@keyString" class="govuk-radios__input" asp-for="@Model.CourseLength" check="@optionChecked" value="@option.Key" />
-                    <label for="@keyString" class="govuk-label govuk-radios__label">@option.Value</label>
-                  </div>
+                    foreach (var option in options)
+                    {
+                      var keyString = option.Key.ToString();
+                      var optionChecked = Model.CourseLength.HasValue && option.Key == Model.CourseLength.Value;
+
+                      if (option.Value == "Other")
+                      {
+                        <div class="govuk-radios__item">
+                          <input type="radio" id="@keyString" class="govuk-radios__input" asp-for="@Model.CourseLength" check="@optionChecked" value="@option.Key" data-aria-controls="other-container"/>
+                          <label for="@keyString" class="govuk-label govuk-radios__label">@option.Value</label>
+                        </div>
+                        <div class="govuk-radios__conditional govuk-radios__conditional--hidden" id="other-container">
+                          <div class="form-group">
+                            <label asp-for="CourseLengthInput" class="govuk-label">Course Length</label>
+                            <input asp-for="CourseLengthInput" type="text" class="govuk-input govuk-!-width-one-half" />
+                          </div>
+                        </div>
+                      }
+                    else
+                    {
+                      <div class="govuk-radios__item">
+                        <input type="radio" id="@keyString" class="govuk-radios__input" asp-for="@Model.CourseLength" check="@optionChecked" value="@option.Key" />
+                        <label for="@keyString" class="govuk-label govuk-radios__label">@option.Value</label>
+                      </div>
+                    }
+
+                  }
                 }
-              }
-            </div>
+              </div>
+
+
           </fieldset>
         </div>
         <hr class="govuk-section-break govuk-section-break--l">

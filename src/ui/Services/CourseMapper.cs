@@ -50,16 +50,16 @@ namespace GovUk.Education.ManageCourses.Ui.Services
                 Duration = MapCourseLength(courseEnrichmentModel.CourseLength),
                 Name = ucasCourseData.Name,
                 ProgrammeCode = ucasCourseData.CourseCode,
-                Provider = provider,
-                ProviderCodeName = ucasInstData.InstBig, // ???
+                Provider = provider,                
+                ProviderCodeName = ucasInstData.InstBig,   
                 AccreditingProvider = accreditingProvider,
                 Route = new Route
                 {
                     Name = routeName,
                     IsSalaried = isSalaried
-                },
+                }, 
                 IncludesPgce = string.IsNullOrWhiteSpace(ucasCourseData.ProfpostFlag) ? IncludesPgce.No : IncludesPgce.Yes,
-                Campuses = new Collection<SearchAndCompare.Domain.Models.Campus>(ucasCourseData.Schools.Select(school =>
+                Campuses = new Collection<SearchAndCompare.Domain.Models.Campus>(ucasCourseData.Schools.Select(school => 
                     new SearchAndCompare.Domain.Models.Campus
                     {
                         Name = school.LocationName,
@@ -74,8 +74,8 @@ namespace GovUk.Education.ManageCourses.Ui.Services
                         }
                     }
                 ).ToList()),
-                CourseSubjects = string.IsNullOrWhiteSpace(ucasCourseData.Subjects)
-                    ? new Collection<CourseSubject>()
+                CourseSubjects = string.IsNullOrWhiteSpace(ucasCourseData.Subjects) 
+                    ? new Collection<CourseSubject>() 
                     : new Collection<CourseSubject>(ucasCourseData.Subjects.Split(", ").Select(subject =>
                         new CourseSubject
                         {
@@ -86,8 +86,8 @@ namespace GovUk.Education.ManageCourses.Ui.Services
 
                         }).ToList()),
                 Fees = fees,
-
-                IsSalaried = isSalaried,
+                
+                IsSalaried = isSalaried,                
 
                 ContactDetails = new Contact
                 {
@@ -99,27 +99,27 @@ namespace GovUk.Education.ManageCourses.Ui.Services
                 },
 
                 ApplicationsAcceptedFrom = ucasCourseData.Schools.Select(x => {
-                        DateTime parsed;
+                        DateTime parsed;                    
                         return DateTime.TryParse(x.ApplicationsAcceptedFrom, out parsed) ? (DateTime?) parsed : null;
                     }).Where(x => x != null && x.HasValue)
                     .OrderBy(x => x.Value)
                     .FirstOrDefault(),
 
                 FullTime = ucasCourseData.StudyMode == "P" ? VacancyStatus.NA : VacancyStatus.Vacancies,
-                PartTime = ucasCourseData.StudyMode == "F" ? VacancyStatus.NA : VacancyStatus.Vacancies,
+                PartTime = ucasCourseData.StudyMode == "F" ? VacancyStatus.NA : VacancyStatus.Vacancies, 
 
                 Mod = ucasCourseData.GetCourseVariantType(),
-
+                                
                 // no longer needed?
                 // Salary = new Salary
                 // {
-
+                
                 // },
                 // todo refine Domain Model to include Mid Range
-                //AgeRange = ucasCourseData.AgeRange.Trim().ToLowerInvariant() == "p" ? AgeRange.Primary
+                //AgeRange = ucasCourseData.AgeRange.Trim().ToLowerInvariant() == "p" ? AgeRange.Primary 
                 //    : ucasCourseData.AgeRange.Trim().ToLowerInvariant() == "m" ? AgeRange.MiddleYears
-                //    : AgeRange.Secondary,
-
+                //    : AgeRange.Secondary, 
+                
                 // no longer needed?
                 //StartDate = null, // ???
             };
@@ -136,11 +136,11 @@ namespace GovUk.Education.ManageCourses.Ui.Services
 
             mappedCourse.DescriptionSections.Add(new CourseDescriptionSection{
                 Name = CourseDetailsSections.AboutFees,
-                Text = courseEnrichmentModel.FeeDetails});
-
+                Text = courseEnrichmentModel.FeeDetails});      
+            
             mappedCourse.DescriptionSections.Add(new CourseDescriptionSection{
                 Name = CourseDetailsSections.AboutSalary,
-                Text = courseEnrichmentModel.SalaryDetails});
+                Text = courseEnrichmentModel.SalaryDetails});        
 
             mappedCourse.DescriptionSections.Add(new CourseDescriptionSection{
                 Name = CourseDetailsSections.EntryRequirementsQualifications,
@@ -153,21 +153,21 @@ namespace GovUk.Education.ManageCourses.Ui.Services
             mappedCourse.DescriptionSections.Add(new CourseDescriptionSection{
                 Name = CourseDetailsSections.EntryRequirementsOther,
                 Text = courseEnrichmentModel.OtherRequirements});
-
+            
             mappedCourse.DescriptionSections.Add(new CourseDescriptionSection{
                 Name = CourseDetailsSections.FinancialSupport,
                 Text = courseEnrichmentModel.FinancialSupport});
-
+            
             mappedCourse.DescriptionSections.Add(new CourseDescriptionSection{
                 Name = CourseDetailsSections.AboutSchools,
                 Text = courseEnrichmentModel.HowSchoolPlacementsWork
             });
-
+            
             mappedCourse.DescriptionSections.Add(new CourseDescriptionSection{
                 Name = CourseDetailsSections.AboutTheProvider,
                 Text = orgEnrichmentModel.TrainWithUs
             });
-
+            
             mappedCourse.DescriptionSections.Add(new CourseDescriptionSection{
                 Name = CourseDetailsSections.AboutTheAccreditingProvider,
                 Text = GetAccreditingProviderEnrichment(ucasCourseData.AccreditingProviderId, orgEnrichmentModel)
@@ -185,7 +185,7 @@ namespace GovUk.Education.ManageCourses.Ui.Services
         {
             return courseLength == "OneYear" ? "1 year"
                 : courseLength == "TwoYears" ? "Up to 2 years"
-                : null;
+                : courseLength;
         }
 
         private string GetAccreditingProviderEnrichment(string accreditingProviderId, InstitutionEnrichmentModel enrichmentModel)

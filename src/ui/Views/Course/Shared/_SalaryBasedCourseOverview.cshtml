@@ -18,10 +18,11 @@
         Course length
       </dt>
       <dd class="course-parts__fields__value @(courseEnrichment.CourseLength == null ? "course-parts__fields__value--empty" : "")">
-        @if (course_length) {
-          <a href="@url#CourseLength-wrapper" class="govuk-link"><span asp-validation-for="CourseLength" ></span></a>
+        @if (course_length)
+        {
+          <a href="@url#CourseLength-wrapper" class="govuk-link"><span asp-validation-for="CourseLength"></span></a>
         }
-        @courseEnrichment?.CourseLength.DisplayText()
+        @(@courseEnrichment?.CourseLength.DisplayText() == "Other" ? courseEnrichment.CourseLengthInput : courseEnrichment?.CourseLength.DisplayText())
       </dd>
       <dt class="course-parts__fields__label @(salary ? "course-parts__fields__label--error" : "")">
         Salary

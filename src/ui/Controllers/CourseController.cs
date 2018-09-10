@@ -277,6 +277,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             var model = new CourseSalaryEnrichmentViewModel
             {
                 CourseLength = enrichmentModel?.CourseLength.GetCourseLength(),
+                CourseLengthInput = enrichmentModel.CourseLength.GetCourseLengthInput(),
                 SalaryDetails = enrichmentModel?.SalaryDetails,
                 RouteData = routeData,
                 CourseInfo = courseInfo
@@ -334,7 +335,8 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             var model = new CourseFeesEnrichmentViewModel
             {
                 CourseLength = enrichmentModel?.CourseLength.GetCourseLength(),
-                FeeUkEu = enrichmentModel?.FeeUkEu.GetFeeValue(),
+		        CourseLengthInput = enrichmentModel.CourseLength.GetCourseLengthInput(),
+		        FeeUkEu = enrichmentModel?.FeeUkEu.GetFeeValue(),
                 FeeInternational = enrichmentModel?.FeeInternational.GetFeeValue(),
                 FeeDetails = enrichmentModel?.FeeDetails,
                 FinancialSupport = enrichmentModel?.FinancialSupport,
@@ -502,6 +504,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
                     PersonalQualities = enrichmentModel.PersonalQualities,
                     OtherRequirements = enrichmentModel.OtherRequirements,
                     CourseLength = enrichmentModel.CourseLength.GetCourseLength(),
+                    CourseLengthInput = enrichmentModel.CourseLength.GetCourseLengthInput(),
                     SalaryDetails = enrichmentModel.SalaryDetails,
                     DraftLastUpdatedUtc = ucasCourseEnrichmentGetModel.UpdatedTimestampUtc,
                     LastPublishedUtc = ucasCourseEnrichmentGetModel.LastPublishedTimestampUtc,
@@ -519,6 +522,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
                     PersonalQualities = enrichmentModel.PersonalQualities,
                     OtherRequirements = enrichmentModel.OtherRequirements,
                     CourseLength = enrichmentModel.CourseLength.GetCourseLength(),
+                    CourseLengthInput = enrichmentModel.CourseLength.GetCourseLengthInput(),
                     FeeUkEu = enrichmentModel.FeeUkEu.GetFeeValue(),
                     FeeInternational = enrichmentModel.FeeInternational.GetFeeValue(),
                     FeeDetails = enrichmentModel.FeeDetails,

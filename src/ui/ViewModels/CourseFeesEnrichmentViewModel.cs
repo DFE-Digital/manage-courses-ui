@@ -10,6 +10,7 @@ namespace GovUk.Education.ManageCourses.Ui.ViewModels
     public class CourseFeesEnrichmentViewModel : ICourseEnrichmentViewModel
     {
         public CourseLength? CourseLength { get; set; }
+        public string CourseLengthInput { get; set; }
 
         [Range(FieldHelper.FeeMin, FieldHelper.FeeMax, ErrorMessage = "UK course fee must be less than £100,000")]
         [RegularExpression(@"^[0-9]+$", ErrorMessage = "UK course fee must contain numbers only")]
@@ -39,8 +40,8 @@ namespace GovUk.Education.ManageCourses.Ui.ViewModels
         public void MapInto(ref CourseEnrichmentModel enrichmentModel)
         {
             var courseLength = CourseLength.HasValue ? CourseLength.Value.ToString() : null;
+            enrichmentModel.CourseLength = courseLength == "Other" ? (string.IsNullOrEmpty(CourseLengthInput) ? null : CourseLengthInput) : courseLength;
 
-            enrichmentModel.CourseLength = courseLength;
             enrichmentModel.FeeUkEu = FeeUkEu;
             enrichmentModel.FeeInternational = FeeInternational;
             enrichmentModel.FeeDetails = FeeDetails;
@@ -61,7 +62,11 @@ namespace GovUk.Education.ManageCourses.Ui.ViewModels
                 CourseLength = courseLength;
                 res.Add(new CopiedField(nameof(model.CourseLength), CourseEnrichmentFieldNames.CourseLength));
             }
-
+            if (!CourseLength.HasValue && !string.IsNullOrEmpty(model.CourseLength))
+            {
+                CourseLengthInput = model.CourseLength;
+                CourseLength = Enums.CourseLength.Other;
+            }
             if (model.FeeUkEu.HasValue)
             {
                 FeeUkEu = model.FeeUkEu.GetFeeValue();

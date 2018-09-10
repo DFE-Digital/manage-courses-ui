@@ -9,6 +9,7 @@ namespace GovUk.Education.ManageCourses.Ui.ViewModels
     public class CourseSalaryEnrichmentViewModel : ICourseEnrichmentViewModel
     {
         public CourseLength? CourseLength { get; set; }
+        public string CourseLengthInput { get; set; }
 
         [RegularExpression(@"^\s*(\S+\s+|\S+$){0,250}$", ErrorMessage = "Reduce the word count for salary")]
         public string SalaryDetails { get; set; }
@@ -25,7 +26,7 @@ namespace GovUk.Education.ManageCourses.Ui.ViewModels
         {
             var courseLength = CourseLength.HasValue ? CourseLength.Value.ToString() : null;
 
-            enrichmentModel.CourseLength = courseLength;
+            enrichmentModel.CourseLength = courseLength == "Other" ? (string.IsNullOrEmpty(CourseLengthInput) ? null : CourseLengthInput) : courseLength;
             enrichmentModel.SalaryDetails = SalaryDetails;
         }
 
@@ -43,8 +44,12 @@ namespace GovUk.Education.ManageCourses.Ui.ViewModels
                 CourseLength = courseLength;
                 res.Add(new CopiedField(nameof(model.CourseLength), CourseEnrichmentFieldNames.CourseLength));
             }
-            
-            if(!string.IsNullOrEmpty(model.SalaryDetails))
+            if (!CourseLength.HasValue && !string.IsNullOrEmpty(model.CourseLength))
+            {
+                CourseLengthInput = model.CourseLength;
+                CourseLength = Enums.CourseLength.Other;
+            }
+            if (!string.IsNullOrEmpty(model.SalaryDetails))
             {
                 SalaryDetails = model.SalaryDetails;
                 res.Add(new CopiedField(nameof(model.SalaryDetails), CourseEnrichmentFieldNames.SalaryDetails));
