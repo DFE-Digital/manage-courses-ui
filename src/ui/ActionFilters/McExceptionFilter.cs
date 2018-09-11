@@ -22,10 +22,9 @@ namespace GovUk.Education.ManageCourses.Ui.ActionFilters
         {
             var swaggerException = context.Exception as SwaggerException;
 
-            if (swaggerException?.StatusCode >= 400 && swaggerException?.StatusCode <= 404)
+            if (swaggerException?.StatusCode >= 400 && swaggerException.StatusCode <= 404)
             {
-                // todo: translate to status code without redirect
-                context.Result = new RedirectToActionResult("Index", "Error", new { statusCode = swaggerException?.StatusCode });
+                context.Result = StatusCodeViewResult(context, swaggerException.StatusCode);
                 context.ExceptionHandled = true;
             }
             else if (swaggerException?.StatusCode == (int)HttpStatusCode.UnavailableForLegalReasons)
@@ -44,8 +43,13 @@ namespace GovUk.Education.ManageCourses.Ui.ActionFilters
 
             _logger.LogError(context.Exception, "Unhandled exception");
 
-            var statusCode = (int)HttpStatusCode.InternalServerError;
-            context.Result = new ViewResult
+            context.Result = StatusCodeViewResult(context, (int)HttpStatusCode.InternalServerError);
+            context.ExceptionHandled = true;
+        }
+
+        private static ViewResult StatusCodeViewResult(ActionContext context, int statusCode)
+        {
+            return new ViewResult
             {
                 ViewName = "~/Views/Error/Index.cshtml",
                 StatusCode = statusCode,
@@ -54,7 +58,6 @@ namespace GovUk.Education.ManageCourses.Ui.ActionFilters
                     Model = statusCode,
                 }
             };
-            context.ExceptionHandled = true;
         }
     }
 }
