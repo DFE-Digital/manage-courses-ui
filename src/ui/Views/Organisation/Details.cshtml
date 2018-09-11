@@ -9,13 +9,14 @@
   var telephone = ViewData.ModelState["Telephone"] != null && ViewData.ModelState["Telephone"].Errors.Any();
   var org_url = ViewData.ModelState["Url"] != null && ViewData.ModelState["Url"].Errors.Any();
   var workflowStatus = Model.GetWorkflowStatus();
-  var url = Url.Action("Details", "Organisation");
+  var url = Url.Action("About", "Organisation");
 }
 
 <a href="@Url.Action("Show", "Organisation", new {ucasCode = Model.InstitutionCode})" class="govuk-back-link">Back</a>
 
 <main role="main" class="govuk-main-wrapper" id="main-content">
   @await Html.PartialAsync("~/Views/Shared/_Alerts.cshtml")
+  @await Html.PartialAsync("~/Views/Organisation/Shared/ErrorSummary.cshtml")
 
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
@@ -32,37 +33,25 @@
     <div class="govuk-grid-column-two-thirds">
       <div class="course-parts">
         <div class="course-parts__item">
-          <h3 class="course-parts__title">Contact details</h3>
-          <a class="course-parts__action" href="@Url.Action("Contact", "Organisation", new {ucasCode = Model.InstitutionCode})">Edit</a>
-          <dl class="course-parts__fields">
-            <dt class="course-parts__fields__label @(email_address ? "course-parts__fields__label--error" : "")" id="section-EmailAddress">Email address</dt>
-            <dd class="course-parts__fields__value @(string.IsNullOrWhiteSpace(Model.EmailAddress) ? "course-parts__fields__value--empty" : "")">
-              @if (email_address) {
-                <a href="@url#EmailAddress-wrapper" class="govuk-link"><span asp-validation-for="EmailAddress" ></span></a>
-              }
-              @Model?.EmailAddress.DisplayText()
+          <h3 class="course-parts__title">Contact details from UCAS</h3>
+          <dl class="govuk-list--description" role="contentinfo">
+            <dt class="govuk-list--description__label">Training provider code</dt>
+            <dd>@Model.InstitutionCode</dd>
+            <dt class="govuk-list--description__label">Email</dt>
+            <dd>
+              <a href="mailto:@Model.EmailAddress" title="Send email to course contact" aria-label="Send email to course contact" class="govuk-link">@Model.EmailAddress</a>
             </dd>
-            <dt class="course-parts__fields__label @(telephone ? "course-parts__fields__label--error" : "")" id="section-Telephone">Telephone number</dt>
-            <dd class="course-parts__fields__value @(string.IsNullOrWhiteSpace(Model.Telephone) ? "course-parts__fields__value--empty" : "")">
-              @if (telephone) {
-                <a href="@url#Telephone-wrapper" class="govuk-link"><span asp-validation-for="Telephone" ></span></a>
-              }
-              @Model?.Telephone.DisplayText()
-            </dd>
-            <dt class="course-parts__fields__label @(org_url ? "course-parts__fields__label--error" : "")" id="section-Url">Website</dt>
-            <dd class="course-parts__fields__value @(string.IsNullOrWhiteSpace(Model.Url) ? "course-parts__fields__value--empty" : "")">
-              @if (org_url) {
-                <a href="@url#Url-wrapper" class="govuk-link"><span asp-validation-for="Url" ></span></a>
-              }
-              @Model?.Url.DisplayText()
-            </dd>
-            <dt class="course-parts__fields__label" id="section-Url">Contact address</dt>
-            <dd class="course-parts__fields__value">
-              @Model?.Addr1.DisplayText()<br>
-              @Model?.Addr2.DisplayText()<br>
-              @Model?.Addr3.DisplayText()<br>
-              @Model?.Addr4.DisplayText()<br>
-              @Model?.Postcode.DisplayText()
+            <dt class="govuk-list--description__label">Telephone</dt>
+            <dd>@Model.Telephone</dd>
+            <dt class="govuk-list--description__label">Website</dt>
+            <dd><a href="@Model.Url">@Model.Url</a></dd>
+            <dt class="govuk-list--description__label">Address</dt>
+            <dd>
+              @Model.Addr1<br>
+              @Model.Addr2<br>
+              @Model.Addr3<br>
+              @Model.Addr4<br>
+              @Model.Postcode
             </dd>
           </dl>
         </div>
@@ -119,9 +108,8 @@
             <p class="govuk-body">Applicants will see published information from October.</p>
             <p class="govuk-body">You can make changes to this after publishing it.</p>
 
-            <form asp-controller="Organisation" asp-action="about" method="post">
+            <form asp-controller="Organisation" asp-action="Details" method="post">
               <input type="submit" class="govuk-button" value="Publish" />
-              <input type="hidden" asp-for="@Model.PublishOrganisation" value="true" />
             </form>
             break;
           case WorkflowStatus.InitialDraft :
@@ -140,7 +128,6 @@
 
             <form asp-controller="Organisation" asp-action="about" method="post">
               <input type="submit" class="govuk-button" value="Publish" />
-              <input type="hidden" asp-for="@Model.PublishOrganisation" value="true" />
             </form>
             break;
           case WorkflowStatus.Published :
@@ -165,7 +152,6 @@
             <p class="govuk-body">You can make changes to this after publishing it.</p>
 
             <form asp-controller="Organisation" asp-action="about" method="post">
-              <input type="hidden" asp-for="@Model.PublishOrganisation" value="true" />
               <input type="submit" class="govuk-button" value="Publish" />
             </form>
             break;
@@ -185,7 +171,6 @@
             <p class="govuk-body">You can make changes to this after publishing it.</p>
 
             <form asp-controller="Organisation" asp-action="about" method="post">
-              <input type="hidden" asp-for="@Model.PublishOrganisation" value="true" />
               <input type="submit" class="govuk-button" value="Publish" />
             </form>
             break;

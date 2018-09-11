@@ -56,7 +56,5 @@ namespace GovUk.Education.ManageCourses.Ui.ViewModels
         public DateTime? LastPublishedTimestampUtc { get; set; }
 
         public EnumStatus Status { get; set; }
-
-        public bool PublishOrganisation { get; set; }
     }
 }

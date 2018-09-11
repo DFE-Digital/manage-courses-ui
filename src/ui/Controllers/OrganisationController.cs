@@ -70,13 +70,23 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
 
             var enrichmentModel = ucasInstitutionEnrichmentGetModel.EnrichmentModel;
             var aboutAccreditingTrainingProviders = await GetTrainingProviderViewModels(ucasCode, enrichmentModel);
+            var ucasInsitution = await _manageApi.GetUcasInstitution(ucasCode);
 
-            var model = GetOrganisationViewModel(ucasCode, ucasInstitutionEnrichmentGetModel);
+            var model = GetOrganisationViewModel(ucasCode, ucasInstitutionEnrichmentGetModel, ucasInsitution);
             model.InstitutionName = (await _manageApi.GetOrganisations()).FirstOrDefault(x => x.UcasCode == ucasCode.ToUpperInvariant())?.OrganisationName;;
 
             model.AboutTrainingProviders = aboutAccreditingTrainingProviders;
 
             return View(model);
+        }
+
+        [HttpPost]
+        [Route("{ucasCode}/details")]
+        public async Task<ActionResult> DetailsPost(string ucasCode, OrganisationViewModel model)
+        {
+            var ucasInstitutionEnrichmentGetModel = await _manageApi.GetEnrichmentOrganisation(ucasCode);
+            var result = await PublishOrgansation(ucasInstitutionEnrichmentGetModel, model, ucasCode);
+            return result;
         }
 
         [HttpGet]
@@ -89,8 +99,9 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
 
             var enrichmentModel = ucasInstitutionEnrichmentGetModel.EnrichmentModel;
             var aboutAccreditingTrainingProviders = await GetTrainingProviderViewModels(ucasCode, enrichmentModel);
+            var ucasInsitution = await _manageApi.GetUcasInstitution(ucasCode);
 
-            var model = GetOrganisationViewModel(ucasCode, ucasInstitutionEnrichmentGetModel);
+            var model = GetOrganisationViewModel(ucasCode, ucasInstitutionEnrichmentGetModel, ucasInsitution);
             model.InstitutionName = (await _manageApi.GetOrganisations()).FirstOrDefault(x => x.UcasCode == ucasCode.ToUpperInvariant())?.OrganisationName;;
 
             model.AboutTrainingProviders = aboutAccreditingTrainingProviders;
@@ -103,17 +114,8 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
         public async Task<ActionResult> AboutPost(string ucasCode, OrganisationViewModel model)
         {
             var ucasInstitutionEnrichmentGetModel = await _manageApi.GetEnrichmentOrganisation(ucasCode);
-
-            if (model.PublishOrganisation)
-            {
-                var result = await PublishOrgansation(ucasInstitutionEnrichmentGetModel, model, ucasCode);
-                return result;
-            }
-            else
-            {
-                var result = await SaveOrgansation(ucasInstitutionEnrichmentGetModel, model, ucasCode);
-                return result;
-            }
+            var result = await SaveOrgansation(ucasInstitutionEnrichmentGetModel, model, ucasCode);
+            return result;
         }
 
         [HttpGet]
@@ -125,8 +127,9 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             ucasInstitutionEnrichmentGetModel = ucasInstitutionEnrichmentGetModel ?? new UcasInstitutionEnrichmentGetModel { EnrichmentModel = new InstitutionEnrichmentModel() { AccreditingProviderEnrichments = new ObservableCollection<AccreditingProviderEnrichment>() } };
 
             var enrichmentModel = ucasInstitutionEnrichmentGetModel.EnrichmentModel;
+            var ucasInsitution = await _manageApi.GetUcasInstitution(ucasCode);
 
-            var model = GetOrganisationViewModel(ucasCode, ucasInstitutionEnrichmentGetModel);
+            var model = GetOrganisationViewModel(ucasCode, ucasInstitutionEnrichmentGetModel, ucasInsitution);
             model.InstitutionName = (await _manageApi.GetOrganisations()).FirstOrDefault(x => x.UcasCode == ucasCode.ToUpperInvariant())?.OrganisationName;;
 
             return View(model);
@@ -137,17 +140,8 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
         public async Task<ActionResult> ContactPost(string ucasCode, OrganisationViewModel model)
         {
             var ucasInstitutionEnrichmentGetModel = await _manageApi.GetEnrichmentOrganisation(ucasCode);
-
-            if (model.PublishOrganisation)
-            {
-                var result = await PublishOrgansation(ucasInstitutionEnrichmentGetModel, model, ucasCode);
-                return result;
-            }
-            else
-            {
-                var result = await SaveOrgansation(ucasInstitutionEnrichmentGetModel, model, ucasCode);
-                return result;
-            }
+            var result = await SaveOrgansation(ucasInstitutionEnrichmentGetModel, model, ucasCode);
+            return result;
         }
 
         [HttpGet]
@@ -222,9 +216,10 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             return result;
         }
 
-        private OrganisationViewModel GetOrganisationViewModel(string ucasCode, UcasInstitutionEnrichmentGetModel ucasInstitutionEnrichmentGetModel)
+        private OrganisationViewModel GetOrganisationViewModel(string ucasCode, UcasInstitutionEnrichmentGetModel ucasInstitutionEnrichmentGetModel, UcasInstitution ucasInstitution)
         {
             var enrichmentModel = ucasInstitutionEnrichmentGetModel.EnrichmentModel;
+            ucasInstitution = ucasInstitution ?? new UcasInstitution();
 
             var result = new OrganisationViewModel
             {
@@ -233,7 +228,15 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
                 TrainWithDisability = enrichmentModel.TrainWithDisability,
                 LastPublishedTimestampUtc = ucasInstitutionEnrichmentGetModel.LastPublishedTimestampUtc,
                 Status = ucasInstitutionEnrichmentGetModel.Status,
-                PublishOrganisation = false,
+
+                Addr1 = ucasInstitution.Addr1,
+                Addr2 = ucasInstitution.Addr2,
+                Addr3 = ucasInstitution.Addr3,
+                Addr4 = ucasInstitution.Addr4,
+                Postcode = ucasInstitution.Postcode,
+                Url = ucasInstitution.Url,
+                Telephone = ucasInstitution.Telephone,
+                EmailAddress = ucasInstitution.Email
             };
 
             return result;
@@ -243,7 +246,9 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
         {
             ucasInstitutionEnrichmentGetModel = ucasInstitutionEnrichmentGetModel ?? new UcasInstitutionEnrichmentGetModel { EnrichmentModel = new InstitutionEnrichmentModel() { AccreditingProviderEnrichments = new ObservableCollection<AccreditingProviderEnrichment>() } };
 
-            model = GetOrganisationViewModel(ucasCode, ucasInstitutionEnrichmentGetModel);
+            var ucasInsitution = await _manageApi.GetUcasInstitution(ucasCode);
+
+            model = GetOrganisationViewModel(ucasCode, ucasInstitutionEnrichmentGetModel, ucasInsitution);
 
             var enrichmentModel = ucasInstitutionEnrichmentGetModel.EnrichmentModel;
             var aboutAccreditingTrainingProviders = await GetTrainingProviderViewModels(ucasCode, enrichmentModel, model);
@@ -298,7 +303,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             {
                 model.InstitutionName = (await _manageApi.GetOrganisations()).FirstOrDefault(x => x.UcasCode == ucasCode.ToUpperInvariant())?.OrganisationName;;
 
-                return View("Details", model);
+                return View("About", model);
             }
             else
             {

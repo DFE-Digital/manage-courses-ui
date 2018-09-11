@@ -303,15 +303,14 @@ namespace ManageCoursesUi.Tests
         }
 
         [Test]
-        public async Task AboutPost_PublishOrganisation_false()
+        public async Task DetailsPost_PublishOrganisation_WhenApiReturnsFalse()
         {
             var ucasCode = "UCASCODE";
             var institutionName = "InstitutionName";
 
             var viewModel = new OrganisationViewModel
             {
-                AboutTrainingProviders = new List<TrainingProviderViewModel>(),
-                PublishOrganisation = true
+                AboutTrainingProviders = new List<TrainingProviderViewModel>()
             };
 
             var institutionCourses = new InstitutionCourses
@@ -354,7 +353,7 @@ namespace ManageCoursesUi.Tests
 
             controller.TempData = new Mock<ITempDataDictionary>().Object;
 
-            var result = await controller.AboutPost(ucasCode, viewModel);
+            var result = await controller.DetailsPost(ucasCode, viewModel);
 
             apiMock.Verify(x => x.PublishEnrichmentOrganisation(ucasCode), Times.Once);
 
@@ -367,15 +366,14 @@ namespace ManageCoursesUi.Tests
         }
 
         [Test]
-        public async Task AboutPost_PublishOrganisation_true()
+        public async Task DetailsPost_PublishOrganisation_WhenApiReturnsTrue()
         {
             var ucasCode = "UCASCODE";
             var viewModel = new OrganisationViewModel
             {
-                AboutTrainingProviders = new List<TrainingProviderViewModel>(),
-                PublishOrganisation = true
+                AboutTrainingProviders = new List<TrainingProviderViewModel>()  
             };
-
+                
             var institutionName = "InstitutionName";
 
             var institutionCourses = new InstitutionCourses
@@ -417,7 +415,7 @@ namespace ManageCoursesUi.Tests
 
             controller.TempData = new Mock<ITempDataDictionary>().Object;
 
-            var result = await controller.AboutPost(ucasCode, viewModel);
+            var result = await controller.DetailsPost(ucasCode, viewModel);
 
             var actionResult = result as RedirectToActionResult;
 
@@ -427,7 +425,7 @@ namespace ManageCoursesUi.Tests
         }
 
         [Test]
-        public async Task AboutPost_PublishOrganisation_invalid()
+        public async Task DetailsPost_PublishOrganisation_invalid()
         {
             var ucasCode = "UCASCODE";
 
@@ -477,8 +475,7 @@ namespace ManageCoursesUi.Tests
 
             var viewModel = new OrganisationViewModel
             {
-                AboutTrainingProviders = new List<TrainingProviderViewModel>(),
-                PublishOrganisation = true
+                AboutTrainingProviders = new List<TrainingProviderViewModel>()
             };
 
             var apiMock = new Mock<IManageApi>();
@@ -499,7 +496,7 @@ namespace ManageCoursesUi.Tests
                 .ReturnsAsync(true);
             var controller = new OrganisationControllerMockedValidation(apiMock.Object, new MockFeatureFlags());
 
-            var result = await controller.AboutPost(ucasCode, viewModel);
+            var result = await controller.DetailsPost(ucasCode, viewModel);
 
             var viewResult = result as ViewResult;
 
