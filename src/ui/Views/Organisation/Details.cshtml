@@ -5,6 +5,9 @@
   var train_with_us = ViewData.ModelState["TrainWithUs"] != null && ViewData.ModelState["TrainWithUs"].Errors.Any();
   var about_training_provider = ViewData.ModelState["AboutTrainingProvider"] != null && ViewData.ModelState["AboutTrainingProvider"].Errors.Any();
   var train_with_disability = ViewData.ModelState["TrainWithDisability"] != null && ViewData.ModelState["TrainWithDisability"].Errors.Any();
+  var email_address = ViewData.ModelState["EmailAddress"] != null && ViewData.ModelState["EmailAddress"].Errors.Any();
+  var telephone = ViewData.ModelState["Telephone"] != null && ViewData.ModelState["Telephone"].Errors.Any();
+  var org_url = ViewData.ModelState["Url"] != null && ViewData.ModelState["Url"].Errors.Any();
   var workflowStatus = Model.GetWorkflowStatus();
   var url = Url.Action("Details", "Organisation");
 }
@@ -28,6 +31,41 @@
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
       <div class="course-parts">
+        <div class="course-parts__item">
+          <h3 class="course-parts__title">Contact details</h3>
+          <a class="course-parts__action" href="@Url.Action("Contact", "Organisation", new {ucasCode = Model.InstitutionCode})">Edit</a>
+          <dl class="course-parts__fields">
+            <dt class="course-parts__fields__label @(email_address ? "course-parts__fields__label--error" : "")" id="section-EmailAddress">Email address</dt>
+            <dd class="course-parts__fields__value @(string.IsNullOrWhiteSpace(Model.EmailAddress) ? "course-parts__fields__value--empty" : "")">
+              @if (email_address) {
+                <a href="@url#EmailAddress-wrapper" class="govuk-link"><span asp-validation-for="EmailAddress" ></span></a>
+              }
+              @Model?.EmailAddress.DisplayText()
+            </dd>
+            <dt class="course-parts__fields__label @(telephone ? "course-parts__fields__label--error" : "")" id="section-Telephone">Telephone number</dt>
+            <dd class="course-parts__fields__value @(string.IsNullOrWhiteSpace(Model.Telephone) ? "course-parts__fields__value--empty" : "")">
+              @if (telephone) {
+                <a href="@url#Telephone-wrapper" class="govuk-link"><span asp-validation-for="Telephone" ></span></a>
+              }
+              @Model?.Telephone.DisplayText()
+            </dd>
+            <dt class="course-parts__fields__label @(org_url ? "course-parts__fields__label--error" : "")" id="section-Url">Website</dt>
+            <dd class="course-parts__fields__value @(string.IsNullOrWhiteSpace(Model.Url) ? "course-parts__fields__value--empty" : "")">
+              @if (org_url) {
+                <a href="@url#Url-wrapper" class="govuk-link"><span asp-validation-for="Url" ></span></a>
+              }
+              @Model?.Url.DisplayText()
+            </dd>
+            <dt class="course-parts__fields__label" id="section-Url">Contact address</dt>
+            <dd class="course-parts__fields__value">
+              @Model?.Addr1.DisplayText()<br>
+              @Model?.Addr2.DisplayText()<br>
+              @Model?.Addr3.DisplayText()<br>
+              @Model?.Addr4.DisplayText()<br>
+              @Model?.Postcode.DisplayText()
+            </dd>
+          </dl>
+        </div>
         <div class="course-parts__item">
           <h3 class="course-parts__title">About your organisation</h3>
           <a class="course-parts__action" href="@Url.Action("About", "Organisation", new {ucasCode = Model.InstitutionCode})">Edit</a>

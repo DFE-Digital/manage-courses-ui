@@ -117,6 +117,40 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
         }
 
         [HttpGet]
+        [Route("{ucasCode}/contact")]
+        public async Task<IActionResult> Contact(string ucasCode)
+        {
+            var ucasInstitutionEnrichmentGetModel = await _manageApi.GetEnrichmentOrganisation(ucasCode);
+
+            ucasInstitutionEnrichmentGetModel = ucasInstitutionEnrichmentGetModel ?? new UcasInstitutionEnrichmentGetModel { EnrichmentModel = new InstitutionEnrichmentModel() { AccreditingProviderEnrichments = new ObservableCollection<AccreditingProviderEnrichment>() } };
+
+            var enrichmentModel = ucasInstitutionEnrichmentGetModel.EnrichmentModel;
+
+            var model = GetOrganisationViewModel(ucasCode, ucasInstitutionEnrichmentGetModel);
+            model.InstitutionName = (await _manageApi.GetOrganisations()).FirstOrDefault(x => x.UcasCode == ucasCode.ToUpperInvariant())?.OrganisationName;;
+
+            return View(model);
+        }
+
+        [HttpPost]
+        [Route("{ucasCode}/contact")]
+        public async Task<ActionResult> ContactPost(string ucasCode, OrganisationViewModel model)
+        {
+            var ucasInstitutionEnrichmentGetModel = await _manageApi.GetEnrichmentOrganisation(ucasCode);
+
+            if (model.PublishOrganisation)
+            {
+                var result = await PublishOrgansation(ucasInstitutionEnrichmentGetModel, model, ucasCode);
+                return result;
+            }
+            else
+            {
+                var result = await SaveOrgansation(ucasInstitutionEnrichmentGetModel, model, ucasCode);
+                return result;
+            }
+        }
+
+        [HttpGet]
         [Route("{ucasCode}/request-access")]
         public async Task<ViewResult> RequestAccess(string ucasCode)
         {

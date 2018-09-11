@@ -27,6 +27,29 @@ namespace GovUk.Education.ManageCourses.Ui.ViewModels
         [Required(ErrorMessage = "Enter about training with a disability")]
         public string TrainWithDisability { get; set; }
 
+        Required(ErrorMessage = "Enter email address")]
+        public string EmailAddress { get; set; }
+
+        Required(ErrorMessage = "Enter telephone number")]
+        public string Telephone { get; set; }
+
+        Required(ErrorMessage = "Enter website")]
+        public string Url { get; set; }
+
+        Required(ErrorMessage = "Enter building or street")]
+        public string Addr1 { get; set; }
+
+        public string Addr2 { get; set; }
+
+        Required(ErrorMessage = "Enter town or city")]
+        public string Addr3 { get; set; }
+
+        Required(ErrorMessage = "Enter your county")]
+        public string Addr4 { get; set; }
+
+        Required(ErrorMessage = "Enter postcode")]
+        public string Postcode { get; set; }
+
         public DateTime? LastPublishedTimestampUtc { get; set; }
 
         public EnumStatus Status { get; set; }

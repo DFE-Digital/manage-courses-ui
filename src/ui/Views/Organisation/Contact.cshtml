@@ -1,0 +1,113 @@
+@model OrganisationViewModel
+
+@{
+  ViewBag.Title = Model.InstitutionName;
+  var email_address = ViewData.ModelState["EmailAddress"] != null && ViewData.ModelState["EmailAddress"].Errors.Any();
+  var telephone = ViewData.ModelState["Telephone"] != null && ViewData.ModelState["Telephone"].Errors.Any();
+  var org_url = ViewData.ModelState["Url"] != null && ViewData.ModelState["Url"].Errors.Any();
+  var street_one = ViewData.ModelState["Addr1"] != null && ViewData.ModelState["Addr1"].Errors.Any();
+  var street_two = ViewData.ModelState["Addr2"] != null && ViewData.ModelState["Addr2"].Errors.Any();
+  var town_city = ViewData.ModelState["Addr3"] != null && ViewData.ModelState["Addr3"].Errors.Any();
+  var county = ViewData.ModelState["Addr4"] != null && ViewData.ModelState["Addr4"].Errors.Any();
+  var postcode = ViewData.ModelState["Postcode"] != null && ViewData.ModelState["Postcode"].Errors.Any();
+  var workflowStatus = Model.GetWorkflowStatus();
+}
+
+<a href="@Url.Action("Details", "Organisation", new {ucasCode = Model.InstitutionCode})" class="govuk-back-link">Back</a>
+
+<main role="main" class="govuk-main-wrapper" id="main-content">
+  @await Html.PartialAsync("~/Views/Shared/_Alerts.cshtml")
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <div class="course-basicinfo govuk-!-margin-bottom-9">
+        <h1 class="govuk-heading-xl">
+          <span class="govuk-caption-xl">@Model.InstitutionName</span>
+          Contact details
+        </h1>
+      </div>
+    </div>
+  </div>
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <form asp-controller="Organisation" asp-action="About" method="post" data-module="form">
+        <input type="hidden" asp-for="@Model.PublishOrganisation" value="false"></input>
+        <input type="hidden" asp-for="@Model.InstitutionCode"></input>
+        @await Html.PartialAsync("Shared/ErrorSummary")
+        <div id="EmailAddress-wrapper" class="govuk-form-group @(email_address ? "govuk-form-group--error" : " ")">
+          <label asp-for="TrainWithUs" class="govuk-label">Email address</label>
+          <span id="email-hint" class="govuk-hint">Give an email address that applicants can use to contact you</span>
+          @if (email_address) {
+            <span asp-validation-for="EmailAddress" class="govuk-error-message"></span>
+          }
+          <input asp-for="EmailAddress" class="govuk-input govuk-input--width-20" type="email" aria-describedby="email-hint" />
+        </div>
+        <div id="Telephone-wrapper" class="govuk-form-group @(telephone ? "govuk-form-group--error" : " ")">
+          <label asp-for="Telephone" class="govuk-label">Telephone number</label>
+          <span id="telephone-hint" class="govuk-hint">Give a telephone number that applicants can use to call you</span>
+          @if (telephone) {
+            <span asp-validation-for="Telephone" class="govuk-error-message"></span>
+          }
+          <input asp-for="Telephone" class="govuk-input govuk-input--width-20" type="tel" aria-describedby="telephone-hint" />
+        </div>
+        <div id="Url-wrapper" class="govuk-form-group @(org_url ? "govuk-form-group--error" : " ")">
+          <label asp-for="Url" class="govuk-label">Website</label>
+          <span class="govuk-hint">Add a link to the initial teacher training or course pages of your website</span>
+          @if (org_url) {
+            <span asp-validation-for="Url" class="govuk-error-message"></span>
+          }
+          <input asp-for="Url" class="govuk-input" />
+        </div>
+
+        <h3 class="govuk-heading-m">Contact address</h3>
+        <div id="Addr1-wrapper" class="govuk-form-group @(street_one ? "govuk-form-group--error" : " ")">
+          <label class="govuk-label" asp-for="Addr1">
+            Building and street
+            <span class="govuk-visually-hidden">line 1 of 2</span>
+          </label>
+          @if (street_one) {
+            <span asp-validation-for="Addr1" class="govuk-error-message"></span>
+          }
+          <input class="govuk-input" asp-for="Addr1" type="text">
+        </div>
+        <div id="Addr2-wrapper" class="govuk-form-group @(street_two ? "govuk-form-group--error" : " ")">
+          <label class="govuk-label" asp-for="Addr2">
+            <span class="govuk-visually-hidden">Building and street line 2 of 2</span>
+          </label>
+          @if (street_two) {
+            <span asp-validation-for="Addr2" class="govuk-error-message"></span>
+          }
+          <input class="govuk-input" asp-for="Addr2" type="text">
+        </div>
+        <div id="Addr3-wrapper" class="govuk-form-group @(town_city ? "govuk-form-group--error" : " ")">
+          <label asp-for="Addr3" class="govuk-label">Town or city</label>
+          @if (town_city) {
+            <span asp-validation-for="Addr3" class="govuk-error-message"></span>
+          }
+          <input asp-for="Addr3" class="govuk-input govuk-!-width-two-thirds" />
+        </div>
+        <div id="Addr4-wrapper" class="govuk-form-group @(county ? "govuk-form-group--error" : " ")">
+          <label asp-for="Url" class="govuk-label">County</label>
+          @if (county) {
+            <span asp-validation-for="Addr4" class="govuk-error-message"></span>
+          }
+          <input asp-for="Addr4" class="govuk-input govuk-!-width-two-thirds" />
+        </div>
+        <div id="Postcode-wrapper" class="govuk-form-group @(postcode ? "govuk-form-group--error" : " ")">
+          <label asp-for="Url" class="govuk-label">Postcode</label>
+          @if (postcode) {
+            <span asp-validation-for="Postcode" class="govuk-error-message"></span>
+          }
+          <input asp-for="Postcode" class="govuk-input govuk-input--width-10" />
+        </div>
+        <div class="form-group">
+          <input type="submit" class="govuk-button" value="Save" />
+        </div>
+        <div class="form-group">
+          <p class="govuk-body"><a href="@Url.Action("Details", "Organisation")" class="govuk-link">Cancel changes</a></p>
+        </div>
+      </form>
+    </div>
+  </div>
+</main>
