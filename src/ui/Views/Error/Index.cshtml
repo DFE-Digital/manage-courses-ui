@@ -8,19 +8,19 @@
     switch (statusCode)
     {
         case 401:
-            errorViewPage = "Unauthorized";
+            errorViewPage = "~/Views/Error/Unauthorized.cshtml";
             break;
         case 403:
-            errorViewPage = "Forbidden";
+            errorViewPage = "~/Views/Error/Forbidden.cshtml";
             break;
         case 404:
-            errorViewPage = "NotFound";
+            errorViewPage = "~/Views/Error/NotFound.cshtml";
             break;
         case 500:
-            errorViewPage = "ServerError";
+            errorViewPage = "~/Views/Error/ServerError.cshtml";
             break;
         default:
-            errorViewPage = "ServerError";
+            errorViewPage = "~/Views/Error/ServerError.cshtml";
             break;
     }
 }

@@ -3,6 +3,8 @@ using GovUk.Education.ManageCourses.ApiClient;
 using Microsoft.ApplicationInsights;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.Extensions.Logging;
 
 namespace GovUk.Education.ManageCourses.Ui.ActionFilters
@@ -42,12 +44,16 @@ namespace GovUk.Education.ManageCourses.Ui.ActionFilters
 
             _logger.LogError(context.Exception, "Unhandled exception");
 
+            var statusCode = (int)HttpStatusCode.InternalServerError;
             context.Result = new ViewResult
             {
-                ViewName = "~/Views/Error/ServerError.cshtml",
-                StatusCode = (int)HttpStatusCode.InternalServerError,
+                ViewName = "~/Views/Error/Index.cshtml",
+                StatusCode = statusCode,
+                ViewData = new ViewDataDictionary(new EmptyModelMetadataProvider(), context.ModelState)
+                {
+                    Model = statusCode,
+                }
             };
-
             context.ExceptionHandled = true;
         }
     }
