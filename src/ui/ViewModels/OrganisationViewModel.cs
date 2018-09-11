@@ -27,12 +27,15 @@ namespace GovUk.Education.ManageCourses.Ui.ViewModels
         [Required(ErrorMessage = "Enter about training with a disability")]
         public string TrainWithDisability { get; set; }
 
+        [EmailAddress]
         [Required(ErrorMessage = "Enter email address")]
         public string EmailAddress { get; set; }
 
+        [Phone]
         [Required(ErrorMessage = "Enter telephone number")]
         public string Telephone { get; set; }
 
+        [Url]
         [Required(ErrorMessage = "Enter website")]
         public string Url { get; set; }
 
