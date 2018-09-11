@@ -14,6 +14,7 @@ namespace GovUk.Education.ManageCourses.Ui.ActionFilters
 
             if (swaggerException?.StatusCode >= 400 && swaggerException?.StatusCode <= 404)
             {
+                // todo: translate to status code without redirect
                 context.Result = new RedirectToActionResult("Index", "Error", new { statusCode = swaggerException?.StatusCode });
                 context.ExceptionHandled = true;
             }
@@ -30,6 +31,14 @@ namespace GovUk.Education.ManageCourses.Ui.ActionFilters
                 // instance around. It's not clear why but here I'm following this example.
                 new TelemetryClient().TrackException(context.Exception);
             }
+
+            context.Result = new ViewResult
+            {
+                ViewName = "~/Views/Error/ServerError.cshtml",
+                StatusCode = (int)HttpStatusCode.InternalServerError,
+            };
+
+            context.ExceptionHandled = true;
         }
     }
 }
