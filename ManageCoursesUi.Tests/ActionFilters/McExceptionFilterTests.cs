@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Routing;
 using Microsoft.AspNetCore.Mvc.Abstractions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.Extensions.Logging;
 using Moq;
 using NUnit.Framework;
 
@@ -21,8 +22,7 @@ namespace ManageCoursesUi.Tests
         [SetUp]
         public void SetUp()
         {
-
-            sut = new McExceptionFilter();
+            sut = new McExceptionFilter(new Mock<ILogger<McExceptionFilter>>().Object);
         }
 
         [Test]
@@ -38,8 +38,8 @@ namespace ManageCoursesUi.Tests
 
             Assert.IsTrue(exceptionContext.ExceptionHandled);
             Assert.IsNotNull(exceptionContext.Exception);
-            Assert.IsNotNull(exceptionContext.Result as RedirectToActionResult);
-            Assert.AreEqual(500, (exceptionContext.Result as RedirectToActionResult).RouteValues["statusCode"]);
+            Assert.IsNotNull(exceptionContext.Result as ViewResult);
+            Assert.AreEqual(500, (exceptionContext.Result as ViewResult).StatusCode);
         }
 
         [Test]
@@ -54,8 +54,8 @@ namespace ManageCoursesUi.Tests
             sut.OnException(exceptionContext);
 
             Assert.IsNotNull(exceptionContext.Exception);            
-            Assert.IsNotNull(exceptionContext.Result as RedirectToActionResult);
-            Assert.AreEqual(500, (exceptionContext.Result as RedirectToActionResult).RouteValues["statusCode"]);
+            Assert.IsNotNull(exceptionContext.Result as ViewResult);
+            Assert.AreEqual(500, (exceptionContext.Result as ViewResult).StatusCode);
             Assert.True(exceptionContext.ExceptionHandled);
 
         }
@@ -75,11 +75,10 @@ namespace ManageCoursesUi.Tests
             Assert.IsNotNull(exceptionContext.Result);
             Assert.IsTrue(exceptionContext.ExceptionHandled);
 
-            var redirectToActionResult = exceptionContext.Result as RedirectToActionResult;
-            Assert.IsNotNull(redirectToActionResult);
-            Assert.AreEqual("Index", redirectToActionResult.ActionName);
-            Assert.AreEqual("Error", redirectToActionResult.ControllerName);
-            Assert.AreEqual(401, redirectToActionResult.RouteValues["statusCode"]);
+            var viewResult = exceptionContext.Result as ViewResult;
+            Assert.IsNotNull(viewResult);
+            Assert.AreEqual("~/Views/Error/Index.cshtml", viewResult.ViewName);
+            Assert.AreEqual(401, viewResult.StatusCode);
         }
 
         [Test]
