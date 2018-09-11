@@ -91,6 +91,9 @@
             }
             <dt class="course-parts__fields__label @(train_with_disability ? "course-parts__fields__label--error" : "")" id="section-TrainWithDisability">Training with disabilities and other needs</dt>
             <dd class="course-parts__fields__value @(string.IsNullOrWhiteSpace(Model.TrainWithDisability) ? "course-parts__fields__value--empty" : "")">
+              @if (train_with_disability) {
+                <a href="@url#TrainWithDisability-wrapper" class="govuk-link"><span asp-validation-for="TrainWithDisability" ></span></a>
+              }
               @Model?.TrainWithDisability.DisplayText()
             </dd>
           </dl>
