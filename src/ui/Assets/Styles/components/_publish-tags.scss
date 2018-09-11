@@ -11,7 +11,7 @@
 }
 
 .govuk-tag--published {
-  background: govuk-colour("green");
+  background: $success-green;
   margin-bottom: govuk-spacing(3);
 }
 

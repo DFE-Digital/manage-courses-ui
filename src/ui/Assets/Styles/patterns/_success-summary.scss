@@ -1,6 +1,6 @@
 .govuk-success-summary {
   @extend .govuk-error-summary;
-  border-color: govuk-colour("green");
+  border-color: $success-green;
 
   *:last-child {
     margin-bottom: 0;

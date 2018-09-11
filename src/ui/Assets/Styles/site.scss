@@ -2,6 +2,7 @@ $govuk-images-path: "/images/";
 $govuk-fonts-path: "/fonts/";
 
 $govuk-global-styles: true;
+$success-green: #00823b;
 
 @import "node_modules/govuk-frontend/all";
 @import "components/cookie-banner";
