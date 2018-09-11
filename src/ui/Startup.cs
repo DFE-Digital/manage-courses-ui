@@ -80,11 +80,10 @@ namespace GovUk.Education.ManageCourses.Ui
                     {
                         // since our cookie lifetime is based on the access token one,
                         // check if we're more than halfway of the cookie lifetime
-                        var now = DateTimeOffset.UtcNow;
-                        var timeElapsed = now.Subtract(x.Properties.IssuedUtc.Value);
-                        var timeRemaining = x.Properties.ExpiresUtc.Value.Subtract(now);
+                        // assume a timeout of 20 minutes.
+                        var timeElapsed = DateTimeOffset.UtcNow.Subtract(x.Properties.IssuedUtc.Value);
 
-                        if (timeElapsed > timeRemaining)
+                        if (timeElapsed > TimeSpan.FromMinutes(19.5))
                         {
                             var identity = (ClaimsIdentity) x.Principal.Identity;
                             var accessTokenClaim = identity.FindFirst("access_token");
@@ -122,6 +121,12 @@ namespace GovUk.Education.ManageCourses.Ui
                                 // the new lifetime will be the same as the old one, so the alignment
                                 // between cookie and access token is preserved
                                 x.ShouldRenew = true;
+                            }
+                            else 
+                            {
+                                // could not refresh - log the user out
+                                _logger.LogWarning("Token refresh failed with message: " + response.ErrorDescription);
+                                x.RejectPrincipal();
                             }
                         }
                     }
