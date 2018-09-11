@@ -26,13 +26,17 @@ namespace GovUk.Education.ManageCourses.Ui.ActionFilters
             {
                 context.Result = StatusCodeViewResult(context, swaggerException.StatusCode);
                 context.ExceptionHandled = true;
+                return;
             }
-            else if (swaggerException?.StatusCode == (int)HttpStatusCode.UnavailableForLegalReasons)
+
+            if (swaggerException?.StatusCode == (int)HttpStatusCode.UnavailableForLegalReasons)
             {
                 context.Result = new RedirectToActionResult("AcceptTerms", "Home", null);
                 context.ExceptionHandled = true;
+                return;
             }
-            else if (swaggerException == null)
+
+            if (swaggerException == null)
             {
                 // not a swagger exception - so make sure AI gets notified despite us handling it here.
 
