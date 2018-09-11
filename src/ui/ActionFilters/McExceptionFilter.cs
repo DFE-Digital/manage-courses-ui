@@ -3,11 +3,19 @@ using GovUk.Education.ManageCourses.ApiClient;
 using Microsoft.ApplicationInsights;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.Extensions.Logging;
 
 namespace GovUk.Education.ManageCourses.Ui.ActionFilters
 {
     public class McExceptionFilter : IExceptionFilter
     {
+        private readonly ILogger _logger;
+
+        public McExceptionFilter(ILogger<McExceptionFilter> logger)
+        {
+            _logger = logger;
+        }
+
         public void OnException(ExceptionContext context)
         {
             var swaggerException = context.Exception as SwaggerException;
@@ -31,6 +39,8 @@ namespace GovUk.Education.ManageCourses.Ui.ActionFilters
                 // instance around. It's not clear why but here I'm following this example.
                 new TelemetryClient().TrackException(context.Exception);
             }
+
+            _logger.LogError(context.Exception, "Unhandled exception");
 
             context.Result = new ViewResult
             {
