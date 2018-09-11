@@ -176,11 +176,14 @@ namespace GovUk.Education.ManageCourses.Ui
                 options.DisableTelemetry = true;
                 options.Events = new OpenIdConnectEvents
                 {
-
+                    // Sometimes, problems in the OIDC provider (such as session timeouts)
+                    // Redirect the user to the /auth/cb endpoint. ASP.NET Core middleware interprets this by default
+                    // as a successful authentication and throws in surprise when it doesn't find an authorization code.
+                    // This override ensures that these cases redirect to the root.
                     OnMessageReceived = context =>
                         {
                             var isSpuriousAuthCbRequest =
-                                context.Request.Path == new Microsoft.AspNetCore.Http.PathString("/auth/cb") &&
+                                (context.Request.Path == new Microsoft.AspNetCore.Http.PathString("/auth/cb") || context.Request.Path == new Microsoft.AspNetCore.Http.PathString("/auth/cb/"))&&
                                 context.Request.Method == "GET" &&
                                 !context.Request.Query.ContainsKey("code");
 
