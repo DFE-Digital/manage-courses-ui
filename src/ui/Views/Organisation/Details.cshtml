@@ -53,7 +53,16 @@
               @Model.Telephone.DisplayText()
             </dd>
             <dt class="govuk-list--description__label">Website</dt>
-            <dd><a href="@Model.Url">@Model.Url</a></dd>
+            <dd class="@(string.IsNullOrWhiteSpace(Model.Url) ? "course-parts__fields__value--empty" : "")">
+              @if (!String.IsNullOrWhiteSpace(Model.Url))
+              {
+                <a href="@Model.Url" class="govuk-link">@Model.Url.DisplayText()</a>
+              }
+              else
+              {
+                @Model.Url.DisplayText()
+              }
+            </dd>
             <dt class="govuk-list--description__label">Address</dt>
             <dd>
               @if (!String.IsNullOrWhiteSpace(Model.Addr1))
