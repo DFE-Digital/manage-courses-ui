@@ -183,7 +183,7 @@ namespace GovUk.Education.ManageCourses.Ui
                     OnMessageReceived = context =>
                         {
                             var isSpuriousAuthCbRequest =
-                                (context.Request.Path == new Microsoft.AspNetCore.Http.PathString("/auth/cb") || context.Request.Path == new Microsoft.AspNetCore.Http.PathString("/auth/cb/"))&&
+                                context.Request.Path == options.CallbackPath &&
                                 context.Request.Method == "GET" &&
                                 !context.Request.Query.ContainsKey("code");
 
@@ -196,6 +196,17 @@ namespace GovUk.Education.ManageCourses.Ui
 
                             return Task.CompletedTask;
                         },
+
+                    // Sometimes the auth flow fails. The most commonly observed causes for this are
+                    // Cookie correlation failures, caused by obscure load balancing stuff.
+                    // In these cases, rather than send user to a 500 page, prompt them to re-authenticate.
+                    // This is derived from the recommended approach: https://github.com/aspnet/Security/issues/1165
+                    OnRemoteFailure = ctx =>
+                    {
+                        ctx.Response.Redirect("/");
+                        ctx.HandleResponse();
+                        return Task.FromResult(0);
+                    },
 
                     OnRedirectToIdentityProvider = context =>
                     {
