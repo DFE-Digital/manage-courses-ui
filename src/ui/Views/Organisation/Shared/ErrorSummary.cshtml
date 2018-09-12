@@ -51,7 +51,7 @@
                 {
                     foreach (var error in state.Value.Errors)
                     {
-                                    <li><a href="#@state.Key-wrapper">@error.ErrorMessage</a></li>
+                        <li><a href="@Url.Action("About", "Organisation")#@state.Key-wrapper">@error.ErrorMessage</a></li>
                     }
                 }
 

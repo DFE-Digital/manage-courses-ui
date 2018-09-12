@@ -1,0 +1,186 @@
+@model OrganisationViewModel
+
+@{
+  ViewBag.Title = Model.InstitutionName;
+  var train_with_us = ViewData.ModelState["TrainWithUs"] != null && ViewData.ModelState["TrainWithUs"].Errors.Any();
+  var about_training_provider = ViewData.ModelState["AboutTrainingProvider"] != null && ViewData.ModelState["AboutTrainingProvider"].Errors.Any();
+  var train_with_disability = ViewData.ModelState["TrainWithDisability"] != null && ViewData.ModelState["TrainWithDisability"].Errors.Any();
+  var email_address = ViewData.ModelState["EmailAddress"] != null && ViewData.ModelState["EmailAddress"].Errors.Any();
+  var telephone = ViewData.ModelState["Telephone"] != null && ViewData.ModelState["Telephone"].Errors.Any();
+  var org_url = ViewData.ModelState["Url"] != null && ViewData.ModelState["Url"].Errors.Any();
+  var workflowStatus = Model.GetWorkflowStatus();
+  var url = Url.Action("About", "Organisation");
+}
+
+<a href="@Url.Action("Show", "Organisation", new {ucasCode = Model.InstitutionCode})" class="govuk-back-link">Back</a>
+
+<main role="main" class="govuk-main-wrapper" id="main-content">
+  @await Html.PartialAsync("~/Views/Shared/_Alerts.cshtml")
+  @await Html.PartialAsync("~/Views/Organisation/Shared/ErrorSummary.cshtml")
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <div class="course-basicinfo govuk-!-margin-bottom-9">
+        <h1 class="govuk-heading-xl">
+          <span class="govuk-caption-xl">@Model.InstitutionName</span>
+          About your organisation
+        </h1>
+      </div>
+    </div>
+  </div>
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <div class="course-parts">
+        <div class="course-parts__item">
+          <h3 class="course-parts__title">Contact details from UCAS</h3>
+          <dl class="govuk-list--description" role="contentinfo">
+            <dt class="govuk-list--description__label">Training provider code</dt>
+            <dd>@Model.InstitutionCode</dd>
+            <dt class="govuk-list--description__label">Email</dt>
+            <dd>
+              <a href="mailto:@Model.EmailAddress" title="Send email to course contact" aria-label="Send email to course contact" class="govuk-link">@Model.EmailAddress</a>
+            </dd>
+            <dt class="govuk-list--description__label">Telephone</dt>
+            <dd>@Model.Telephone</dd>
+            <dt class="govuk-list--description__label">Website</dt>
+            <dd><a href="@Model.Url">@Model.Url</a></dd>
+            <dt class="govuk-list--description__label">Address</dt>
+            <dd>
+              @Model.Addr1<br>
+              @Model.Addr2<br>
+              @Model.Addr3<br>
+              @Model.Addr4<br>
+              @Model.Postcode
+            </dd>
+          </dl>
+        </div>
+        <div class="course-parts__item">
+          <h3 class="course-parts__title">About your organisation</h3>
+          <a class="course-parts__action" href="@Url.Action("About", "Organisation", new {ucasCode = Model.InstitutionCode})">Edit</a>
+          <dl class="course-parts__fields">
+            <dt class="course-parts__fields__label @(train_with_us ? "course-parts__fields__label--error" : "")" id="section-TrainWithUs">About your organisation</dt>
+            <dd class="course-parts__fields__value @(string.IsNullOrWhiteSpace(Model.TrainWithUs) ? "course-parts__fields__value--empty" : "")">
+              @if (train_with_us) {
+                <a href="@url#TrainWithUs-wrapper" class="govuk-link"><span asp-validation-for="TrainWithUs" ></span></a>
+              }
+              @Model?.TrainWithUs.DisplayText()
+            </dd>
+            @if(Model.AboutTrainingProviders.Any()) {
+              @for (int i = 0; i < Model.AboutTrainingProviders.Count; i++) {
+                  var aboutTrainingProviderKey = "AboutTrainingProviders_"+i+"__Description";
+                  var hasErrored = ViewData.ModelState[aboutTrainingProviderKey] != null && ViewData.ModelState[aboutTrainingProviderKey].Errors.Any();
+                <dt class="course-parts__fields__label @(hasErrored ? "course-parts__fields__label--error" : "")" id="AboutTrainingProviders_"+i+"__Description">
+                  @Model.AboutTrainingProviders[i].InstitutionName (optional)
+                </dt>
+                <dd class="course-parts__fields__value @(string.IsNullOrWhiteSpace(Model.AboutTrainingProviders[i].Description) ? "course-parts__fields__value--empty" : "")">
+                  @Model.AboutTrainingProviders[i].Description.DisplayText()
+                </dd>
+              }
+            }
+            <dt class="course-parts__fields__label @(train_with_disability ? "course-parts__fields__label--error" : "")" id="section-TrainWithDisability">Training with disabilities and other needs</dt>
+            <dd class="course-parts__fields__value @(string.IsNullOrWhiteSpace(Model.TrainWithDisability) ? "course-parts__fields__value--empty" : "")">
+              @if (train_with_disability) {
+                <a href="@url#TrainWithDisability-wrapper" class="govuk-link"><span asp-validation-for="TrainWithDisability" ></span></a>
+              }
+              @Model?.TrainWithDisability.DisplayText()
+            </dd>
+          </dl>
+        </div>
+      </div>
+    </div>
+    <div class="govuk-grid-column-one-third">
+
+      <aside class="related">
+        @switch(workflowStatus)
+        {
+          case WorkflowStatus.Blank :
+            <strong class="govuk-tag govuk-tag--empty">Empty</strong>
+            <p class="govuk-body">You need to complete and publish this information.</p>
+
+            <hr class="related__section-break" />
+            <h4 class="govuk-heading-m">Preview on a course</h4>
+            <p class="govuk-body">This information will show on all your courses.</p>
+            <p class="govuk-body">Preview any course to see how it will look to applicants.</p>
+
+            <hr class="related__section-break">
+            <h4 class="govuk-heading-m">Publish</h4>
+            <p class="govuk-body">Applicants will see published information from October.</p>
+            <p class="govuk-body">You can make changes to this after publishing it.</p>
+
+            <form asp-controller="Organisation" asp-action="Details" method="post">
+              <input type="submit" class="govuk-button" value="Publish" />
+            </form>
+            break;
+          case WorkflowStatus.InitialDraft :
+            <strong class="govuk-tag govuk-tag--draft">Draft</strong>
+            <p class="govuk-body">You have unpublished changes.</p>
+
+            <hr class="related__section-break" />
+            <h4 class="govuk-heading-m">Preview on a course</h4>
+            <p class="govuk-body">This information will show on all your courses.</p>
+            <p class="govuk-body">Preview any course to see how it will look to applicants.</p>
+
+            <hr class="related__section-break">
+            <h4 class="govuk-heading-m">Publish</h4>
+            <p class="govuk-body">Applicants will see published information from October.</p>
+            <p class="govuk-body">You can make changes to this after publishing it.</p>
+
+            <form asp-controller="Organisation" asp-action="Details" method="post">
+              <input type="submit" class="govuk-button" value="Publish" />
+            </form>
+            break;
+          case WorkflowStatus.Published :
+            <strong class="govuk-tag govuk-tag--published">Published</strong>
+            <p class="govuk-body">Applicants will see this on all your courses from October.</p>
+            <p class="govuk-body">Last published on @Model.LastPublishedTimestampUtc.DateString()</p>
+
+            break;
+          case WorkflowStatus.SubsequentDraft :
+            <strong class="govuk-tag govuk-tag--draft">Draft</strong>
+            <p class="govuk-body">Last published on @Model.LastPublishedTimestampUtc.DateString()</p>
+            <p class="govuk-body">You have unpublished changes.</p>
+
+            <hr class="related__section-break" />
+            <h4 class="govuk-heading-m">Preview on a course</h4>
+            <p class="govuk-body">This information will show on all your courses.</p>
+            <p class="govuk-body">Preview any course to see how it will look to applicants.</p>
+
+            <hr class="related__section-break">
+            <h4 class="govuk-heading-m">Publish</h4>
+            <p class="govuk-body">Applicants will see published information from October.</p>
+            <p class="govuk-body">You can make changes to this after publishing it.</p>
+
+            <form asp-controller="Organisation" asp-action="Details" method="post">
+              <input type="submit" class="govuk-button" value="Publish" />
+            </form>
+            break;
+          case WorkflowStatus.BlankSubsequentDraft :
+            <strong class="govuk-tag govuk-tag--draft">Empty</strong>
+            <p class="govuk-body">Last published on @Model.LastPublishedTimestampUtc.DateString()</p>
+            <p class="govuk-body">You have unpublished changes.</p>
+
+            <hr class="related__section-break" />
+            <h4 class="govuk-heading-m">Preview on a course</h4>
+            <p class="govuk-body">This information will show on all your courses.</p>
+            <p class="govuk-body">Preview any course to see how it will look to applicants.</p>
+
+            <hr class="related__section-break">
+            <h4 class="govuk-heading-m">Publish</h4>
+            <p class="govuk-body">Applicants will see published information from October.</p>
+            <p class="govuk-body">You can make changes to this after publishing it.</p>
+
+            <form asp-controller="Organisation" asp-action="Details" method="post">
+              <input type="submit" class="govuk-button" value="Publish" />
+            </form>
+            break;
+          default:
+            break;
+        }
+
+        <hr class="related__section-break">
+      </aside>
+
+    </div>
+  </div>
+</main>

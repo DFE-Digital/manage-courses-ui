@@ -91,9 +91,8 @@ namespace GovUk.Education.ManageCourses.Ui.Services
 
                 ContactDetails = new Contact
                 {
-                    Phone = null, // ???
-                    Fax = null, // ???
-                    Email = null, // ???
+                    Phone = ucasInstData.Telephone, 
+                    Email = ucasInstData.Email,
                     Website = ucasInstData.Url,
                     Address = MapAddress(ucasInstData)
                 },
