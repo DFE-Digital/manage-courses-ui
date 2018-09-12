@@ -17,4 +17,8 @@
 
 .govuk-tag--inline {
   margin-bottom: 0;
+
+  .govuk-body & {
+    margin-right: govuk-spacing(1);
+  }
 }
