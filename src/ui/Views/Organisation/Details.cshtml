@@ -36,22 +36,46 @@
           <h3 class="course-parts__title">Contact details from UCAS</h3>
           <dl class="govuk-list--description" role="contentinfo">
             <dt class="govuk-list--description__label">Training provider code</dt>
-            <dd>@Model.InstitutionCode</dd>
+            <dd>@Model.InstitutionCode.ToUpper()</dd>
             <dt class="govuk-list--description__label">Email</dt>
-            <dd>
-              <a href="mailto:@Model.EmailAddress" title="Send email to course contact" aria-label="Send email to course contact" class="govuk-link">@Model.EmailAddress</a>
+            <dd class="@(string.IsNullOrWhiteSpace(Model.EmailAddress) ? "course-parts__fields__value--empty" : "")">
+              @if (!String.IsNullOrWhiteSpace(Model.EmailAddress))
+              {
+                <a href="mailto:@Model.EmailAddress" title="Send email to course contact" aria-label="Send email to course contact" class="govuk-link">@Model.EmailAddress.DisplayText()</a>
+              }
+              else
+              {
+                @Model.EmailAddress.DisplayText()
+              }
             </dd>
             <dt class="govuk-list--description__label">Telephone</dt>
-            <dd>@Model.Telephone</dd>
+            <dd class="@(string.IsNullOrWhiteSpace(Model.Telephone) ? "course-parts__fields__value--empty" : "")">
+              @Model.Telephone.DisplayText()
+            </dd>
             <dt class="govuk-list--description__label">Website</dt>
             <dd><a href="@Model.Url">@Model.Url</a></dd>
             <dt class="govuk-list--description__label">Address</dt>
             <dd>
-              @Model.Addr1<br>
-              @Model.Addr2<br>
-              @Model.Addr3<br>
-              @Model.Addr4<br>
-              @Model.Postcode
+              @if (!String.IsNullOrWhiteSpace(Model.Addr1))
+              {
+                @Model.Addr1<br>
+              }
+              @if (!String.IsNullOrWhiteSpace(Model.Addr2))
+              {
+                @Model.Addr2<br>
+              }
+              @if (!String.IsNullOrWhiteSpace(Model.Addr3))
+              {
+                @Model.Addr3<br>
+              }
+              @if (!String.IsNullOrWhiteSpace(Model.Addr4))
+              {
+                @Model.Addr4<br>
+              }
+              @if (!String.IsNullOrWhiteSpace(Model.Postcode))
+              {
+                @Model.Postcode
+              }
             </dd>
           </dl>
         </div>
