@@ -118,6 +118,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             return result;
         }
 
+        // TODO: Not currently visible to the public, add edit link on details view
         [HttpGet]
         [Route("{ucasCode}/contact")]
         public async Task<IActionResult> Contact(string ucasCode)
@@ -135,6 +136,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             return View(model);
         }
 
+        // TODO: Ensure this actually persists the contact data correctly
         [HttpPost]
         [Route("{ucasCode}/contact")]
         public async Task<ActionResult> ContactPost(string ucasCode, OrganisationViewModel model)
