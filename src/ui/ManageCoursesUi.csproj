@@ -31,8 +31,8 @@
   <ItemGroup Condition="Exists('$(ProjectDir)dev-mc-api.targets')==false">
     <PackageReference Include="GovUk.Education.ManageCourses.ApiClient" Version="0.12.0" />
   </ItemGroup>
-  <ItemGroup Condition="Exists('$(ProjectDir)dev-sc-shared.targets')==false">    
-    <PackageReference Include="GovUk.Education.SearchAndCompare.Ui.Shared" Version="0.4.1.*" />
+  <ItemGroup Condition="Exists('$(ProjectDir)dev-sc-shared.targets')==false">
+    <PackageReference Include="GovUk.Education.SearchAndCompare.Ui.Shared" Version="0.4.2.*" />
   </ItemGroup>
   <Target Name="Webpack" BeforeTargets="AfterBuild">
     <Exec Command="npm install" />
