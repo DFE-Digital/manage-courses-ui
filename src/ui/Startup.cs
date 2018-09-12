@@ -183,7 +183,7 @@ namespace GovUk.Education.ManageCourses.Ui
                     OnMessageReceived = context =>
                         {
                             var isSpuriousAuthCbRequest =
-                                context.Request.Path == new PathString("/auth/cb") &&
+                                context.Request.Path == options.CallbackPath &&
                                 context.Request.Method == "GET" &&
                                 !context.Request.Query.ContainsKey("code");
 
