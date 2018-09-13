@@ -23,7 +23,7 @@
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
       <form asp-controller="Course" asp-action="Requirements" method="post" data-module="form">
-        <h3 class="govuk-heading-l">Qualifications needed</h3>
+        <h2 class="govuk-heading-l">Qualifications needed</h2>
         <p class="govuk-body">State the minimum academic qualifications needed for this course.</p>
         <div class="govuk-character-count" data-module="character-count" data-maxwords="100">
           <div id="Qualifications-wrapper" class="@(qualifications ? " govuk-form-group--error " : " ")">
@@ -35,7 +35,7 @@
           </div>
         </div>
         <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible">
-        <h3 class="govuk-heading-l">Personal qualities</h3>
+        <h2 class="govuk-heading-l">Personal qualities</h2>
         <p class="govuk-body">Tell applicants about the skills and motivation you’re looking for (eg experience with children, a genuine passion for teaching, or a talent for public speaking).</p>
         <div class="govuk-character-count" data-module="character-count" data-maxwords="100">
           <div id="PersonalQualities-wrapper" class="@(personal_qualities ? " govuk-form-group--error " : " ")">
@@ -47,7 +47,7 @@
           </div>
         </div>
         <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible">
-        <h3 class="govuk-heading-l">Other requirements</h3>
+        <h2 class="govuk-heading-l">Other requirements</h2>
         <p>If applicants need any non-academic qualifications or documents, list them here (eg criminal record checks, or relevant work experience).</p>
         <div class="govuk-character-count" data-module="character-count" data-maxwords="100">
           <div id="OtherRequirements-wrapper" class="govuk-form-group @(other_requirements ? " govuk-form-group--error " : " ")">
