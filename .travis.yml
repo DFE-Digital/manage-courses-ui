@@ -11,11 +11,19 @@ env:
     secure: Jevjau9bkjgarHgHLBmptIRIysFdMWYaYjMQdJNd61GS1hDIZqwdIr843hfnvEbgRIJRa/8oCpW/2iasjC9qQ6ZZuM8Km8Ay75qWEpaWRWCddq5fSKtIb6pnzRhC0NsviMVRluJvlQYA5b4NnOosS26913ylk1PKgfEcV5s/nxb7UxiEvoSeCjLxhOq1SXhM8SS2D8kjXZz7xYEigTGzNc4e6ZMj44b4O1sDZAQPxpKc6ELAi8ncZXZax5ZuuUsUMKT+qwo1JbDcJE2CwUXgWR/8yUFWNVDkjM0N0+z2m3wEJhOcYJV0q7X2YavI920KAp4iAbOLqRXd/uaaxW5AorzJFP4FyH2fBtYsISGZUeLXp20qgeJoz3XxZJP4LjCttXGNU2CTNpupuqCudJaT0D4HIGU4GyOnki24sRbnbeFjRstx1/+VLoKNndgZW49T4KuzURXudKsNfjM4n0SYJwbiWUSzOqJJ3CWdXarFo82HARuYXa8gi7QiigV0U6VvLQbXp6RZLtDHE4xYW7TXmrilx7o77kePR1duqGehgys+ICJy8JW7YawSYCo9W4RolL6l5gDTMCSp1vk9vfXBWevngbWi5Px/O4Qhb3A+JfPiW/eTflNqTlcZRCi4YvYWpl3Dbfkl09HvBqAmpAGAKdFHOak63E6iiIB2E5Xlfew=
 deploy:
 - provider: script
-  script: git fetch --unshallow && git push https://govuk-dfe-bat-deployment-user:$AZURE_WA_PASSWORD@bat-dev-manage-courses-ui-app.scm.azurewebsites.net:443/bat-dev-manage-courses-ui-app.git HEAD:refs/heads/master
+  script: git fetch --unshallow && git push https://govuk-dfe-bat-deployment-user:$AZURE_WA_PASSWORD@bat-dev-manage-courses-ui-app.scm.azurewebsites.net:443/bat-dev-manage-courses-ui-app.git
+    HEAD:refs/heads/master
   on: master
 - provider: script
-  script: git fetch --unshallow && git push https://govuk-dfe-bat-deployment-user:$AZURE_WA_PASSWORD@bat-staging-manage-courses-ui-app.scm.azurewebsites.net:443/bat-staging-manage-courses-ui-app.git HEAD:refs/heads/master
+  script: git fetch --unshallow && git push https://govuk-dfe-bat-deployment-user:$AZURE_WA_PASSWORD@bat-staging-manage-courses-ui-app.scm.azurewebsites.net:443/bat-staging-manage-courses-ui-app.git
+    HEAD:refs/heads/master
   on: staging
 - provider: script
-  script: git fetch --unshallow && git push https://govuk-dfe-bat-deployment-user:$AZURE_WA_PASSWORD@bat-prod-manage-courses-ui-app.scm.azurewebsites.net:443/bat-prod-manage-courses-ui-app.git HEAD:refs/heads/master
+  script: git fetch --unshallow && git push https://govuk-dfe-bat-deployment-user:$AZURE_WA_PASSWORD@bat-prod-manage-courses-ui-app.scm.azurewebsites.net:443/bat-prod-manage-courses-ui-app.git
+    HEAD:refs/heads/master
   on: production
+notifications:
+  slack:
+    secure: T/CYoV0gsD7upCYiGq4Ev/jbbHWo4AVEw8m0+qaGFgzrnbStbtV50gwygD/ZJM6KOaXL4U3WZMeWl41EDB2PXaETWxu7KhGIYfDDnm1S3XvsOCsh/HHKNifbM6uEmGGC5947598eZzr+kZeZD4zunD31wYylOAR7ScKpM/iucN3MU9N55GD0wr2xiALacQ8l1WwCNLQSQdPXpkgZ1IIlT+jio1YQqkn4mu010PpwzwFfZw3nQpM6bpGxGtJQpizVmmIYDoDDRlI+qkKOBZyIY0BO8bmqzPQRhx1x+y9DDsh+NaISDk1sjX5pmRifDtQqo55eHVNhQZbXNq5lVlq0hn3cdbARdlINEIXx2wpP3qBAaZX7/kJm+y/xjqIvsegclZ1YWUKalOivrWh4DNS+hR4SfvYtKYBtQ+jsB+Na9p8UbG9mx97B+lAT4K6Fwuoxbh+nN+bI/XVEJY6H2CTZVjmxPv/66us3vJ4282GUqPK5kc2LPTGXqwJXQRmh3okFytxdnkfzLSL4gLPKuLBKSfyxRQNnqeELSO+04P9Q0cVpFjlP3M6bTOsGVPPeMvgYmbVoj+2DVofIlvjM0c0w5QTXMBfQrejSnhEHMHnFgF1ocap86qUd4ZdwN27VtgDM+3mtwuafWBaWPYeQOsiHXmF5OAbU786DJnzeMzUo444=
+  on_success: change
+  on_failure: always
