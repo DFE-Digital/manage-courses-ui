@@ -20,11 +20,11 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
     public class CourseController : CommonAttributesControllerBase
     {
         private readonly IManageApi _manageApi;
-        private readonly ICourseMapper courseMapper;
+        private readonly ApiClient.ICourseMapper courseMapper;
         private readonly ISearchAndCompareUrlService searchAndCompareUrlService;
         private readonly IFeatureFlags featureFlags;
 
-        public CourseController(IManageApi manageApi, ICourseMapper courseMapper, ISearchAndCompareUrlService searchAndCompareUrlHelper, IFeatureFlags featureFlags)
+        public CourseController(IManageApi manageApi, ApiClient.ICourseMapper courseMapper, ISearchAndCompareUrlService searchAndCompareUrlHelper, IFeatureFlags featureFlags)
         {
             _manageApi = manageApi;
             this.courseMapper = courseMapper;
