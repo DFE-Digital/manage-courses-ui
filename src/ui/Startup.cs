@@ -9,6 +9,7 @@ using GovUk.Education.ManageCourses.Ui.ActionFilters;
 using GovUk.Education.ManageCourses.Ui.Services;
 using GovUk.Education.SearchAndCompare.UI.Shared.ViewComponents;
 using IdentityModel.Client;
+using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Builder;
@@ -249,6 +250,8 @@ namespace GovUk.Education.ManageCourses.Ui
             services.AddSingleton<ManageCoursesConfig, ManageCoursesConfig>();
             services.AddSingleton<IManageApi, ManageApi>();
             services.AddScoped<ICourseMapper, CourseMapper>();
+            services.AddSingleton<ITelemetryInitializer, SubjectTelemetryInitialiser>();
+            services.AddApplicationInsightsTelemetry();
             services.AddSingleton(serviceProvider =>
             {
                 var manageCoursesApiClientConfiguration = serviceProvider.GetService<IManageCoursesApiClientConfiguration>();
