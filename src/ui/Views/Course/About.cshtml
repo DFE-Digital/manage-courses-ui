@@ -23,63 +23,69 @@
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
       <form asp-controller="Course" asp-action="About" method="post" data-module="form">
-         <p class="govuk-body">Give applicants a short description of the course.</p>
-        <p class="govuk-body">You could include:</p>
-        <ul class="govuk-list govuk-list--bullet">
-          <li>an overview of what candidates are taught</li>
-          <li>how much time they’ll spend training in school</li>
-          <li>how they’ll be assessed</li>
-          <li>the workload (eg how many essays per term?)</li>
-          <li>any other locations they’ll need to go to (eg will they also have to attend classes at an accrediting provider?)</li>
-          <li>information about the prestige of the course (eg league-table rankings)</li>
-        </ul>
-        <p class="govuk-body">If you offer different courses in the same subject, be clear about how this course differs from the others (eg amount of time spent in school, course structure). This will help the applicant decide which course best suits them.</p>
+        <div id="about-course-hint">
+          <p class="govuk-body">Give applicants a short description of the course.</p>
+          <p class="govuk-body">You could include:</p>
+          <ul class="govuk-list govuk-list--bullet">
+            <li>an overview of what candidates are taught</li>
+            <li>how much time they’ll spend training in school</li>
+            <li>how they’ll be assessed</li>
+            <li>the workload (eg how many essays per term?)</li>
+            <li>any other locations they’ll need to go to (eg will they also have to attend classes at an accrediting provider?)</li>
+            <li>information about the prestige of the course (eg league-table rankings)</li>
+          </ul>
+          <p class="govuk-body">If you offer different courses in the same subject, be clear about how this course differs from the others (eg amount of time spent in school, course structure). This will help the applicant decide which course best suits them.</p>
+        </div>
         <div class="govuk-character-count" data-module="character-count" data-maxwords="400">
           <div id="AboutCourse-wrapper" class="@(about_course ? " govuk-form-group--error " : " ")">
             <label asp-for="AboutCourse" class="govuk-label govuk-!-font-weight-bold">About this course</label>
             @if (about_course) {
               <span asp-validation-for="AboutCourse" class="govuk-error-message"></span>
             }
-            <textarea asp-for="AboutCourse" class="govuk-textarea js-character-count" rows="15" data-module="character-count"></textarea>
+            <textarea asp-for="AboutCourse" class="govuk-textarea js-character-count" rows="15" data-module="character-count" aria-describedby="about-course-hint"></textarea>
           </div>
         </div>
         <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible">
         <h2 class="govuk-heading-l">Interview process</h2>
-        <p class="govuk-body">Give applicants a summary of the interview process.</p>
-         <p class="govuk-body">This could include:</p>
-        <ul class="govuk-list govuk-list--bullet">
-          <li>who’ll be interviewing them</li>
-          <li>how many interviews they’ll need to attend</li>
-          <li>details of any tests they’ll need to sit</li>
-        </ul>
+        <div id="interview-process-hint">
+          <p class="govuk-body">Give applicants a summary of the interview process.</p>
+          <p class="govuk-body">This could include:</p>
+          <ul class="govuk-list govuk-list--bullet">
+            <li>who’ll be interviewing them</li>
+            <li>how many interviews they’ll need to attend</li>
+            <li>details of any tests they’ll need to sit</li>
+          </ul>
+        </div>
         <div class="govuk-character-count" data-module="character-count" data-maxwords="250">
           <div id="InterviewProcess-wrapper" class="@(interview_process ? " govuk-form-group--error " : " ")">
             <label asp-for="InterviewProcess" class="govuk-label govuk-!-font-weight-bold">Interview process (optional)</label>
             @if (interview_process) {
               <span asp-validation-for="InterviewProcess" class="govuk-error-message"></span>
             }
-            <textarea asp-for="InterviewProcess" class="govuk-textarea js-character-count" rows="10" data-module="character-count"></textarea>
+            <textarea asp-for="InterviewProcess" class="govuk-textarea js-character-count" rows="10" data-module="character-count" aria-describedby="interview-process-hint"></textarea>
           </div>
         </div>
         <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible">
         <h2 class="govuk-heading-l">How school placements work</h2>
-        <p>Tell applicants more about the schools they’ll be teaching in.</p>
-        <p>You could include:</p>
-        <ul class="govuk-list govuk-list--bullet">
-          <li>how the candidate’s schools are selected</li>
-          <li>the average distance candidates have to travel from home to school</li>
-          <li>the age ranges they’ll be teaching (eg 11 to 16 or 11 to 18)</li>
-          <li>how many schools you partner with in total</li>
-          <li>the number of placements a candidate will have</li>
-          <li>how much time candidates spend in each school</li>
-        </ul>
+        <div id="how-school-placements-work-hint">
+          <p>Tell applicants more about the schools they’ll be teaching in.</p>
+          <p>You could include:</p>
+          <ul class="govuk-list govuk-list--bullet">
+            <li>how the candidate’s schools are selected</li>
+            <li>the average distance candidates have to travel from home to school</li>
+            <li>the age ranges they’ll be teaching (eg 11 to 16 or 11 to 18)</li>
+            <li>how many schools you partner with in total</li>
+            <li>the number of placements a candidate will have</li>
+            <li>how much time candidates spend in each school</li>
+          </ul>
+        </div>
         <div class="govuk-character-count" data-module="character-count" data-maxwords="350">
           <div id="HowSchoolPlacementsWork-wrapper" class="govuk-form-group @(school_placement ? " govuk-form-group--error " : " ")">
             <label asp-for="HowSchoolPlacementsWork" class="govuk-label govuk-!-font-weight-bold">How school placements work</label>
             @if (school_placement) {
               <span asp-validation-for="HowSchoolPlacementsWork" class="govuk-error-message"></span>
             }
-            <textarea asp-for="HowSchoolPlacementsWork" class="govuk-textarea js-character-count" rows="10" data-module="character-count"></textarea>
+            <textarea asp-for="HowSchoolPlacementsWork" class="govuk-textarea js-character-count" rows="10" data-module="character-count" aria-describedby="how-school-placements-work-hint"></textarea>
           </div>
         </div>
         <div class="govuk-form">
