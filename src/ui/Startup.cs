@@ -17,6 +17,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Mvc.Razor;
+using Microsoft.AspNetCore.Rewrite;
 using Microsoft.AspNetCore.SpaServices.Webpack;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -291,6 +292,12 @@ namespace GovUk.Education.ManageCourses.Ui
             app.UseForwardedHeaders(forwardedHeadersOptions);
 
             app.UseAuthentication();
+
+            // hotfix
+            // workaround for bug in DfE sign in 
+            // which appends a trailing slash
+            app.UseRewriter(new RewriteOptions()
+                .AddRedirect("^auth/cb/?.*", "auth/cb"));
 
             var config = serviceProvider.GetService<ManageCoursesConfig>();
 
