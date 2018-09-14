@@ -30,62 +30,66 @@
       <form asp-controller="Organisation" asp-action="About" method="post" data-module="form">
         <input type="hidden" asp-for="@Model.InstitutionCode"></input>
         @await Html.PartialAsync("Shared/ErrorSummary")
-        <p class="govuk-body">This is your chance to tell applicants why they should choose to train with you. You could describe any advantages and special
-        features of you as a training provider.</p>
-        <p class="govuk-body">You must be specific and factual with any claims you make, and support them with evidence. For example:</p>
-        <ul class="govuk-list govuk-list--bullet">
-          <li>don’t say “our students are some of the happiest in the country”</li>
-          <li> do say “the Times Educational Supplement ranked our students as 4th happiest in the country”</li>
-        </ul>
+        <div id="train-with-us-hint">
+          <p class="govuk-body">This is your chance to tell applicants why they should choose to train with you. You could describe any advantages and special
+          features of you as a training provider.</p>
+          <p class="govuk-body">You must be specific and factual with any claims you make, and support them with evidence. For example:</p>
+          <ul class="govuk-list govuk-list--bullet">
+            <li>don’t say “our students are some of the happiest in the country”</li>
+            <li> do say “the Times Educational Supplement ranked our students as 4th happiest in the country”</li>
+          </ul>
+        </div>
         <div class="govuk-character-count" data-module="character-count" data-maxwords="250">
           <div id="TrainWithUs-wrapper" class="govuk-form-group @(train_with_us ? "govuk-form-group--error" : " ")">
             <label asp-for="TrainWithUs" class="govuk-label govuk-!-font-weight-bold">Training with you</label>
             @if (train_with_us) {
               <span asp-validation-for="TrainWithUs" class="govuk-error-message"></span>
             }
-            <textarea asp-for="TrainWithUs" class="govuk-textarea js-character-count" rows="15" data-module="character-count"></textarea>
+            <textarea asp-for="TrainWithUs" class="govuk-textarea js-character-count" rows="15" data-module="character-count" aria-describedby="train-with-us-hint"></textarea>
           </div>
         </div>
 
         @if(Model.AboutTrainingProviders.Any()) {
           <h2 class="govuk-heading-l">About your accredited provider</h2>
-          <p class="govuk-body">Describe any advantages and special features of your accredited provider. You must be specific and factual with any claims you make, and support them with evidence.</p>
+          <p id="about-training-provider-hint" class="govuk-body">Describe any advantages and special features of your accredited provider. You must be specific and factual with any claims you make, and support them with evidence.</p>
 
           @for (int i = 0; i < Model.AboutTrainingProviders.Count; i++) {
-              var aboutTrainingProviderKey = "AboutTrainingProviders_"+i+"__Description";
-              var hasErrored = ViewData.ModelState[aboutTrainingProviderKey] != null && ViewData.ModelState[aboutTrainingProviderKey].Errors.Any();
+            var aboutTrainingProviderKey = "AboutTrainingProviders_" + i + "__Description";
+            var hasErrored = ViewData.ModelState[aboutTrainingProviderKey] != null && ViewData.ModelState[aboutTrainingProviderKey].Errors.Any();
             <div class="govuk-character-count" data-module="character-count" data-maxwords="100">
-                <div id="@aboutTrainingProviderKey-wrapper" class="govuk-form-group @(hasErrored ? "govuk-form-group--error" : " ")">
-                    <input type="hidden" asp-for="@Model.AboutTrainingProviders[i].InstitutionCode" />
-                    <input type="hidden" asp-for="@Model.AboutTrainingProviders[i].InstitutionName" />
-                    <label class="govuk-label govuk-!-font-weight-bold" asp-for="@Model.AboutTrainingProviders[i].Description">
-                        @Model.AboutTrainingProviders[i].InstitutionName (optional)
-                    </label>
-                    @if (hasErrored)
-                    {
-                        <span asp-validation-for="@Model.AboutTrainingProviders[i].Description" class="govuk-error-message">@Model.AboutTrainingProviders[i].ValidationMessage</span>
-                    }
-                    <textarea class="govuk-textarea js-character-count" rows="10" asp-for="@Model.AboutTrainingProviders[i].Description"></textarea>
-                </div>
+              <div id="@aboutTrainingProviderKey-wrapper" class="govuk-form-group @(hasErrored ? "govuk-form-group--error" : " ")">
+                <input type="hidden" asp-for="@Model.AboutTrainingProviders[i].InstitutionCode" />
+                <input type="hidden" asp-for="@Model.AboutTrainingProviders[i].InstitutionName" />
+                <label class="govuk-label govuk-!-font-weight-bold" asp-for="@Model.AboutTrainingProviders[i].Description">
+                  @Model.AboutTrainingProviders[i].InstitutionName (optional)
+                </label>
+                @if (hasErrored)
+                {
+                  <span asp-validation-for="@Model.AboutTrainingProviders[i].Description" class="govuk-error-message">@Model.AboutTrainingProviders[i].ValidationMessage</span>
+                }
+                <textarea class="govuk-textarea js-character-count" rows="10" asp-for="@Model.AboutTrainingProviders[i].Description" aria-describedby="about-training-provider-hint"></textarea>
+              </div>
             </div>
           }
         }
 
         <h2 class="govuk-heading-l">Training with disabilities and other needs</h2>
-        <p class="govuk-body">Say how you support candidates with disabilities and other needs. This could include candidates with:</p>
-        <ul class="govuk-list govuk-list--bullet">
-          <li>dyslexia</li>
-          <li>physical, hearing and visual impairments</li>
-          <li>mental health conditions</li>
-        </ul>
-        <p class="govuk-body">If accessibility varies between locations, give details. It’s also useful for applicants to know how you’ve accommodated others with specific access needs in the past.</p>
+        <div id="train-with-disability-hint">
+          <p class="govuk-body">Say how you support candidates with disabilities and other needs. This could include candidates with:</p>
+          <ul class="govuk-list govuk-list--bullet">
+            <li>dyslexia</li>
+            <li>physical, hearing and visual impairments</li>
+            <li>mental health conditions</li>
+          </ul>
+          <p class="govuk-body">If accessibility varies between locations, give details. It’s also useful for applicants to know how you’ve accommodated others with specific access needs in the past.</p>
+        </div>
         <div class="govuk-character-count" data-module="character-count" data-maxwords="250">
           <div id="TrainWithDisability-wrapper" class="govuk-form-group @(train_with_disability ? "govuk-form-group--error" : "")">
             <label asp-for="TrainWithDisability" class="govuk-label govuk-!-font-weight-bold">Training with disabilities and other needs</label>
             @if (train_with_disability) {
               @Html.ValidationMessageFor(m => m.TrainWithDisability, "", new { @class="govuk-error-message" })
             }
-            <textarea asp-for="TrainWithDisability" class="govuk-textarea js-character-count" rows="15"></textarea>
+            <textarea asp-for="TrainWithDisability" class="govuk-textarea js-character-count" rows="15" aria-describedby="train-with-disability-hint"></textarea>
           </div>
         </div>
         <div class="form-group">
