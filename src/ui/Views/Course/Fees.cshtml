@@ -95,32 +95,36 @@
           </div>
         </div>
         <h3 class="govuk-heading-m">Fee details</h3>
-        <p class="govuk-body">If applicable, give further details about the fees for this course.</p>
-        <p class="govuk-body">This could include:</p>
-        <ul class="govuk-list govuk-list--bullet">
-          <li>any top up fees</li>
-          <li>any other costs</li>
-        </ul>
+        <div id="fee-details-hint">
+          <p class="govuk-body">If applicable, give further details about the fees for this course.</p>
+          <p class="govuk-body">This could include:</p>
+          <ul class="govuk-list govuk-list--bullet">
+            <li>any top up fees</li>
+            <li>any other costs</li>
+          </ul>
+        </div>
         <div class="govuk-character-count" data-module="character-count" data-maxwords="250">
           <div id="FeeDetails-wrapper" class="govuk-form-group @(fee_details ? " govuk-form-group--error " : " ")">
             <label asp-for="FeeDetails" class="govuk-label govuk-!-font-weight-bold">Fee details (optional)</label>
             @if (fee_details) {
               <span asp-validation-for="FeeDetails" class="govuk-error-message"></span>
             }
-            <textarea asp-for="FeeDetails" class="govuk-textarea js-character-count" rows="15" data-module="character-count"></textarea>
+            <textarea asp-for="FeeDetails" class="govuk-textarea js-character-count" rows="15" data-module="character-count" aria-describedby="fee-details-hint"></textarea>
           </div>
         </div>
         <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible">
         <h2 class="govuk-heading-l">Financial support you offer</h2>
-        <p class="govuk-body">If applicable, say more about the financial support you offer for this course. For example, any bursaries available.</p>
-        <p class="govuk-body">You don’t need to add details of any DfE bursaries and subject scholarships here. These will be published automatically to your course page.</p>
+        <div id="financial-support-hint">
+          <p class="govuk-body">If applicable, say more about the financial support you offer for this course. For example, any bursaries available.</p>
+          <p class="govuk-body">You don’t need to add details of any DfE bursaries and subject scholarships here. These will be published automatically to your course page.</p>
+        </div>
         <div class="govuk-character-count" data-module="character-count" data-maxwords="250">
           <div id="FinancialSupport-wrapper" class="govuk-form-group @(financial_support ? " govuk-form-group--error " : " ")">
             <label asp-for="FinancialSupport" class="govuk-label govuk-!-font-weight-bold">Financial support you offer (optional)</label>
             @if (financial_support) {
               <span asp-validation-for="FinancialSupport" class="govuk-error-message"></span>
             }
-            <textarea asp-for="FinancialSupport" class="govuk-textarea js-character-count" rows="15" data-module="character-count"></textarea>
+            <textarea asp-for="FinancialSupport" class="govuk-textarea js-character-count" rows="15" data-module="character-count" aria-describedby="financial-support-hint"></textarea>
           </div>
         </div>
          <div class="govuk-form">
