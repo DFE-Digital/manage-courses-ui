@@ -36,26 +36,26 @@
         </div>
         <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible">
         <h2 class="govuk-heading-l">Personal qualities</h2>
-        <p class="govuk-body">Tell applicants about the skills and motivation you’re looking for (eg experience with children, a genuine passion for teaching, or a talent for public speaking).</p>
+        <p id="personal-qualities-hint" class="govuk-body">Tell applicants about the skills and motivation you’re looking for (eg experience with children, a genuine passion for teaching, or a talent for public speaking).</p>
         <div class="govuk-character-count" data-module="character-count" data-maxwords="100">
           <div id="PersonalQualities-wrapper" class="@(personal_qualities ? " govuk-form-group--error " : " ")">
             <label asp-for="PersonalQualities" class="govuk-label govuk-!-font-weight-bold">Personal qualities (optional)</label>
             @if (personal_qualities) {
               <span asp-validation-for="PersonalQualities" class="govuk-error-message"></span>
             }
-            <textarea asp-for="PersonalQualities" class="govuk-textarea js-character-count" rows="10" data-module="character-count"></textarea>
+            <textarea asp-for="PersonalQualities" class="govuk-textarea js-character-count" rows="10" data-module="character-count" aria-describedby="personal-qualities-hint"></textarea>
           </div>
         </div>
         <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible">
         <h2 class="govuk-heading-l">Other requirements</h2>
-        <p>If applicants need any non-academic qualifications or documents, list them here (eg criminal record checks, or relevant work experience).</p>
+        <p id="other-requirements-hint" class="govuk-body">If applicants need any non-academic qualifications or documents, list them here (eg criminal record checks, or relevant work experience).</p>
         <div class="govuk-character-count" data-module="character-count" data-maxwords="100">
           <div id="OtherRequirements-wrapper" class="govuk-form-group @(other_requirements ? " govuk-form-group--error " : " ")">
             <label asp-for="OtherRequirements" class="govuk-label govuk-!-font-weight-bold">Other requirements (optional)</label>
             @if (other_requirements) {
               <span asp-validation-for="OtherRequirements" class="govuk-error-message"></span>
             }
-            <textarea asp-for="OtherRequirements" class="govuk-textarea js-character-count" rows="10" data-module="character-count"></textarea>
+            <textarea asp-for="OtherRequirements" class="govuk-textarea js-character-count" rows="10" data-module="character-count" aria-describedby-"other-requirements-hint"></textarea>
           </div>
         </div>
         <div class="govuk-form">
