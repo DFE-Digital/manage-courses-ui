@@ -52,11 +52,11 @@
         </div>
         <div id="Url-wrapper" class="govuk-form-group @(org_url ? "govuk-form-group--error" : " ")">
           <label asp-for="Url" class="govuk-label">Website</label>
-          <span class="govuk-hint">Add a link to the initial teacher training or course pages of your website</span>
+          <span id="url-hint" class="govuk-hint">Add a link to the initial teacher training or course pages of your website</span>
           @if (org_url) {
             <span asp-validation-for="Url" class="govuk-error-message"></span>
           }
-          <input asp-for="Url" class="govuk-input" />
+          <input asp-for="Url" class="govuk-input" aria-describedby="url-hint" />
         </div>
 
         <hr class="govuk-section-break govuk-section-break--l">
