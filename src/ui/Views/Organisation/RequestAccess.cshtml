@@ -1,5 +1,7 @@
-@model RequestAccessViewModel
+@model RequestAccessViewModel;
+
 @{
+  ViewBag.Title = "Request access for someone else";
   var fnv = ViewData.ModelState["FirstName"] != null && ViewData.ModelState["FirstName"].Errors.Any();
   var lnv = ViewData.ModelState["LastName"] != null && ViewData.ModelState["LastName"].Errors.Any();
   var eav = ViewData.ModelState["EmailAddress"] != null && ViewData.ModelState["EmailAddress"].Errors.Any();

@@ -1,7 +1,7 @@
-@model OrganisationViewModel
+@model OrganisationViewModel;
 
 @{
-  ViewBag.Title = Model.InstitutionName;
+  ViewBag.Title = Model.InstitutionName + " contact information";
   var email_address = ViewData.ModelState["EmailAddress"] != null && ViewData.ModelState["EmailAddress"].Errors.Any();
   var telephone = ViewData.ModelState["Telephone"] != null && ViewData.ModelState["Telephone"].Errors.Any();
   var org_url = ViewData.ModelState["Url"] != null && ViewData.ModelState["Url"].Errors.Any();
