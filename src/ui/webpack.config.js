@@ -52,6 +52,10 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
       {
         from: 'node_modules/govuk-frontend/assets/fonts',
         to: 'fonts'
+      },
+      {
+        from: 'node_modules/html5shiv/dist/html5shiv.min.js',
+        to: 'vendor'
       }
     ]),
   ],
