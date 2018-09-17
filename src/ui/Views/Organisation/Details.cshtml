@@ -1,7 +1,7 @@
-@model OrganisationViewModel
+@model OrganisationViewModel;
 
 @{
-  ViewBag.Title = Model.InstitutionName;
+  ViewBag.Title = Model.InstitutionName + " overview";
   var train_with_us = ViewData.ModelState["TrainWithUs"] != null && ViewData.ModelState["TrainWithUs"].Errors.Any();
   var about_training_provider = ViewData.ModelState["AboutTrainingProvider"] != null && ViewData.ModelState["AboutTrainingProvider"].Errors.Any();
   var train_with_disability = ViewData.ModelState["TrainWithDisability"] != null && ViewData.ModelState["TrainWithDisability"].Errors.Any();
