@@ -198,7 +198,12 @@
           <p class="govuk-body">See how this course currently looks to applicants:</p>
           <p class="govuk-body"><a href="@Model.LiveSearchUrl">View on website</a></p>
         }
-
+        else
+        {
+          <h4 class="govuk-heading-m">Preview</h4>
+          <p class="govuk-body">See how this course looks:</p>
+          <p class="govuk-body"><a asp-action="Preview">Preview course</a></p>
+        }
       </aside>
     }
     </div>
