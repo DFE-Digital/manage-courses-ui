@@ -10,18 +10,23 @@
     {
         case 401:
             errorViewPage = "~/Views/Error/Unauthorized.cshtml";
+            ViewBag.Title = "Unauthorized";
             break;
         case 403:
             errorViewPage = "~/Views/Error/Forbidden.cshtml";
+            ViewBag.Title = "Forbidden";
             break;
         case 404:
             errorViewPage = "~/Views/Error/NotFound.cshtml";
+            ViewBag.Title = "Page not found";
             break;
         case 500:
             errorViewPage = "~/Views/Error/ServerError.cshtml";
+            ViewBag.Title = "Something went wrong";
             break;
         default:
             errorViewPage = "~/Views/Error/ServerError.cshtml";
+            ViewBag.Title = "Something went wrong";
             break;
     }
 }
