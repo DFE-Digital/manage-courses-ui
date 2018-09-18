@@ -20,14 +20,12 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
     public class CourseController : CommonAttributesControllerBase
     {
         private readonly IManageApi _manageApi;
-        private readonly ApiClient.ICourseMapper courseMapper;
         private readonly ISearchAndCompareUrlService searchAndCompareUrlService;
         private readonly IFeatureFlags featureFlags;
 
-        public CourseController(IManageApi manageApi, ApiClient.ICourseMapper courseMapper, ISearchAndCompareUrlService searchAndCompareUrlHelper, IFeatureFlags featureFlags)
+        public CourseController(IManageApi manageApi, ISearchAndCompareUrlService searchAndCompareUrlHelper, IFeatureFlags featureFlags)
         {
             _manageApi = manageApi;
-            this.courseMapper = courseMapper;
             this.searchAndCompareUrlService = searchAndCompareUrlHelper;
             this.featureFlags = featureFlags;
         }
@@ -108,11 +106,12 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
                 return NotFound();
             }
 
-            var course = courseMapper.MapToSearchAndCompareCourse(
-                ucasInstData,
-                ucasCourseData,
-                orgEnrichmentData?.EnrichmentModel,
-                courseEnrichmentData?.EnrichmentModel);
+            SearchAndCompare.Domain.Models.Course course = null;
+            //var course = courseMapper.MapToSearchAndCompareCourse(
+            //    ucasInstData,
+            //    ucasCourseData,
+            //    orgEnrichmentData?.EnrichmentModel,
+            //    courseEnrichmentData?.EnrichmentModel);
 
             return View(new SearchAndCompare.UI.Shared.ViewModels.CourseDetailsViewModel
             {
