@@ -72,9 +72,10 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
                 return await Show(instCode, accreditingProviderId, ucasCode);
             }
 
-            var result = await _manageApi.PublishEnrichmentCourse(instCode, ucasCode);
+            var statusResult = await _manageApi.PublishEnrichmentCourse(instCode, ucasCode);
+            var publishResult = await _manageApi.PublishCourse(instCode, ucasCode);
 
-            if (result)
+            if (statusResult && publishResult)
             {
                 TempData["MessageType"] = "success";
                 TempData["MessageTitle"] = "Your course has been published";
@@ -96,22 +97,11 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
         [Route("{instCode}/course/{accreditingProviderId=self}/{ucasCode}/preview")]
         public IActionResult Preview(string instCode, string accreditingProviderId, string ucasCode)
         {
-            var ucasInstData = _manageApi.GetUcasInstitution(instCode).Result;
-            var ucasCourseData = _manageApi.GetCourseByUcasCode(instCode, ucasCode).Result;
-            var orgEnrichmentData = _manageApi.GetEnrichmentOrganisation(instCode).Result;
-            var courseEnrichmentData = _manageApi.GetEnrichmentCourse(instCode, ucasCode).Result;
-
-            if (ucasInstData == null || ucasCourseData == null)
+            var course = _manageApi.GetSearchAndCompareCourse(instCode, ucasCode).Result;
+            if (course == null)
             {
                 return NotFound();
             }
-
-            SearchAndCompare.Domain.Models.Course course = null;
-            //var course = courseMapper.MapToSearchAndCompareCourse(
-            //    ucasInstData,
-            //    ucasCourseData,
-            //    orgEnrichmentData?.EnrichmentModel,
-            //    courseEnrichmentData?.EnrichmentModel);
 
             return View(new SearchAndCompare.UI.Shared.ViewModels.CourseDetailsViewModel
             {

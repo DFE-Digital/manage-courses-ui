@@ -6,16 +6,23 @@ using System.Linq;
 using System.Threading.Tasks;
 using GovUk.Education.ManageCourses.ApiClient;
 using GovUk.Education.ManageCourses.Ui.ViewModels;
+using Newtonsoft.Json;
 
 namespace GovUk.Education.ManageCourses.Ui
 {
     public class ManageApi : IManageApi
     {
         private readonly ManageCoursesApiClient _apiClient;
+        private JsonSerializerSettings _jsonSerializerSettings;
 
         public ManageApi(ManageCoursesApiClient apiClient)
         {
             _apiClient = apiClient;
+            _jsonSerializerSettings = new JsonSerializerSettings
+            {
+                MissingMemberHandling = MissingMemberHandling.Ignore,
+                NullValueHandling = NullValueHandling.Ignore
+            };
         }
 
         // Do not handled any exception let it thro as it should be handled by McExceptionFilter or startup configuration.
@@ -87,12 +94,33 @@ namespace GovUk.Education.ManageCourses.Ui
         {
             await _apiClient.Enrichment_SaveCourseAsync(instCode, ucasCode, course);
         }
-        
-        public async Task<bool> PublishEnrichmentCourse(string ucasCode, string courseCode)
+
+        public async Task<SearchAndCompare.Domain.Models.Course> GetSearchAndCompareCourse(string ucasCode, string courseCode)
         {
-            await _apiClient.Enrichment_PublishCourseAsync(ucasCode, courseCode);
+            var result = await _apiClient.Publish_GetSearchAndCompareCourseAsync(ucasCode, courseCode);
+            return ConvertCourse(result);
+        }
+
+        public async Task<bool> PublishEnrichmentCourse(string instCode, string courseCode)
+        {
+            await _apiClient.Enrichment_PublishCourseAsync(instCode, courseCode);
 
             return true;
+        }
+
+        public async Task<bool> PublishCourse(string instCode, string courseCode)
+        {
+            var result = await _apiClient.Publish_PublishAsync(instCode, courseCode);
+
+            return result;
+        }
+
+        private SearchAndCompare.Domain.Models.Course ConvertCourse(ApiClient.Course2 course)//TODO sort this Course2 its pants
+        {
+            var jsonCourse = JsonConvert.SerializeObject(course, _jsonSerializerSettings);
+            SearchAndCompare.Domain.Models.Course deserializedCourse = JsonConvert.DeserializeObject<SearchAndCompare.Domain.Models.Course>(jsonCourse);
+
+            return deserializedCourse;
         }
     }
 }
