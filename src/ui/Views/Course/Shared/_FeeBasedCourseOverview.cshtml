@@ -13,55 +13,56 @@
   var financial_support = ViewData.ModelState["FinancialSupport"] != null && ViewData.ModelState["FinancialSupport"].Errors.Any();
 }
 
-  <div class="course-parts__item">
-    <h3 class="course-parts__title">Course length and fees</h3>
-    <a class="course-parts__action" href="@url">Edit<span class="govuk-visually-hidden"> course length and fees</span></a>
-    <dl class="course-parts__fields">
-      <dt class="course-parts__fields__label @(course_length ? "course-parts__fields__label--error" : "")">
-        Course length
-      </dt>
-      <dd class="course-parts__fields__value @(courseEnrichment.CourseLength == null ? "course-parts__fields__value--empty" : "")">
-        @if (course_length) {
-          <a href="@url#CourseLength-wrapper" class="govuk-link"><span asp-validation-for="CourseLength" ></span></a>
-        }
+<div class="course-parts__item">
+  <h3 class="course-parts__title">Course length and fees</h3>
+  <a class="course-parts__action" href="@url">Edit<span class="govuk-visually-hidden"> course length and fees</span></a>
+  <dl class="course-parts__fields">
+    <dt class="course-parts__fields__label @(course_length ? "course-parts__fields__label--error" : "")">
+      Course length
+    </dt>
+    <dd class="course-parts__fields__value @(courseEnrichment.CourseLength == null ? "course-parts__fields__value--empty" : "")">
+      @if (course_length) {
+        <a href="@url#CourseLength-wrapper" class="govuk-link"><span asp-validation-for="CourseLength" ></span></a>
+      }
 
-        @(@courseEnrichment?.CourseLength.DisplayText() == "Other" ? courseEnrichment.CourseLengthInput : courseEnrichment?.CourseLength.DisplayText())
-      </dd>
-      <dt class="course-parts__fields__label @(fee_uk_eu ? "course-parts__fields__label--error" : "")">
-        Fee for UK and EU students
-      </dt>
-      <dd class="course-parts__fields__value @(courseEnrichment.FeeUkEu == null ? "course-parts__fields__value--empty" : "")">
-        @if (fee_uk_eu) {
-          <a href="@url#FeeUkEu-wrapper" class="govuk-link"><span asp-validation-for="FeeUkEu" ></span></a>
-        }
-        @courseEnrichment?.FeeUkEu.DisplayText()
-      </dd>
-      <dt class="course-parts__fields__label @(fee_iternational ? "course-parts__fields__label--error" : "")">
-        Fee for international students (optional)
-      </dt>
-      <dd class="course-parts__fields__value @(courseEnrichment.FeeInternational == null ? "course-parts__fields__value--empty" : "")">
-        @if (fee_iternational) {
-          <a href="@url#FeeInternational-wrapper" class="govuk-link"><span asp-validation-for="FeeInternational" ></span></a>
-        }
-        @courseEnrichment?.FeeInternational.DisplayText()
-      </dd>
-      <dt class="course-parts__fields__label @(fee_details ? "course-parts__fields__label--error" : "")">
-        Fee details (optional)
-      </dt>
-      <dd class="course-parts__fields__value @(string.IsNullOrWhiteSpace(courseEnrichment.FeeDetails) ? "course-parts__fields__value--empty" : "")">
-        @if (fee_iternational) {
-          <a href="@url#FeeDetails-wrapper" class="govuk-link"><span asp-validation-for="FeeDetails" ></span></a>
-        }
-        @courseEnrichment?.FeeDetails.DisplayText()
-      </dd>
-      <dt class="course-parts__fields__label @(financial_support ? "course-parts__fields__label--error" : "")">
-        Financial support you offer (optional)
-      </dt>
-      <dd class="course-parts__fields__value @(string.IsNullOrWhiteSpace(courseEnrichment.FinancialSupport) ? "course-parts__fields__value--empty" : "")">
-        @if (fee_iternational) {
-          <a href="@url#FinancialSupport-wrapper" class="govuk-link"><span asp-validation-for="FinancialSupport" ></span></a>
-        }
-        @courseEnrichment?.FinancialSupport.DisplayText()
-      </dd>
-    </dl>
-  </div>
+      @(@courseEnrichment?.CourseLength.DisplayText() == "Other" ? courseEnrichment.CourseLengthInput : courseEnrichment?.CourseLength.DisplayText())
+    </dd>
+    <dt class="course-parts__fields__label @(fee_uk_eu ? "course-parts__fields__label--error" : "")">
+      Fee for UK and EU students
+    </dt>
+    <dd class="course-parts__fields__value @(courseEnrichment.FeeUkEu == null ? "course-parts__fields__value--empty" : "")">
+      @if (fee_uk_eu) {
+        <a href="@url#FeeUkEu-wrapper" class="govuk-link"><span asp-validation-for="FeeUkEu" ></span></a>
+      }
+      @courseEnrichment?.FeeUkEu.DisplayText()
+    </dd>
+    <dt class="course-parts__fields__label @(fee_iternational ? "course-parts__fields__label--error" : "")">
+      Fee for international students (optional)
+    </dt>
+    <dd class="course-parts__fields__value @(courseEnrichment.FeeInternational == null ? "course-parts__fields__value--empty" : "")">
+      @if (fee_iternational) {
+        <a href="@url#FeeInternational-wrapper" class="govuk-link"><span asp-validation-for="FeeInternational" ></span></a>
+      }
+      @courseEnrichment?.FeeInternational.DisplayText()
+    </dd>
+    <dt class="course-parts__fields__label @(fee_details ? "course-parts__fields__label--error" : "")">
+      Fee details (optional)
+    </dt>
+    <dd class="course-parts__fields__value @(string.IsNullOrWhiteSpace(courseEnrichment.FeeDetails) ? "course-parts__fields__value--empty" : "")">
+      @if (fee_iternational) {
+        <a href="@url#FeeDetails-wrapper" class="govuk-link"><span asp-validation-for="FeeDetails" ></span></a>
+      }
+      @courseEnrichment?.FeeDetails.DisplayText()
+    </dd>
+    <dt class="course-parts__fields__label @(financial_support ? "course-parts__fields__label--error" : "")">
+      Financial support you offer (optional)
+    </dt>
+    <dd class="course-parts__fields__value @(string.IsNullOrWhiteSpace(courseEnrichment.FinancialSupport) ? "course-parts__fields__value--empty" : "")">
+      @if (fee_iternational) {
+        <a href="@url#FinancialSupport-wrapper" class="govuk-link"><span asp-validation-for="FinancialSupport" ></span></a>
+      }
+      @courseEnrichment?.FinancialSupport.DisplayText()
+    </dd>
+  </dl>
+  @await Html.PartialAsync("CopyCourseNotice")
+</div>
