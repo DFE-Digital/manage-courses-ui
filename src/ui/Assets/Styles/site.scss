@@ -69,8 +69,14 @@ $success-green: #00823b;
     text-align: right;
   }
 
-  &__subject-col {
+  &__subject-col,
+  &__type-col {
     width: 35%;
+  }
+
+  &__status-col,
+  &__content-status-col {
+    width: 15%;
   }
 
   .govuk-table__row:last-child {
