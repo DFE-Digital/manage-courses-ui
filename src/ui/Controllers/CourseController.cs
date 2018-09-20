@@ -73,9 +73,10 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             }
 
             var statusResult = await _manageApi.PublishEnrichmentCourse(instCode, ucasCode);
-            var publishResult = await _manageApi.PublishCourse(instCode, ucasCode);
+            //dont do this yet
+            //var publishResult = await _manageApi.PublishCourse(instCode, ucasCode);
 
-            if (statusResult && publishResult)
+            if (statusResult)
             {
                 TempData["MessageType"] = "success";
                 TempData["MessageTitle"] = "Your course has been published";
