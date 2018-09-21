@@ -73,8 +73,12 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             }
 
             var statusResult = await _manageApi.PublishEnrichmentCourse(instCode, ucasCode);
-            //dont do this yet
-            //var publishResult = await _manageApi.PublishCourse(instCode, ucasCode);
+
+            var publishToSearchAndCompareResult = await _manageApi.PublishCourseToSearchAndCompare(instCode, ucasCode);
+            if(!publishToSearchAndCompareResult)
+            {
+                //TODO Decide what to do here?
+            }
 
             if (statusResult)
             {
