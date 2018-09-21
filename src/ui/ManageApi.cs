@@ -1,28 +1,17 @@
-using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Dynamic;
-using System.Linq;
 using System.Threading.Tasks;
 using GovUk.Education.ManageCourses.ApiClient;
-using GovUk.Education.ManageCourses.Ui.ViewModels;
-using Newtonsoft.Json;
+using GovUk.Education.ManageCourses.Ui.Helpers;
 
 namespace GovUk.Education.ManageCourses.Ui
 {
     public class ManageApi : IManageApi
     {
         private readonly ManageCoursesApiClient _apiClient;
-        private JsonSerializerSettings _jsonSerializerSettings;
 
         public ManageApi(ManageCoursesApiClient apiClient)
         {
             _apiClient = apiClient;
-            _jsonSerializerSettings = new JsonSerializerSettings
-            {
-                MissingMemberHandling = MissingMemberHandling.Ignore,
-                NullValueHandling = NullValueHandling.Ignore
-            };
         }
 
         // Do not handled any exception let it thro as it should be handled by McExceptionFilter or startup configuration.
@@ -98,7 +87,7 @@ namespace GovUk.Education.ManageCourses.Ui
         public async Task<SearchAndCompare.Domain.Models.Course> GetSearchAndCompareCourse(string ucasCode, string courseCode)
         {
             var result = await _apiClient.Publish_GetSearchAndCompareCourseAsync(ucasCode, courseCode);
-            return ConvertCourse(result);
+            return ApiHelper.Convert(result);
         }
 
         public async Task<bool> PublishEnrichmentCourse(string instCode, string courseCode)
@@ -113,14 +102,6 @@ namespace GovUk.Education.ManageCourses.Ui
             var result = await _apiClient.Publish_PublishToSearchAndCompareAsync(instCode, courseCode);
 
             return result;
-        }
-
-        private SearchAndCompare.Domain.Models.Course ConvertCourse(ApiClient.Course2 course)//TODO sort this Course2 its pants
-        {
-            var jsonCourse = JsonConvert.SerializeObject(course, _jsonSerializerSettings);
-            SearchAndCompare.Domain.Models.Course deserializedCourse = JsonConvert.DeserializeObject<SearchAndCompare.Domain.Models.Course>(jsonCourse);
-
-            return deserializedCourse;
         }
     }
 }
