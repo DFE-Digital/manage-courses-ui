@@ -90,12 +90,6 @@ namespace GovUk.Education.ManageCourses.Ui
             return ApiHelper.Convert(result);
         }
 
-        public async Task<bool> PublishEnrichmentCourse(string instCode, string courseCode)
-        {
-            await _apiClient.Enrichment_PublishCourseAsync(instCode, courseCode);
-
-            return true;
-        }
 
         public async Task<bool> PublishCourseToSearchAndCompare(string instCode, string courseCode)
         {

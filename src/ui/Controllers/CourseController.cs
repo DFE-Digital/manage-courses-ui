@@ -72,15 +72,9 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
                 return await Show(instCode, accreditingProviderId, ucasCode);
             }
 
-            var statusResult = await _manageApi.PublishEnrichmentCourse(instCode, ucasCode);
+            var result = await _manageApi.PublishCourseToSearchAndCompare(instCode, ucasCode);
 
-            var publishToSearchAndCompareResult = await _manageApi.PublishCourseToSearchAndCompare(instCode, ucasCode);
-            if(!publishToSearchAndCompareResult)
-            {
-                //TODO Decide what to do here?
-            }
-
-            if (statusResult)
+            if (result)
             {
                 TempData["MessageType"] = "success";
                 TempData["MessageTitle"] = "Your course has been published";
