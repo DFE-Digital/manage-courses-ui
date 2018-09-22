@@ -10,9 +10,10 @@
     <title>@(ViewBag.Title ?? "Welcome to GOV.UK")</title>
 
     <link rel="stylesheet" href="~/application.css" asp-append-version="true" />
-
+    
+    @* Razor doesn't resolve virtual paths within comments, so we need to use Url.Content explicitly in this particular case *@
     <!--[if lt IE 9]>
-      <script src="~/vendor/html5shiv.min.js" asp-append-version="true"></script>
+      <script src="@Url.Content("~/vendor/html5shiv.min.js")" asp-append-version="true"></script>
     <![endif]-->
 
     <link rel="shortcut icon" href="~/images/favicon.ico" type="image/x-icon" asp-append-version="true" />
