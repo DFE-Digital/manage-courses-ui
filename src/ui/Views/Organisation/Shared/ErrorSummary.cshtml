@@ -51,7 +51,8 @@
                 {
                     foreach (var error in state.Value.Errors)
                     {
-                        <li><a href="@Url.Action("About", "Organisation")#@state.Key-wrapper">@error.ErrorMessage</a></li>
+                        var action = Array.IndexOf(new string[] {"EmailAddress", "Telephone", "Url", "Addr1", "Addr2", "Addr3", "Addr4", "Postcode"}, state.Key) > -1 ? "Contact" : "About";
+                        <li><a href="@Url.Action(action, "Organisation")#@state.Key-wrapper">@error.ErrorMessage</a></li>
                     }
                 }
 
