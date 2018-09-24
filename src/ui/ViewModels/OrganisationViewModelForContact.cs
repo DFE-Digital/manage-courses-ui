@@ -82,5 +82,19 @@ namespace GovUk.Education.ManageCourses.Ui.ViewModels
             enrichmentModel.Address4 = Addr4;
             enrichmentModel.Postcode = Postcode;            
         }
+        
+        public static bool IsContactProperty(string property)
+        {
+            return Array.IndexOf(new string[] {
+                nameof(EmailAddress),
+                nameof(Telephone),
+                nameof(Url),
+                nameof(Addr1),
+                nameof(Addr2),
+                nameof(Addr3),
+                nameof(Addr4),
+                nameof(Postcode)
+            }, property) > -1;
+        }
     }
 }
