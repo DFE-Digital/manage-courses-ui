@@ -248,7 +248,7 @@ namespace ManageCoursesUi.Tests
             objectValidator.VerifyAll();
 
             Assert.AreEqual("success", courseController.TempData["MessageType"]);
-            Assert.AreEqual("Your course has been published", courseController.TempData["MessageTitle"]);
+            Assert.AreEqual("Your course has been published and will be updated within 1 working day", courseController.TempData["MessageTitle"]);
 
             Assert.IsNotNull(objectToVerify);
             Assert.AreEqual("AboutCourse", objectToVerify.AboutCourse);
@@ -354,7 +354,7 @@ namespace ManageCoursesUi.Tests
             var tempData = controller.TempData;
 
             VerifyTempDataIsSet(tempDataMock, previewLink);
-            
+
             var routeValues = redirectToActionResult.RouteValues;
 
             Assert.AreEqual(TestHelper.InstitutionCode, routeValues["instCode"]);
@@ -578,7 +578,7 @@ namespace ManageCoursesUi.Tests
             var tempData = controller.TempData;
 
             VerifyTempDataIsSet(tempDataMock, previewLink);
-           
+
             var routeValues = redirectToActionResult.RouteValues;
 
             Assert.AreEqual(TestHelper.InstitutionCode, routeValues["instCode"]);
@@ -587,7 +587,7 @@ namespace ManageCoursesUi.Tests
 
             manageApi.Verify(x => x.SaveEnrichmentCourse(TestHelper.InstitutionCode, TestHelper.TargetedUcasCode, It.Is<CourseEnrichmentModel>(c => Check(c, viewModel))), Times.Once());
         }
-        
+
         [Test]
         public async Task Fees()
         {
@@ -697,7 +697,7 @@ namespace ManageCoursesUi.Tests
             var tempData = controller.TempData;
 
             VerifyTempDataIsSet(tempDataMock, previewLink);
-            
+
             var routeValues = redirectToActionResult.RouteValues;
 
             Assert.AreEqual(TestHelper.InstitutionCode, routeValues["instCode"]);
