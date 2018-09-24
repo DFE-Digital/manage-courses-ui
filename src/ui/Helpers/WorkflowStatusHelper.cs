@@ -9,21 +9,10 @@ namespace GovUk.Education.ManageCourses.Ui.Helpers
     {
         public static WorkflowStatus GetWorkflowStatus(this OrganisationViewModel model)
         {
-            return GetWorkflowStatus(model.Status, model.LastPublishedTimestampUtc, model.IsEmpty());
-        }
-        public static WorkflowStatus GetWorkflowStatus(this OrganisationViewModelForAbout model)
-        {
-            return GetWorkflowStatus(model.Status, model.LastPublishedTimestampUtc, model.IsEmpty());
-        }
-        public static WorkflowStatus GetWorkflowStatus(this OrganisationViewModelForContact model)
-        {
-            return GetWorkflowStatus(model.Status, model.LastPublishedTimestampUtc, model.IsEmpty());
-        }
-
-        private static WorkflowStatus GetWorkflowStatus(EnumStatus status, DateTime? lastPublishedTimestampUtc, bool isEmpty)
-        {
+            DateTime? lastPublishedTimestampUtc = model.LastPublishedTimestampUtc;
+            bool isEmpty = model.IsEmpty();
             var result = WorkflowStatus.Blank;
-            if (status == EnumStatus.Draft)
+            if (model.Status == EnumStatus.Draft)
             {
                 var hasLastPublishedDateTimeUtc = lastPublishedTimestampUtc.HasValue && lastPublishedTimestampUtc > DateTime.MinValue;
 

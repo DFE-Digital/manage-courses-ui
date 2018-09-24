@@ -10,7 +10,6 @@
   var town_city = ViewData.ModelState["Addr3"] != null && ViewData.ModelState["Addr3"].Errors.Any();
   var county = ViewData.ModelState["Addr4"] != null && ViewData.ModelState["Addr4"].Errors.Any();
   var postcode = ViewData.ModelState["Postcode"] != null && ViewData.ModelState["Postcode"].Errors.Any();
-  var workflowStatus = Model.GetWorkflowStatus();
 }
 
 <a href="@Url.Action("Details", "Organisation", new {ucasCode = Model.InstitutionCode})" class="govuk-back-link">Back</a>
