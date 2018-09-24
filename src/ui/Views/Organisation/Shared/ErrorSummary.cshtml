@@ -51,7 +51,8 @@
                 {
                     foreach (var error in state.Value.Errors)
                     {
-                        <li><a href="@Url.Action("About", "Organisation")#@state.Key-wrapper">@error.ErrorMessage</a></li>
+                        var action = OrganisationViewModelForContact.IsContactProperty(state.Key) ? "Contact" : "About";
+                        <li><a href="@Url.Action(action, "Organisation")#@state.Key-wrapper">@error.ErrorMessage</a></li>
                     }
                 }
 

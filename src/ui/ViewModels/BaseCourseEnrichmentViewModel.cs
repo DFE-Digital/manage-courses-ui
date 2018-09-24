@@ -5,6 +5,15 @@ using GovUk.Education.ManageCourses.Ui.ViewModels.Enums;
 
 namespace GovUk.Education.ManageCourses.Ui.ViewModels
 {
+    /// <summary>
+    /// This model is used for showing the summary page of the organisation Enrichment,
+    /// and for publishing. The validation covers required fields. For individual enrichment
+    /// editor pages, see:
+    /// <see cref="AboutCourseEnrichmentViewModel" /> and 
+    /// <see cref="CourseRequirementsEnrichmentViewModel" /> and
+    /// <see cref="CourseFeesEnrichmentViewModel" /> and
+    /// <see cref="CourseSalaryEnrichmentViewModel" />
+    /// </summary>
     public abstract class BaseCourseEnrichmentViewModel
     {
         [RegularExpression(@"^\s*(\S+\s+|\S+$){0,400}$", ErrorMessage = "Reduce the word count for about this course")]

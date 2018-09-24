@@ -212,8 +212,9 @@ namespace ManageCoursesUi.Tests
 
             var apiMock = new Mock<IManageApi>();
 
-            apiMock.Setup(x => x.GetOrganisations())
-                .ReturnsAsync(userOrganisations);
+            apiMock.Setup(x => x.GetUcasInstitution(ucasCode)).ReturnsAsync(
+                new UcasInstitution { InstCode = ucasCode, InstFull = organisationName }
+            );
 
             apiMock.Setup(x => x.GetCoursesByOrganisation(ucasCode))
                 .ReturnsAsync(institutionCourses);
@@ -228,7 +229,7 @@ namespace ManageCoursesUi.Tests
             var viewResult = result as ViewResult;
 
             Assert.IsNotNull(viewResult);
-            var organisationViewModel = viewResult.ViewData.Model as OrganisationViewModel;
+            var organisationViewModel = viewResult.ViewData.Model as OrganisationViewModelForAbout;
 
             Assert.AreEqual(organisationName, organisationViewModel.InstitutionName);
             Assert.AreEqual(trainWithUs, organisationViewModel.TrainWithUs);
@@ -244,7 +245,7 @@ namespace ManageCoursesUi.Tests
         public async Task AboutPost_SaveOrganisation()
         {
             var ucasCode = "UCASCODE";
-            var viewModel = new OrganisationViewModel
+            var viewModel = new OrganisationViewModelForAbout
             {
                 AboutTrainingProviders = new List<TrainingProviderViewModel>()
             };
@@ -328,6 +329,8 @@ namespace ManageCoursesUi.Tests
 
             var apiMock = new Mock<IManageApi>();
 
+            apiMock.Setup(x => x.GetUcasInstitution(ucasCode))
+                .ReturnsAsync(new UcasInstitution { InstCode = ucasCode, InstFull = institutionName });
 
             apiMock.Setup(x => x.GetCoursesByOrganisation(ucasCode))
                 .ReturnsAsync(institutionCourses);
@@ -353,16 +356,7 @@ namespace ManageCoursesUi.Tests
 
             controller.TempData = new Mock<ITempDataDictionary>().Object;
 
-            var result = await controller.DetailsPost(ucasCode, viewModel);
-
-            apiMock.Verify(x => x.PublishEnrichmentOrganisation(ucasCode), Times.Once);
-
-            var actionResult = result as RedirectToActionResult;
-
-            Assert.IsNotNull(actionResult);
-            Assert.AreEqual("Index", actionResult.ActionName);
-            Assert.AreEqual("Error", actionResult.ControllerName);
-            Assert.AreEqual(500, actionResult.RouteValues["statusCode"]);
+            Assert.ThrowsAsync<InvalidOperationException>( async () => await controller.DetailsPost(ucasCode, viewModel));
         }
 
         [Test]
@@ -389,6 +383,10 @@ namespace ManageCoursesUi.Tests
                 }
             };
             var apiMock = new Mock<IManageApi>();
+            
+            apiMock.Setup(x => x.GetUcasInstitution(ucasCode))
+                .ReturnsAsync(new UcasInstitution { InstCode = ucasCode, InstFull = institutionName });
+
             apiMock.Setup(x => x.GetCoursesByOrganisation(ucasCode))
                 .ReturnsAsync(institutionCourses);
 
@@ -480,8 +478,8 @@ namespace ManageCoursesUi.Tests
 
             var apiMock = new Mock<IManageApi>();
 
-            apiMock.Setup(x => x.GetOrganisation(ucasCode))
-                .ReturnsAsync(userOrganisations[0]);
+            apiMock.Setup(x => x.GetUcasInstitution(ucasCode))
+                .ReturnsAsync(new UcasInstitution { InstCode = ucasCode, InstFull = organisationName });
 
             apiMock.Setup(x => x.GetOrganisations())
                 .ReturnsAsync(userOrganisations);
@@ -524,7 +522,7 @@ namespace ManageCoursesUi.Tests
             }
             var institutionName = "InstitutionName";
 
-            var viewModel = new OrganisationViewModel
+            var viewModel = new OrganisationViewModelForAbout
             {
                 AboutTrainingProviders = new List<TrainingProviderViewModel>() {
                     new TrainingProviderViewModel{ Description = exceed100Words,
@@ -587,7 +585,7 @@ namespace ManageCoursesUi.Tests
 
             var viewResult = result as ViewResult;
 
-            var organisationViewModel = viewResult.ViewData.Model as OrganisationViewModel;
+            var organisationViewModel = viewResult.ViewData.Model as OrganisationViewModelForAbout;
 
             Assert.IsNotNull(viewResult);
             Assert.AreEqual(exceed100Words, organisationViewModel.AboutTrainingProviders.First(x => x.InstitutionCode == ucasCode + 1).Description);

@@ -69,13 +69,11 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             ucasInstitutionEnrichmentGetModel = ucasInstitutionEnrichmentGetModel ?? new UcasInstitutionEnrichmentGetModel { EnrichmentModel = new InstitutionEnrichmentModel() { AccreditingProviderEnrichments = new ObservableCollection<AccreditingProviderEnrichment>() } };
 
             var enrichmentModel = ucasInstitutionEnrichmentGetModel.EnrichmentModel;
-            var aboutAccreditingTrainingProviders = await GetTrainingProviderViewModels(ucasCode, enrichmentModel);
+            var aboutAccreditingTrainingProviders = await MergeTrainingProviderViewModels(ucasCode, enrichmentModel);
             var ucasInsitution = await _manageApi.GetUcasInstitution(ucasCode);
 
-            var model = GetOrganisationViewModel(ucasCode, ucasInstitutionEnrichmentGetModel, ucasInsitution);
-            model.InstitutionName = (await _manageApi.GetOrganisations()).FirstOrDefault(x => x.UcasCode == ucasCode.ToUpperInvariant())?.OrganisationName;;
-
-            model.AboutTrainingProviders = aboutAccreditingTrainingProviders;
+            var model = OrganisationViewModel.FromEnrichmentModel(
+                ucasInstitutionEnrichmentGetModel, aboutAccreditingTrainingProviders, ucasInsitution);
 
             return View(model);
         }
@@ -85,7 +83,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
         public async Task<ActionResult> DetailsPost(string ucasCode, OrganisationViewModel model)
         {
             var ucasInstitutionEnrichmentGetModel = await _manageApi.GetEnrichmentOrganisation(ucasCode);
-            var result = await PublishOrgansation(ucasInstitutionEnrichmentGetModel, model, ucasCode);
+            var result = await PublishOrgansation(ucasInstitutionEnrichmentGetModel, ucasCode);
             return result;
         }
 
@@ -98,23 +96,43 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             ucasInstitutionEnrichmentGetModel = ucasInstitutionEnrichmentGetModel ?? new UcasInstitutionEnrichmentGetModel { EnrichmentModel = new InstitutionEnrichmentModel() { AccreditingProviderEnrichments = new ObservableCollection<AccreditingProviderEnrichment>() } };
 
             var enrichmentModel = ucasInstitutionEnrichmentGetModel.EnrichmentModel;
-            var aboutAccreditingTrainingProviders = await GetTrainingProviderViewModels(ucasCode, enrichmentModel);
+            var aboutAccreditingTrainingProviders = await MergeTrainingProviderViewModels(ucasCode, enrichmentModel);
             var ucasInsitution = await _manageApi.GetUcasInstitution(ucasCode);
 
-            var model = GetOrganisationViewModel(ucasCode, ucasInstitutionEnrichmentGetModel, ucasInsitution);
-            model.InstitutionName = (await _manageApi.GetOrganisations()).FirstOrDefault(x => x.UcasCode == ucasCode.ToUpperInvariant())?.OrganisationName;;
+            var model = OrganisationViewModel.FromEnrichmentModel(ucasInstitutionEnrichmentGetModel, aboutAccreditingTrainingProviders, ucasInsitution);
 
-            model.AboutTrainingProviders = aboutAccreditingTrainingProviders;
+            var aboutModel = OrganisationViewModelForAbout.FromGeneralViewModel(model);
 
-            return View(model);
+            return View(aboutModel);
         }
 
         [HttpPost]
         [Route("{ucasCode}/about")]
-        public async Task<ActionResult> AboutPost(string ucasCode, OrganisationViewModel model)
+        public async Task<ActionResult> AboutPost(string ucasCode, OrganisationViewModelForAbout model)
         {
             var ucasInstitutionEnrichmentGetModel = await _manageApi.GetEnrichmentOrganisation(ucasCode);
-            var result = await SaveOrgansation(ucasInstitutionEnrichmentGetModel, model, ucasCode);
+            var enrichmentModel = ucasInstitutionEnrichmentGetModel?.EnrichmentModel;
+
+            var aboutAccreditingTrainingProviders = await MergeTrainingProviderViewModels(ucasCode, enrichmentModel, model?.AboutTrainingProviders);
+            model.AboutTrainingProviders = aboutAccreditingTrainingProviders;
+
+            ValidateAboutModel(model);
+
+            if (!ModelState.IsValid)
+            {
+                model.InstitutionName = (await _manageApi.GetOrganisations()).FirstOrDefault(x => x.UcasCode == ucasCode.ToUpperInvariant())?.OrganisationName;
+                return View("About", model);
+            }
+
+            if (enrichmentModel == null && model.IsEmpty())
+            {
+                // Draft state is "New" and no changes have been made - don't insert a draft
+                return RedirectToAction("Details", "Organisation", new { ucasCode });                
+            }
+
+            model.MergeIntoEnrichmentModel(ref enrichmentModel);
+            
+            var result = await SaveValidatedOrgansation(enrichmentModel, ucasCode);
             return result;
         }
 
@@ -130,19 +148,37 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             var enrichmentModel = ucasInstitutionEnrichmentGetModel.EnrichmentModel;
             var ucasInsitution = await _manageApi.GetUcasInstitution(ucasCode);
 
-            var model = GetOrganisationViewModel(ucasCode, ucasInstitutionEnrichmentGetModel, ucasInsitution);
-            model.InstitutionName = (await _manageApi.GetOrganisations()).FirstOrDefault(x => x.UcasCode == ucasCode.ToUpperInvariant())?.OrganisationName;;
+            var model = OrganisationViewModel.FromEnrichmentModel(ucasInstitutionEnrichmentGetModel, null, ucasInsitution);
 
-            return View(model);
+            var contactModel = OrganisationViewModelForContact.FromGeneralViewModel(model);
+
+            return View(contactModel);
         }
 
         // TODO: Ensure this actually persists the contact data correctly
         [HttpPost]
         [Route("{ucasCode}/contact")]
-        public async Task<ActionResult> ContactPost(string ucasCode, OrganisationViewModel model)
+        public async Task<ActionResult> ContactPost(string ucasCode, OrganisationViewModelForContact model)
         {
             var ucasInstitutionEnrichmentGetModel = await _manageApi.GetEnrichmentOrganisation(ucasCode);
-            var result = await SaveOrgansation(ucasInstitutionEnrichmentGetModel, model, ucasCode);
+            var enrichmentModel = ucasInstitutionEnrichmentGetModel?.EnrichmentModel;
+
+            ValidateContactModel(model);
+
+            if (!ModelState.IsValid)
+            {
+                return View("Contact", model);
+            }
+
+            if (enrichmentModel == null && model.IsEmpty())
+            {
+                // Draft state is "New" and no changes have been made - don't insert a draft
+                return RedirectToAction("Details", "Organisation", new { ucasCode });                
+            }
+
+            model.MergeIntoEnrichmentModel(ref enrichmentModel);
+            
+            var result = await SaveValidatedOrgansation(enrichmentModel, ucasCode);
             return result;
         }
 
@@ -178,7 +214,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             return new RedirectToActionResult("Show", "Organisation", new { ucasCode });
         }
 
-        private async Task<List<TrainingProviderViewModel>> GetTrainingProviderViewModels(string ucasCode, InstitutionEnrichmentModel enrichmentModel, OrganisationViewModel model = null)
+        private async Task<List<TrainingProviderViewModel>> MergeTrainingProviderViewModels(string ucasCode, InstitutionEnrichmentModel enrichmentModel, IEnumerable<TrainingProviderViewModel> fromModel = null)
         {
             var ucasData = await _manageApi.GetCoursesByOrganisation(ucasCode);
 
@@ -194,15 +230,11 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
                     {
                         var description = accreditingProviderEnrichments.FirstOrDefault(TrainingProviderMatchesProviderCourse(x))?.Description ?? "";
 
-                        if (model != null)
-                        {
+                        var aboutTrainingProviders = (fromModel ?? new List<TrainingProviderViewModel>());
 
-                            var aboutTrainingProviders = (model.AboutTrainingProviders ?? new List<TrainingProviderViewModel>());
-
-                            description = aboutTrainingProviders.FirstOrDefault(
-                                atp => (atp.InstitutionCode.Equals(x.AccreditingProviderId, StringComparison.InvariantCultureIgnoreCase)))?.Description ?? description;
-                        }
-
+                        description = aboutTrainingProviders.FirstOrDefault(
+                            atp => (atp.InstitutionCode.Equals(x.AccreditingProviderId, StringComparison.InvariantCultureIgnoreCase)))?.Description ?? description;
+                        
                         var tpvm = new TrainingProviderViewModel()
                         {
                             InstitutionName = x.AccreditingProviderName,
@@ -218,55 +250,18 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             return result;
         }
 
-        private OrganisationViewModel GetOrganisationViewModel(string ucasCode, UcasInstitutionEnrichmentGetModel ucasInstitutionEnrichmentGetModel, UcasInstitution ucasInstitution)
+        private async Task<ActionResult> PublishOrgansation(UcasInstitutionEnrichmentGetModel ucasInstitutionEnrichmentGetModel, string ucasCode)
         {
-            var enrichmentModel = ucasInstitutionEnrichmentGetModel.EnrichmentModel;
-            ucasInstitution = ucasInstitution ?? new UcasInstitution();
-
-            var result = new OrganisationViewModel
-            {
-                InstitutionCode = ucasCode,
-                TrainWithUs = enrichmentModel.TrainWithUs,
-                TrainWithDisability = enrichmentModel.TrainWithDisability,
-                LastPublishedTimestampUtc = ucasInstitutionEnrichmentGetModel.LastPublishedTimestampUtc,
-                Status = ucasInstitutionEnrichmentGetModel.Status,
-
-                Addr1 = ucasInstitution.Addr1,
-                Addr2 = ucasInstitution.Addr2,
-                Addr3 = ucasInstitution.Addr3,
-                Addr4 = ucasInstitution.Addr4,
-                Postcode = ucasInstitution.Postcode,
-                Url = ucasInstitution.Url,
-                Telephone = ucasInstitution.Telephone,
-                EmailAddress = ucasInstitution.Email
-            };
-
-            return result;
-        }
-
-        private async Task<ActionResult> PublishOrgansation(UcasInstitutionEnrichmentGetModel ucasInstitutionEnrichmentGetModel, OrganisationViewModel model, string ucasCode)
-        {
-            ucasInstitutionEnrichmentGetModel = ucasInstitutionEnrichmentGetModel ?? new UcasInstitutionEnrichmentGetModel { EnrichmentModel = new InstitutionEnrichmentModel() { AccreditingProviderEnrichments = new ObservableCollection<AccreditingProviderEnrichment>() } };
-
             var ucasInsitution = await _manageApi.GetUcasInstitution(ucasCode);
 
-            model = GetOrganisationViewModel(ucasCode, ucasInstitutionEnrichmentGetModel, ucasInsitution);
-
             var enrichmentModel = ucasInstitutionEnrichmentGetModel.EnrichmentModel;
-            var aboutAccreditingTrainingProviders = await GetTrainingProviderViewModels(ucasCode, enrichmentModel, model);
+            var aboutAccreditingTrainingProviders = await MergeTrainingProviderViewModels(ucasCode, enrichmentModel);
+            var model = OrganisationViewModel.FromEnrichmentModel(ucasInstitutionEnrichmentGetModel, aboutAccreditingTrainingProviders, ucasInsitution);
 
-            model.AboutTrainingProviders = aboutAccreditingTrainingProviders;
-
-            // The model that is sent is always going to invalid as it is always empty
-            // Therefore fetch from api and map it across to validate it.
-
-            var wordCountValidationOnly = false;
-            ValidateModel(model, wordCountValidationOnly);
+            ValidateModelForPublication(model);
 
             if (!ModelState.IsValid)
             {
-                model.InstitutionName = (await _manageApi.GetOrganisations()).FirstOrDefault(x => x.UcasCode == ucasCode.ToUpperInvariant())?.OrganisationName;
-
                 return View("Details", model);
             }
             else
@@ -285,64 +280,20 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
                 else
                 {
                     // This is a no ops, there should not be any viable valid reason that api rejects, hence dead end.
-                    return RedirectToAction("Index", "Error", new { statusCode = 500 });
+                    throw new InvalidOperationException("attempting to publish nonexistent organisation enrichment: " + ucasCode);
                 }
             }
         }
-        private async Task<ActionResult> SaveOrgansation(UcasInstitutionEnrichmentGetModel ucasInstitutionEnrichmentGetModel, OrganisationViewModel model, string ucasCode)
-        {
+        private async Task<ActionResult> SaveValidatedOrgansation(InstitutionEnrichmentModel enrichmentModel, string ucasCode)
+        {      
+            var postModel = new UcasInstitutionEnrichmentPostModel { EnrichmentModel = enrichmentModel };
 
-            var enrichmentModel = ucasInstitutionEnrichmentGetModel?.EnrichmentModel;
-            var aboutAccreditingTrainingProviders = await GetTrainingProviderViewModels(ucasCode, enrichmentModel, model);
+            await _manageApi.SaveEnrichmentOrganisation(ucasCode, postModel);
 
-            model.AboutTrainingProviders = aboutAccreditingTrainingProviders;
-
-            // The validation that needs to occurs are word count only on saving
-            var wordCountValidationOnly = true;
-            ValidateModel(model, wordCountValidationOnly);
-
-            if (!ModelState.IsValid)
-            {
-                model.InstitutionName = (await _manageApi.GetOrganisations()).FirstOrDefault(x => x.UcasCode == ucasCode.ToUpperInvariant())?.OrganisationName;;
-
-                return View("About", model);
-            }
-            else
-            {
-                var aboutTrainingProviders = new ObservableCollection<AccreditingProviderEnrichment>(
-                    model.AboutTrainingProviders.Select(x => new AccreditingProviderEnrichment
-                    {
-                        UcasInstitutionCode = x.InstitutionCode,
-                        Description = x.Description
-                    }));
-
-                if (enrichmentModel == null)
-                {
-                    var editIsEmpty = string.IsNullOrEmpty(model.TrainWithUs)
-                        && string.IsNullOrEmpty(model.TrainWithDisability)
-                        && !model.AboutTrainingProviders.Any(x => !string.IsNullOrEmpty(x.Description));
-
-                    if (editIsEmpty)
-                    {
-                        // Draft state is "New" and no changes have been made - don't insert a draft
-                        return RedirectToAction("Details", "Organisation", new { ucasCode });
-                    }
-                    enrichmentModel = new InstitutionEnrichmentModel();
-                }
-
-                enrichmentModel.TrainWithUs = model.TrainWithUs;
-                enrichmentModel.AccreditingProviderEnrichments = aboutTrainingProviders;
-                enrichmentModel.TrainWithDisability = model.TrainWithDisability;
-
-                var postModel = new UcasInstitutionEnrichmentPostModel { EnrichmentModel = enrichmentModel };
-
-                await _manageApi.SaveEnrichmentOrganisation(ucasCode, postModel);
-
-                TempData["MessageType"] = "success";
-                TempData["MessageTitle"] = "Your changes have been saved";
-                TempData["MessageBodyHtml"] = "<p class=\"govuk-body\">Preview any course to see how it will look to applicants.</p>";
-                return RedirectToAction("Details", "Organisation", new { ucasCode });
-            }
+            TempData["MessageType"] = "success";
+            TempData["MessageTitle"] = "Your changes have been saved";
+            TempData["MessageBodyHtml"] = "<p class=\"govuk-body\">Preview any course to see how it will look to applicants.</p>";
+            return RedirectToAction("Details", "Organisation", new { ucasCode });
         }
 
         private static Func<AccreditingProviderEnrichment, bool> TrainingProviderMatchesProviderCourse(Course x)
@@ -371,23 +322,31 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             return providers;
         }
 
-        public void ValidateModel(OrganisationViewModel model, bool wordCountValidationOnly)
+        public void ValidateContactModel(OrganisationViewModelForContact model)
         {
             ModelState.Clear();
+            TryValidateModel(model);
+        }
 
-            if (wordCountValidationOnly)
-            {
-                var wordCountValidationModel = new WordCountOrganisationViewModel(model);
-                TryValidateModel(wordCountValidationModel);
-            }
-            else
-            {
-                TryValidateModel(model);
-            }
+        public void ValidateAboutModel(OrganisationViewModelForAbout model)
+        {
+            ModelState.Clear();
+            TryValidateModel(model);
+            ValidateAboutAccreditedTrainingProviders(model.AboutTrainingProviders);
+        }
 
-            for (int i = 0; i < model.AboutTrainingProviders.Count; i++)
+        public void ValidateModelForPublication(OrganisationViewModel model)
+        {
+            ModelState.Clear();
+            TryValidateModel(model);
+            ValidateAboutAccreditedTrainingProviders(model.AboutTrainingProviders);
+        }
+
+        private void ValidateAboutAccreditedTrainingProviders(List<TrainingProviderViewModel> aboutAccreditingTrainingProviders)
+        {
+            for (int i = 0; i < aboutAccreditingTrainingProviders.Count; i++)
             {
-                var trainingProvider = model.AboutTrainingProviders[i];
+                var trainingProvider = aboutAccreditingTrainingProviders[i];
 
                 if (!string.IsNullOrWhiteSpace(trainingProvider.Description))
                 {

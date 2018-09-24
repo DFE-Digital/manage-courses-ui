@@ -2,7 +2,7 @@
   @include govuk-responsive-margin(9, "bottom");
 
   &__item {
-    @include govuk-responsive-margin(8, "top");
+    @include govuk-responsive-margin(7, "top");
     border-top: 1px solid $govuk-border-colour;
     padding-top: govuk-spacing(6);
     position: relative;

@@ -273,6 +273,10 @@ namespace GovUk.Education.ManageCourses.Ui
                     HotModuleReplacement = true
                 });
             }
+            else
+            {
+                app.SetSecurityHeaders();
+            }
 
             app.UseStatusCodePagesWithReExecute("/error/{0}");
 

@@ -50,8 +50,12 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
         to: 'images'
       },
       {
-        from: 'node_modules/govuk-frontend/assets/fonts',
-        to: 'fonts'
+        from: 'Assets/Images',
+        to: 'images'
+      },
+      {
+        from: 'node_modules/govuk-frontend/assets/images/favicon.ico',
+        to: '.'
       },
       {
         from: 'node_modules/html5shiv/dist/html5shiv.min.js',
