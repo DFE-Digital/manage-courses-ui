@@ -8,6 +8,11 @@ using GovUk.Education.ManageCourses.Ui.ViewModels.Enums;
 
 namespace GovUk.Education.ManageCourses.Ui.ViewModels
 {
+    /// <summary>
+    /// This model is used for showing the summary page of the organisation Enrichment,
+    /// and for publishing. The validation covers required fields. For individual enrichment
+    /// editor pages, see <see cref="OrganisationViewModelForAbout" /> and <see cref="OrganisationViewModelForContact" />
+    /// </summary>
     public class OrganisationViewModel
     {
         public OrganisationViewModel()
@@ -59,22 +64,11 @@ namespace GovUk.Education.ManageCourses.Ui.ViewModels
 
         public EnumStatus Status { get; set; }
 
-        public static OrganisationViewModel FromEnrichmentModel(UcasInstitutionEnrichmentGetModel ucasInstitutionEnrichmentGetModel, List<TrainingProviderViewModel> aboutAccreditingTrainingProviders, UcasInstitution ucasInstitution)
+        public static OrganisationViewModel FromEnrichmentModel(UcasInstitutionEnrichmentGetModel ucasInstitutionEnrichmentGetModel, List<TrainingProviderViewModel> aboutAccreditingTrainingProviders)
         {
             ucasInstitutionEnrichmentGetModel = ucasInstitutionEnrichmentGetModel ?? new UcasInstitutionEnrichmentGetModel { EnrichmentModel = new InstitutionEnrichmentModel() { AccreditingProviderEnrichments = new ObservableCollection<AccreditingProviderEnrichment>() } };
 
             var enrichmentModel = ucasInstitutionEnrichmentGetModel.EnrichmentModel;
-            ucasInstitution = ucasInstitution ?? new UcasInstitution();
-
-            var useUcasContact = 
-                string.IsNullOrWhiteSpace(enrichmentModel.Email) &&
-                string.IsNullOrWhiteSpace(enrichmentModel.Telephone) &&
-                string.IsNullOrWhiteSpace(enrichmentModel.Website) &&
-                string.IsNullOrWhiteSpace(enrichmentModel.Address1) &&
-                string.IsNullOrWhiteSpace(enrichmentModel.Address2) &&
-                string.IsNullOrWhiteSpace(enrichmentModel.Address4) &&
-                string.IsNullOrWhiteSpace(enrichmentModel.Address3) &&
-                string.IsNullOrWhiteSpace(enrichmentModel.Postcode);
 
             var result = new OrganisationViewModel
             {
@@ -86,14 +80,14 @@ namespace GovUk.Education.ManageCourses.Ui.ViewModels
                 Status = ucasInstitutionEnrichmentGetModel.Status,
                 AboutTrainingProviders = aboutAccreditingTrainingProviders,
 
-                Addr1 = useUcasContact ? ucasInstitution.Addr1 : enrichmentModel.Address1,
-                Addr2 = useUcasContact ? ucasInstitution.Addr2 : enrichmentModel.Address2,
-                Addr3 = useUcasContact ? ucasInstitution.Addr3 : enrichmentModel.Address3,
-                Addr4 = useUcasContact ? ucasInstitution.Addr4 : enrichmentModel.Address4,
-                Postcode = useUcasContact ? ucasInstitution.Postcode : enrichmentModel.Postcode,
-                Url = useUcasContact ? ucasInstitution.Url : enrichmentModel.Website,
-                Telephone = useUcasContact ? ucasInstitution.Telephone : enrichmentModel.Telephone,
-                EmailAddress = useUcasContact ? ucasInstitution.Email : enrichmentModel.Email
+                Addr1 = enrichmentModel.Address1,
+                Addr2 = enrichmentModel.Address2,
+                Addr3 = enrichmentModel.Address3,
+                Addr4 = enrichmentModel.Address4,
+                Postcode = enrichmentModel.Postcode,
+                Url = enrichmentModel.Website,
+                Telephone = enrichmentModel.Telephone,
+                EmailAddress = enrichmentModel.Email
             };
 
             return result;

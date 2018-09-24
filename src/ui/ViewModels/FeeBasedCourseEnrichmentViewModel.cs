@@ -5,6 +5,7 @@ using GovUk.Education.ManageCourses.Ui.ViewModels.Enums;
 
 namespace GovUk.Education.ManageCourses.Ui.ViewModels
 {
+    /// <inheritdoc />
     public class FeeBasedCourseEnrichmentViewModel : BaseCourseEnrichmentViewModel
     {
 
