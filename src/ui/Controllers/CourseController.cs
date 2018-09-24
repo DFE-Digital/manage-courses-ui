@@ -79,16 +79,21 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             if (result)
             {
                 TempData["MessageType"] = "success";
-                TempData["MessageTitle"] = "Your course has been published";
-                var searchUrl = searchAndCompareUrlService.GetCoursePageUri(course.InstCode, course.CourseCode);
+
                 if (featureFlags.ShowCourseLiveView)
                 {
+                    TempData["MessageTitle"] = "Your course has been published and will be updated within 1 working day";
+                    var searchUrl = searchAndCompareUrlService.GetCoursePageUri(course.InstCode, course.CourseCode);
                     TempData["MessageBodyHtml"] = $@"
                         <p class=""govuk-body"">
                             See how this course looks to applicants:
                             <br />
                             <a href='{searchUrl}'>View on website</a>
                         </p>";
+                }
+                else
+                {
+                    TempData["MessageTitle"] = "Your course has been published";
                 }
             }
 
