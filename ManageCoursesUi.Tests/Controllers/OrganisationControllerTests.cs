@@ -329,6 +329,8 @@ namespace ManageCoursesUi.Tests
 
             var apiMock = new Mock<IManageApi>();
 
+            apiMock.Setup(x => x.GetUcasInstitution(ucasCode))
+                .ReturnsAsync(new UcasInstitution { InstCode = ucasCode, InstFull = institutionName });
 
             apiMock.Setup(x => x.GetCoursesByOrganisation(ucasCode))
                 .ReturnsAsync(institutionCourses);
@@ -381,6 +383,10 @@ namespace ManageCoursesUi.Tests
                 }
             };
             var apiMock = new Mock<IManageApi>();
+            
+            apiMock.Setup(x => x.GetUcasInstitution(ucasCode))
+                .ReturnsAsync(new UcasInstitution { InstCode = ucasCode, InstFull = institutionName });
+
             apiMock.Setup(x => x.GetCoursesByOrganisation(ucasCode))
                 .ReturnsAsync(institutionCourses);
 
