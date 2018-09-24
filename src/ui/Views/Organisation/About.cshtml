@@ -1,11 +1,10 @@
-@model OrganisationViewModel;
+@model OrganisationViewModelForAbout
 
 @{
   ViewBag.Title = "Edit 'About your organisation'";
   var train_with_us = ViewData.ModelState["TrainWithUs"] != null && ViewData.ModelState["TrainWithUs"].Errors.Any();
   var about_training_provider = ViewData.ModelState["AboutTrainingProvider"] != null && ViewData.ModelState["AboutTrainingProvider"].Errors.Any();
   var train_with_disability = ViewData.ModelState["TrainWithDisability"] != null && ViewData.ModelState["TrainWithDisability"].Errors.Any();
-  var workflowStatus = Model.GetWorkflowStatus();
 }
 
 <a href="@Url.Action("Details", "Organisation", new {ucasCode = Model.InstitutionCode})" class="govuk-back-link">Back</a>
