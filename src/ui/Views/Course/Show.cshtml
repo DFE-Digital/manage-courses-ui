@@ -161,10 +161,14 @@
         {
           <p class="govuk-body">You have unpublished changes.</p>
           <p class="govuk-body">Last saved:<br />@courseEnrichment.DraftLastUpdatedUtc.DateString()</p>
+          @if (courseEnrichment.LastPublishedUtc.HasValue)
+          {
+            <p class="govuk-body">Last published:<br />@courseEnrichment.LastPublishedUtc.DateString()</p>
+          }
           <hr class="related__section-break">
         }
 
-        @if (courseEnrichment.LastPublishedUtc.HasValue)
+        @if ((courseEnrichment.LastPublishedUtc.HasValue) && !(courseEnrichment.DeterminePublicationState() == WorkflowStatus.SubsequentDraft))
         {
           <p class="govuk-body">Applicants will see this content from October.</p>
           <p class="govuk-body">Last published:<br />@courseEnrichment.LastPublishedUtc.DateString()</p>
@@ -198,7 +202,7 @@
           <p class="govuk-body">See how this course currently looks to applicants:</p>
           <p class="govuk-body"><a href="@Model.LiveSearchUrl">View on website</a></p>
         }
-        else
+        else if (!(Model.AllowLiveView) && (courseEnrichment.DeterminePublicationState() == WorkflowStatus.Published))
         {
           <h4 class="govuk-heading-m">Preview</h4>
           <p class="govuk-body">See how this course looks:</p>
