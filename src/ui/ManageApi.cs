@@ -2,16 +2,23 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using GovUk.Education.ManageCourses.ApiClient;
 using GovUk.Education.ManageCourses.Ui.Helpers;
+using Newtonsoft.Json;
 
 namespace GovUk.Education.ManageCourses.Ui
 {
     public class ManageApi : IManageApi
     {
         private readonly ManageCoursesApiClient _apiClient;
+        private static JsonSerializerSettings _jsonSerializerSettings;
 
         public ManageApi(ManageCoursesApiClient apiClient)
         {
             _apiClient = apiClient;
+            _jsonSerializerSettings = new JsonSerializerSettings
+            {
+                MissingMemberHandling = MissingMemberHandling.Ignore,
+                NullValueHandling = NullValueHandling.Ignore
+            };
         }
 
         // Do not handled any exception let it thro as it should be handled by McExceptionFilter or startup configuration.
@@ -87,7 +94,10 @@ namespace GovUk.Education.ManageCourses.Ui
         public async Task<SearchAndCompare.Domain.Models.Course> GetSearchAndCompareCourse(string ucasCode, string courseCode)
         {
             var result = await _apiClient.Publish_GetSearchAndCompareCourseAsync(ucasCode, courseCode);
-            return ApiHelper.Convert(result);
+            var jsonCourse = JsonConvert.SerializeObject(result, _jsonSerializerSettings);
+            SearchAndCompare.Domain.Models.Course deserializedCourse = JsonConvert.DeserializeObject<SearchAndCompare.Domain.Models.Course>(jsonCourse);
+
+            return deserializedCourse;
         }
 
 
