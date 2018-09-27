@@ -250,7 +250,6 @@ namespace GovUk.Education.ManageCourses.Ui
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddSingleton<ManageCoursesConfig, ManageCoursesConfig>();
             services.AddSingleton<IManageApi, ManageApi>();
-            services.AddScoped<ICourseMapper, CourseMapper>();
             services.AddSingleton<ITelemetryInitializer, SubjectTelemetryInitialiser>();
             services.AddApplicationInsightsTelemetry();
             services.AddSingleton(serviceProvider =>

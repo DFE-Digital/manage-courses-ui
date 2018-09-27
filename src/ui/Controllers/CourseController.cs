@@ -20,14 +20,12 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
     public class CourseController : CommonAttributesControllerBase
     {
         private readonly IManageApi _manageApi;
-        private readonly ApiClient.ICourseMapper courseMapper;
         private readonly ISearchAndCompareUrlService searchAndCompareUrlService;
         private readonly IFeatureFlags featureFlags;
 
-        public CourseController(IManageApi manageApi, ApiClient.ICourseMapper courseMapper, ISearchAndCompareUrlService searchAndCompareUrlHelper, IFeatureFlags featureFlags)
+        public CourseController(IManageApi manageApi, ISearchAndCompareUrlService searchAndCompareUrlHelper, IFeatureFlags featureFlags)
         {
             _manageApi = manageApi;
-            this.courseMapper = courseMapper;
             this.searchAndCompareUrlService = searchAndCompareUrlHelper;
             this.featureFlags = featureFlags;
         }
@@ -75,7 +73,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
                 return await Show(instCode, accreditingProviderId, ucasCode);
             }
 
-            var result = await _manageApi.PublishEnrichmentCourse(instCode, ucasCode);
+            var result = await _manageApi.PublishCourseToSearchAndCompare(instCode, ucasCode);
 
             if (result)
             {
@@ -104,21 +102,11 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
         [Route("{instCode}/course/{accreditingProviderId=self}/{ucasCode}/preview")]
         public IActionResult Preview(string instCode, string accreditingProviderId, string ucasCode)
         {
-            var ucasInstData = _manageApi.GetUcasInstitution(instCode).Result;
-            var ucasCourseData = _manageApi.GetCourseByUcasCode(instCode, ucasCode).Result;
-            var orgEnrichmentData = _manageApi.GetEnrichmentOrganisation(instCode).Result;
-            var courseEnrichmentData = _manageApi.GetEnrichmentCourse(instCode, ucasCode).Result;
-
-            if (ucasInstData == null || ucasCourseData == null)
+            var course = _manageApi.GetSearchAndCompareCourse(instCode, ucasCode).Result;
+            if (course == null)
             {
                 return NotFound();
             }
-
-            var course = courseMapper.MapToSearchAndCompareCourse(
-                ucasInstData,
-                ucasCourseData,
-                orgEnrichmentData?.EnrichmentModel,
-                courseEnrichmentData?.EnrichmentModel);
 
             return View(new SearchAndCompare.UI.Shared.ViewModels.CourseDetailsViewModel
             {

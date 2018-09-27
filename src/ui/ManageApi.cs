@@ -1,21 +1,24 @@
-using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Dynamic;
-using System.Linq;
 using System.Threading.Tasks;
 using GovUk.Education.ManageCourses.ApiClient;
-using GovUk.Education.ManageCourses.Ui.ViewModels;
+using GovUk.Education.ManageCourses.Ui.Helpers;
+using Newtonsoft.Json;
 
 namespace GovUk.Education.ManageCourses.Ui
 {
     public class ManageApi : IManageApi
     {
         private readonly ManageCoursesApiClient _apiClient;
+        private static JsonSerializerSettings _jsonSerializerSettings;
 
         public ManageApi(ManageCoursesApiClient apiClient)
         {
             _apiClient = apiClient;
+            _jsonSerializerSettings = new JsonSerializerSettings
+            {
+                MissingMemberHandling = MissingMemberHandling.Ignore,
+                NullValueHandling = NullValueHandling.Ignore
+            };
         }
 
         // Do not handled any exception let it thro as it should be handled by McExceptionFilter or startup configuration.
@@ -87,12 +90,24 @@ namespace GovUk.Education.ManageCourses.Ui
         {
             await _apiClient.Enrichment_SaveCourseAsync(instCode, ucasCode, course);
         }
-        
-        public async Task<bool> PublishEnrichmentCourse(string ucasCode, string courseCode)
-        {
-            await _apiClient.Enrichment_PublishCourseAsync(ucasCode, courseCode);
 
-            return true;
+        public async Task<SearchAndCompare.Domain.Models.Course> GetSearchAndCompareCourse(string ucasCode, string courseCode)
+        {
+            var result = await _apiClient.Publish_GetSearchAndCompareCourseAsync(ucasCode, courseCode);
+            //the result is an identical obect to the SearchAnCompareCourse that we want only it's an ApiClient version of it
+            //so we need to serialize/deserialize in order to get the required object to return
+            var jsonCourse = JsonConvert.SerializeObject(result, _jsonSerializerSettings);
+            SearchAndCompare.Domain.Models.Course deserializedCourse = JsonConvert.DeserializeObject<SearchAndCompare.Domain.Models.Course>(jsonCourse);
+
+            return deserializedCourse;
+        }
+
+
+        public async Task<bool> PublishCourseToSearchAndCompare(string instCode, string courseCode)
+        {
+            var result = await _apiClient.Publish_PublishToSearchAndCompareAsync(instCode, courseCode);
+
+            return result;
         }
     }
 }

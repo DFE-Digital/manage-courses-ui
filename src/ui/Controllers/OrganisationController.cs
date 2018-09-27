@@ -302,16 +302,16 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
                 y.UcasInstitutionCode, StringComparison.InvariantCultureIgnoreCase);
         }
 
-        private List<Provider> GetProviders(InstitutionCourses institutionCourses)
+        private List<ViewModels.Provider> GetProviders(InstitutionCourses institutionCourses)
         {
             var uniqueAccreditingProviderIds = institutionCourses.Courses.Select(c => c.AccreditingProviderId).Distinct();
-            var providers = new List<Provider>();
+            var providers = new List<ViewModels.Provider>();
             foreach (var uniqueAccreditingProviderId in uniqueAccreditingProviderIds)
             {
                 var name = institutionCourses.Courses.First(c => c.AccreditingProviderId == uniqueAccreditingProviderId)
                     .AccreditingProviderName;
                 var courses = institutionCourses.Courses.Where(c => c.AccreditingProviderId == uniqueAccreditingProviderId).ToList();
-                providers.Add(new Provider
+                providers.Add(new ViewModels.Provider
                 {
                     ProviderId = uniqueAccreditingProviderId,
                     ProviderName = name,
