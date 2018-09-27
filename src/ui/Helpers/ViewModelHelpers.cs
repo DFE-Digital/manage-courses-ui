@@ -24,7 +24,8 @@ namespace GovUk.Education.ManageCourses.Ui.Helpers
 
             result += GetStudyModeText(course.StudyMode);
 
-            result += string.Equals(course.ProgramType, "ss", StringComparison.InvariantCultureIgnoreCase) 
+            result += (string.Equals(course.ProgramType, "ss", StringComparison.InvariantCultureIgnoreCase) 
+                    || string.Equals(course.ProgramType, "ta", StringComparison.InvariantCultureIgnoreCase))
                 ? " with salary" 
                 : "";
 

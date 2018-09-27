@@ -60,7 +60,8 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
         public async Task<IActionResult> ShowPublish(string instCode, string accreditingProviderId, string ucasCode)
         {
             var course = await _manageApi.GetCourseByUcasCode(instCode, ucasCode);
-            var isSalary = course.ProgramType.Equals("SS", StringComparison.InvariantCultureIgnoreCase);
+            var isSalary = course.ProgramType.Equals("SS", StringComparison.InvariantCultureIgnoreCase)
+                        || course.ProgramType.Equals("TA", StringComparison.InvariantCultureIgnoreCase);
             var enrichment = await _manageApi.GetEnrichmentCourse(instCode, ucasCode);
             var enrichmentModel = GetCourseEnrichmentViewModel(enrichment, isSalary);
 
@@ -446,7 +447,8 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
                     })
                 };
 
-            var isSalary = course.ProgramType.Equals("SS", StringComparison.InvariantCultureIgnoreCase);
+            var isSalary = course.ProgramType.Equals("SS", StringComparison.InvariantCultureIgnoreCase)
+                        || course.ProgramType.Equals("TA", StringComparison.InvariantCultureIgnoreCase);
             var courseEnrichmentViewModel = GetCourseEnrichmentViewModel(ucasCourseEnrichmentGetModel, isSalary, routeData);
             var viewModel = new VariantViewModel
             {
