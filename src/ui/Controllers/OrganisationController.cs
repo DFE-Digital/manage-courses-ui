@@ -232,8 +232,14 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
 
                         var aboutTrainingProviders = (fromModel ?? new List<TrainingProviderViewModel>());
 
-                        description = aboutTrainingProviders.FirstOrDefault(
-                            atp => (atp.InstitutionCode.Equals(x.AccreditingProviderId, StringComparison.InvariantCultureIgnoreCase)))?.Description ?? description;
+                        var newAccreditingProviderModel = aboutTrainingProviders.FirstOrDefault(
+                            atp => (atp.InstitutionCode.Equals(x.AccreditingProviderId, StringComparison.InvariantCultureIgnoreCase)));
+                            
+                        if (newAccreditingProviderModel != null)
+                        {
+                            // empty descriptions get bound as `null` by ASP.NET MVC model binding
+                            description = newAccreditingProviderModel.Description ?? "";
+                        }
                         
                         var tpvm = new TrainingProviderViewModel()
                         {

@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using FluentAssertions;
 using GovUk.Education.ManageCourses.ApiClient;
 using GovUk.Education.ManageCourses.Ui;
 using GovUk.Education.ManageCourses.Ui.Controllers;
@@ -509,6 +510,64 @@ namespace ManageCoursesUi.Tests
             Assert.AreEqual(trainWithDisability, organisationViewModel.TrainWithDisability);
             Assert.AreEqual(now, organisationViewModel.LastPublishedTimestampUtc);
             Assert.AreEqual(EnumStatus.Published, organisationViewModel.Status);
+        }
+
+        [Test]
+        public async Task AboutPost_SetAccreditingProviderToEmpty()
+        {
+            var existingEnrichment = new UcasInstitutionEnrichmentGetModel()
+            {
+                EnrichmentModel = new InstitutionEnrichmentModel()
+                {
+                    AccreditingProviderEnrichments = new ObservableCollection<AccreditingProviderEnrichment>
+                    {
+                        new AccreditingProviderEnrichment
+                        {
+                            UcasInstitutionCode = "ACC",
+                            Description = "foo"
+                        }
+                    }
+                }
+            };
+
+            var apiMock = new Mock<IManageApi>();
+            apiMock.Setup(x => x.GetEnrichmentOrganisation("ABC")).ReturnsAsync(existingEnrichment);
+
+            UcasInstitutionEnrichmentPostModel result = null;
+
+            apiMock.Setup(x => x.SaveEnrichmentOrganisation("ABC", It.IsAny<UcasInstitutionEnrichmentPostModel>()))
+                .Callback((string a, UcasInstitutionEnrichmentPostModel b) => result = b)
+                .Returns(Task.CompletedTask);
+
+            apiMock.Setup(x => x.GetCoursesByOrganisation("ABC")).ReturnsAsync(new InstitutionCourses{
+                Courses = new ObservableCollection<Course> { new Course { AccreditingProviderId = "ACC" } }
+            });
+            
+            var objectValidator = new Mock<IObjectModelValidator>();
+            objectValidator.Setup(o => o.Validate(It.IsAny<ActionContext>(),
+                It.IsAny<ValidationStateDictionary>(),
+                It.IsAny<string>(),
+                It.IsAny<Object>()));
+
+            var controller = new OrganisationController(apiMock.Object, new MockFeatureFlags());
+            controller.ObjectValidator = objectValidator.Object;
+            controller.TempData = new Mock<ITempDataDictionary>().Object;
+
+            var res = await controller.AboutPost("ABC", new OrganisationViewModelForAbout {
+                AboutTrainingProviders = new List<TrainingProviderViewModel>
+                {
+                    new TrainingProviderViewModel
+                    {
+                        InstitutionCode = "ACC",
+                        Description = null // not an empty string... this is how MVC model binding behaves
+                    }
+                }
+            });
+
+
+            result.Should().NotBeNull();
+            result.EnrichmentModel.AccreditingProviderEnrichments[0].UcasInstitutionCode.Should().Be("ACC");
+            result.EnrichmentModel.AccreditingProviderEnrichments[0].Description.Should().BeNullOrEmpty();
         }
 
         [Test]
