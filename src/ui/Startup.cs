@@ -63,7 +63,7 @@ namespace GovUk.Education.ManageCourses.Ui
 
             }).AddCookie(options =>
             {
-                options.ExpireTimeSpan = TimeSpan.FromMinutes(120);
+                options.ExpireTimeSpan = TimeSpan.FromHours(6);
                 options.Events = new CookieAuthenticationEvents
                 {
 
@@ -231,11 +231,6 @@ namespace GovUk.Education.ManageCourses.Ui
 
                         // so that we don't issue a session cookie but one with a fixed expiration
                         x.Properties.IsPersistent = true;
-
-                        // align expiration of the cookie with expiration of the
-                        // access token
-                        var accessToken = new JwtSecurityToken(x.TokenEndpointResponse.IdToken);
-                        x.Properties.ExpiresUtc = accessToken.ValidTo;
 
                         return Task.CompletedTask;
                     }
