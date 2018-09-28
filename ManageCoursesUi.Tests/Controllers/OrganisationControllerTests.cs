@@ -655,6 +655,7 @@ namespace ManageCoursesUi.Tests
         private class MockFeatureFlags : IFeatureFlags
         {
             public bool ShowCourseLiveView => true;
+            public bool SendToSearchAndCompare => true;
         }
     }
 }

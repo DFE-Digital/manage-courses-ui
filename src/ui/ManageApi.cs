@@ -103,9 +103,9 @@ namespace GovUk.Education.ManageCourses.Ui
         }
 
 
-        public async Task<bool> PublishCourseToSearchAndCompare(string instCode, string courseCode)
+        public async Task<bool> PublishCourse(string instCode, string courseCode, bool sendToSearchAndCompare)
         {
-            var result = await _apiClient.Publish_PublishToSearchAndCompareAsync(instCode, courseCode);
+            var result = await _apiClient.Publish_PublishCourseAsync(instCode, courseCode, sendToSearchAndCompare);
 
             return result;
         }
