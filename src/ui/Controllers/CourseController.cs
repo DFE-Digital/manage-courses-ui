@@ -73,7 +73,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
                 return await Show(instCode, accreditingProviderId, ucasCode);
             }
 
-            var result = await _manageApi.PublishCourseToSearchAndCompare(instCode, ucasCode);
+            var result = await _manageApi.PublishCourse(instCode, ucasCode, featureFlags.SendToSearchAndCompare);
 
             if (result)
             {

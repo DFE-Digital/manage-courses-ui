@@ -221,7 +221,7 @@ namespace ManageCoursesUi.Tests
 
             var mockApi = new Mock<IManageApi>();
             mockApi.Setup(x => x.GetEnrichmentCourse(TestHelper.InstitutionCode, TestHelper.TargetedUcasCode)).ReturnsAsync(ucasCourseEnrichmentGetModel).Verifiable();
-            mockApi.Setup(x => x.PublishCourseToSearchAndCompare(TestHelper.InstitutionCode, TestHelper.TargetedUcasCode)).ReturnsAsync(true).Verifiable();
+            mockApi.Setup(x => x.PublishCourse(TestHelper.InstitutionCode, TestHelper.TargetedUcasCode, true)).ReturnsAsync(true).Verifiable();
 
             mockApi.Setup(x => x.GetCourseByUcasCode(TestHelper.InstitutionCode, TestHelper.TargetedUcasCode)).ReturnsAsync(new Course { ProgramType = "" }).Verifiable();
 
@@ -757,6 +757,7 @@ namespace ManageCoursesUi.Tests
         private class MockFeatureFlags : IFeatureFlags
         {
             public bool ShowCourseLiveView => true;
+            public bool SendToSearchAndCompare => true;
         }
 
         private void VerifyTempDataIsSet(Mock<ITempDataDictionary> tempDataMock, string previewLink)
