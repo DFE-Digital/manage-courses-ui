@@ -127,11 +127,11 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             if (enrichmentModel == null && model.IsEmpty())
             {
                 // Draft state is "New" and no changes have been made - don't insert a draft
-                return RedirectToAction("Details", "Organisation", new { ucasCode });                
+                return RedirectToAction("Details", "Organisation", new { ucasCode });
             }
 
             model.MergeIntoEnrichmentModel(ref enrichmentModel);
-            
+
             var result = await SaveValidatedOrgansation(enrichmentModel, ucasCode);
             return result;
         }
@@ -173,11 +173,11 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             if (enrichmentModel == null && model.IsEmpty())
             {
                 // Draft state is "New" and no changes have been made - don't insert a draft
-                return RedirectToAction("Details", "Organisation", new { ucasCode });                
+                return RedirectToAction("Details", "Organisation", new { ucasCode });
             }
 
             model.MergeIntoEnrichmentModel(ref enrichmentModel);
-            
+
             var result = await SaveValidatedOrgansation(enrichmentModel, ucasCode);
             return result;
         }
@@ -234,13 +234,13 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
 
                         var newAccreditingProviderModel = aboutTrainingProviders.FirstOrDefault(
                             atp => (atp.InstitutionCode.Equals(x.AccreditingProviderId, StringComparison.InvariantCultureIgnoreCase)));
-                            
+
                         if (newAccreditingProviderModel != null)
                         {
                             // empty descriptions get bound as `null` by ASP.NET MVC model binding
                             description = newAccreditingProviderModel.Description ?? "";
                         }
-                        
+
                         var tpvm = new TrainingProviderViewModel()
                         {
                             InstitutionName = x.AccreditingProviderName,
@@ -279,7 +279,6 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
 
                     TempData["MessageType"] = "success";
                     TempData["MessageTitle"] = "Your changes have been published";
-                    TempData["MessageBodyHtml"] = "<p class=\"govuk-body\">Applicants will see this on all your courses from October.</p>";
 
                     return RedirectToAction("Details", new { ucasCode });
                 }
@@ -291,7 +290,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             }
         }
         private async Task<ActionResult> SaveValidatedOrgansation(InstitutionEnrichmentModel enrichmentModel, string ucasCode)
-        {      
+        {
             var postModel = new UcasInstitutionEnrichmentPostModel { EnrichmentModel = enrichmentModel };
 
             await _manageApi.SaveEnrichmentOrganisation(ucasCode, postModel);
