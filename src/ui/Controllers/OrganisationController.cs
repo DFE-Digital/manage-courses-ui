@@ -278,7 +278,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
                 {
 
                     TempData["MessageType"] = "success";
-                    TempData["MessageTitle"] = "Your changes have been published";
+                    TempData["MessageTitle"] = "Your changes will be published within 1 working day, usually within 2 hours";
 
                     return RedirectToAction("Details", new { ucasCode });
                 }
