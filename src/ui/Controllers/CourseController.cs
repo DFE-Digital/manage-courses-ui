@@ -410,7 +410,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
                 new CourseVariantViewModel
                 {
                     Name = course.Name,
-                    Type = course.GetCourseVariantType(),
+                    Type = course.TypeDescription,
                     Accrediting = course.AccreditingProviderName,
                     ProviderCode = course.AccreditingProviderId,
                     ProgrammeCode = course.CourseCode,

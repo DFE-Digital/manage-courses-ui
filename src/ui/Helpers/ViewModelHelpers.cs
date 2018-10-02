@@ -8,32 +8,7 @@ using GovUk.Education.ManageCourses.Ui.ViewModels;
 namespace GovUk.Education.ManageCourses.Ui.Helpers
 {
     public static class ViewModelHelpers
-    {
-        public static string GetCourseVariantType(this Course course)
-        {
-            var result = string.IsNullOrWhiteSpace(course.ProfpostFlag) ? "QTS" : "PGCE with QTS";
-
-            if ((!string.IsNullOrWhiteSpace(result)) && string.Equals(course.StudyMode, "B", StringComparison.InvariantCultureIgnoreCase))
-            {
-                result += ", ";
-            }
-            else
-            {
-                result += " ";
-            }
-
-            result += GetStudyModeText(course.StudyMode);
-
-            result += string.Equals(course.ProgramType, "ss", StringComparison.InvariantCultureIgnoreCase)
-                ? " with salary" 
-                : "";
-
-            result += string.Equals(course.ProgramType, "ta", StringComparison.InvariantCultureIgnoreCase)
-                ? " teaching apprenticeship" 
-                : "";
-            
-            return result;
-        }
+    {        
         public static string GetCourseStatus(this Course course)
         {
             var result = "";
