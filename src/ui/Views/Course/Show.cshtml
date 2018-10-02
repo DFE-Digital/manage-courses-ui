@@ -170,7 +170,6 @@
 
         @if ((courseEnrichment.LastPublishedUtc.HasValue) && !(courseEnrichment.DeterminePublicationState() == WorkflowStatus.SubsequentDraft))
         {
-          <p class="govuk-body">Applicants will see this content from October.</p>
           <p class="govuk-body">Last published:<br />@courseEnrichment.LastPublishedUtc.DateString()</p>
           <hr class="related__section-break">
         }
@@ -186,7 +185,6 @@
 
           <h4 class="govuk-heading-m">Publish</h4>
           <p class="govuk-body">Publish your changes.</p>
-          <p class="govuk-body">Applicants will see published content from October.</p>
           <p class="govuk-body">You can make changes to this course after publishing it.</p>
 
           <form asp-route="publish" method="post">

@@ -8,8 +8,8 @@
   var email_address = ViewData.ModelState["EmailAddress"] != null && ViewData.ModelState["EmailAddress"].Errors.Any();
   var telephone = ViewData.ModelState["Telephone"] != null && ViewData.ModelState["Telephone"].Errors.Any();
   var org_url = ViewData.ModelState["Url"] != null && ViewData.ModelState["Url"].Errors.Any();
-    
-  var address = 
+
+  var address =
     (ViewData.ModelState["Addr1"] != null && ViewData.ModelState["Addr1"].Errors.Any()) ||
     (ViewData.ModelState["Addr2"] != null && ViewData.ModelState["Addr2"].Errors.Any()) ||
     (ViewData.ModelState["Addr3"] != null && ViewData.ModelState["Addr3"].Errors.Any()) ||
@@ -158,7 +158,6 @@
 
             <hr class="related__section-break">
             <h4 class="govuk-heading-m">Publish</h4>
-            <p class="govuk-body">Applicants will see published information from October.</p>
             <p class="govuk-body">You can make changes to this after publishing it.</p>
 
             <form asp-controller="Organisation" asp-action="Details" method="post">
@@ -176,7 +175,6 @@
 
             <hr class="related__section-break">
             <h4 class="govuk-heading-m">Publish</h4>
-            <p class="govuk-body">Applicants will see published information from October.</p>
             <p class="govuk-body">You can make changes to this after publishing it.</p>
 
             <form asp-controller="Organisation" asp-action="Details" method="post">
@@ -185,7 +183,6 @@
             break;
           case WorkflowStatus.Published :
             <strong class="govuk-tag govuk-tag--published">Published</strong>
-            <p class="govuk-body">Applicants will see this on all your courses from October.</p>
             <p class="govuk-body">Last published on @Model.LastPublishedTimestampUtc.DateString()</p>
 
             break;
@@ -201,7 +198,6 @@
 
             <hr class="related__section-break">
             <h4 class="govuk-heading-m">Publish</h4>
-            <p class="govuk-body">Applicants will see published information from October.</p>
             <p class="govuk-body">You can make changes to this after publishing it.</p>
 
             <form asp-controller="Organisation" asp-action="Details" method="post">
@@ -220,7 +216,6 @@
 
             <hr class="related__section-break">
             <h4 class="govuk-heading-m">Publish</h4>
-            <p class="govuk-body">Applicants will see published information from October.</p>
             <p class="govuk-body">You can make changes to this after publishing it.</p>
 
             <form asp-controller="Organisation" asp-action="Details" method="post">
