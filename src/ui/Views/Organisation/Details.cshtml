@@ -184,6 +184,10 @@
           case WorkflowStatus.Published :
             <strong class="govuk-tag govuk-tag--published">Published</strong>
             <p class="govuk-body">Last published on @Model.LastPublishedTimestampUtc.DateString()</p>
+            <hr class="related__section-break" />
+            <h4 class="govuk-heading-m">View on a course</h4>
+            <p class="govuk-body">This information will show on all your courses.</p>
+            <p class="govuk-body">View any course to see how it will look to applicants.</p>
 
             break;
           case WorkflowStatus.SubsequentDraft :
