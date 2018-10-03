@@ -73,9 +73,9 @@ namespace GovUk.Education.ManageCourses.Ui
             return result;
         }
 
-        public async Task<bool> PublishEnrichmentOrganisation(string ucasCode)
+        public async Task<bool> PublishCoursesToSearchAndCompare(string ucasCode)
         {
-            var result = await _apiClient.Enrichment_PublishInstitutionAsync(ucasCode);
+            var result = await _apiClient.Publish_PublishCoursesToSearchAndCompareAsync(ucasCode);
 
             return result;
         }
@@ -105,7 +105,7 @@ namespace GovUk.Education.ManageCourses.Ui
 
         public async Task<bool> PublishCourseToSearchAndCompare(string instCode, string courseCode)
         {
-            var result = await _apiClient.Publish_PublishToSearchAndCompareAsync(instCode, courseCode);
+            var result = await _apiClient.Publish_PublishCourseToSearchAndCompareAsync(instCode, courseCode);
 
             return result;
         }

@@ -272,7 +272,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             }
             else
             {
-                var result = await _manageApi.PublishEnrichmentOrganisation(ucasCode);
+                var result = await _manageApi.PublishCoursesToSearchAndCompare(ucasCode);
 
                 if (result)
                 {

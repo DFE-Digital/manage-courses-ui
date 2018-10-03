@@ -407,7 +407,7 @@ namespace ManageCoursesUi.Tests
                 It.IsAny<string>(),
                 It.IsAny<Object>()));
 
-            apiMock.Setup(x => x.PublishEnrichmentOrganisation(ucasCode))
+            apiMock.Setup(x => x.PublishCoursesToSearchAndCompare(ucasCode))
                 .ReturnsAsync(true);
             var controller = new OrganisationController(apiMock.Object, new MockFeatureFlags());
             controller.ObjectValidator = objectValidator.Object;
@@ -491,7 +491,7 @@ namespace ManageCoursesUi.Tests
             apiMock.Setup(x => x.GetEnrichmentOrganisation(ucasCode))
                 .ReturnsAsync(ucasInstitutionEnrichmentGetModel);
 
-            apiMock.Setup(x => x.PublishEnrichmentOrganisation(ucasCode))
+            apiMock.Setup(x => x.PublishCoursesToSearchAndCompare(ucasCode))
                 .ReturnsAsync(true);
             var controller = new OrganisationControllerMockedValidation(apiMock.Object, new MockFeatureFlags());
 
