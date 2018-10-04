@@ -14,37 +14,6 @@ namespace ManageCoursesUi.Tests
     class ViewModelHelperTests
     {
         [Test]
-        [TestCase("", "f", "ss", "QTS full time with salary")]
-        [TestCase("", "F", "SS", "QTS full time with salary")]
-        [TestCase(null, "f", "ss", "QTS full time with salary")]
-        [TestCase(null, "F", "SS", "QTS full time with salary")]
-        [TestCase("pg", "f", "ss", "PGCE with QTS full time with salary")]
-        [TestCase("PG", "F", "SS", "PGCE with QTS full time with salary")]
-        [TestCase("pg", "p", "ss", "PGCE with QTS part time with salary")]
-        [TestCase("PG", "P", "SS", "PGCE with QTS part time with salary")]
-        [TestCase("", "f", "sd", "QTS full time")]
-        [TestCase("", "F", "SD", "QTS full time")]
-        [TestCase(null, "f", "sd", "QTS full time")]
-        [TestCase(null, "F", "SD", "QTS full time")]
-        [TestCase("pg", "f", "sd", "PGCE with QTS full time")]
-        [TestCase("PG", "F", "SD", "PGCE with QTS full time")]
-        [TestCase("pg", "p", "sd", "PGCE with QTS part time")]
-        [TestCase("PG", "P", "SD", "PGCE with QTS part time")]
-        [TestCase("PG", "B", "SD", "PGCE with QTS, full time or part time")]
-        [TestCase("pg", "b", "sd", "PGCE with QTS, full time or part time")]
-        public void TestGetCourseVariantType(string profpostFlag, string studyMode, string programType, string expectedResult)
-        {
-            var course = new Course
-            {
-                ProfpostFlag = profpostFlag,
-                StudyMode = studyMode,
-                ProgramType = programType
-            };
-            var result = course.GetCourseVariantType();
-            result.Should().Be(expectedResult);
-        }
-
-        [Test]
         [TestCase("N", "N", "N", "N", "New – not yet running")]
         [TestCase("N", "N", "S", "S", "New – not yet running")]
         [TestCase("N", "S", "S", "S", "New – not yet running")]
