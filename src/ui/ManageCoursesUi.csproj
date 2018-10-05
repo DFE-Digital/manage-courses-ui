@@ -29,7 +29,7 @@
   <Import Condition="Exists('$(ProjectDir)dev-sc-shared.targets')" Project="$(ProjectDir)dev-sc-shared.targets" />
 
   <ItemGroup Condition="Exists('$(ProjectDir)dev-mc-api.targets')==false">
-    <PackageReference Include="GovUk.Education.ManageCourses.ApiClient" Version="0.20.0-Publish-multiple-courses.1" />
+    <PackageReference Include="GovUk.Education.ManageCourses.ApiClient" Version="0.19.0.*" />
   </ItemGroup>
   <ItemGroup Condition="Exists('$(ProjectDir)dev-sc-shared.targets')==false">
     <PackageReference Include="GovUk.Education.SearchAndCompare.Ui.Shared" Version="0.4.12.*" />
