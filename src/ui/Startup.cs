@@ -25,6 +25,7 @@ using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Serilog;
+using GovUk.Education.SearchAndCompare.UI.Shared.Features;
 
 namespace GovUk.Education.ManageCourses.Ui
 {
@@ -236,7 +237,7 @@ namespace GovUk.Education.ManageCourses.Ui
                     }
                 };
             });
-
+            services.AddScoped<Features.IFeatureFlags, Features.FeatureFlags>();
             services.AddSingleton<IFeatureFlags>(x => new FeatureFlags(Configuration.GetSection("features")));
             services.AddSingleton<ISearchAndCompareUrlService>(x => new SearchAndCompareUrlService(Configuration.GetValue("SearchAndCompare:UiBaseUrl", "")));
             services.AddSingleton<IManageCoursesApiClientConfiguration, ManageCoursesApiClientConfiguration>();
