@@ -236,7 +236,7 @@ namespace GovUk.Education.ManageCourses.Ui
                     }
                 };
             });
-
+            services.AddScoped<SearchAndCompare.UI.Shared.Features.IFeatureFlags, SearchAndCompare.UI.Shared.Features.FeatureFlags>();
             services.AddSingleton<IFeatureFlags>(x => new FeatureFlags(Configuration.GetSection("features")));
             services.AddSingleton<ISearchAndCompareUrlService>(x => new SearchAndCompareUrlService(Configuration.GetValue("SearchAndCompare:UiBaseUrl", "")));
             services.AddSingleton<IManageCoursesApiClientConfiguration, ManageCoursesApiClientConfiguration>();
