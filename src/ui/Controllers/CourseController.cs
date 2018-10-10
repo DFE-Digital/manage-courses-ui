@@ -81,7 +81,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
 
                 if (featureFlags.ShowCourseLiveView)
                 {
-                    TempData["MessageTitle"] = "Your changes will be published within 1 working day, usually within 2 hours";
+                    TempData["MessageTitle"] = "Your course has been published";
                     var searchUrl = searchAndCompareUrlService.GetCoursePageUri(course.InstCode, course.CourseCode);
                     TempData["MessageBodyHtml"] = $@"
                         <p class=""govuk-body"">
