@@ -248,7 +248,7 @@ namespace ManageCoursesUi.Tests
             objectValidator.VerifyAll();
 
             Assert.AreEqual("success", courseController.TempData["MessageType"]);
-            Assert.AreEqual("Your changes will be published within 1 working day, usually within 2 hours", courseController.TempData["MessageTitle"]);
+            Assert.AreEqual("Your course has been published", courseController.TempData["MessageTitle"]);
 
             Assert.IsNotNull(objectToVerify);
             Assert.AreEqual("AboutCourse", objectToVerify.AboutCourse);
