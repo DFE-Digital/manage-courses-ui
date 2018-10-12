@@ -1,27 +1,23 @@
 import { initAll } from "govuk-frontend"
 import CookieMessage from "./Javascript/cookie-message"
 import BackLink from "./Javascript/back-link"
-import CharacterCount from "./Javascript/character-count"
 import serialize from "form-serialize"
 
 jest.mock("govuk-frontend")
 jest.mock("./Javascript/cookie-message")
 jest.mock("./Javascript/back-link")
-jest.mock("./Javascript/character-count")
 jest.mock("form-serialize")
 
 describe("App", () => {
   beforeAll(() => {
     document.body.innerHTML = `
-<div>
-  <div data-module="cookie-message"></div>
-  <div data-module="back-link"></div>
-  <div data-module="character-count"></div>
-  <div data-module="form"></div>
-  <div data-copy-course="warning"></div>
-</div>
-`
-
+      <div>
+        <div data-module="cookie-message"></div>
+        <div data-module="back-link"></div>
+        <div data-module="form"></div>
+        <div data-copy-course="warning"></div>
+      </div>
+    `
     require("./app")
   })
 
@@ -36,10 +32,6 @@ describe("App", () => {
 
     it("should initialise BackLink", () => {
       expect(BackLink).toHaveBeenCalled()
-    })
-
-    it("should initialise CharacterCount", () => {
-      expect(CharacterCount).toHaveBeenCalled()
     })
 
     it("should prevent user from navigating away", () => {
