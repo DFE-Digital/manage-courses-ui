@@ -41,6 +41,7 @@ if ($copyWarningMessage) {
   }
 }
 
+/* istanbul ignore next */
 if (process.env.NODE_ENV == 'development') {
   module.hot.accept();
 }

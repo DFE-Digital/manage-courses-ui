@@ -7,3 +7,4 @@ node_modules
 dev-mc-api.targets
 dev-sc-shared.targets
 src/ui/wwwroot/*
+src/ui/coverage
