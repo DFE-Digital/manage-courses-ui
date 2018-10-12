@@ -446,7 +446,8 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
                             Code = campus.Code,
                             LocationName = campus.LocationName,
                             Address = address,
-                            Status = campus.Status
+                            Status = campus.Status,
+                            VacStatus = campus.VacStatus
                         };
                     })
                 };

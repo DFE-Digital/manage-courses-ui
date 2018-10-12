@@ -50,8 +50,7 @@ namespace GovUk.Education.ManageCourses.Ui.ViewModels
         public string Address { get; set; }
         public string Code { get; set; }
         public string Status { get; set; }
-        public string FullTimeVacancies { get; set; }
-        public string PartTimeVacancies { get; set; }
+        public string VacStatus { get; set; }
 
         private string _applicationsAcceptedFrom;
         public string ApplicationsAcceptedFrom

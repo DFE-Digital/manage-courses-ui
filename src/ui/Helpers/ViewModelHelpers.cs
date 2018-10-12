@@ -52,6 +52,28 @@ namespace GovUk.Education.ManageCourses.Ui.Helpers
             }
             return result;
         }
+
+        public static string GetVacancyStatus(this SchoolViewModel school)
+        {
+            var result = "";
+            switch (school.VacStatus?.ToLower())
+            {
+                case "b":
+                    result = "Both full time and part time vacancies";
+                    break;
+                case "p":
+                    result = "Part time vacancies";
+                    break;
+                case "f":
+                    result = "Full time vacancies";
+                    break;
+                default:
+                    result = "No vacancies";
+                    break;
+            }
+            return result;
+        }
+
         public static string GetRoute(this CourseVariantViewModel viewModel)
         {
             var result = "";

@@ -121,6 +121,11 @@
                 <dt>Status:</dt>
                 <dd>@school.GetSchoolStatus()</dd>
               }
+              @if (!string.IsNullOrEmpty(@school.VacStatus))
+              {
+                <dt>Vacancies:</dt>
+                <dd>@school.GetVacancyStatus()</dd>
+              }
               @if (!string.IsNullOrEmpty(@school.ApplicationsAcceptedFrom)) {
                 <dt>Apply from:</dt>
                 <dd>@school.ApplicationsAcceptedFrom</dd>
