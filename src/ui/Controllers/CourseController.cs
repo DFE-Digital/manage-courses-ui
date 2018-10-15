@@ -144,7 +144,8 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             {
                 copyFrom = copyFrom.ToUpper();
                 var copiedEnrichment = await _manageApi.GetEnrichmentCourse(instCode, copyFrom);
-                ViewBag.CopiedFrom = new CourseInfoViewModel {
+                ViewBag.CopiedFrom = new CourseInfoViewModel
+                {
                     ProgrammeCode = copyFrom,
                     Name = (ViewBag.CopyableCourses as IEnumerable<ApiClient.Course>).SingleOrDefault(x => x.CourseCode == copyFrom)?.Name
                 };
@@ -214,7 +215,8 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             {
                 copyFrom = copyFrom.ToUpper();
                 var copiedEnrichment = await _manageApi.GetEnrichmentCourse(instCode, copyFrom);
-                ViewBag.CopiedFrom = new CourseInfoViewModel {
+                ViewBag.CopiedFrom = new CourseInfoViewModel
+                {
                     ProgrammeCode = copyFrom,
                     Name = (ViewBag.CopyableCourses as IEnumerable<ApiClient.Course>).SingleOrDefault(x => x.CourseCode == copyFrom)?.Name
                 };
@@ -274,7 +276,8 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             {
                 copyFrom = copyFrom.ToUpper();
                 var copiedEnrichment = await _manageApi.GetEnrichmentCourse(instCode, copyFrom);
-                ViewBag.CopiedFrom = new CourseInfoViewModel {
+                ViewBag.CopiedFrom = new CourseInfoViewModel
+                {
                     ProgrammeCode = copyFrom,
                     Name = (ViewBag.CopyableCourses as IEnumerable<ApiClient.Course>).SingleOrDefault(x => x.CourseCode == copyFrom)?.Name
                 };
@@ -320,8 +323,8 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             var model = new CourseFeesEnrichmentViewModel
             {
                 CourseLength = enrichmentModel?.CourseLength.GetCourseLength(),
-		        CourseLengthInput = enrichmentModel.CourseLength.GetCourseLengthInput(),
-		        FeeUkEu = enrichmentModel?.FeeUkEu.GetFeeValue(),
+                CourseLengthInput = enrichmentModel.CourseLength.GetCourseLengthInput(),
+                FeeUkEu = enrichmentModel?.FeeUkEu.GetFeeValue(),
                 FeeInternational = enrichmentModel?.FeeInternational.GetFeeValue(),
                 FeeDetails = enrichmentModel?.FeeDetails,
                 FinancialSupport = enrichmentModel?.FinancialSupport,
@@ -335,7 +338,8 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             {
                 copyFrom = copyFrom.ToUpper();
                 var copiedEnrichment = await _manageApi.GetEnrichmentCourse(instCode, copyFrom);
-                ViewBag.CopiedFrom = new CourseInfoViewModel {
+                ViewBag.CopiedFrom = new CourseInfoViewModel
+                {
                     ProgrammeCode = copyFrom,
                     Name = (ViewBag.CopyableCourses as IEnumerable<ApiClient.Course>).SingleOrDefault(x => x.CourseCode == copyFrom)?.Name
                 };
