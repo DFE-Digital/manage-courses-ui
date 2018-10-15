@@ -74,6 +74,11 @@ namespace GovUk.Education.ManageCourses.Ui.Helpers
             return result;
         }
 
+        public static string GetHasVacancies(this Course course)
+        {
+            return course.HasVacancies ? "Yes" : "No";
+        }
+
         public static string GetRoute(this CourseVariantViewModel viewModel)
         {
             var result = "";
