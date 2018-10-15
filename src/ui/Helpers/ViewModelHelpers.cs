@@ -8,7 +8,7 @@ using GovUk.Education.ManageCourses.Ui.ViewModels;
 namespace GovUk.Education.ManageCourses.Ui.Helpers
 {
     public static class ViewModelHelpers
-    {        
+    {
         public static string GetCourseStatus(this Course course)
         {
             var result = "";
@@ -31,7 +31,7 @@ namespace GovUk.Education.ManageCourses.Ui.Helpers
         {
             return course != null && course.GetCourseStatus() != "Not running";
         }
-        
+
         public static string GetSchoolStatus(this SchoolViewModel school)
         {
             var result = "";
@@ -52,6 +52,33 @@ namespace GovUk.Education.ManageCourses.Ui.Helpers
             }
             return result;
         }
+
+        public static string GetVacancyStatus(this SchoolViewModel school)
+        {
+            var result = "";
+            switch (school.VacStatus?.ToLower())
+            {
+                case "b":
+                    result = "Both full time and part time vacancies";
+                    break;
+                case "p":
+                    result = "Part time vacancies";
+                    break;
+                case "f":
+                    result = "Full time vacancies";
+                    break;
+                default:
+                    result = "No vacancies";
+                    break;
+            }
+            return result;
+        }
+
+        public static string GetHasVacancies(this Course course)
+        {
+            return course.HasVacancies ? "Yes" : "No";
+        }
+
         public static string GetRoute(this CourseVariantViewModel viewModel)
         {
             var result = "";
@@ -107,7 +134,7 @@ namespace GovUk.Education.ManageCourses.Ui.Helpers
             if (string.IsNullOrEmpty(viewModel.AgeRange)) return result;
 
             var ageRange = viewModel.AgeRange.Trim().ToLowerInvariant();
-            
+
             switch (ageRange)
             {
                 case "s":
@@ -145,29 +172,29 @@ namespace GovUk.Education.ManageCourses.Ui.Helpers
             switch (qualifications)
             {
                 case "pf":
-                {
-                    result = "Professional";
-                    break;
-                }
-                case "pg":
-                {
-                    result = "Postgraduate";
-                    break;
-                }
-                case "bo":
-                {
-                    result = "Professional/Postgraduate";
-                    break;
-                }
-                case "":
-                {
-                    result = "Recommendation for QTS";
+                    {
+                        result = "Professional";
                         break;
-                }
+                    }
+                case "pg":
+                    {
+                        result = "Postgraduate";
+                        break;
+                    }
+                case "bo":
+                    {
+                        result = "Professional/Postgraduate";
+                        break;
+                    }
+                case "":
+                    {
+                        result = "Recommendation for QTS";
+                        break;
+                    }
                 default:
-                {
-                    break;
-                }
+                    {
+                        break;
+                    }
             }
 
             return result;
@@ -205,4 +232,3 @@ namespace GovUk.Education.ManageCourses.Ui.Helpers
 
     }
 }
-
