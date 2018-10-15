@@ -757,6 +757,7 @@ namespace ManageCoursesUi.Tests
         private class MockFeatureFlags : IFeatureFlags
         {
             public bool ShowCourseLiveView => true;
+            public bool TestFlagEnabled => false;
         }
 
         private void VerifyTempDataIsSet(Mock<ITempDataDictionary> tempDataMock, string previewLink)
