@@ -5,6 +5,7 @@
     <UserSecretsId>manage-courses-ui-config</UserSecretsId>
     <WebProject_DirectoryAccessLevelKey>0</WebProject_DirectoryAccessLevelKey>
     <RootNamespace>GovUk.Education.ManageCourses.Ui</RootNamespace>
+    <NoWarn>1591</NoWarn>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="IdentityModel" Version="3.9.0" />
@@ -18,8 +19,6 @@
   </ItemGroup>
   <ItemGroup>
     <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.4" />
-    <DotNetCliToolReference Include="Microsoft.Extensions.SecretManager.Tools" Version="2.0.2" />
-    <DotNetCliToolReference Include="Microsoft.DotNet.Watcher.Tools" Version="2.0.2" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="wwwroot\" />
