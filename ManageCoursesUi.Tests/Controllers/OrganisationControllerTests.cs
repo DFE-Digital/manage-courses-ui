@@ -305,7 +305,7 @@ namespace ManageCoursesUi.Tests
         }
 
         [Test]
-        public async Task DetailsPost_PublishOrganisation_WhenApiReturnsFalse()
+        public void DetailsPost_PublishOrganisation_WhenApiReturnsFalse()
         {
             var ucasCode = "UCASCODE";
             var institutionName = "InstitutionName";
