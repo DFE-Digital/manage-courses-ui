@@ -44,11 +44,11 @@
             <p class="govuk-body">
               @if(Model.Course.StatusAsEnum == CourseVariantStatus.New)
               {
-                <text>It won&#8217;t appear online until one or more training locations are set to &ldquo;running&rdquo; in <a href='https://update.ucas.co.uk/netupdate2/Welcome.htm'>UCAS web-link</a>.</text>
+                <text>It won&#8217;t appear online until you have made changes in <a href='https://update.ucas.co.uk/netupdate2/Welcome.htm'>UCAS web-link</a>. Set one or more training locations to &ldquo;running&rdquo; and set their Publish value to &ldquo;yes&rdquo;. You must do this so that applicants can apply on UCAS.</text>
               }
               else
               {
-                <text>It won&#8217;t appear online. You can publish it by changing the status of one or more training locations to &ldquo;running&rdquo; in <a href='https://update.ucas.co.uk/netupdate2/Welcome.htm'>UCAS web-link</a>.</text>
+                <text>It won&#8217;t appear online. To publish it you&#8217;ll need to make changes in <a href='https://update.ucas.co.uk/netupdate2/Welcome.htm'>UCAS web-link</a>. Set one or more training locations to &ldquo;running&rdquo; and set their Publish value to &ldquo;yes&rdquo;.</text>
               }
             </p>
           }
