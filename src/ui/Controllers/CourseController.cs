@@ -437,6 +437,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
                             LocationName = courseSite.Site.LocationName,
                             Address = address,
                             Status = courseSite.Status,
+                            Publish = courseSite.Publish,
                             VacStatus = courseSite.VacStatus
                         };
                     })
