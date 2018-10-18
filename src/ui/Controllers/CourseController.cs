@@ -21,13 +21,11 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
     {
         private readonly IManageApi _manageApi;
         private readonly ISearchAndCompareUrlService searchAndCompareUrlService;
-        private readonly IFeatureFlags featureFlags;
 
-        public CourseController(IManageApi manageApi, ISearchAndCompareUrlService searchAndCompareUrlHelper, IFeatureFlags featureFlags)
+        public CourseController(IManageApi manageApi, ISearchAndCompareUrlService searchAndCompareUrlHelper)
         {
             _manageApi = manageApi;
             this.searchAndCompareUrlService = searchAndCompareUrlHelper;
-            this.featureFlags = featureFlags;
         }
 
         [Route("{instCode}/course/{accreditingProviderId=self}/{ucasCode}")]
@@ -78,22 +76,14 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             if (result)
             {
                 TempData["MessageType"] = "success";
-
-                if (featureFlags.ShowCourseLiveView)
-                {
-                    TempData["MessageTitle"] = "Your course has been published";
-                    var searchUrl = searchAndCompareUrlService.GetCoursePageUri(course.InstCode, course.CourseCode);
-                    TempData["MessageBodyHtml"] = $@"
-                        <p class=""govuk-body"">
-                            The link for this course is:
-                            <br />
-                            <a href='{searchUrl}'>{searchUrl}</a>
-                        </p>";
-                }
-                else
-                {
-                    TempData["MessageTitle"] = "Your course has been published";
-                }
+                TempData["MessageTitle"] = "Your course has been published";
+                var searchUrl = searchAndCompareUrlService.GetCoursePageUri(course.InstCode, course.CourseCode);
+                TempData["MessageBodyHtml"] = $@"
+                    <p class=""govuk-body"">
+                        The link for this course is:
+                        <br />
+                        <a href='{searchUrl}'>{searchUrl}</a>
+                    </p>";
             }
 
             return RedirectToAction("Show", new { instCode, accreditingProviderId, ucasCode });
@@ -465,7 +455,6 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
                 Course = courseVariant,
                 CourseEnrichment = courseEnrichmentViewModel,
                 LiveSearchUrl = searchAndCompareUrlService.GetCoursePageUri(org.UcasCode, courseVariant.ProgrammeCode),
-                AllowLiveView = featureFlags.ShowCourseLiveView,
                 IsSalary = isSalary
             };
             return viewModel;

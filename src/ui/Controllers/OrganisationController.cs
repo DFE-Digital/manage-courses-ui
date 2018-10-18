@@ -19,12 +19,10 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
     public class OrganisationController : CommonAttributesControllerBase
     {
         private readonly IManageApi _manageApi;
-        private readonly IFeatureFlags _featureFlags;
 
-        public OrganisationController(IManageApi manageApi, IFeatureFlags featureFlags)
+        public OrganisationController(IManageApi manageApi)
         {
             _manageApi = manageApi;
-            this._featureFlags = featureFlags;
         }
 
         [Route("/organisations")]
