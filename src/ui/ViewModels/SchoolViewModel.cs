@@ -8,6 +8,7 @@ namespace GovUk.Education.ManageCourses.Ui.ViewModels
         public string Address { get; set; }
         public string Code { get; set; }
         public string Status { get; set; }
+        public string Publish { get; set; }
         public string VacStatus { get; set; }
 
         private string _applicationsAcceptedFrom;

@@ -17,7 +17,10 @@ namespace GovUk.Education.ManageCourses.Ui.Helpers
                 result = "Running";
             }
             else {
-                if (course.Schools.Any(s => String.Equals(s.Status, "n", StringComparison.InvariantCultureIgnoreCase)))
+                if (course.Schools.Any(s => String.Equals(s.Status, "r", StringComparison.InvariantCultureIgnoreCase) && String.Equals(s.Publish, "n", StringComparison.InvariantCultureIgnoreCase))){
+                    result  = "Running but incomplete";
+                }
+                else if (course.Schools.Any(s => String.Equals(s.Status, "n", StringComparison.InvariantCultureIgnoreCase)))
                 {
                     result = "New – not yet running";
                 }
@@ -25,10 +28,8 @@ namespace GovUk.Education.ManageCourses.Ui.Helpers
                 {
                     result = "Not running";
                 }
-                else if (course.Schools.Any(s => String.Equals(s.Status, "r", StringComparison.InvariantCultureIgnoreCase) && String.Equals(s.Publish, "n", StringComparison.InvariantCultureIgnoreCase))){
-                    result  = "Running but incomplete";
-                }
             }
+
             return result;
         }
 
@@ -46,8 +47,11 @@ namespace GovUk.Education.ManageCourses.Ui.Helpers
                     result = "Discontinued";
                     break;
                 case "r":
-                    result = "Running";
-                    break;
+                    {
+                        result = (school.Publish ?? "").Equals("y", StringComparison.InvariantCultureIgnoreCase) ? "Running" : "Running but incomplete";
+
+                        break;
+                    }
                 case "n":
                     result = "New";
                     break;

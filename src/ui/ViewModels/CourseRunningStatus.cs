@@ -6,6 +6,7 @@ namespace GovUk.Education.ManageCourses.Ui.ViewModels
     {
         Running,
         NotRunning,
-        New
+        New,
+        RunningButIncomplete
     };
 }
