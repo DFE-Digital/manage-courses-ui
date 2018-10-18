@@ -122,7 +122,7 @@ namespace GovUk.Education.ManageCourses.Ui
                                 // between cookie and access token is preserved
                                 x.ShouldRenew = true;
                             }
-                            else 
+                            else
                             {
                                 // could not refresh - log the user out
                                 _logger.LogWarning("Token refresh failed with message: " + response.ErrorDescription);
@@ -237,7 +237,6 @@ namespace GovUk.Education.ManageCourses.Ui
                 };
             });
             services.AddScoped<SearchAndCompare.UI.Shared.Features.IFeatureFlags, SearchAndCompare.UI.Shared.Features.FeatureFlags>();
-            services.AddSingleton<IFeatureFlags>(x => new FeatureFlags(Configuration.GetSection("features")));
             services.AddSingleton<ISearchAndCompareUrlService>(x => new SearchAndCompareUrlService(Configuration.GetValue("SearchAndCompare:UiBaseUrl", "")));
             services.AddSingleton<IManageCoursesApiClientConfiguration, ManageCoursesApiClientConfiguration>();
             services.AddScoped(provider => AnalyticsPolicy.FromEnv());
@@ -292,7 +291,7 @@ namespace GovUk.Education.ManageCourses.Ui
             app.UseAuthentication();
 
             // hotfix
-            // workaround for bug in DfE sign in 
+            // workaround for bug in DfE sign in
             // which appends a trailing slash
             app.UseRewriter(new RewriteOptions()
                 .AddRedirect("^auth/cb/?.*", "auth/cb"));

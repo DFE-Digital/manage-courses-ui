@@ -55,7 +55,7 @@ namespace ManageCoursesUi.Tests
 
             apiMock.Setup(x => x.GetOrganisations()).ReturnsAsync(orgs);
 
-            var controller = new OrganisationController(apiMock.Object, new MockFeatureFlags());
+            var controller = new OrganisationController(apiMock.Object);
 
             var result = await controller.Show(ucasCode);
 
@@ -90,7 +90,7 @@ namespace ManageCoursesUi.Tests
             apiMock.Setup(x => x.GetOrganisations())
                 .ReturnsAsync(orgs);
 
-            var controller = new OrganisationController(apiMock.Object, new MockFeatureFlags());
+            var controller = new OrganisationController(apiMock.Object);
 
             var result = await controller.RequestAccess(ucasCode);
 
@@ -122,7 +122,7 @@ namespace ManageCoursesUi.Tests
             apiMock.Setup(x => x.GetOrganisations())
                 .ReturnsAsync(orgs);
 
-            var controller = new OrganisationController(apiMock.Object, new MockFeatureFlags());
+            var controller = new OrganisationController(apiMock.Object);
             controller.ModelState.AddModelError("you", "failed");
             var result = await controller.RequestAccessPost(ucasCode, new RequestAccessViewModel());
 
@@ -145,7 +145,7 @@ namespace ManageCoursesUi.Tests
 
             var tempDataMock = new Mock<ITempDataDictionary>();
 
-            var controller = new OrganisationController(apiMock.Object, new MockFeatureFlags());
+            var controller = new OrganisationController(apiMock.Object);
             controller.TempData = tempDataMock.Object;
 
             var result = await controller.RequestAccessPost(ucasCode, viewModel);
@@ -223,7 +223,7 @@ namespace ManageCoursesUi.Tests
             apiMock.Setup(x => x.GetEnrichmentOrganisation(ucasCode))
                 .ReturnsAsync(ucasInstitutionEnrichmentGetModel);
 
-            var controller = new OrganisationController(apiMock.Object, new MockFeatureFlags());
+            var controller = new OrganisationController(apiMock.Object);
 
             var result = await controller.About(ucasCode);
 
@@ -286,7 +286,7 @@ namespace ManageCoursesUi.Tests
                 It.IsAny<string>(),
                 It.IsAny<Object>()));
 
-            var controller = new OrganisationController(apiMock.Object, new MockFeatureFlags());
+            var controller = new OrganisationController(apiMock.Object);
 
             controller.ObjectValidator = objectValidator.Object;
 
@@ -352,7 +352,7 @@ namespace ManageCoursesUi.Tests
                 It.IsAny<string>(),
                 It.IsAny<Object>()));
 
-            var controller = new OrganisationController(apiMock.Object, new MockFeatureFlags());
+            var controller = new OrganisationController(apiMock.Object);
             controller.ObjectValidator = objectValidator.Object;
 
             controller.TempData = new Mock<ITempDataDictionary>().Object;
@@ -366,9 +366,9 @@ namespace ManageCoursesUi.Tests
             var ucasCode = "UCASCODE";
             var viewModel = new OrganisationViewModel
             {
-                AboutTrainingProviders = new List<TrainingProviderViewModel>()  
+                AboutTrainingProviders = new List<TrainingProviderViewModel>()
             };
-                
+
             var institutionName = "InstitutionName";
 
             var institutionCourses = new InstitutionCourses
@@ -384,7 +384,7 @@ namespace ManageCoursesUi.Tests
                 }
             };
             var apiMock = new Mock<IManageApi>();
-            
+
             apiMock.Setup(x => x.GetUcasInstitution(ucasCode))
                 .ReturnsAsync(new UcasInstitution { InstCode = ucasCode, InstFull = institutionName });
 
@@ -409,7 +409,7 @@ namespace ManageCoursesUi.Tests
 
             apiMock.Setup(x => x.PublishCoursesToSearchAndCompare(ucasCode))
                 .ReturnsAsync(true);
-            var controller = new OrganisationController(apiMock.Object, new MockFeatureFlags());
+            var controller = new OrganisationController(apiMock.Object);
             controller.ObjectValidator = objectValidator.Object;
 
             controller.TempData = new Mock<ITempDataDictionary>().Object;
@@ -493,7 +493,7 @@ namespace ManageCoursesUi.Tests
 
             apiMock.Setup(x => x.PublishCoursesToSearchAndCompare(ucasCode))
                 .ReturnsAsync(true);
-            var controller = new OrganisationControllerMockedValidation(apiMock.Object, new MockFeatureFlags());
+            var controller = new OrganisationControllerMockedValidation(apiMock.Object);
 
             var result = await controller.DetailsPost(ucasCode, viewModel);
 
@@ -542,14 +542,14 @@ namespace ManageCoursesUi.Tests
             apiMock.Setup(x => x.GetCoursesByOrganisation("ABC")).ReturnsAsync(new InstitutionCourses{
                 Courses = new ObservableCollection<Course> { new Course { AccreditingProviderId = "ACC" } }
             });
-            
+
             var objectValidator = new Mock<IObjectModelValidator>();
             objectValidator.Setup(o => o.Validate(It.IsAny<ActionContext>(),
                 It.IsAny<ValidationStateDictionary>(),
                 It.IsAny<string>(),
                 It.IsAny<Object>()));
 
-            var controller = new OrganisationController(apiMock.Object, new MockFeatureFlags());
+            var controller = new OrganisationController(apiMock.Object);
             controller.ObjectValidator = objectValidator.Object;
             controller.TempData = new Mock<ITempDataDictionary>().Object;
 
@@ -627,7 +627,7 @@ namespace ManageCoursesUi.Tests
                 It.IsAny<string>(),
                 It.IsAny<Object>()));
 
-            var controller = new OrganisationController(apiMock.Object, new MockFeatureFlags());
+            var controller = new OrganisationController(apiMock.Object);
 
             controller.ObjectValidator = objectValidator.Object;
 
@@ -650,11 +650,6 @@ namespace ManageCoursesUi.Tests
             Assert.AreEqual(exceed100Words, organisationViewModel.AboutTrainingProviders.First(x => x.InstitutionCode == ucasCode + 1).Description);
             Assert.AreEqual(institutionName, organisationViewModel.AboutTrainingProviders.First(x => x.InstitutionCode == ucasCode + 1).InstitutionName);
 
-        }
-
-        private class MockFeatureFlags : IFeatureFlags
-        {
-            public bool ShowCourseLiveView => true;
         }
     }
 }
