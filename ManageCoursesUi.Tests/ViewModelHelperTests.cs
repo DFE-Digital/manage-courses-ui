@@ -86,6 +86,28 @@ namespace ManageCoursesUi.Tests
         }
 
         [Test]
+        [TestCase("d", true, "")]
+        [TestCase("d", false, "")]
+        [TestCase("s", true, "")]
+        [TestCase("s", false, "")]
+        [TestCase("b", true, "Yes")]
+        [TestCase("b", false, "No")]
+        public void TestGetHasVacancies(string status, bool hasVacancies, string expectedResult)
+        {
+            var schools = new List<School>
+            {
+                new School {Status = status},
+            };
+            var course = new Course
+            {
+                Schools = new ObservableCollection<School>(schools),
+                HasVacancies = hasVacancies
+            };
+            var result = course.GetHasVacancies();
+            result.Should().Be(expectedResult);
+        }
+
+        [Test]
         [TestCase("HE", "Higher education programme")]
         [TestCase("he", "Higher education programme")]
         [TestCase("SD", "School Direct training programme")]

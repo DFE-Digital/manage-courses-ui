@@ -76,7 +76,9 @@ namespace GovUk.Education.ManageCourses.Ui.Helpers
 
         public static string GetHasVacancies(this Course course)
         {
-            return course.HasVacancies ? "Yes" : "No";
+            return CourseIsDiscontinuedOrSuspended(course)
+                ? ""
+                : course.HasVacancies ? "Yes" : "No";
         }
 
         public static string GetRoute(this CourseVariantViewModel viewModel)
@@ -230,5 +232,19 @@ namespace GovUk.Education.ManageCourses.Ui.Helpers
             return char.ToUpper(str[0]) + str.Substring(1).ToLower();
         }
 
+        private static bool CourseIsDiscontinuedOrSuspended(this Course course)
+        {
+            return course.Schools.All(s => SchoolIsDiscontinued(s) || SchoolIsSuspended(s));
+        }
+
+        private static bool SchoolIsDiscontinued(School school)
+        {
+            return String.Equals(school.Status, "d", StringComparison.InvariantCultureIgnoreCase);
+        }
+
+        private static bool SchoolIsSuspended(School school)
+        {
+            return String.Equals(school.Status, "s", StringComparison.InvariantCultureIgnoreCase);
+        }
     }
 }
