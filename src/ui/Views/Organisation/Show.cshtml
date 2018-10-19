@@ -18,7 +18,7 @@
 }
 
 <main role="main" class="govuk-main-wrapper" id="main-content">
-  @Html.Partial("~/Views/Organisation/Shared/RequestAccessSuccess.cshtml")
+  @await Html.PartialAsync("~/Views/Organisation/Shared/RequestAccessSuccess.cshtml")
   @await Html.PartialAsync("~/Views/Shared/_Alerts.cshtml")
 
   <div class="govuk-grid-row">
