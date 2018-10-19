@@ -22,7 +22,7 @@ namespace GovUk.Education.ManageCourses.Ui.ViewModels
         public CourseRunningStatus StatusAsEnum =>
                 string.Equals("running", Status ?? "", StringComparison.InvariantCultureIgnoreCase) ? CourseRunningStatus.Running
               : string.Equals("not running", Status ?? "", StringComparison.InvariantCultureIgnoreCase) ? CourseRunningStatus.NotRunning
-              : string.Equals("running but incomplete", Status ?? "", StringComparison.InvariantCultureIgnoreCase) ? CourseRunningStatus.RunningButIncomplete
+              : string.Equals("Needs attention in UCAS", Status ?? "", StringComparison.InvariantCultureIgnoreCase) ? CourseRunningStatus.NeedsAttention
               : CourseRunningStatus.New;
 
         public IEnumerable<SiteViewModel> Sites { get; set; }

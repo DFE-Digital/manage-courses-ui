@@ -18,7 +18,7 @@ namespace GovUk.Education.ManageCourses.Ui.Helpers
             }
             else {
                 if (course.Schools.Any(s => String.Equals(s.Status, "r", StringComparison.InvariantCultureIgnoreCase) && String.Equals(s.Publish, "n", StringComparison.InvariantCultureIgnoreCase))){
-                    result  = "Running but incomplete";
+                    result  = "Needs attention in UCAS";
                 }
                 else if (course.Schools.Any(s => String.Equals(s.Status, "n", StringComparison.InvariantCultureIgnoreCase)))
                 {
