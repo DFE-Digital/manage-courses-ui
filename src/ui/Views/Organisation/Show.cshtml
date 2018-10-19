@@ -71,12 +71,21 @@
         <tbody class="govuk-table__body">
         @foreach (var course in provider.Courses)
         {
+          var courseUrl = Url.Action("show", "course", new {instCode = Model.InstitutionId, accreditingProviderId = course.AccreditingProviderId, ucasCode = course.CourseCode});
+          var courseStatus = course.GetCourseStatus();
+          var needsAttention = courseStatus.Equals("Needs attention in UCAS");
+
           <tr class="govuk-table__row">
             <td class="govuk-table__cell">
-              <a href="@Url.Action("show", "course", new {instCode = Model.InstCode, accreditingInstCode = course.AccreditingInstitution?.InstCode, courseCode = course.CourseCode})" class="govuk-link">@course.Name (@course.CourseCode)</a>
+              <a href="@courseUrl" class="govuk-link">@course.Name (@course.CourseCode)</a>
             </td>
             <td class="govuk-table__cell">@course.TypeDescription</td>
-            <td class="govuk-table__cell">@course.GetCourseStatus()</td>
+            <td class="govuk-table__cell">
+
+                @if(needsAttention) {
+                <a href="@courseUrl" >@courseStatus</a>
+              } else {@courseStatus}
+              </td>
             <td class="govuk-table__cell">
               @if(course.CanHaveEnrichment())
               {
