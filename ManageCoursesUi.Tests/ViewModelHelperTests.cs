@@ -80,7 +80,7 @@ namespace ManageCoursesUi.Tests
         [TestCase("", "")]
         public void TestGetSchoolStatus(string status, string expectedResult)
         {
-            var schoolViewModel = new SchoolViewModel{Status = status};
+            var schoolViewModel = new SchoolViewModel { Status = status };
             var result = schoolViewModel.GetSchoolStatus();
             result.Should().Be(expectedResult);
         }
@@ -97,7 +97,7 @@ namespace ManageCoursesUi.Tests
         [TestCase("", "")]
         public void TestGetRoute(string route, string expectedResult)
         {
-            var courseVariantViewModel = new CourseVariantViewModel{Route = route};
+            var courseVariantViewModel = new CourseVariantViewModel { Route = route };
             var result = courseVariantViewModel.GetRoute();
             result.Should().Be(expectedResult);
         }
@@ -143,6 +143,6 @@ namespace ManageCoursesUi.Tests
             var courseVariantViewModel = new CourseVariantViewModel { Qualifications = qualification };
             var result = courseVariantViewModel.GetQualification();
             result.Should().Be(expectedResult);
-        }        
+        }
     }
 }
