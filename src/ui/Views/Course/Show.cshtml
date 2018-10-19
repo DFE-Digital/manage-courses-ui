@@ -35,18 +35,18 @@
                 {
                   <text>This course is new and not yet running.</text>
                 }
-                @if(Model.Course.StatusAsEnum == CourseVariantStatus.RunningButIncomplete)
+                else
                 {
-                  <text>This course is running but incomplete.</text>
+                  <text>This course is not running.</text>
                 }
               </strong>
             </div>
             <p class="govuk-body">
               @if(Model.Course.StatusAsEnum == CourseRunningStatus.New)
               {
-                <text>It won&#8217;t be able to edit it in this service, and it won’t appear online to candidates, until you’ve made changes in <a href='https://update.ucas.co.uk/netupdate2/Welcome.htm'>UCAS web-link</a>. Set one or more training locations to &ldquo;running&rdquo; and set their Publish value to &ldquo;yes&rdquo;. You must do this so that applicants can apply on UCAS.</text>
+                <text>It won&#8217;t appear online until you have made changes in <a href='https://update.ucas.co.uk/netupdate2/Welcome.htm'>UCAS web-link</a>. Set one or more training locations to &ldquo;running&rdquo; and set their Publish value to &ldquo;yes&rdquo;. You must do this so that applicants can apply on UCAS.</text>
               }
-              @if(Model.Course.StatusAsEnum == CourseVariantStatus.RunningButIncomplete)
+              else
               {
                 <text>It won&#8217;t appear online. To publish it you&#8217;ll need to make changes in <a href='https://update.ucas.co.uk/netupdate2/Welcome.htm'>UCAS web-link</a>. Set one or more training locations to &ldquo;running&rdquo; and set their Publish value to &ldquo;yes&rdquo;.</text>
               }
