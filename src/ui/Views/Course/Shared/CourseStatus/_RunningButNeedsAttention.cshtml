@@ -1,0 +1,29 @@
+@model VariantViewModel
+@{
+  var needsAttentions = Model.Course.Schools
+    .Where(x => x.Status.Equals("r", StringComparison.InvariantCultureIgnoreCase) && !x.Publish.Equals("y", StringComparison.InvariantCultureIgnoreCase))
+    .Select(x => $"{x.LocationName} (Code: {x.Code})")
+    .ToList();
+}
+
+@if(needsAttentions.Any()) {
+  <div class="govuk-error-summary" role="alert" aria-labelledby="error-summary-heading" tabindex="-1" data-module="error-summary">
+    <h3 class="govuk-heading-m govuk-error-summary__title" id="error-summary-heading">
+      Your training locations need attention in UCAS
+    </h3>
+    <p>
+      Training locations for this course are set to &ldquo;Running&rdquo; in <a href="https://update.ucas.co.uk/netupdate2/Welcome.htm">UCAS web-link</a>, but their publish value hasn’t been set to &ldquo;Yes&rdquo;.
+    </p>
+    <p>These training locations will not appear in Find postgraduate teacher training:</p>
+      <div class="govuk-error-summary__body">
+        <ul class="govuk-list govuk-error-summary__list">
+          @foreach(var item in needsAttentions){
+            <li>@item</li>
+          }
+        </ul>
+      </div>
+    <p>
+      To allow candidates to view and apply to a training location, you must set its publish value to &ldquo;Yes&rdquo; in web-link.
+    </p>
+  </div>
+}

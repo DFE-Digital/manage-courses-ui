@@ -7,6 +7,7 @@ namespace GovUk.Education.ManageCourses.Ui.ViewModels
         Running,
         NotRunning,
         New,
-        NeedsAttention
+        NeedsAttention,
+        RunningButNeedsAttention
     };
 }

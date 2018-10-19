@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Collections.Generic;
 
 namespace GovUk.Education.ManageCourses.Ui.ViewModels
@@ -20,12 +21,13 @@ namespace GovUk.Education.ManageCourses.Ui.ViewModels
         public string Status { get; set; }
 
         public CourseRunningStatus StatusAsEnum =>
-                string.Equals("running", Status ?? "", StringComparison.InvariantCultureIgnoreCase) ? CourseRunningStatus.Running
+            string.Equals("running", Status ?? "", StringComparison.InvariantCultureIgnoreCase) ?
+                    (Schools.Any(x => x.Publish.Equals("n", StringComparison.InvariantCultureIgnoreCase) && x.Status.Equals("r", StringComparison.InvariantCultureIgnoreCase)) ?
+                    CourseRunningStatus.RunningButNeedsAttention : CourseRunningStatus.Running)
               : string.Equals("not running", Status ?? "", StringComparison.InvariantCultureIgnoreCase) ? CourseRunningStatus.NotRunning
               : string.Equals("Needs attention in UCAS", Status ?? "", StringComparison.InvariantCultureIgnoreCase) ? CourseRunningStatus.NeedsAttention
               : CourseRunningStatus.New;
 
-        public IEnumerable<SiteViewModel> Sites { get; set; }
-
+        public IEnumerable<SiteViewModel> Schools { get; set; }
     }
 }
