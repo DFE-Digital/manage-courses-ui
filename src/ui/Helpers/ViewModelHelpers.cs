@@ -48,7 +48,7 @@ namespace GovUk.Education.ManageCourses.Ui.Helpers
                     break;
                 case "r":
                     {
-                        result = (school.Publish ?? "").Equals("y", StringComparison.InvariantCultureIgnoreCase) ? "Running" : "Needs attention on UCAS";
+                        result = (school.Publish ?? "").Equals("y", StringComparison.InvariantCultureIgnoreCase) ? "Running" : "Needs attention in UCAS";
 
                         break;
                     }

@@ -31,12 +31,13 @@
             @if(Model.Course.StatusAsEnum == CourseVariantStatus.NeedsAttention)
             {
               @await Html.PartialAsync("Shared/CourseStatus/_NeedsAttention.cshtml");
+            @await Html.PartialAsync("Shared/CourseStatus/_RunningButNeedsAttention.cshtml");
+
 
             } else {
               @await Html.PartialAsync("Shared/CourseStatus/_NewOrNotRunning.cshtml");
             }
           } else {
-            @await Html.PartialAsync("Shared/CourseStatus/_RunningButNeedsAttention.cshtml");
           }
 
           <p class="govuk-body">You can only change this information using <a href="https://update.ucas.co.uk/netupdate2/Welcome.htm">UCAS web-link</a>. Changes will usually appear here within one working day.</p>
@@ -106,7 +107,7 @@
               {
                 <dt>Status:</dt>
                 <dd>@if(school.GetSiteStatus() == "Needs attention on UCAS") {
-                  <div class="govuk-inset-text">Needs attention on UCAS: This location is set to ‘running’ but candidates can’t apply to it. To allow candidates to view and apply to this location, you must set its publish value to ‘Yes’ in UCAS web-link.</div>}  else{@school.GetSchoolStatus()}</dd>
+                  <div class="govuk-inset-text">Needs attention on UCAS: This location is set to ‘running’ but candidates can’t apply to it. To allow candidates to view and apply to this location, you must set its publish value to ‘Yes’ in UCAS web-link.</div>}  else{@school.GetSiteStatus()}</dd>
               }
               <dt>Vacancies:</dt>
               <dd>@site.GetVacancyStatus()</dd>
