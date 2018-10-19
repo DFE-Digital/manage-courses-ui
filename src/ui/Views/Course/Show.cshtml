@@ -105,7 +105,8 @@
               @if (!string.IsNullOrEmpty(@site.Status))
               {
                 <dt>Status:</dt>
-                <dd>@site.GetSiteStatus()</dd>
+                <dd>@if(school.GetSiteStatus() == "Needs attention on UCAS") {
+                  <div class="govuk-inset-text">Needs attention on UCAS: This location is set to ‘running’ but candidates can’t apply to it. To allow candidates to view and apply to this location, you must set its publish value to ‘Yes’ in UCAS web-link.</div>}  else{@school.GetSchoolStatus()}</dd>
               }
               <dt>Vacancies:</dt>
               <dd>@site.GetVacancyStatus()</dd>

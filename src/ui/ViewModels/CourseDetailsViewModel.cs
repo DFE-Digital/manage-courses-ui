@@ -1,7 +1,7 @@
 using System;
 using System.Linq;
 using System.Collections.Generic;
-
+using GovUk.Education.ManageCourses.Ui.ViewModels.Enums;
 namespace GovUk.Education.ManageCourses.Ui.ViewModels
 {
     public class CourseDetailsViewModel
