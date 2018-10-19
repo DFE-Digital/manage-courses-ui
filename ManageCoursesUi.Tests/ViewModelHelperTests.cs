@@ -80,8 +80,30 @@ namespace ManageCoursesUi.Tests
         [TestCase("", "")]
         public void TestGetSchoolStatus(string status, string expectedResult)
         {
-            var schoolViewModel = new SchoolViewModel{Status = status};
+            var schoolViewModel = new SchoolViewModel { Status = status };
             var result = schoolViewModel.GetSchoolStatus();
+            result.Should().Be(expectedResult);
+        }
+
+        [Test]
+        [TestCase("d", true, "")]
+        [TestCase("d", false, "")]
+        [TestCase("s", true, "")]
+        [TestCase("s", false, "")]
+        [TestCase("b", true, "Yes")]
+        [TestCase("b", false, "No")]
+        public void TestGetHasVacancies(string status, bool hasVacancies, string expectedResult)
+        {
+            var schools = new List<School>
+            {
+                new School {Status = status},
+            };
+            var course = new Course
+            {
+                Schools = new ObservableCollection<School>(schools),
+                HasVacancies = hasVacancies
+            };
+            var result = course.GetHasVacancies();
             result.Should().Be(expectedResult);
         }
 
@@ -97,7 +119,7 @@ namespace ManageCoursesUi.Tests
         [TestCase("", "")]
         public void TestGetRoute(string route, string expectedResult)
         {
-            var courseVariantViewModel = new CourseVariantViewModel{Route = route};
+            var courseVariantViewModel = new CourseVariantViewModel { Route = route };
             var result = courseVariantViewModel.GetRoute();
             result.Should().Be(expectedResult);
         }
@@ -143,6 +165,6 @@ namespace ManageCoursesUi.Tests
             var courseVariantViewModel = new CourseVariantViewModel { Qualifications = qualification };
             var result = courseVariantViewModel.GetQualification();
             result.Should().Be(expectedResult);
-        }        
+        }
     }
 }
