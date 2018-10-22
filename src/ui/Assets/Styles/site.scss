@@ -119,3 +119,9 @@ $success-green: #00823b;
   list-style-type: disc;
   padding-left: 20px;
 }
+
+@include govuk-media-query($from: desktop) {
+  .govuk-\!-margin-top-4--l {
+    margin-top: govuk-spacing(4) !important;
+  }
+}
