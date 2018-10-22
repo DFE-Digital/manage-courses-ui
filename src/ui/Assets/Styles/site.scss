@@ -105,7 +105,8 @@ $success-green: #00823b;
 // Utility classes
 .govuk-red {
   &,
-  &:link {
+  &:link,
+  &:visited {
     color: govuk-colour("red");
   }
 }
