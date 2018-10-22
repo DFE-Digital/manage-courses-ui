@@ -98,7 +98,18 @@ $success-green: #00823b;
 // Custom list style
 .govuk-list--dash {
   padding-left: govuk-spacing(4);
-  list-style-image: url('/images/dash.png');
+  list-style-image: url("/images/dash.png");
   margin-bottom: govuk-spacing(8);
 }
 
+// Utility classes
+.govuk-red {
+  &,
+  &:link {
+    color: govuk-colour("red");
+  }
+}
+
+.bold {
+  @include govuk-typography-weight-bold();
+}
