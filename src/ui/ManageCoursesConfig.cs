@@ -26,6 +26,6 @@ namespace GovUk.Education.ManageCourses.Ui
 
         public string ExternalRegistrationUrl => $"{ProfileBaseUrl}/register?client_id={ClientId}&redirect_uri={SiteBaseUrl}/{RegisterCallbackPath}";
 
-        public string ApiUrl => _configuration["ApiConnection:Url"];
+        public string ApiUrl => _configuration["API_URL"];
     }
 }

@@ -51,7 +51,7 @@ bug in ASP.NET MVC Core which is using inconsistent package versions.
 You will need to set the app settings (preferred to be store as `user-secrets`):
 
 - **SearchAndCompare:UiBaseUrl** the location of the search and compare UI, for the purpose of linking, e.g. "https://find-postgraduate-teacher-training.gov.uk". Avoid trailing slash.
-- **ApiConnection:url** - the location of your [manage-courses-api](https://github.com/DFE-Digital/manage-courses-api) deployment. You can use a local one or perhaps [the one in the Dev Environment](https://manage-courses-ui-bat-development.e4ff.pro-eu-west-1.openshiftapps.com) if you are lazy
+- **API_URL** - the location of your [manage-courses-api](https://github.com/DFE-Digital/manage-courses-api) deployment. You can use a local one or perhaps [the one in the Dev Environment](https://manage-courses-ui-bat-development.e4ff.pro-eu-west-1.openshiftapps.com) if you are lazy
 - **DFE_SIGNIN_CLIENT_SECRET** - the client secret of your oath server
 - **auth:oidc:metadataAddress** - the .well-known config URL of your oauth server, if you don't want to use the default sandbox one
 - **auth:oidc:tokenEndpoint** - the /token endpoint as specified in the .well-known config URL of your oauth server
