@@ -113,3 +113,8 @@ $success-green: #00823b;
 .bold {
   @include govuk-typography-weight-bold();
 }
+
+.list-bullet {
+  list-style-type: disc;
+  padding-left: 20px;
+}
