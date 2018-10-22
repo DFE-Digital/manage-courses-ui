@@ -32,10 +32,12 @@
             {
               @await Html.PartialAsync("Shared/CourseStatus/_NeedsAttention.cshtml");
             } else {
-              @await Html.PartialAsync("Shared/CourseStatus/_NewOrNotRunning.cshtml");
+              if(Model.Course.StatusAsEnum == CourseVariantStatus.RunningButNeedsAttention) {
+                @await Html.PartialAsync("Shared/CourseStatus/_RunningButNeedsAttention.cshtml");
+              } else {
+                @await Html.PartialAsync("Shared/CourseStatus/_NewOrNotRunning.cshtml");
+              }
             }
-          } else {
-            @await Html.PartialAsync("Shared/CourseStatus/_RunningButNeedsAttention.cshtml");
           }
 
           <p class="govuk-body">You can only change this information using <a href="https://update.ucas.co.uk/netupdate2/Welcome.htm">UCAS web-link</a>. Changes will usually appear here within one working day.</p>
