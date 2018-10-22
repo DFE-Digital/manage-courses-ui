@@ -46,7 +46,11 @@
             @if (!string.IsNullOrEmpty(@Model.Course.Status))
             {
               <dt>Status:</dt>
-              <dd>@Model.Course.Status</dd>
+              @if (@Model.Course.Status == "Needs attention in UCAS") {
+                <dd><strong>@Model.Course.Status</strong></dd>
+              } else {
+                <dd>@Model.Course.Status</dd>
+              }
             }
             @if (!string.IsNullOrEmpty(@Model.Course.CourseTitle)) {
               <dt>Name:</dt>
