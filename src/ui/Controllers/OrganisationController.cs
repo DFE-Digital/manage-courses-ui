@@ -31,7 +31,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             var orgs = await _manageApi.GetOrganisations();
             var model = new OrganisationListViewModel
             {
-                Oganisations = orgs
+                Organisations = orgs
             };
             return View(model);
         }
