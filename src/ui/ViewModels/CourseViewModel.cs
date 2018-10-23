@@ -2,7 +2,7 @@ using System;
 
 namespace GovUk.Education.ManageCourses.Ui.ViewModels
 {
-    public class VariantViewModel
+    public class CourseViewModel
     {
         public string OrganisationName { get; set; }
         public string OrganisationId { get; set; }

@@ -62,7 +62,7 @@ namespace ManageCoursesUi.Tests
             var viewResult = result as ViewResult;
             Assert.IsNotNull(viewResult);
 
-            var model = viewResult.Model as VariantViewModel;
+            var model = viewResult.Model as CourseViewModel;
             var routeData = model.CourseEnrichment.RouteData;
             Assert.IsNotNull(model);
             Assert.AreEqual(TestHelper.TargetedCourseTitle, model.CourseTitle);

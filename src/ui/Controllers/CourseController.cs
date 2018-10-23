@@ -398,7 +398,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             TempData["MessageBodyHtml"] = messageBodyHtml;
         }
 
-        private VariantViewModel LoadViewModel(UserOrganisation org, ApiClient.Course course, bool multipleOrganisations, UcasCourseEnrichmentGetModel ucasCourseEnrichmentGetModel, CourseRouteDataViewModel routeData)
+        private CourseViewModel LoadViewModel(UserOrganisation org, ApiClient.Course course, bool multipleOrganisations, UcasCourseEnrichmentGetModel ucasCourseEnrichmentGetModel, CourseRouteDataViewModel routeData)
         {
             var courseVariant =
                 new CourseVariantViewModel
@@ -445,7 +445,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             var isSalary = course.ProgramType.Equals("SS", StringComparison.InvariantCultureIgnoreCase)
                         || course.ProgramType.Equals("TA", StringComparison.InvariantCultureIgnoreCase);
             var courseEnrichmentViewModel = GetCourseEnrichmentViewModel(ucasCourseEnrichmentGetModel, isSalary, routeData);
-            var viewModel = new VariantViewModel
+            var viewModel = new CourseViewModel
             {
                 OrganisationName = org.OrganisationName,
                 OrganisationId = org.OrganisationId,
