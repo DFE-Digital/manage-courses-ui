@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace GovUk.Education.ManageCourses.Ui.ViewModels
 {
-    public class CourseVariantViewModel
+    public class CourseDetailsViewModel
     {
         public string Name { get; set; }
         public string ProgrammeCode { get; set; }

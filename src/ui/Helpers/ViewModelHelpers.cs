@@ -81,7 +81,7 @@ namespace GovUk.Education.ManageCourses.Ui.Helpers
                 : course.HasVacancies ? "Yes" : "No";
         }
 
-        public static string GetRoute(this CourseVariantViewModel viewModel)
+        public static string GetRoute(this CourseDetailsViewModel viewModel)
         {
             var result = "";
 
@@ -124,12 +124,12 @@ namespace GovUk.Education.ManageCourses.Ui.Helpers
         }
 
 
-        public static string GetStudyMode(this CourseVariantViewModel viewModel)
+        public static string GetStudyMode(this CourseDetailsViewModel viewModel)
         {
             return UppercaseFirst(GetStudyModeText(viewModel.StudyMode));
         }
 
-        public static string GetAgeRange(this CourseVariantViewModel viewModel)
+        public static string GetAgeRange(this CourseDetailsViewModel viewModel)
         {
             var result = "";
 
@@ -163,7 +163,7 @@ namespace GovUk.Education.ManageCourses.Ui.Helpers
             return result;
         }
 
-        public static string GetQualification(this CourseVariantViewModel viewModel)
+        public static string GetQualification(this CourseDetailsViewModel viewModel)
         {
             var result = "";
 

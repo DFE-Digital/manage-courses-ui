@@ -28,7 +28,7 @@ namespace ManageCoursesUi.Tests
         [TestCase("  S ")]
         public void GetAgeRange_should_be_correct_for_s(string input)
         {
-            var param = new CourseVariantViewModel{AgeRange = input};
+            var param = new CourseDetailsViewModel{AgeRange = input};
 
             var result = param.GetAgeRange();
 
@@ -43,7 +43,7 @@ namespace ManageCoursesUi.Tests
         [TestCase("  M ")]
         public void GetAgeRange_should_be_correct_for_m(string input)
         {
-            var param = new CourseVariantViewModel { AgeRange = input };
+            var param = new CourseDetailsViewModel { AgeRange = input };
 
             var result = param.GetAgeRange();
 
@@ -58,7 +58,7 @@ namespace ManageCoursesUi.Tests
         [TestCase("  P ")]
         public void GetAgeRange_should_be_correct_for_p(string input)
         {
-            var param = new CourseVariantViewModel { AgeRange = input };
+            var param = new CourseDetailsViewModel { AgeRange = input };
 
             var result = param.GetAgeRange();
 
@@ -71,7 +71,7 @@ namespace ManageCoursesUi.Tests
         [TestCase(null)]
         public void GetAgeRange_should_be_empty(string input)
         {
-            var param = new CourseVariantViewModel { AgeRange = input };
+            var param = new CourseDetailsViewModel { AgeRange = input };
 
             var result = param.GetAgeRange();
 
@@ -92,7 +92,7 @@ namespace ManageCoursesUi.Tests
         [TestCase("Pf ")]
         public void GetQualification_should_be_correct_for_pf(string input)
         {
-            var param = new CourseVariantViewModel { Qualifications = input };
+            var param = new CourseDetailsViewModel { Qualifications = input };
 
             var result = param.GetQualification();
 
@@ -112,7 +112,7 @@ namespace ManageCoursesUi.Tests
         [TestCase("Pg ")]
         public void GetQualification_should_be_correct_for_pg(string input)
         {
-            var param = new CourseVariantViewModel { Qualifications = input };
+            var param = new CourseDetailsViewModel { Qualifications = input };
 
             var result = param.GetQualification();
 
@@ -132,7 +132,7 @@ namespace ManageCoursesUi.Tests
         [TestCase("Bo ")]
         public void GetQualification_should_be_correct_for_bo(string input)
         {
-            var param = new CourseVariantViewModel { Qualifications = input };
+            var param = new CourseDetailsViewModel { Qualifications = input };
 
             var result = param.GetQualification();
 
@@ -143,7 +143,7 @@ namespace ManageCoursesUi.Tests
         [TestCase("   ")]
         public void GetQualification_should_be_correct_for_empty(string input)
         {
-            var param = new CourseVariantViewModel { Qualifications = input };
+            var param = new CourseDetailsViewModel { Qualifications = input };
 
             var result = param.GetQualification();
 
@@ -154,7 +154,7 @@ namespace ManageCoursesUi.Tests
         [TestCase("qweoiuqweoiuqw qwoeiu qweoiu qweiu")]
         public void GetQualification_should_be_empty(string input)
         {
-            var param = new CourseVariantViewModel { Qualifications = input };
+            var param = new CourseDetailsViewModel { Qualifications = input };
 
             var result = param.GetQualification();
 

@@ -401,7 +401,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
         private CourseViewModel LoadViewModel(UserOrganisation org, ApiClient.Course course, bool multipleOrganisations, UcasCourseEnrichmentGetModel ucasCourseEnrichmentGetModel, CourseRouteDataViewModel routeData)
         {
             var courseVariant =
-                new CourseVariantViewModel
+                new ViewModels.CourseDetailsViewModel
                 {
                     Name = course.Name,
                     Type = course.TypeDescription,
@@ -425,10 +425,10 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
                                         campus.Address4,
                                         campus.PostCode
                             })
-                            .Where(line => !String.IsNullOrEmpty(line));
+                            .Where(line => !string.IsNullOrEmpty(line));
 
-                        var address = addressLines.Count() > 0 ? addressLines.Where(line => !String.IsNullOrEmpty(line))
-                            .Aggregate((current, next) => current + ", " + next) : "";
+                        var address = addressLines.Count() > 0 ? addressLines.Where(line => !string.IsNullOrEmpty(line))
+                            .Aggregate((string current, string next) => current + ", " + next) : "";
 
                         return new SchoolViewModel
                         {

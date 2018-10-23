@@ -119,7 +119,7 @@ namespace ManageCoursesUi.Tests
         [TestCase("", "")]
         public void TestGetRoute(string route, string expectedResult)
         {
-            var courseVariantViewModel = new CourseVariantViewModel { Route = route };
+            var courseVariantViewModel = new CourseDetailsViewModel { Route = route };
             var result = courseVariantViewModel.GetRoute();
             result.Should().Be(expectedResult);
         }
@@ -132,7 +132,7 @@ namespace ManageCoursesUi.Tests
         [TestCase("b", "Full time or part time")]
         public void TestGetStudyMode(string studyMode, string expectedResult)
         {
-            var courseVariantViewModel = new CourseVariantViewModel { StudyMode = studyMode };
+            var courseVariantViewModel = new CourseDetailsViewModel { StudyMode = studyMode };
             var result = courseVariantViewModel.GetStudyMode();
             result.Should().Be(expectedResult);
         }
@@ -147,7 +147,7 @@ namespace ManageCoursesUi.Tests
         [TestCase(null, "")]
         public void TestGetAgeRange(string ageRange, string expectedResult)
         {
-            var courseVariantViewModel = new CourseVariantViewModel { AgeRange = ageRange };
+            var courseVariantViewModel = new CourseDetailsViewModel { AgeRange = ageRange };
             var result = courseVariantViewModel.GetAgeRange();
             result.Should().Be(expectedResult);
         }
@@ -162,7 +162,7 @@ namespace ManageCoursesUi.Tests
         [TestCase(null, "")]
         public void TestGetQualification(string qualification, string expectedResult)
         {
-            var courseVariantViewModel = new CourseVariantViewModel { Qualifications = qualification };
+            var courseVariantViewModel = new CourseDetailsViewModel { Qualifications = qualification };
             var result = courseVariantViewModel.GetQualification();
             result.Should().Be(expectedResult);
         }
