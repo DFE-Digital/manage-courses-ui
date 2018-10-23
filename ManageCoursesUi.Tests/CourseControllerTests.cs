@@ -71,7 +71,6 @@ namespace ManageCoursesUi.Tests
             Assert.AreEqual(TestHelper.OrganisationName, model.OrganisationName);
 
             Assert.AreEqual(TestHelper.InstCode, routeData.InstCode);
-            Assert.AreEqual(TestHelper.AccreditedProviderId, routeData.AccreditingProviderId);
             Assert.AreEqual(TestHelper.TargetedInstCode, routeData.CourseCode);
 
             Assert.AreEqual(enrichmentModel.AboutCourse, model.CourseEnrichment.AboutCourse);
@@ -281,7 +280,6 @@ namespace ManageCoursesUi.Tests
             Assert.IsNotNull(model);
 
             Assert.AreEqual(TestHelper.InstCode, model.RouteData.InstCode);
-            Assert.AreEqual(TestHelper.AccreditedProviderId, model.RouteData.AccreditingProviderId);
             Assert.AreEqual(TestHelper.TargetedInstCode, model.RouteData.CourseCode);
 
             Assert.AreEqual(enrichmentModel.AboutCourse, model.AboutCourse);
@@ -314,7 +312,6 @@ namespace ManageCoursesUi.Tests
             Assert.IsNotNull(model);
 
             Assert.AreEqual(TestHelper.InstCode, model.RouteData.InstCode);
-            Assert.AreEqual(TestHelper.AccreditedProviderId, model.RouteData.AccreditingProviderId);
             Assert.AreEqual(TestHelper.TargetedInstCode, model.RouteData.CourseCode);
 
             Assert.AreEqual(viewModel.AboutCourse, model.AboutCourse);
@@ -389,7 +386,6 @@ namespace ManageCoursesUi.Tests
             Assert.IsNotNull(model);
 
             Assert.AreEqual(TestHelper.InstCode, model.RouteData.InstCode);
-            Assert.AreEqual(TestHelper.AccreditedProviderId, model.RouteData.AccreditingProviderId);
             Assert.AreEqual(TestHelper.TargetedInstCode, model.RouteData.CourseCode);
 
             Assert.AreEqual(enrichmentModel.Qualifications, model.Qualifications);
@@ -423,7 +419,6 @@ namespace ManageCoursesUi.Tests
             Assert.IsNotNull(model);
 
             Assert.AreEqual(TestHelper.InstCode, model.RouteData.InstCode);
-            Assert.AreEqual(TestHelper.AccreditedProviderId, model.RouteData.AccreditingProviderId);
             Assert.AreEqual(TestHelper.TargetedInstCode, model.RouteData.CourseCode);
 
             Assert.AreEqual(viewModel.Qualifications, model.Qualifications);
@@ -503,7 +498,6 @@ namespace ManageCoursesUi.Tests
             Assert.IsNotNull(model);
 
             Assert.AreEqual(TestHelper.InstCode, model.RouteData.InstCode);
-            Assert.AreEqual(TestHelper.AccreditedProviderId, model.RouteData.AccreditingProviderId);
             Assert.AreEqual(TestHelper.TargetedInstCode, model.RouteData.CourseCode);
 
             Assert.AreEqual(enrichmentModel.CourseLength, model.CourseLength);
@@ -536,7 +530,6 @@ namespace ManageCoursesUi.Tests
             Assert.IsNotNull(model);
 
             Assert.AreEqual(TestHelper.InstCode, model.RouteData.InstCode);
-            Assert.AreEqual(TestHelper.AccreditedProviderId, model.RouteData.AccreditingProviderId);
             Assert.AreEqual(TestHelper.TargetedInstCode, model.RouteData.CourseCode);
 
             Assert.AreEqual(viewModel.CourseLength, model.CourseLength);
@@ -616,7 +609,6 @@ namespace ManageCoursesUi.Tests
             Assert.IsNotNull(model);
 
             Assert.AreEqual(TestHelper.InstCode, model.RouteData.InstCode);
-            Assert.AreEqual(TestHelper.AccreditedProviderId, model.RouteData.AccreditingProviderId);
             Assert.AreEqual(TestHelper.TargetedInstCode, model.RouteData.CourseCode);
 
             Assert.AreEqual(enrichmentModel.CourseLength, model.CourseLength);
@@ -652,7 +644,6 @@ namespace ManageCoursesUi.Tests
             Assert.IsNotNull(model);
 
             Assert.AreEqual(TestHelper.InstCode, model.RouteData.InstCode);
-            Assert.AreEqual(TestHelper.AccreditedProviderId, model.RouteData.AccreditingProviderId);
             Assert.AreEqual(TestHelper.TargetedInstCode, model.RouteData.CourseCode);
 
             Assert.AreEqual(viewModel.CourseLength, model.CourseLength);

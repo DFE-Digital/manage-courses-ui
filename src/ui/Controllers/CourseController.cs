@@ -46,7 +46,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
 
             var ucasCourseEnrichmentGetModel = await _manageApi.GetEnrichmentCourse(instCode, courseCode);
 
-            var routeData = GetCourseRouteDataViewModel(instCode, accreditingProviderId, courseCode);
+            var routeData = GetCourseRouteDataViewModel(instCode, courseCode);
 
             var viewModel = LoadViewModel(org, course, multipleOrganisations, ucasCourseEnrichmentGetModel, routeData);
 
@@ -114,7 +114,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             var courseDetails = await _manageApi.GetCourseByUcasCode(instCode, courseCode);
             var ucasCourseEnrichmentGetModel = await _manageApi.GetEnrichmentCourse(instCode, courseCode);
 
-            var routeData = GetCourseRouteDataViewModel(instCode, accreditingProviderId, courseCode);
+            var routeData = GetCourseRouteDataViewModel(instCode, courseCode);
             var courseInfo = new CourseInfoViewModel { ProgrammeCode = courseDetails.CourseCode, Name = courseDetails.Name };
 
             var enrichmentModel = ucasCourseEnrichmentGetModel?.EnrichmentModel ?? new CourseEnrichmentModel();
@@ -164,7 +164,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             {
                 var courseDetails = await _manageApi.GetCourseByUcasCode(instCode, courseCode);
                 var courseInfo = new CourseInfoViewModel { ProgrammeCode = courseDetails.CourseCode, Name = courseDetails.Name };
-                var routeData = GetCourseRouteDataViewModel(instCode, accreditingProviderId, courseCode);
+                var routeData = GetCourseRouteDataViewModel(instCode, courseCode);
                 viewModel.RouteData = routeData;
                 viewModel.CourseInfo = courseInfo;
                 await LoadCopyableCoursesIntoViewBag(instCode, courseCode);
@@ -185,7 +185,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
         {
             var courseDetails = await _manageApi.GetCourseByUcasCode(instCode, courseCode);
             var ucasCourseEnrichmentGetModel = await _manageApi.GetEnrichmentCourse(instCode, courseCode);
-            var routeData = GetCourseRouteDataViewModel(instCode, accreditingProviderId, courseCode);
+            var routeData = GetCourseRouteDataViewModel(instCode, courseCode);
             var courseInfo = new CourseInfoViewModel { ProgrammeCode = courseDetails.CourseCode, Name = courseDetails.Name };
 
             var enrichmentModel = ucasCourseEnrichmentGetModel?.EnrichmentModel ?? new CourseEnrichmentModel();
@@ -225,7 +225,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             {
                 var courseDetails = await _manageApi.GetCourseByUcasCode(instCode, courseCode);
                 var courseInfo = new CourseInfoViewModel { ProgrammeCode = courseDetails.CourseCode, Name = courseDetails.Name };
-                var routeData = GetCourseRouteDataViewModel(instCode, accreditingProviderId, courseCode);
+                var routeData = GetCourseRouteDataViewModel(instCode, courseCode);
                 viewModel.RouteData = routeData;
                 viewModel.CourseInfo = courseInfo;
                 await LoadCopyableCoursesIntoViewBag(instCode, courseCode);
@@ -246,7 +246,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
         {
             var courseDetails = await _manageApi.GetCourseByUcasCode(instCode, courseCode);
             var ucasCourseEnrichmentGetModel = await _manageApi.GetEnrichmentCourse(instCode, courseCode);
-            var routeData = GetCourseRouteDataViewModel(instCode, accreditingProviderId, courseCode);
+            var routeData = GetCourseRouteDataViewModel(instCode, courseCode);
             var courseInfo = new CourseInfoViewModel { ProgrammeCode = courseDetails.CourseCode, Name = courseDetails.Name };
 
             var enrichmentModel = ucasCourseEnrichmentGetModel?.EnrichmentModel ?? new CourseEnrichmentModel();
@@ -284,7 +284,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
         {
             if (!ModelState.IsValid)
             {
-                var routeData = GetCourseRouteDataViewModel(instCode, accreditingProviderId, courseCode);
+                var routeData = GetCourseRouteDataViewModel(instCode, courseCode);
                 var courseDetails = await _manageApi.GetCourseByUcasCode(instCode, courseCode);
                 var courseInfo = new CourseInfoViewModel { ProgrammeCode = courseDetails.CourseCode, Name = courseDetails.Name };
                 viewModel.RouteData = routeData;
@@ -305,7 +305,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
         {
             var courseDetails = await _manageApi.GetCourseByUcasCode(instCode, courseCode);
             var ucasCourseEnrichmentGetModel = await _manageApi.GetEnrichmentCourse(instCode, courseCode);
-            var routeData = GetCourseRouteDataViewModel(instCode, accreditingProviderId, courseCode);
+            var routeData = GetCourseRouteDataViewModel(instCode, courseCode);
             var courseInfo = new CourseInfoViewModel { ProgrammeCode = courseDetails.CourseCode, Name = courseDetails.Name };
 
             var enrichmentModel = ucasCourseEnrichmentGetModel?.EnrichmentModel ?? new CourseEnrichmentModel();
@@ -346,7 +346,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
         {
             if (!ModelState.IsValid)
             {
-                var routeData = GetCourseRouteDataViewModel(instCode, accreditingProviderId, courseCode);
+                var routeData = GetCourseRouteDataViewModel(instCode, courseCode);
                 var courseDetails = await _manageApi.GetCourseByUcasCode(instCode, courseCode);
                 var courseInfo = new CourseInfoViewModel { ProgrammeCode = courseDetails.CourseCode, Name = courseDetails.Name };
                 viewModel.RouteData = routeData;
@@ -513,12 +513,11 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
 
         }
 
-        private CourseRouteDataViewModel GetCourseRouteDataViewModel(string instCode, string accreditingProviderId, string courseCode)
+        private CourseRouteDataViewModel GetCourseRouteDataViewModel(string instCode, string courseCode)
         {
             return new CourseRouteDataViewModel
             {
                 InstCode = instCode,
-                AccreditingProviderId = accreditingProviderId,
                 CourseCode = courseCode
             };
         }
