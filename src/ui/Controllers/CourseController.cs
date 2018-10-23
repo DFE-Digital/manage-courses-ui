@@ -28,10 +28,10 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             this.searchAndCompareUrlService = searchAndCompareUrlHelper;
         }
 
-        [Route("{instCode}/course/{accreditingProviderId=self}/{courseCode}")]
-        public async Task<IActionResult> Show(string instCode, string accreditingProviderId, string courseCode)
+        [Route("{instCode}/course/{accreditingInstCode=self}/{courseCode}")]
+        public async Task<IActionResult> Show(string instCode, string accreditingInstCode, string courseCode)
         {
-            Validate(instCode, accreditingProviderId, courseCode);
+            Validate(instCode, accreditingInstCode, courseCode);
 
             var orgsList = await _manageApi.GetOrganisations();
             var userOrganisations = orgsList.ToList();
@@ -54,8 +54,8 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
         }
 
         [HttpPost]
-        [Route("{instCode}/course/{accreditingProviderId=self}/{courseCode}", Name = "publish")]
-        public async Task<IActionResult> ShowPublish(string instCode, string accreditingProviderId, string courseCode)
+        [Route("{instCode}/course/{accreditingInstCode=self}/{courseCode}", Name = "publish")]
+        public async Task<IActionResult> ShowPublish(string instCode, string accreditingInstCode, string courseCode)
         {
             var course = await _manageApi.GetCourseByUcasCode(instCode, courseCode);
             var isSalary = course.ProgramType.Equals("SS", StringComparison.InvariantCultureIgnoreCase)
@@ -68,7 +68,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
 
             if (!ModelState.IsValid)
             {
-                return await Show(instCode, accreditingProviderId, courseCode);
+                return await Show(instCode, accreditingInstCode, courseCode);
             }
 
             var result = await _manageApi.PublishCourseToSearchAndCompare(instCode, courseCode);
@@ -86,11 +86,11 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
                     </p>";
             }
 
-            return RedirectToAction("Show", new { instCode, accreditingProviderId, courseCode });
+            return RedirectToAction("Show", new { instCode, accreditingInstCode, courseCode });
         }
 
-        [Route("{instCode}/course/{accreditingProviderId=self}/{courseCode}/preview")]
-        public IActionResult Preview(string instCode, string accreditingProviderId, string courseCode)
+        [Route("{instCode}/course/{accreditingInstCode=self}/{courseCode}/preview")]
+        public IActionResult Preview(string instCode, string accreditingInstCode, string courseCode)
         {
             var course = _manageApi.GetSearchAndCompareCourse(instCode, courseCode).Result;
             if (course == null)
@@ -108,8 +108,8 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
         }
 
         [HttpGet]
-        [Route("{instCode}/course/{accreditingProviderId=self}/{courseCode}/about")]
-        public async Task<IActionResult> About(string instCode, string accreditingProviderId, string courseCode, string copyFrom = null)
+        [Route("{instCode}/course/{accreditingInstCode=self}/{courseCode}/about")]
+        public async Task<IActionResult> About(string instCode, string accreditingInstCode, string courseCode, string copyFrom = null)
         {
             var courseDetails = await _manageApi.GetCourseByUcasCode(instCode, courseCode);
             var ucasCourseEnrichmentGetModel = await _manageApi.GetEnrichmentCourse(instCode, courseCode);
@@ -157,8 +157,8 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
         }
 
         [HttpPost]
-        [Route("{instCode}/course/{accreditingProviderId=self}/{courseCode}/about")]
-        public async Task<IActionResult> AboutPost(string instCode, string accreditingProviderId, string courseCode, AboutCourseEnrichmentViewModel viewModel)
+        [Route("{instCode}/course/{accreditingInstCode=self}/{courseCode}/about")]
+        public async Task<IActionResult> AboutPost(string instCode, string accreditingInstCode, string courseCode, AboutCourseEnrichmentViewModel viewModel)
         {
             if (!ModelState.IsValid)
             {
@@ -176,12 +176,12 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
                 CourseSavedMessage();
             }
 
-            return RedirectToAction("Show", new { instCode, accreditingProviderId, courseCode });
+            return RedirectToAction("Show", new { instCode, accreditingInstCode, courseCode });
         }
 
         [HttpGet]
-        [Route("{instCode}/course/{accreditingProviderId=self}/{courseCode}/requirements")]
-        public async Task<IActionResult> Requirements(string instCode, string accreditingProviderId, string courseCode, string copyFrom = null)
+        [Route("{instCode}/course/{accreditingInstCode=self}/{courseCode}/requirements")]
+        public async Task<IActionResult> Requirements(string instCode, string accreditingInstCode, string courseCode, string copyFrom = null)
         {
             var courseDetails = await _manageApi.GetCourseByUcasCode(instCode, courseCode);
             var ucasCourseEnrichmentGetModel = await _manageApi.GetEnrichmentCourse(instCode, courseCode);
@@ -218,8 +218,8 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
         }
 
         [HttpPost]
-        [Route("{instCode}/course/{accreditingProviderId=self}/{courseCode}/requirements")]
-        public async Task<IActionResult> RequirementsPost(string instCode, string accreditingProviderId, string courseCode, CourseRequirementsEnrichmentViewModel viewModel)
+        [Route("{instCode}/course/{accreditingInstCode=self}/{courseCode}/requirements")]
+        public async Task<IActionResult> RequirementsPost(string instCode, string accreditingInstCode, string courseCode, CourseRequirementsEnrichmentViewModel viewModel)
         {
             if (!ModelState.IsValid)
             {
@@ -237,12 +237,12 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
                 CourseSavedMessage();
             }
 
-            return RedirectToAction("Show", new { instCode, accreditingProviderId, courseCode });
+            return RedirectToAction("Show", new { instCode, accreditingInstCode, courseCode });
         }
 
         [HttpGet]
-        [Route("{instCode}/course/{accreditingProviderId=self}/{courseCode}/salary")]
-        public async Task<IActionResult> Salary(string instCode, string accreditingProviderId, string courseCode, string copyFrom = null)
+        [Route("{instCode}/course/{accreditingInstCode=self}/{courseCode}/salary")]
+        public async Task<IActionResult> Salary(string instCode, string accreditingInstCode, string courseCode, string copyFrom = null)
         {
             var courseDetails = await _manageApi.GetCourseByUcasCode(instCode, courseCode);
             var ucasCourseEnrichmentGetModel = await _manageApi.GetEnrichmentCourse(instCode, courseCode);
@@ -279,8 +279,8 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
         }
 
         [HttpPost]
-        [Route("{instCode}/course/{accreditingProviderId=self}/{courseCode}/salary")]
-        public async Task<IActionResult> SalaryPost(string instCode, string accreditingProviderId, string courseCode, CourseSalaryEnrichmentViewModel viewModel)
+        [Route("{instCode}/course/{accreditingInstCode=self}/{courseCode}/salary")]
+        public async Task<IActionResult> SalaryPost(string instCode, string accreditingInstCode, string courseCode, CourseSalaryEnrichmentViewModel viewModel)
         {
             if (!ModelState.IsValid)
             {
@@ -296,12 +296,12 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             {
                 CourseSavedMessage();
             }
-            return RedirectToAction("Show", new { instCode, accreditingProviderId, courseCode });
+            return RedirectToAction("Show", new { instCode, accreditingInstCode, courseCode });
         }
 
         [HttpGet]
-        [Route("{instCode}/course/{accreditingProviderId=self}/{courseCode}/fees-and-length")]
-        public async Task<IActionResult> Fees(string instCode, string accreditingProviderId, string courseCode, string copyFrom = null)
+        [Route("{instCode}/course/{accreditingInstCode=self}/{courseCode}/fees-and-length")]
+        public async Task<IActionResult> Fees(string instCode, string accreditingInstCode, string courseCode, string copyFrom = null)
         {
             var courseDetails = await _manageApi.GetCourseByUcasCode(instCode, courseCode);
             var ucasCourseEnrichmentGetModel = await _manageApi.GetEnrichmentCourse(instCode, courseCode);
@@ -341,8 +341,8 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
         }
 
         [HttpPost]
-        [Route("{instCode}/course/{accreditingProviderId=self}/{courseCode}/fees-and-length")]
-        public async Task<IActionResult> FeesPost(string instCode, string accreditingProviderId, string courseCode, CourseFeesEnrichmentViewModel viewModel)
+        [Route("{instCode}/course/{accreditingInstCode=self}/{courseCode}/fees-and-length")]
+        public async Task<IActionResult> FeesPost(string instCode, string accreditingInstCode, string courseCode, CourseFeesEnrichmentViewModel viewModel)
         {
             if (!ModelState.IsValid)
             {
@@ -358,7 +358,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             {
                 CourseSavedMessage();
             }
-            return RedirectToAction("Show", new { instCode, accreditingProviderId, courseCode });
+            return RedirectToAction("Show", new { instCode, accreditingInstCode, courseCode });
         }
 
         private async Task<bool> SaveEnrichment(string instCode, string courseCode, ICourseEnrichmentViewModel viewModel)
@@ -378,10 +378,10 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             return true;
         }
 
-        private void Validate(string instCode, string accreditingProviderId, string courseCode)
+        private void Validate(string instCode, string accreditingInstCode, string courseCode)
         {
             if (string.IsNullOrEmpty(instCode)) { throw new ArgumentNullException(instCode, "instCode cannot be null or empty"); }
-            if (string.IsNullOrEmpty(accreditingProviderId)) { throw new ArgumentNullException(accreditingProviderId, "accreditingProviderId cannot be null or empty"); }
+            if (string.IsNullOrEmpty(accreditingInstCode)) { throw new ArgumentNullException(accreditingInstCode, "accreditingInstCode cannot be null or empty"); }
             if (string.IsNullOrEmpty(courseCode)) { throw new ArgumentNullException(courseCode, "courseCode cannot be null or empty"); }
         }
 
@@ -403,10 +403,10 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             var courseVariant =
                 new ViewModels.CourseDetailsViewModel
                 {
-                    Name = course.Name,
+                    CourseTitle = course.Name,
                     Type = course.TypeDescription,
-                    Accrediting = course.AccreditingProviderName,
-                    ProviderCode = course.AccreditingProviderId,
+                    AccreditingInstName = course.AccreditingProviderName,
+                    AccreditingInstCode = course.AccreditingProviderId,
                     CourseCode = course.CourseCode,
                     InstCode = course.InstCode,
                     AgeRange = course.AgeRange,

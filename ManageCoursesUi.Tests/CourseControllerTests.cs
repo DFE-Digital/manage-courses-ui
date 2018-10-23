@@ -355,8 +355,8 @@ namespace ManageCoursesUi.Tests
             var routeValues = redirectToActionResult.RouteValues;
 
             Assert.AreEqual(TestHelper.InstCode, routeValues["instCode"]);
-            Assert.AreEqual(TestHelper.AccreditedProviderId, routeValues["accreditingProviderId"]);
-            Assert.AreEqual(TestHelper.TargetedInstCode, routeValues["ucasCode"]);
+            Assert.AreEqual(TestHelper.AccreditedProviderId, routeValues["accreditingInstCode"]);
+            Assert.AreEqual(TestHelper.TargetedInstCode, routeValues["courseCode"]);
 
             manageApi.Verify(x => x.SaveEnrichmentCourse(TestHelper.InstCode, TestHelper.TargetedInstCode, It.Is<CourseEnrichmentModel>(c => Check(c, viewModel))), Times.Once());
         }
@@ -464,8 +464,8 @@ namespace ManageCoursesUi.Tests
             var routeValues = redirectToActionResult.RouteValues;
 
             Assert.AreEqual(TestHelper.InstCode, routeValues["instCode"]);
-            Assert.AreEqual(TestHelper.AccreditedProviderId, routeValues["accreditingProviderId"]);
-            Assert.AreEqual(TestHelper.TargetedInstCode, routeValues["ucasCode"]);
+            Assert.AreEqual(TestHelper.AccreditedProviderId, routeValues["accreditingInstCode"]);
+            Assert.AreEqual(TestHelper.TargetedInstCode, routeValues["courseCode"]);
 
             manageApi.Verify(x => x.SaveEnrichmentCourse(TestHelper.InstCode, TestHelper.TargetedInstCode, It.Is<CourseEnrichmentModel>(c => Check(c, viewModel))), Times.Once());
         }
@@ -575,8 +575,8 @@ namespace ManageCoursesUi.Tests
             var routeValues = redirectToActionResult.RouteValues;
 
             Assert.AreEqual(TestHelper.InstCode, routeValues["instCode"]);
-            Assert.AreEqual(TestHelper.AccreditedProviderId, routeValues["accreditingProviderId"]);
-            Assert.AreEqual(TestHelper.TargetedInstCode, routeValues["ucasCode"]);
+            Assert.AreEqual(TestHelper.AccreditedProviderId, routeValues["accreditingInstCode"]);
+            Assert.AreEqual(TestHelper.TargetedInstCode, routeValues["courseCode"]);
 
             manageApi.Verify(x => x.SaveEnrichmentCourse(TestHelper.InstCode, TestHelper.TargetedInstCode, It.Is<CourseEnrichmentModel>(c => Check(c, viewModel))), Times.Once());
         }
@@ -692,8 +692,8 @@ namespace ManageCoursesUi.Tests
             var routeValues = redirectToActionResult.RouteValues;
 
             Assert.AreEqual(TestHelper.InstCode, routeValues["instCode"]);
-            Assert.AreEqual(TestHelper.AccreditedProviderId, routeValues["accreditingProviderId"]);
-            Assert.AreEqual(TestHelper.TargetedInstCode, routeValues["ucasCode"]);
+            Assert.AreEqual(TestHelper.AccreditedProviderId, routeValues["accreditingInstCode"]);
+            Assert.AreEqual(TestHelper.TargetedInstCode, routeValues["courseCode"]);
 
             manageApi.Verify(x => x.SaveEnrichmentCourse(TestHelper.InstCode, TestHelper.TargetedInstCode, It.Is<CourseEnrichmentModel>(c => Check(c, viewModel))), Times.Once());
         }
