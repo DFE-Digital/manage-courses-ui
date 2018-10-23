@@ -297,7 +297,7 @@ namespace GovUk.Education.ManageCourses.Ui
                 .AddRedirect("^auth/cb/?.*", "auth/cb"));
 
             var config = serviceProvider.GetService<ManageCoursesConfig>();
-
+            config.Validate();
             _logger.LogInformation("Using API base URL: {0}", config.ApiUrl);
 
             app.UseMvc(routes =>
