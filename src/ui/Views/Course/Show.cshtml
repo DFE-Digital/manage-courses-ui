@@ -110,7 +110,7 @@
           <h2 class="course-parts__title">Training locations</h2>
           @foreach (var school in Model.Course.Schools)
           {
-            <h3 class="govuk-heading-s">@school.LocationName (Code: @school.Code)</h3>
+            <h3 class="govuk-heading-s">@school.LocationName (Code: @school.CampusCode)</h3>
             <dl class="govuk-list govuk-list--description">
               @if (!string.IsNullOrEmpty(@school.Address)) {
                 <dt>Address:</dt>

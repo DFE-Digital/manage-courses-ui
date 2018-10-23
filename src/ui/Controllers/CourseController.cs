@@ -433,7 +433,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
                         return new SchoolViewModel
                         {
                             ApplicationsAcceptedFrom = campus.ApplicationsAcceptedFrom,
-                            Code = campus.Code,
+                            CampusCode = campus.Code,
                             LocationName = campus.LocationName,
                             Address = address,
                             Status = campus.Status,
