@@ -26,7 +26,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
 
             try
             {
-                orgs = await _manageApi.GetOrganisations();
+                orgs = await _manageApi.GetInstitutionSummaries();
             }
             catch (SwaggerException e)
             {

@@ -22,36 +22,30 @@ namespace GovUk.Education.ManageCourses.Ui
         }
 
         // Do not handled any exception let it thro as it should be handled by McExceptionFilter or startup configuration.
-        public async Task<UserOrganisation> GetOrganisation(string instCode)
+        public async Task<UserOrganisation> GetInstitutionSummary(string instCode)
         {
             var courses = await _apiClient.Organisations_GetAsync(instCode);
             return courses;
         }
 
-        public async Task<UcasInstitution> GetUcasInstitution(string instCode)
-        {
-            var inst = await _apiClient.Organisations_GetUcasInstitutionAsync(instCode);
-            return inst;
-        }
-
-        public async Task<InstitutionCourses> GetCoursesByOrganisation(string instCode)
+        public async Task<InstitutionCourses> GetCoursesOfInstitution(string instCode)
         {
             var courses = await _apiClient.Courses_GetAllAsync(instCode);
             return courses;
         }
-        public async Task<Course> GetCourseByUcasCode(string instCode, string courseCode)
+        public async Task<Course> GetCourseByCode(string instCode, string courseCode)
         {
             var course = await _apiClient.Courses_GetAsync(instCode, courseCode);
             return course;
         }
 
-        public async Task<IEnumerable<UserOrganisation>> GetOrganisations()
+        public async Task<IEnumerable<UserOrganisation>> GetInstitutionSummaries()
         {
             var orgs = await _apiClient.Organisations_GetAllAsync();
             return orgs;
         }
 
-        public async Task LogAccessRequest(AccessRequest accessRequest)
+        public async Task CreateAccessRequest(AccessRequest accessRequest)
         {
             await _apiClient.AccessRequest_IndexAsync(accessRequest);
         }
@@ -61,32 +55,32 @@ namespace GovUk.Education.ManageCourses.Ui
             await _apiClient.AcceptTerms_IndexAsync();
         }
 
-        public async Task SaveEnrichmentOrganisation(string instCode, UcasInstitutionEnrichmentPostModel organisation)
+        public async Task SaveInstitutionEnrichment(string instCode, UcasInstitutionEnrichmentPostModel organisation)
         {
             await _apiClient.Enrichment_SaveInstitutionAsync(instCode, organisation);
         }
 
-        public async Task<UcasInstitutionEnrichmentGetModel> GetEnrichmentOrganisation(string instCode)
+        public async Task<UcasInstitutionEnrichmentGetModel> GetInstitutitionEnrichment(string instCode)
         {
             var result = await _apiClient.Enrichment_GetInstitutionAsync(instCode);
 
             return result;
         }
 
-        public async Task<bool> PublishCoursesToSearchAndCompare(string instCode)
+        public async Task<bool> PublishAllCoursesOfInstitutionToSearchAndCompare(string instCode)
         {
             var result = await _apiClient.Publish_PublishCoursesToSearchAndCompareAsync(instCode);
 
             return result;
         }
 
-        public async Task<UcasCourseEnrichmentGetModel> GetEnrichmentCourse(string instCode, string courseCode)
+        public async Task<UcasCourseEnrichmentGetModel> GetCourseEnrichment(string instCode, string courseCode)
         {
             var result = await _apiClient.Enrichment_GetCourseAsync(instCode, courseCode);
 
             return result;
         }
-        public async Task SaveEnrichmentCourse(string instCode, string courseCode, CourseEnrichmentModel course)
+        public async Task SaveCourseEnrichment(string instCode, string courseCode, CourseEnrichmentModel course)
         {
             await _apiClient.Enrichment_SaveCourseAsync(instCode, courseCode, course);
         }
