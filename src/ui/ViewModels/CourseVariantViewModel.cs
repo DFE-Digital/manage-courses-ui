@@ -19,10 +19,10 @@ namespace GovUk.Education.ManageCourses.Ui.ViewModels
         public string Regions { get; set; }
         public string Status { get; set; }
 
-        public CourseVariantStatus StatusAsEnum =>
-                string.Equals("running", Status ?? "", StringComparison.InvariantCultureIgnoreCase) ? CourseVariantStatus.Running
-              : string.Equals("not running", Status ?? "", StringComparison.InvariantCultureIgnoreCase) ? CourseVariantStatus.NotRunning
-              : CourseVariantStatus.New;
+        public CourseRunningStatus StatusAsEnum =>
+                string.Equals("running", Status ?? "", StringComparison.InvariantCultureIgnoreCase) ? CourseRunningStatus.Running
+              : string.Equals("not running", Status ?? "", StringComparison.InvariantCultureIgnoreCase) ? CourseRunningStatus.NotRunning
+              : CourseRunningStatus.New;
 
         public IEnumerable<SchoolViewModel> Schools { get; set; }
 

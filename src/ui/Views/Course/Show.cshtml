@@ -26,12 +26,12 @@
         <div class="course-parts__item">
           <h2 class="course-parts__title">Information from UCAS</h2>
 
-          @if(Model.Course.StatusAsEnum != CourseVariantStatus.Running)
+          @if(Model.Course.StatusAsEnum != CourseRunningStatus.Running)
           {
             <div class="govuk-warning-text govuk-warning-text--inline">
               <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
               <strong class="govuk-warning-text__text">
-                @if(Model.Course.StatusAsEnum == CourseVariantStatus.New)
+                @if(Model.Course.StatusAsEnum == CourseRunningStatus.New)
                 {
                   <text>This course is new and not yet running.</text>
                 }
@@ -42,7 +42,7 @@
               </strong>
             </div>
             <p class="govuk-body">
-              @if(Model.Course.StatusAsEnum == CourseVariantStatus.New)
+              @if(Model.Course.StatusAsEnum == CourseRunningStatus.New)
               {
                 <text>It won&#8217;t appear online until you have made changes in <a href='https://update.ucas.co.uk/netupdate2/Welcome.htm'>UCAS web-link</a>. Set one or more training locations to &ldquo;running&rdquo; and set their Publish value to &ldquo;yes&rdquo;. You must do this so that applicants can apply on UCAS.</text>
               }
@@ -96,7 +96,7 @@
           </dl>
         </div>
 
-      @if(Model.Course.StatusAsEnum != CourseVariantStatus.NotRunning)
+      @if(Model.Course.StatusAsEnum != CourseRunningStatus.NotRunning)
       {
         @await Html.PartialAsync("shared/_AboutCourseOverview", Model.CourseEnrichment)
 
@@ -140,7 +140,7 @@
     </div>
 
     <div class="govuk-grid-column-one-third">
-    @if(Model.Course.StatusAsEnum != CourseVariantStatus.NotRunning)
+    @if(Model.Course.StatusAsEnum != CourseRunningStatus.NotRunning)
     {
       <aside class="related">
         @switch(courseEnrichment.DeterminePublicationState())

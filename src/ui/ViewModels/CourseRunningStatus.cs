@@ -2,7 +2,7 @@
 
 namespace GovUk.Education.ManageCourses.Ui.ViewModels
 {
-    public enum CourseVariantStatus
+    public enum CourseRunningStatus
     {
         Running,
         NotRunning,
