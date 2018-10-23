@@ -5,12 +5,12 @@ namespace GovUk.Education.ManageCourses.Ui.ViewModels
 {
     public class CourseDetailsViewModel
     {
-        public string Name { get; set; }
+        public string CourseTitle { get; set; }
         public string CourseCode { get; set; }
         public string Type { get; set; }
         public string InstCode { get; set; }
-        public string ProviderCode { get; set; }
-        public string Accrediting { get; set; }
+        public string AccreditingInstCode { get; set; }
+        public string AccreditingInstName { get; set; }
         public string Route { get; set; }
         public string Subjects { get; set; }
         public string AgeRange { get; set; }

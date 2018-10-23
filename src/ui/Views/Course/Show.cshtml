@@ -2,8 +2,8 @@
 
 @{
   Layout = "_Layout";
-  ViewBag.Title = Model.Course.Name;
-  var link = $"mailto:becomingateacher@digital.education.gov.uk?subject=Problem%20with%20course%20{Model.Course.ProviderCode}%20{Model.Course.ProgrammeCode}";
+  ViewBag.Title = Model.Course.CourseTitle;
+  var link = $"mailto:becomingateacher@digital.education.gov.uk?subject=Problem%20with%20course%20{Model.Course.InstCode}%20{Model.Course.CourseCode}";
 
   var courseEnrichment = Model.CourseEnrichment;
   var routeData = courseEnrichment.RouteData;
@@ -17,7 +17,7 @@
 
   <h1 class="govuk-heading-xl">
     <span class="govuk-caption-xl">@Model.Course.Type</span>
-    @Model.Course.Name (@Model.Course.ProgrammeCode)
+    @Model.Course.CourseTitle (@Model.Course.CourseCode)
   </h1>
 
   <div class="govuk-grid-row">
@@ -61,21 +61,21 @@
               <dt>Status:</dt>
               <dd>@Model.Course.Status</dd>
             }
-            @if (!string.IsNullOrEmpty(@Model.Course.Name)) {
+            @if (!string.IsNullOrEmpty(@Model.Course.CourseTitle)) {
               <dt>Name:</dt>
-              <dd>@Model.Course.Name</dd>
+              <dd>@Model.Course.CourseTitle</dd>
             }
             @if (!string.IsNullOrEmpty(@Model.Course.InstCode)) {
               <dt>Training provider code:</dt>
               <dd>@Model.Course.InstCode</dd>
             }
-            @if (!string.IsNullOrEmpty(@Model.Course.ProgrammeCode)) {
+            @if (!string.IsNullOrEmpty(@Model.Course.CourseCode)) {
               <dt>Training programme code:</dt>
-              <dd>@Model.Course.ProgrammeCode</dd>
+              <dd>@Model.Course.CourseCode</dd>
             }
-            @if (!string.IsNullOrEmpty(@Model.Course.Accrediting)) {
+            @if (!string.IsNullOrEmpty(@Model.Course.AccreditingInstName)) {
               <dt>Accredited provider:</dt>
-              <dd>@Model.Course.Accrediting</dd>
+              <dd>@Model.Course.AccreditingInstName</dd>
             }
             @if (!string.IsNullOrEmpty(@Model.Course.GetRoute())) {
               <dt>Route:</dt>
