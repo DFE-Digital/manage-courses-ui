@@ -316,8 +316,8 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
                 var courses = institutionCourses.Courses.Where(c => c.AccreditingProviderId == uniqueAccreditingProviderId).ToList();
                 providers.Add(new ViewModels.Provider
                 {
-                    ProviderId = uniqueAccreditingProviderId,
-                    ProviderName = name,
+                    InstCode = uniqueAccreditingProviderId,
+                    InstName = name,
                     Courses = courses,
                     TotalCount = courses.Count,
                 });

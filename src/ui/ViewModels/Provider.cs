@@ -12,8 +12,8 @@ namespace GovUk.Education.ManageCourses.Ui.ViewModels
         {
             Courses = new List<Course>();
         }
-        public string ProviderName { get; set; }
-        public string ProviderId { get; set; }
+        public string InstName { get; set; }
+        public string InstCode { get; set; }
         public List<Course> Courses { get; set; }
         public int TotalCount { get; set; }
     }

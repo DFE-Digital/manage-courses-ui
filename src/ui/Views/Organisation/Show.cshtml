@@ -50,11 +50,11 @@
 
     @foreach (var provider in Model.Providers)
     {
-      if (!string.IsNullOrWhiteSpace(provider.ProviderId))
+      if (!string.IsNullOrWhiteSpace(provider.InstCode))
       {
         <h3 class="govuk-heading-m">
           <span class="govuk-caption-m">Accredited provider</span>
-          @provider.ProviderName
+          @provider.InstName
         </h3>
       }
 
