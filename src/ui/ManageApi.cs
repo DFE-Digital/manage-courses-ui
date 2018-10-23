@@ -61,9 +61,9 @@ namespace GovUk.Education.ManageCourses.Ui
             await _apiClient.AcceptTerms_IndexAsync();
         }
 
-        public async Task SaveEnrichmentOrganisation(string institutionCode, UcasInstitutionEnrichmentPostModel organisation)
+        public async Task SaveEnrichmentOrganisation(string instCode, UcasInstitutionEnrichmentPostModel organisation)
         {
-            await _apiClient.Enrichment_SaveInstitutionAsync(institutionCode, organisation);
+            await _apiClient.Enrichment_SaveInstitutionAsync(instCode, organisation);
         }
 
         public async Task<UcasInstitutionEnrichmentGetModel> GetEnrichmentOrganisation(string ucasCode)

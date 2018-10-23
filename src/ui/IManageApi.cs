@@ -17,7 +17,7 @@ namespace GovUk.Education.ManageCourses.Ui
         Task<UcasInstitution> GetUcasInstitution(string instCode);
         Task LogAccessRequest(AccessRequest accessRequest);
         Task LogAcceptTerms();
-        Task SaveEnrichmentOrganisation(string institutionCode, UcasInstitutionEnrichmentPostModel organisation);
+        Task SaveEnrichmentOrganisation(string instCode, UcasInstitutionEnrichmentPostModel organisation);
         Task<UcasInstitutionEnrichmentGetModel> GetEnrichmentOrganisation(string ucasCode);
         Task<bool> PublishCoursesToSearchAndCompare(string ucasCode);
         Task<UcasCourseEnrichmentGetModel> GetEnrichmentCourse(string instCode, string ucasCode);

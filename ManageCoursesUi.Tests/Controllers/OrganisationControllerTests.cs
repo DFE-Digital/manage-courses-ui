@@ -232,11 +232,11 @@ namespace ManageCoursesUi.Tests
             Assert.IsNotNull(viewResult);
             var organisationViewModel = viewResult.ViewData.Model as OrganisationViewModelForAbout;
 
-            Assert.AreEqual(organisationName, organisationViewModel.InstitutionName);
+            Assert.AreEqual(organisationName, organisationViewModel.InstName);
             Assert.AreEqual(trainWithUs, organisationViewModel.TrainWithUs);
             Assert.AreEqual(2, organisationViewModel.AboutTrainingProviders.Count);
-            Assert.AreEqual(description, organisationViewModel.AboutTrainingProviders.First(x => x.InstitutionCode == ucasCode + 2).Description);
-            Assert.AreEqual(institutionName, organisationViewModel.AboutTrainingProviders.First(x => x.InstitutionCode == ucasCode + 1).InstitutionName);
+            Assert.AreEqual(description, organisationViewModel.AboutTrainingProviders.First(x => x.InstCode == ucasCode + 2).Description);
+            Assert.AreEqual(institutionName, organisationViewModel.AboutTrainingProviders.First(x => x.InstCode == ucasCode + 1).InstName);
             Assert.AreEqual(trainWithDisability, organisationViewModel.TrainWithDisability);
             Assert.AreEqual(now, organisationViewModel.LastPublishedTimestampUtc);
             Assert.AreEqual(EnumStatus.Published, organisationViewModel.Status);
@@ -502,11 +502,11 @@ namespace ManageCoursesUi.Tests
             Assert.IsNotNull(viewResult);
             var organisationViewModel = viewResult.ViewData.Model as OrganisationViewModel;
 
-            Assert.AreEqual(organisationName, organisationViewModel.InstitutionName);
+            Assert.AreEqual(organisationName, organisationViewModel.InstName);
             Assert.AreEqual(trainWithUs, organisationViewModel.TrainWithUs);
             Assert.AreEqual(2, organisationViewModel.AboutTrainingProviders.Count);
-            Assert.AreEqual(description, organisationViewModel.AboutTrainingProviders.First(x => x.InstitutionCode == ucasCode + 2).Description);
-            Assert.AreEqual(institutionName, organisationViewModel.AboutTrainingProviders.First(x => x.InstitutionCode == ucasCode + 1).InstitutionName);
+            Assert.AreEqual(description, organisationViewModel.AboutTrainingProviders.First(x => x.InstCode == ucasCode + 2).Description);
+            Assert.AreEqual(institutionName, organisationViewModel.AboutTrainingProviders.First(x => x.InstCode == ucasCode + 1).InstName);
             Assert.AreEqual(trainWithDisability, organisationViewModel.TrainWithDisability);
             Assert.AreEqual(now, organisationViewModel.LastPublishedTimestampUtc);
             Assert.AreEqual(EnumStatus.Published, organisationViewModel.Status);
@@ -558,7 +558,7 @@ namespace ManageCoursesUi.Tests
                 {
                     new TrainingProviderViewModel
                     {
-                        InstitutionCode = "ACC",
+                        InstCode = "ACC",
                         Description = null // not an empty string... this is how MVC model binding behaves
                     }
                 }
@@ -585,8 +585,8 @@ namespace ManageCoursesUi.Tests
             {
                 AboutTrainingProviders = new List<TrainingProviderViewModel>() {
                     new TrainingProviderViewModel{ Description = exceed100Words,
-                    InstitutionName = institutionName,
-                    InstitutionCode = ucasCode + 1}
+                    InstName = institutionName,
+                    InstCode = ucasCode + 1}
                 }
             };
 
@@ -647,8 +647,8 @@ namespace ManageCoursesUi.Tests
             var organisationViewModel = viewResult.ViewData.Model as OrganisationViewModelForAbout;
 
             Assert.IsNotNull(viewResult);
-            Assert.AreEqual(exceed100Words, organisationViewModel.AboutTrainingProviders.First(x => x.InstitutionCode == ucasCode + 1).Description);
-            Assert.AreEqual(institutionName, organisationViewModel.AboutTrainingProviders.First(x => x.InstitutionCode == ucasCode + 1).InstitutionName);
+            Assert.AreEqual(exceed100Words, organisationViewModel.AboutTrainingProviders.First(x => x.InstCode == ucasCode + 1).Description);
+            Assert.AreEqual(institutionName, organisationViewModel.AboutTrainingProviders.First(x => x.InstCode == ucasCode + 1).InstName);
 
         }
     }

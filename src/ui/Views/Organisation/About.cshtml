@@ -7,7 +7,7 @@
   var train_with_disability = ViewData.ModelState["TrainWithDisability"] != null && ViewData.ModelState["TrainWithDisability"].Errors.Any();
 }
 
-<a href="@Url.Action("Details", "Organisation", new {ucasCode = Model.InstitutionCode})" class="govuk-back-link">Back</a>
+<a href="@Url.Action("Details", "Organisation", new {ucasCode = Model.InstCode})" class="govuk-back-link">Back</a>
 
 <main role="main" class="govuk-main-wrapper" id="main-content">
   @await Html.PartialAsync("~/Views/Shared/_Alerts.cshtml")
@@ -17,7 +17,7 @@
     <div class="govuk-grid-column-two-thirds">
       <div class="course-basicinfo govuk-!-margin-bottom-9">
         <h1 class="govuk-heading-xl">
-          <span class="govuk-caption-xl">@Model.InstitutionName</span>
+          <span class="govuk-caption-xl">@Model.InstName</span>
           About your organisation
         </h1>
       </div>
@@ -27,7 +27,7 @@
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
       <form asp-controller="Organisation" asp-action="About" method="post" data-module="form">
-        <input type="hidden" asp-for="@Model.InstitutionCode"></input>
+        <input type="hidden" asp-for="@Model.InstCode"></input>
         @await Html.PartialAsync("Shared/ErrorSummary")
         <div id="train-with-us-hint">
           <p class="govuk-body">This is your chance to tell applicants why they should choose to train with you. You could describe any advantages and special
@@ -57,10 +57,10 @@
             var hasErrored = ViewData.ModelState[aboutTrainingProviderKey] != null && ViewData.ModelState[aboutTrainingProviderKey].Errors.Any();
             <div class="govuk-character-count" data-module="character-count" data-maxwords="100">
               <div id="@aboutTrainingProviderKey-wrapper" class="govuk-form-group @(hasErrored ? "govuk-form-group--error" : " ")">
-                <input type="hidden" asp-for="@Model.AboutTrainingProviders[i].InstitutionCode" />
-                <input type="hidden" asp-for="@Model.AboutTrainingProviders[i].InstitutionName" />
+                <input type="hidden" asp-for="@Model.AboutTrainingProviders[i].InstCode" />
+                <input type="hidden" asp-for="@Model.AboutTrainingProviders[i].InstName" />
                 <label class="govuk-label govuk-!-font-weight-bold" asp-for="@Model.AboutTrainingProviders[i].Description">
-                  @Model.AboutTrainingProviders[i].InstitutionName (optional)
+                  @Model.AboutTrainingProviders[i].InstName (optional)
                 </label>
                 @if (hasErrored)
                 {

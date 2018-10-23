@@ -1,7 +1,7 @@
 @model OrganisationViewModelForContact
 
 @{
-  ViewBag.Title = Model.InstitutionName + " contact information";
+  ViewBag.Title = Model.InstName + " contact information";
   var email_address = ViewData.ModelState["EmailAddress"] != null && ViewData.ModelState["EmailAddress"].Errors.Any();
   var telephone = ViewData.ModelState["Telephone"] != null && ViewData.ModelState["Telephone"].Errors.Any();
   var org_url = ViewData.ModelState["Url"] != null && ViewData.ModelState["Url"].Errors.Any();
@@ -12,7 +12,7 @@
   var postcode = ViewData.ModelState["Postcode"] != null && ViewData.ModelState["Postcode"].Errors.Any();
 }
 
-<a href="@Url.Action("Details", "Organisation", new {ucasCode = Model.InstitutionCode})" class="govuk-back-link">Back</a>
+<a href="@Url.Action("Details", "Organisation", new {ucasCode = Model.InstCode})" class="govuk-back-link">Back</a>
 
 <main role="main" class="govuk-main-wrapper" id="main-content">
   @await Html.PartialAsync("~/Views/Shared/_Alerts.cshtml")
@@ -21,7 +21,7 @@
     <div class="govuk-grid-column-two-thirds">
       <div class="course-basicinfo govuk-!-margin-bottom-9">
         <h1 class="govuk-heading-xl">
-          <span class="govuk-caption-xl">@Model.InstitutionName</span>
+          <span class="govuk-caption-xl">@Model.InstName</span>
           Contact details
         </h1>
       </div>
@@ -31,7 +31,7 @@
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
       <form asp-controller="Organisation" asp-action="Contact" method="post" data-module="form">
-        <input type="hidden" asp-for="@Model.InstitutionCode"></input>
+        <input type="hidden" asp-for="@Model.InstCode"></input>
         @await Html.PartialAsync("Shared/ErrorSummary")
         <div id="EmailAddress-wrapper" class="govuk-form-group @(email_address ? "govuk-form-group--error" : " ")">
           <label asp-for="EmailAddress" class="govuk-label">Email address</label>

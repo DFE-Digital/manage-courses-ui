@@ -21,7 +21,7 @@
   var urlForContact = Url.Action("Contact", "Organisation");
 }
 
-<a href="@Url.Action("Show", "Organisation", new {ucasCode = Model.InstitutionCode})" class="govuk-back-link">Back</a>
+<a href="@Url.Action("Show", "Organisation", new {ucasCode = Model.InstCode})" class="govuk-back-link">Back</a>
 
 <main role="main" class="govuk-main-wrapper" id="main-content">
   @await Html.PartialAsync("~/Views/Shared/_Alerts.cshtml")
@@ -31,7 +31,7 @@
     <div class="govuk-grid-column-two-thirds">
       <div class="course-basicinfo govuk-!-margin-bottom-9">
         <h1 class="govuk-heading-xl">
-          <span class="govuk-caption-xl">@Model.InstitutionName</span>
+          <span class="govuk-caption-xl">@Model.InstName</span>
           About your organisation
         </h1>
       </div>
@@ -43,7 +43,7 @@
       <div class="course-parts">
         <div class="course-parts__item">
           <h3 class="course-parts__title">Contact details</h3>
-          <a class="course-parts__action" href="@Url.Action("Contact", "Organisation", new {ucasCode = Model.InstitutionCode})">Edit<span class="govuk-visually-hidden"> your organisation's contact details</span></a>
+          <a class="course-parts__action" href="@Url.Action("Contact", "Organisation", new {ucasCode = Model.InstCode})">Edit<span class="govuk-visually-hidden"> your organisation's contact details</span></a>
           <dl class="course-parts__fields" role="contentinfo">
             <dt class="course-parts__fields__label @(email_address ? "course-parts__fields__label--error" : "")">Email address</dt>
             <dd class="course-parts__fields__value @(string.IsNullOrWhiteSpace(Model.EmailAddress) ? "course-parts__fields__value--empty" : "")">
@@ -110,7 +110,7 @@
         </div>
         <div class="course-parts__item">
           <h3 class="course-parts__title">About your organisation</h3>
-          <a class="course-parts__action" href="@Url.Action("About", "Organisation", new {ucasCode = Model.InstitutionCode})">Edit<span class="govuk-visually-hidden"> about your organisation</span></a>
+          <a class="course-parts__action" href="@Url.Action("About", "Organisation", new {ucasCode = Model.InstCode})">Edit<span class="govuk-visually-hidden"> about your organisation</span></a>
           <dl class="course-parts__fields">
             <dt class="course-parts__fields__label @(train_with_us ? "course-parts__fields__label--error" : "")" id="section-TrainWithUs">About your organisation</dt>
             <dd class="course-parts__fields__value @(string.IsNullOrWhiteSpace(Model.TrainWithUs) ? "course-parts__fields__value--empty" : "")">
@@ -124,7 +124,7 @@
                   var aboutTrainingProviderKey = "AboutTrainingProviders_"+i+"__Description";
                   var hasErrored = ViewData.ModelState[aboutTrainingProviderKey] != null && ViewData.ModelState[aboutTrainingProviderKey].Errors.Any();
                 <dt class="course-parts__fields__label @(hasErrored ? "course-parts__fields__label--error" : "")" id="AboutTrainingProviders_"+i+"__Description">
-                  @Model.AboutTrainingProviders[i].InstitutionName (optional)
+                  @Model.AboutTrainingProviders[i].InstName (optional)
                 </dt>
                 <dd class="course-parts__fields__value @(string.IsNullOrWhiteSpace(Model.AboutTrainingProviders[i].Description) ? "course-parts__fields__value--empty" : "")">
                   @Model.AboutTrainingProviders[i].Description.DisplayText()

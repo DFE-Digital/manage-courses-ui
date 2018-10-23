@@ -14,7 +14,7 @@ namespace ManageCoursesUi.Tests.Helpers
     {        
         public static string OrganisationId { get; } = "5697";
         public static string OrganisationName { get; } = "Test Organisation";
-        public static string InstitutionCode { get; } = "2AT";
+        public static string InstCode { get; } = "2AT";
         public static string AccreditedProviderId { get; } = "self";
         public static string TargetedUcasCode { get; } = "35L6";
         public static string TargetedCourseTitle { get; } = "Chemistry";

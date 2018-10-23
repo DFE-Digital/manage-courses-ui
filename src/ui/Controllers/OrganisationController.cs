@@ -48,8 +48,8 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
 
             var model = new CourseListViewModel
             {
-                InstitutionName = institutionCourses.InstitutionName,
-                InstitutionId = institutionCourses.InstitutionCode,
+                InstName = institutionCourses.InstitutionName,
+                InstCode = institutionCourses.InstitutionCode,
                 Providers = providers,
                 MultipleOrganisations = multipleOrganisations,
                 Status = status
@@ -118,7 +118,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
 
             if (!ModelState.IsValid)
             {
-                model.InstitutionName = (await _manageApi.GetOrganisations()).FirstOrDefault(x => x.UcasCode == ucasCode.ToUpperInvariant())?.OrganisationName;
+                model.InstName = (await _manageApi.GetOrganisations()).FirstOrDefault(x => x.UcasCode == ucasCode.ToUpperInvariant())?.OrganisationName;
                 return View("About", model);
             }
 
@@ -231,7 +231,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
                         var aboutTrainingProviders = (fromModel ?? new List<TrainingProviderViewModel>());
 
                         var newAccreditingProviderModel = aboutTrainingProviders.FirstOrDefault(
-                            atp => (atp.InstitutionCode.Equals(x.AccreditingProviderId, StringComparison.InvariantCultureIgnoreCase)));
+                            atp => (atp.InstCode.Equals(x.AccreditingProviderId, StringComparison.InvariantCultureIgnoreCase)));
 
                         if (newAccreditingProviderModel != null)
                         {
@@ -241,8 +241,8 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
 
                         var tpvm = new TrainingProviderViewModel()
                         {
-                            InstitutionName = x.AccreditingProviderName,
-                            InstitutionCode = x.AccreditingProviderId,
+                            InstName = x.AccreditingProviderName,
+                            InstCode = x.AccreditingProviderId,
                             Description = description
                         };
 

@@ -8,8 +8,8 @@ namespace GovUk.Education.ManageCourses.Ui.ViewModels
 {
     public class CourseListViewModel
     {
-        public string InstitutionName { get; set; }
-        public string InstitutionId { get; set; }
+        public string InstName { get; set; }
+        public string InstCode { get; set; }
 
         public List<Provider> Providers { get; set; }
 
