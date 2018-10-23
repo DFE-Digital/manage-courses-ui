@@ -64,7 +64,7 @@ namespace GovUk.Education.ManageCourses.Ui.ViewModels
 
         public EnumStatus Status { get; set; }
 
-        public static OrganisationViewModel FromEnrichmentModel(UcasInstitutionEnrichmentGetModel ucasInstitutionEnrichmentGetModel, List<TrainingProviderViewModel> aboutAccreditingTrainingProviders, UcasInstitution ucasInstitution)
+        public static OrganisationViewModel FromEnrichmentModel(UcasInstitutionEnrichmentGetModel ucasInstitutionEnrichmentGetModel, List<TrainingProviderViewModel> aboutAccreditingTrainingProviders, UserOrganisation institutionSummary)
         {
             ucasInstitutionEnrichmentGetModel = ucasInstitutionEnrichmentGetModel ?? new UcasInstitutionEnrichmentGetModel { EnrichmentModel = new InstitutionEnrichmentModel() { AccreditingProviderEnrichments = new ObservableCollection<AccreditingProviderEnrichment>() } };
 
@@ -72,8 +72,8 @@ namespace GovUk.Education.ManageCourses.Ui.ViewModels
 
             var result = new OrganisationViewModel
             {
-                InstCode = ucasInstitution.InstCode,
-                InstName = ucasInstitution.InstFull,
+                InstCode = institutionSummary.UcasCode,
+                InstName = institutionSummary.OrganisationName,
                 TrainWithUs = enrichmentModel.TrainWithUs,
                 TrainWithDisability = enrichmentModel.TrainWithDisability,
                 LastPublishedTimestampUtc = ucasInstitutionEnrichmentGetModel.LastPublishedTimestampUtc,
