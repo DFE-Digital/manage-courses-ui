@@ -1,9 +1,11 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using System;
+using Microsoft.Extensions.Configuration;
 
 namespace GovUk.Education.ManageCourses.Ui
 {
     public class ManageCoursesConfig
     {
+        private const string ConfigKeyApiUrl = "API_URL";
         private readonly IConfiguration _configuration;
 
         public ManageCoursesConfig(IConfiguration configuration)
@@ -26,6 +28,15 @@ namespace GovUk.Education.ManageCourses.Ui
 
         public string ExternalRegistrationUrl => $"{ProfileBaseUrl}/register?client_id={ClientId}&redirect_uri={SiteBaseUrl}/{RegisterCallbackPath}";
 
-        public string ApiUrl => _configuration["ApiConnection:Url"];
+        public string ApiUrl => _configuration[ConfigKeyApiUrl];
+
+
+        public void Validate()
+        {
+            if (string.IsNullOrWhiteSpace(ApiUrl))
+            {
+                throw new Exception($"Config value {ConfigKeyApiUrl} missing");
+            }
+        }
     }
 }

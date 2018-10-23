@@ -12,7 +12,7 @@ It should be [12 factor](https://12factor.net/), notably config from environment
 
 - EITHER dotnet core, OR msbuid+Visual studio
 - Nodejs https://nodejs.org/ for the asset pipeline - worked with version 8.11.2 LTS
-- Access to a running instance of [manage-courses-api](https://github.com/DFE-Digital/manage-courses-api), e.g. [the dev one](https://manage-courses-ui-bat-development.e4ff.pro-eu-west-1.openshiftapps.com)
+- Access to a running instance of [manage-courses-api](https://github.com/DFE-Digital/manage-courses-api)
 - Access to an oauth server. To use the DfE Sign-in sandbox environment, ask the team for the current client secret, or get it from the DfE single sign-in project by emailing [DfE.SIGNIN@education.gov.uk](mailto:DfE.SIGNIN@education.gov.uk)
 
 ## Logging
@@ -51,7 +51,7 @@ bug in ASP.NET MVC Core which is using inconsistent package versions.
 You will need to set the app settings (preferred to be store as `user-secrets`):
 
 - **SearchAndCompare:UiBaseUrl** the location of the search and compare UI, for the purpose of linking, e.g. "https://find-postgraduate-teacher-training.gov.uk". Avoid trailing slash.
-- **ApiConnection:url** - the location of your [manage-courses-api](https://github.com/DFE-Digital/manage-courses-api) deployment. You can use a local one or perhaps [the one in the Dev Environment](https://manage-courses-ui-bat-development.e4ff.pro-eu-west-1.openshiftapps.com) if you are lazy
+- **API_URL** - the location of your [manage-courses-api](https://github.com/DFE-Digital/manage-courses-api) deployment. Defaults to development copy when in run in development mode.
 - **DFE_SIGNIN_CLIENT_SECRET** - the client secret of your oath server
 - **auth:oidc:metadataAddress** - the .well-known config URL of your oauth server, if you don't want to use the default sandbox one
 - **auth:oidc:tokenEndpoint** - the /token endpoint as specified in the .well-known config URL of your oauth server
@@ -91,7 +91,6 @@ The best way to set and store them is [user-secrets](https://docs.microsoft.com/
 ```powershell
 cd src\ui
 dotnet user-secrets set ASPNET_ENVIRONMENT Development
-dotnet user-secrets set ApiConnection:url https://manage-courses-api-bat-development.e4ff.pro-eu-west-1.openshiftapps.com
 dotnet user-secrets set DFE_SIGNIN_CLIENT_SECRET <the client secret>
 ```
 
