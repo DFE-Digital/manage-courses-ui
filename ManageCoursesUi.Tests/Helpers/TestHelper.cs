@@ -16,7 +16,7 @@ namespace ManageCoursesUi.Tests.Helpers
         public static string OrganisationName { get; } = "Test Organisation";
         public static string InstCode { get; } = "2AT";
         public static string AccreditedProviderId { get; } = "self";
-        public static string TargetedUcasCode { get; } = "35L6";
+        public static string TargetedInstCode { get; } = "35L6";
         public static string TargetedCourseTitle { get; } = "Chemistry";
 
         private static string _courseTitles = "Maths,Chemistry,Biology,Music,Languages";
@@ -41,17 +41,6 @@ namespace ManageCoursesUi.Tests.Helpers
                 InstitutionCode = OrganisationId,
                 InstitutionName = OrganisationName,
                 Courses = new ObservableCollection<Course>(GenerateCourseDetails(dataType))
-                    
-                //UcasCode = TargetedUcasCode,
-                //ProviderCourses = new ObservableCollection<ProviderCourse>
-                //{
-                //    new ProviderCourse
-                //    {
-                //        AccreditingProviderId = accreditedProviderId,
-                //        AccreditingProviderName = accreditedProviderName,
-                //        CourseDetails = new ObservableCollection<CourseDetail>(GenerateCourseDetails(dataType))
-                //    }
-                //}
             };
 
             return testData;
@@ -113,14 +102,14 @@ namespace ManageCoursesUi.Tests.Helpers
             for (var counter = 1; counter <= count; counter++)
             {                
                 var targetedPosition = count > 1 ? 2 : 1;//sets the position of the targed variant. This is important as there have been errors when the targed variant is not in the first position
-                var ucasCode = "00";
+                var instCode = "00";
                 if (happyPath && counter == targetedPosition)
                 {
-                    ucasCode = TargetedUcasCode;//this code should be present for a happy path test
+                    instCode = TargetedInstCode;//this code should be present for a happy path test
                 }
                 else
                 {
-                    ucasCode += counter;
+                    instCode += counter;
                 }
                 listToReturn.Add(
                     new Course
@@ -129,15 +118,15 @@ namespace ManageCoursesUi.Tests.Helpers
                         ProfpostFlag = "",
                         ProgramType = "SC",
                         Subjects = courseTitle + ",Secondary",
-                        CourseCode = ucasCode,
+                        CourseCode = instCode,
                         Name = courseTitle,
-                        InstCode = ucasCode,
+                        InstCode = instCode,
                         Schools = new ObservableCollection<School>
                         {
                             new School
                             {
                                 ApplicationsAcceptedFrom = "2018-10-16 00:00:00",
-                                Code = TargetedUcasCode,
+                                Code = TargetedInstCode,
                                 Address1 = "address1",
                                 Address2 = "address2",
                                 Address3 = "address3",

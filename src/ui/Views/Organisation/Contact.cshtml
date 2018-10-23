@@ -12,7 +12,7 @@
   var postcode = ViewData.ModelState["Postcode"] != null && ViewData.ModelState["Postcode"].Errors.Any();
 }
 
-<a href="@Url.Action("Details", "Organisation", new {ucasCode = Model.InstCode})" class="govuk-back-link">Back</a>
+<a href="@Url.Action("Details", "Organisation", new {instCode = Model.InstCode})" class="govuk-back-link">Back</a>
 
 <main role="main" class="govuk-main-wrapper" id="main-content">
   @await Html.PartialAsync("~/Views/Shared/_Alerts.cshtml")

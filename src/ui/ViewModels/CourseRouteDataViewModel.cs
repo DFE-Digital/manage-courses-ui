@@ -5,6 +5,6 @@
     {
         public string InstCode { get; set; }
         public string AccreditingProviderId { get; set; }
-        public string UcasCode { get; set; }
+        public string CourseCode { get; set; }
     }
 }

@@ -39,9 +39,9 @@ namespace GovUk.Education.ManageCourses.Ui
             var courses = await _apiClient.Courses_GetAllAsync(instCode);
             return courses;
         }
-        public async Task<Course> GetCourseByUcasCode(string instCode, string ucasCode)
+        public async Task<Course> GetCourseByUcasCode(string instCode, string courseCode)
         {
-            var course = await _apiClient.Courses_GetAsync(instCode, ucasCode);
+            var course = await _apiClient.Courses_GetAsync(instCode, courseCode);
             return course;
         }
 
@@ -66,34 +66,34 @@ namespace GovUk.Education.ManageCourses.Ui
             await _apiClient.Enrichment_SaveInstitutionAsync(instCode, organisation);
         }
 
-        public async Task<UcasInstitutionEnrichmentGetModel> GetEnrichmentOrganisation(string ucasCode)
+        public async Task<UcasInstitutionEnrichmentGetModel> GetEnrichmentOrganisation(string instCode)
         {
-            var result = await _apiClient.Enrichment_GetInstitutionAsync(ucasCode);
+            var result = await _apiClient.Enrichment_GetInstitutionAsync(instCode);
 
             return result;
         }
 
-        public async Task<bool> PublishCoursesToSearchAndCompare(string ucasCode)
+        public async Task<bool> PublishCoursesToSearchAndCompare(string instCode)
         {
-            var result = await _apiClient.Publish_PublishCoursesToSearchAndCompareAsync(ucasCode);
+            var result = await _apiClient.Publish_PublishCoursesToSearchAndCompareAsync(instCode);
 
             return result;
         }
 
-        public async Task<UcasCourseEnrichmentGetModel> GetEnrichmentCourse(string instCode, string ucasCode)
+        public async Task<UcasCourseEnrichmentGetModel> GetEnrichmentCourse(string instCode, string courseCode)
         {
-            var result = await _apiClient.Enrichment_GetCourseAsync(instCode, ucasCode);
+            var result = await _apiClient.Enrichment_GetCourseAsync(instCode, courseCode);
 
             return result;
         }
-        public async Task SaveEnrichmentCourse(string instCode, string ucasCode, CourseEnrichmentModel course)
+        public async Task SaveEnrichmentCourse(string instCode, string courseCode, CourseEnrichmentModel course)
         {
-            await _apiClient.Enrichment_SaveCourseAsync(instCode, ucasCode, course);
+            await _apiClient.Enrichment_SaveCourseAsync(instCode, courseCode, course);
         }
 
-        public async Task<SearchAndCompare.Domain.Models.Course> GetSearchAndCompareCourse(string ucasCode, string courseCode)
+        public async Task<SearchAndCompare.Domain.Models.Course> GetSearchAndCompareCourse(string instCode, string courseCode)
         {
-            var result = await _apiClient.Publish_GetSearchAndCompareCourseAsync(ucasCode, courseCode);
+            var result = await _apiClient.Publish_GetSearchAndCompareCourseAsync(instCode, courseCode);
             //the result is an identical obect to the SearchAnCompareCourse that we want only it's an ApiClient version of it
             //so we need to serialize/deserialize in order to get the required object to return
             var jsonCourse = JsonConvert.SerializeObject(result, _jsonSerializerSettings);
