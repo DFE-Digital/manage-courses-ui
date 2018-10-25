@@ -20,9 +20,9 @@ namespace GovUk.Education.ManageCourses.Ui.ViewModels
             AboutTrainingProviders = new List<TrainingProviderViewModel>();
         }
 
-        public string InstitutionCode { get; set; }
+        public string InstCode { get; set; }
 
-        public string InstitutionName { get; set; }
+        public string InstName { get; set; }
 
         [RegularExpression(@"^\s*(\S+\s+|\S+$){0,250}$", ErrorMessage = "Reduce the word count in training with you")]
         [Required(ErrorMessage = "Enter details about training with you")]
@@ -64,7 +64,7 @@ namespace GovUk.Education.ManageCourses.Ui.ViewModels
 
         public EnumStatus Status { get; set; }
 
-        public static OrganisationViewModel FromEnrichmentModel(UcasInstitutionEnrichmentGetModel ucasInstitutionEnrichmentGetModel, List<TrainingProviderViewModel> aboutAccreditingTrainingProviders, UcasInstitution ucasInstitution)
+        public static OrganisationViewModel FromEnrichmentModel(UcasInstitutionEnrichmentGetModel ucasInstitutionEnrichmentGetModel, List<TrainingProviderViewModel> aboutAccreditingTrainingProviders, UserOrganisation institutionSummary)
         {
             ucasInstitutionEnrichmentGetModel = ucasInstitutionEnrichmentGetModel ?? new UcasInstitutionEnrichmentGetModel { EnrichmentModel = new InstitutionEnrichmentModel() { AccreditingProviderEnrichments = new ObservableCollection<AccreditingProviderEnrichment>() } };
 
@@ -72,8 +72,8 @@ namespace GovUk.Education.ManageCourses.Ui.ViewModels
 
             var result = new OrganisationViewModel
             {
-                InstitutionCode = ucasInstitution.InstCode,
-                InstitutionName = ucasInstitution.InstFull,
+                InstCode = institutionSummary.UcasCode,
+                InstName = institutionSummary.OrganisationName,
                 TrainWithUs = enrichmentModel.TrainWithUs,
                 TrainWithDisability = enrichmentModel.TrainWithDisability,
                 LastPublishedTimestampUtc = ucasInstitutionEnrichmentGetModel.LastPublishedTimestampUtc,

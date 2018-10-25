@@ -28,7 +28,7 @@ namespace ManageCoursesUi.Tests
         [Test]
         public void Index_IfNoOrgs_Returns401()
         {
-            mockApi.Setup(x => x.GetOrganisations())
+            mockApi.Setup(x => x.GetInstitutionSummaries())
                 .Returns(Task.FromResult((IEnumerable<UserOrganisation>) new List<UserOrganisation>()));
 
             var res = sut.Index().Result;
@@ -40,7 +40,7 @@ namespace ManageCoursesUi.Tests
         [Test]
         public void Index_IfApiThrows401_Returns401()
         {
-            mockApi.Setup(x => x.GetOrganisations())
+            mockApi.Setup(x => x.GetInstitutionSummaries())
                 .ThrowsAsync(new SwaggerException("uh-oh...", 401, "", new Dictionary<string, IEnumerable<string>>(), new Exception("inner")));
 
             var res = sut.Index().Result;

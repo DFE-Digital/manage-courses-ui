@@ -1,15 +1,15 @@
-﻿@model VariantViewModel
+﻿@model CourseViewModel
 
 @{
   Layout = "_Layout";
-  ViewBag.Title = Model.Course.Name;
-  var link = $"mailto:becomingateacher@digital.education.gov.uk?subject=Problem%20with%20course%20{Model.Course.ProviderCode}%20{Model.Course.ProgrammeCode}";
+  ViewBag.Title = Model.Course.CourseTitle;
+  var link = $"mailto:becomingateacher@digital.education.gov.uk?subject=Problem%20with%20course%20{Model.Course.InstCode}%20{Model.Course.CourseCode}";
 
   var courseEnrichment = Model.CourseEnrichment;
   var routeData = courseEnrichment.RouteData;
 }
 
-<a href="@Url.Action("Show", "Organisation", new {ucasCode = Model.Course.UcasCode})" class="govuk-back-link">Back</a>
+<a href="@Url.Action("Show", "Organisation", new {instCode = Model.Course.InstCode})" class="govuk-back-link">Back</a>
 
 <main role="main" class="govuk-main-wrapper" id="main-content">
   @await Html.PartialAsync("~/Views/Shared/_Alerts.cshtml")
@@ -17,7 +17,7 @@
 
   <h1 class="govuk-heading-xl">
     <span class="govuk-caption-xl">@Model.Course.Type</span>
-    @Model.Course.Name (@Model.Course.ProgrammeCode)
+    @Model.Course.CourseTitle (@Model.Course.CourseCode)
   </h1>
 
   <div class="govuk-grid-row">
@@ -26,12 +26,12 @@
         <div class="course-parts__item">
           <h2 class="course-parts__title">Information from UCAS</h2>
 
-          @if(Model.Course.StatusAsEnum != CourseVariantStatus.Running)
+          @if(Model.Course.StatusAsEnum != CourseRunningStatus.Running)
           {
             <div class="govuk-warning-text govuk-warning-text--inline">
               <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
               <strong class="govuk-warning-text__text">
-                @if(Model.Course.StatusAsEnum == CourseVariantStatus.New)
+                @if(Model.Course.StatusAsEnum == CourseRunningStatus.New)
                 {
                   <text>This course is new and not yet running.</text>
                 }
@@ -42,7 +42,7 @@
               </strong>
             </div>
             <p class="govuk-body">
-              @if(Model.Course.StatusAsEnum == CourseVariantStatus.New)
+              @if(Model.Course.StatusAsEnum == CourseRunningStatus.New)
               {
                 <text>It won&#8217;t appear online until you have made changes in <a href='https://update.ucas.co.uk/netupdate2/Welcome.htm'>UCAS web-link</a>. Set one or more training locations to &ldquo;running&rdquo; and set their Publish value to &ldquo;yes&rdquo;. You must do this so that applicants can apply on UCAS.</text>
               }
@@ -61,21 +61,21 @@
               <dt>Status:</dt>
               <dd>@Model.Course.Status</dd>
             }
-            @if (!string.IsNullOrEmpty(@Model.Course.Name)) {
+            @if (!string.IsNullOrEmpty(@Model.Course.CourseTitle)) {
               <dt>Name:</dt>
-              <dd>@Model.Course.Name</dd>
+              <dd>@Model.Course.CourseTitle</dd>
             }
-            @if (!string.IsNullOrEmpty(@Model.Course.UcasCode)) {
+            @if (!string.IsNullOrEmpty(@Model.Course.InstCode)) {
               <dt>Training provider code:</dt>
-              <dd>@Model.Course.UcasCode</dd>
+              <dd>@Model.Course.InstCode</dd>
             }
-            @if (!string.IsNullOrEmpty(@Model.Course.ProgrammeCode)) {
+            @if (!string.IsNullOrEmpty(@Model.Course.CourseCode)) {
               <dt>Training programme code:</dt>
-              <dd>@Model.Course.ProgrammeCode</dd>
+              <dd>@Model.Course.CourseCode</dd>
             }
-            @if (!string.IsNullOrEmpty(@Model.Course.Accrediting)) {
+            @if (!string.IsNullOrEmpty(@Model.Course.AccreditingInstName)) {
               <dt>Accredited provider:</dt>
-              <dd>@Model.Course.Accrediting</dd>
+              <dd>@Model.Course.AccreditingInstName</dd>
             }
             @if (!string.IsNullOrEmpty(@Model.Course.GetRoute())) {
               <dt>Route:</dt>
@@ -96,7 +96,7 @@
           </dl>
         </div>
 
-      @if(Model.Course.StatusAsEnum != CourseVariantStatus.NotRunning)
+      @if(Model.Course.StatusAsEnum != CourseRunningStatus.NotRunning)
       {
         @await Html.PartialAsync("shared/_AboutCourseOverview", Model.CourseEnrichment)
 
@@ -108,27 +108,27 @@
 
         <div class="course-parts__item">
           <h2 class="course-parts__title">Training locations</h2>
-          @foreach (var school in Model.Course.Schools)
+          @foreach (var site in Model.Course.Sites)
           {
-            <h3 class="govuk-heading-s">@school.LocationName (Code: @school.Code)</h3>
+            <h3 class="govuk-heading-s">@site.LocationName (Code: @site.Code)</h3>
             <dl class="govuk-list govuk-list--description">
-              @if (!string.IsNullOrEmpty(@school.Address)) {
+              @if (!string.IsNullOrEmpty(@site.Address)) {
                 <dt>Address:</dt>
-                <dd>@school.Address</dd>
+                <dd>@site.Address</dd>
               }
-              @if (!string.IsNullOrEmpty(@school.Status))
+              @if (!string.IsNullOrEmpty(@site.Status))
               {
                 <dt>Status:</dt>
-                <dd>@school.GetSchoolStatus()</dd>
+                <dd>@site.GetSiteStatus()</dd>
               }
-              @if (!string.IsNullOrEmpty(@school.VacStatus))
+              @if (!string.IsNullOrEmpty(@site.VacStatus))
               {
                 <dt>Vacancies:</dt>
-                <dd>@school.GetVacancyStatus()</dd>
+                <dd>@site.GetVacancyStatus()</dd>
               }
-              @if (!string.IsNullOrEmpty(@school.ApplicationsAcceptedFrom)) {
+              @if (!string.IsNullOrEmpty(@site.ApplicationsAcceptedFrom)) {
                 <dt>Apply from:</dt>
-                <dd>@school.ApplicationsAcceptedFrom</dd>
+                <dd>@site.ApplicationsAcceptedFrom</dd>
               }
             </dl>
           }
@@ -140,7 +140,7 @@
     </div>
 
     <div class="govuk-grid-column-one-third">
-    @if(Model.Course.StatusAsEnum != CourseVariantStatus.NotRunning)
+    @if(Model.Course.StatusAsEnum != CourseRunningStatus.NotRunning)
     {
       <aside class="related">
         @switch(courseEnrichment.DeterminePublicationState())

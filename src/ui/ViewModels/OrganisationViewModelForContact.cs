@@ -6,9 +6,9 @@ namespace GovUk.Education.ManageCourses.Ui.ViewModels
 {
     public class OrganisationViewModelForContact
     {        
-        public string InstitutionCode { get; set; }
+        public string InstCode { get; set; }
 
-        public string InstitutionName { get; set; }
+        public string InstName { get; set; }
 
 
         [EmailAddress]
@@ -38,8 +38,8 @@ namespace GovUk.Education.ManageCourses.Ui.ViewModels
         {
             return new OrganisationViewModelForContact
             {
-                InstitutionCode = model.InstitutionCode,
-                InstitutionName = model.InstitutionName,
+                InstCode = model.InstCode,
+                InstName = model.InstName,
                 EmailAddress = model.EmailAddress,
                 Telephone = model.Telephone,
                 Url = model.Url,

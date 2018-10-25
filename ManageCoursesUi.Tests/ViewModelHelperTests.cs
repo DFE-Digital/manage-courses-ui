@@ -54,16 +54,16 @@ namespace ManageCoursesUi.Tests
         [TestCase("", "", "", "", "")]
         public void TestGetCourseStatus(string status1, string status2, string status3, string status4, string expectedResult)
         {
-            var schools = new List<School>
+            var schools = new List<CourseSite>
             {
-                new School {Status = status1},
-                new School {Status = status2},
-                new School {Status = status3},
-                new School {Status = status4}
+                new CourseSite {Status = status1},
+                new CourseSite {Status = status2},
+                new CourseSite {Status = status3},
+                new CourseSite {Status = status4}
             };
             var course = new Course
             {
-                Schools = new ObservableCollection<School>(schools)
+                CourseSites = new ObservableCollection<CourseSite>(schools)
             };
             var result = course.GetCourseStatus();
             result.Should().Be(expectedResult);
@@ -78,10 +78,10 @@ namespace ManageCoursesUi.Tests
         [TestCase("S", "Suspended")]
         [TestCase("s", "Suspended")]
         [TestCase("", "")]
-        public void TestGetSchoolStatus(string status, string expectedResult)
+        public void TestGetSiteStatus(string status, string expectedResult)
         {
-            var schoolViewModel = new SchoolViewModel { Status = status };
-            var result = schoolViewModel.GetSchoolStatus();
+            var schoolViewModel = new SiteViewModel { Status = status };
+            var result = schoolViewModel.GetSiteStatus();
             result.Should().Be(expectedResult);
         }
 
@@ -94,13 +94,13 @@ namespace ManageCoursesUi.Tests
         [TestCase("b", false, "No")]
         public void TestGetHasVacancies(string status, bool hasVacancies, string expectedResult)
         {
-            var schools = new List<School>
+            var schools = new List<CourseSite>
             {
-                new School {Status = status},
+                new CourseSite {Status = status},
             };
             var course = new Course
             {
-                Schools = new ObservableCollection<School>(schools),
+                CourseSites = new ObservableCollection<CourseSite>(schools),
                 HasVacancies = hasVacancies
             };
             var result = course.GetHasVacancies();
@@ -119,7 +119,7 @@ namespace ManageCoursesUi.Tests
         [TestCase("", "")]
         public void TestGetRoute(string route, string expectedResult)
         {
-            var courseVariantViewModel = new CourseVariantViewModel { Route = route };
+            var courseVariantViewModel = new CourseDetailsViewModel { Route = route };
             var result = courseVariantViewModel.GetRoute();
             result.Should().Be(expectedResult);
         }
@@ -132,7 +132,7 @@ namespace ManageCoursesUi.Tests
         [TestCase("b", "Full time or part time")]
         public void TestGetStudyMode(string studyMode, string expectedResult)
         {
-            var courseVariantViewModel = new CourseVariantViewModel { StudyMode = studyMode };
+            var courseVariantViewModel = new CourseDetailsViewModel { StudyMode = studyMode };
             var result = courseVariantViewModel.GetStudyMode();
             result.Should().Be(expectedResult);
         }
@@ -147,7 +147,7 @@ namespace ManageCoursesUi.Tests
         [TestCase(null, "")]
         public void TestGetAgeRange(string ageRange, string expectedResult)
         {
-            var courseVariantViewModel = new CourseVariantViewModel { AgeRange = ageRange };
+            var courseVariantViewModel = new CourseDetailsViewModel { AgeRange = ageRange };
             var result = courseVariantViewModel.GetAgeRange();
             result.Should().Be(expectedResult);
         }
@@ -162,7 +162,7 @@ namespace ManageCoursesUi.Tests
         [TestCase(null, "")]
         public void TestGetQualification(string qualification, string expectedResult)
         {
-            var courseVariantViewModel = new CourseVariantViewModel { Qualifications = qualification };
+            var courseVariantViewModel = new CourseDetailsViewModel { Qualifications = qualification };
             var result = courseVariantViewModel.GetQualification();
             result.Should().Be(expectedResult);
         }

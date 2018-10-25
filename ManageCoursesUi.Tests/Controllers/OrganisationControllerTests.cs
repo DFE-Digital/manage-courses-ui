@@ -25,19 +25,19 @@ namespace ManageCoursesUi.Tests
         [Test]
         public async Task Show()
         {
-            var ucasCode = "UCASCODE";
+            var instCode = "INSTCODE";
             var organisationName = "organisationName";
             // Todo: fix this ObservableCollection.
             var instCourses = new InstitutionCourses
             {
-                InstitutionCode = ucasCode,
+                InstitutionCode = instCode,
                 InstitutionName = organisationName,
                 Courses = new ObservableCollection<Course>
                 {
-                new Course
-                {
-                InstCode = ucasCode
-                }
+                    new Course
+                    {
+                        Institution = new Institution { InstCode = instCode }
+                    }
                 }
             };
             var orgs = new List<UserOrganisation>
@@ -45,19 +45,19 @@ namespace ManageCoursesUi.Tests
                 new UserOrganisation(),
                 new UserOrganisation
                 {
-                UcasCode = ucasCode,
+                UcasCode = instCode,
                 OrganisationName = organisationName
                 }
             };
 
             var apiMock = new Mock<IManageApi>();
-            apiMock.Setup(x => x.GetCoursesByOrganisation(ucasCode)).ReturnsAsync(instCourses);
+            apiMock.Setup(x => x.GetCoursesOfInstitution(instCode)).ReturnsAsync(instCourses);
 
-            apiMock.Setup(x => x.GetOrganisations()).ReturnsAsync(orgs);
+            apiMock.Setup(x => x.GetInstitutionSummaries()).ReturnsAsync(orgs);
 
             var controller = new OrganisationController(apiMock.Object);
 
-            var result = await controller.Show(ucasCode);
+            var result = await controller.Show(instCode);
 
             var viewResult = result as ViewResult;
 
@@ -71,73 +71,73 @@ namespace ManageCoursesUi.Tests
         }
 
         [Test]
-        public async Task RequestAccess()
+        public void RequestAccess()
         {
-            var ucasCode = "UCASCODE";
+            var instCode = "INSTCODE";
             var organisationName = "organisationName";
 
             var orgs = new List<UserOrganisation>
             {
                 new UserOrganisation
                 {
-                UcasCode = ucasCode,
+                UcasCode = instCode,
                 OrganisationName = organisationName
                 }
             };
 
             var apiMock = new Mock<IManageApi>();
 
-            apiMock.Setup(x => x.GetOrganisations())
+            apiMock.Setup(x => x.GetInstitutionSummaries())
                 .ReturnsAsync(orgs);
 
             var controller = new OrganisationController(apiMock.Object);
 
-            var result = await controller.RequestAccess(ucasCode);
+            var result = controller.RequestAccess(instCode);
 
             var viewResult = result as ViewResult;
 
             Assert.IsNotNull(viewResult);
             var model = viewResult.ViewData.Model as RequestAccessViewModel;
 
-            Assert.AreEqual(ucasCode, controller.ViewBag.UcasCode);
+            Assert.AreEqual(instCode, controller.ViewBag.InstCode);
         }
 
         [Test]
         public async Task RequestAccessPost_invalid()
         {
-            var ucasCode = "UCASCODE";
+            var instCode = "INSTCODE";
             var organisationName = "organisationName";
 
             var orgs = new List<UserOrganisation>
             {
                 new UserOrganisation
                 {
-                UcasCode = ucasCode,
+                UcasCode = instCode,
                 OrganisationName = organisationName
                 }
             };
 
             var apiMock = new Mock<IManageApi>();
 
-            apiMock.Setup(x => x.GetOrganisations())
+            apiMock.Setup(x => x.GetInstitutionSummaries())
                 .ReturnsAsync(orgs);
 
             var controller = new OrganisationController(apiMock.Object);
             controller.ModelState.AddModelError("you", "failed");
-            var result = await controller.RequestAccessPost(ucasCode, new RequestAccessViewModel());
+            var result = await controller.RequestAccessPost(instCode, new RequestAccessViewModel());
 
             var viewResult = result as ViewResult;
 
             Assert.IsNotNull(viewResult);
             var model = viewResult.ViewData.Model as RequestAccessViewModel;
 
-            Assert.AreEqual(ucasCode, controller.ViewBag.UcasCode);
+            Assert.AreEqual(instCode, controller.ViewBag.InstCode);
         }
 
         [Test]
         public async Task RequestAccessPost()
         {
-            var ucasCode = "UCASCODE";
+            var instCode = "INSTCODE";
             var viewModel = new RequestAccessViewModel { FirstName = "FirstName", LastName = "LastName" };
             var tempKey = "RequestAccess_To_Name";
 
@@ -148,10 +148,10 @@ namespace ManageCoursesUi.Tests
             var controller = new OrganisationController(apiMock.Object);
             controller.TempData = tempDataMock.Object;
 
-            var result = await controller.RequestAccessPost(ucasCode, viewModel);
+            var result = await controller.RequestAccessPost(instCode, viewModel);
 
-            apiMock.Verify(x => x.GetOrganisations(), Times.Never);
-            apiMock.Verify(x => x.LogAccessRequest(It.IsAny<AccessRequest>()), Times.Once);
+            apiMock.Verify(x => x.GetInstitutionSummaries(), Times.Never);
+            apiMock.Verify(x => x.CreateAccessRequest(It.IsAny<AccessRequest>()), Times.Once);
 
             tempDataMock.Verify(x => x.Add(tempKey, $"{viewModel.FirstName} {viewModel.LastName}"));
 
@@ -160,20 +160,20 @@ namespace ManageCoursesUi.Tests
             Assert.IsNotNull(actionResult);
             Assert.AreEqual("Show", actionResult.ActionName);
             Assert.AreEqual("Organisation", actionResult.ControllerName);
-            Assert.AreEqual(ucasCode, actionResult.RouteValues[ucasCode]);
+            Assert.AreEqual(instCode, actionResult.RouteValues[instCode]);
         }
 
         [Test]
         public async Task About()
         {
-            var ucasCode = "UCASCODE";
+            var instCode = "INSTCODE";
             var organisationName = "OrganisationName";
 
             var userOrganisations = new List<UserOrganisation>
             {
                 new UserOrganisation
                 {
-                UcasCode = ucasCode,
+                UcasCode = instCode,
                 OrganisationName = organisationName
                 }
             };
@@ -187,12 +187,12 @@ namespace ManageCoursesUi.Tests
             {
                 Courses = new ObservableCollection<Course>
                 {
-                new Course { },
-                new Course { AccreditingProviderId = ucasCode.ToUpperInvariant() },
-                new Course { AccreditingProviderId = ucasCode.ToLowerInvariant() },
-                new Course { AccreditingProviderId = ucasCode },
-                new Course { AccreditingProviderId = ucasCode + 1, AccreditingProviderName = institutionName },
-                new Course { AccreditingProviderId = ucasCode + 2 },
+                    new Course { },
+                    new Course { AccreditingInstitution = new Institution { InstCode = instCode.ToUpperInvariant() }},
+                    new Course { AccreditingInstitution = new Institution { InstCode = instCode.ToLowerInvariant() }},
+                    new Course { AccreditingInstitution = new Institution { InstCode = instCode }},
+                    new Course { AccreditingInstitution = new Institution { InstCode = instCode + 1, InstName = institutionName }},
+                    new Course { AccreditingInstitution = new Institution { InstCode = instCode + 2 }},
                 }
             };
             var now = DateTime.Now;
@@ -204,7 +204,7 @@ namespace ManageCoursesUi.Tests
                 {
                 AccreditingProviderEnrichments = new ObservableCollection<AccreditingProviderEnrichment>
                 {
-                new AccreditingProviderEnrichment { UcasInstitutionCode = ucasCode + 2, Description = description }
+                new AccreditingProviderEnrichment { UcasInstitutionCode = instCode + 2, Description = description }
                 },
                 TrainWithUs = trainWithUs,
                 TrainWithDisability = trainWithDisability
@@ -213,30 +213,30 @@ namespace ManageCoursesUi.Tests
 
             var apiMock = new Mock<IManageApi>();
 
-            apiMock.Setup(x => x.GetUcasInstitution(ucasCode)).ReturnsAsync(
-                new UcasInstitution { InstCode = ucasCode, InstFull = organisationName }
+            apiMock.Setup(x => x.GetInstitutionSummary(instCode)).ReturnsAsync(
+                new UserOrganisation { UcasCode = instCode, OrganisationName = organisationName }
             );
 
-            apiMock.Setup(x => x.GetCoursesByOrganisation(ucasCode))
+            apiMock.Setup(x => x.GetCoursesOfInstitution(instCode))
                 .ReturnsAsync(institutionCourses);
 
-            apiMock.Setup(x => x.GetEnrichmentOrganisation(ucasCode))
+            apiMock.Setup(x => x.GetInstitutitionEnrichment(instCode))
                 .ReturnsAsync(ucasInstitutionEnrichmentGetModel);
 
             var controller = new OrganisationController(apiMock.Object);
 
-            var result = await controller.About(ucasCode);
+            var result = await controller.About(instCode);
 
             var viewResult = result as ViewResult;
 
             Assert.IsNotNull(viewResult);
             var organisationViewModel = viewResult.ViewData.Model as OrganisationViewModelForAbout;
 
-            Assert.AreEqual(organisationName, organisationViewModel.InstitutionName);
+            Assert.AreEqual(organisationName, organisationViewModel.InstName);
             Assert.AreEqual(trainWithUs, organisationViewModel.TrainWithUs);
             Assert.AreEqual(2, organisationViewModel.AboutTrainingProviders.Count);
-            Assert.AreEqual(description, organisationViewModel.AboutTrainingProviders.First(x => x.InstitutionCode == ucasCode + 2).Description);
-            Assert.AreEqual(institutionName, organisationViewModel.AboutTrainingProviders.First(x => x.InstitutionCode == ucasCode + 1).InstitutionName);
+            Assert.AreEqual(description, organisationViewModel.AboutTrainingProviders.First(x => x.InstCode == instCode + 2).Description);
+            Assert.AreEqual(institutionName, organisationViewModel.AboutTrainingProviders.First(x => x.InstCode == instCode + 1).InstName);
             Assert.AreEqual(trainWithDisability, organisationViewModel.TrainWithDisability);
             Assert.AreEqual(now, organisationViewModel.LastPublishedTimestampUtc);
             Assert.AreEqual(EnumStatus.Published, organisationViewModel.Status);
@@ -245,7 +245,7 @@ namespace ManageCoursesUi.Tests
         [Test]
         public async Task AboutPost_SaveOrganisation()
         {
-            var ucasCode = "UCASCODE";
+            var instCode = "INSTCODE";
             var viewModel = new OrganisationViewModelForAbout
             {
                 AboutTrainingProviders = new List<TrainingProviderViewModel>()
@@ -257,17 +257,17 @@ namespace ManageCoursesUi.Tests
             {
                 Courses = new ObservableCollection<Course>
                 {
-                new Course { },
-                new Course { AccreditingProviderId = ucasCode.ToUpperInvariant() },
-                new Course { AccreditingProviderId = ucasCode.ToLowerInvariant() },
-                new Course { AccreditingProviderId = ucasCode },
-                new Course { AccreditingProviderId = ucasCode + 1, AccreditingProviderName = institutionName },
-                new Course { AccreditingProviderId = ucasCode + 2 },
+                    new Course { },
+                    new Course { AccreditingInstitution = new Institution { InstCode = instCode.ToUpperInvariant() }},
+                    new Course { AccreditingInstitution = new Institution { InstCode = instCode.ToLowerInvariant() }},
+                    new Course { AccreditingInstitution = new Institution { InstCode = instCode }},
+                    new Course { AccreditingInstitution = new Institution { InstCode = instCode + 1, InstName = institutionName }},
+                    new Course { AccreditingInstitution = new Institution { InstCode = instCode + 2 }},
                 }
             };
 
             var apiMock = new Mock<IManageApi>();
-            apiMock.Setup(x => x.GetCoursesByOrganisation(ucasCode))
+            apiMock.Setup(x => x.GetCoursesOfInstitution(instCode))
                 .ReturnsAsync(institutionCourses);
 
             var enrichmentModel = new InstitutionEnrichmentModel { AccreditingProviderEnrichments = new ObservableCollection<AccreditingProviderEnrichment> { } };
@@ -277,7 +277,7 @@ namespace ManageCoursesUi.Tests
                 EnrichmentModel = enrichmentModel
             };
 
-            apiMock.Setup(x => x.GetEnrichmentOrganisation(ucasCode))
+            apiMock.Setup(x => x.GetInstitutitionEnrichment(instCode))
                 .ReturnsAsync(ucasInstitutionEnrichmentGetModel);
 
             var objectValidator = new Mock<IObjectModelValidator>();
@@ -292,22 +292,22 @@ namespace ManageCoursesUi.Tests
 
             controller.TempData = new Mock<ITempDataDictionary>().Object;
 
-            var result = await controller.AboutPost(ucasCode, viewModel);
+            var result = await controller.AboutPost(instCode, viewModel);
 
-            apiMock.Verify(x => x.SaveEnrichmentOrganisation(ucasCode, It.IsAny<UcasInstitutionEnrichmentPostModel>()), Times.Once);
+            apiMock.Verify(x => x.SaveInstitutionEnrichment(instCode, It.IsAny<UcasInstitutionEnrichmentPostModel>()), Times.Once);
 
             var actionResult = result as RedirectToActionResult;
 
             Assert.IsNotNull(actionResult);
             Assert.AreEqual("Details", actionResult.ActionName);
             Assert.AreEqual("Organisation", actionResult.ControllerName);
-            Assert.AreEqual(ucasCode, actionResult.RouteValues[ucasCode]);
+            Assert.AreEqual(instCode, actionResult.RouteValues[instCode]);
         }
 
         [Test]
         public void DetailsPost_PublishOrganisation_WhenApiReturnsFalse()
         {
-            var ucasCode = "UCASCODE";
+            var instCode = "INSTCODE";
             var institutionName = "InstitutionName";
 
             var viewModel = new OrganisationViewModel
@@ -319,21 +319,21 @@ namespace ManageCoursesUi.Tests
             {
                 Courses = new ObservableCollection<Course>
                 {
-                new Course { },
-                new Course { AccreditingProviderId = ucasCode.ToUpperInvariant() },
-                new Course { AccreditingProviderId = ucasCode.ToLowerInvariant() },
-                new Course { AccreditingProviderId = ucasCode },
-                new Course { AccreditingProviderId = ucasCode + 1, AccreditingProviderName = institutionName },
-                new Course { AccreditingProviderId = ucasCode + 2 },
+                    new Course { },
+                    new Course { AccreditingInstitution = new Institution { InstCode = instCode.ToUpperInvariant() }},
+                    new Course { AccreditingInstitution = new Institution { InstCode = instCode.ToLowerInvariant() }},
+                    new Course { AccreditingInstitution = new Institution { InstCode = instCode }},
+                    new Course { AccreditingInstitution = new Institution { InstCode = instCode + 1, InstName = institutionName }},
+                    new Course { AccreditingInstitution = new Institution { InstCode = instCode + 2 }},
                 }
             };
 
             var apiMock = new Mock<IManageApi>();
 
-            apiMock.Setup(x => x.GetUcasInstitution(ucasCode))
-                .ReturnsAsync(new UcasInstitution { InstCode = ucasCode, InstFull = institutionName });
+            apiMock.Setup(x => x.GetInstitutionSummary(instCode))
+                .ReturnsAsync(new UserOrganisation { UcasCode = instCode, OrganisationName = institutionName });
 
-            apiMock.Setup(x => x.GetCoursesByOrganisation(ucasCode))
+            apiMock.Setup(x => x.GetCoursesOfInstitution(instCode))
                 .ReturnsAsync(institutionCourses);
 
             var enrichmentModel = new InstitutionEnrichmentModel { AccreditingProviderEnrichments = new ObservableCollection<AccreditingProviderEnrichment> { } };
@@ -343,7 +343,7 @@ namespace ManageCoursesUi.Tests
                 EnrichmentModel = enrichmentModel
             };
 
-            apiMock.Setup(x => x.GetEnrichmentOrganisation(ucasCode))
+            apiMock.Setup(x => x.GetInstitutitionEnrichment(instCode))
                 .ReturnsAsync(ucasInstitutionEnrichmentGetModel);
 
             var objectValidator = new Mock<IObjectModelValidator>();
@@ -357,13 +357,13 @@ namespace ManageCoursesUi.Tests
 
             controller.TempData = new Mock<ITempDataDictionary>().Object;
 
-            Assert.ThrowsAsync<InvalidOperationException>( async () => await controller.DetailsPost(ucasCode, viewModel));
+            Assert.ThrowsAsync<InvalidOperationException>( async () => await controller.DetailsPost(instCode, viewModel));
         }
 
         [Test]
         public async Task DetailsPost_PublishOrganisation_WhenApiReturnsTrue()
         {
-            var ucasCode = "UCASCODE";
+            var instCode = "INSTCODE";
             var viewModel = new OrganisationViewModel
             {
                 AboutTrainingProviders = new List<TrainingProviderViewModel>()
@@ -375,20 +375,20 @@ namespace ManageCoursesUi.Tests
             {
                 Courses = new ObservableCollection<Course>
                 {
-                new Course { },
-                new Course { AccreditingProviderId = ucasCode.ToUpperInvariant() },
-                new Course { AccreditingProviderId = ucasCode.ToLowerInvariant() },
-                new Course { AccreditingProviderId = ucasCode },
-                new Course { AccreditingProviderId = ucasCode + 1, AccreditingProviderName = institutionName },
-                new Course { AccreditingProviderId = ucasCode + 2 },
+                    new Course { },
+                    new Course { AccreditingInstitution = new Institution { InstCode = instCode.ToUpperInvariant() }},
+                    new Course { AccreditingInstitution = new Institution { InstCode = instCode.ToLowerInvariant() }},
+                    new Course { AccreditingInstitution = new Institution { InstCode = instCode }},
+                    new Course { AccreditingInstitution = new Institution { InstCode = instCode + 1, InstName = institutionName }},
+                    new Course { AccreditingInstitution = new Institution { InstCode = instCode + 2 }},
                 }
             };
             var apiMock = new Mock<IManageApi>();
 
-            apiMock.Setup(x => x.GetUcasInstitution(ucasCode))
-                .ReturnsAsync(new UcasInstitution { InstCode = ucasCode, InstFull = institutionName });
+            apiMock.Setup(x => x.GetInstitutionSummary(instCode))
+                .ReturnsAsync(new UserOrganisation { UcasCode = instCode, OrganisationName = institutionName });
 
-            apiMock.Setup(x => x.GetCoursesByOrganisation(ucasCode))
+            apiMock.Setup(x => x.GetCoursesOfInstitution(instCode))
                 .ReturnsAsync(institutionCourses);
 
             var enrichmentModel = new InstitutionEnrichmentModel { AccreditingProviderEnrichments = new ObservableCollection<AccreditingProviderEnrichment>() };
@@ -398,7 +398,7 @@ namespace ManageCoursesUi.Tests
                 EnrichmentModel = enrichmentModel
             };
 
-            apiMock.Setup(x => x.GetEnrichmentOrganisation(ucasCode))
+            apiMock.Setup(x => x.GetInstitutitionEnrichment(instCode))
                 .ReturnsAsync(ucasInstitutionEnrichmentGetModel);
 
             var objectValidator = new Mock<IObjectModelValidator>();
@@ -407,26 +407,26 @@ namespace ManageCoursesUi.Tests
                 It.IsAny<string>(),
                 It.IsAny<Object>()));
 
-            apiMock.Setup(x => x.PublishCoursesToSearchAndCompare(ucasCode))
+            apiMock.Setup(x => x.PublishAllCoursesOfInstitutionToSearchAndCompare(instCode))
                 .ReturnsAsync(true);
             var controller = new OrganisationController(apiMock.Object);
             controller.ObjectValidator = objectValidator.Object;
 
             controller.TempData = new Mock<ITempDataDictionary>().Object;
 
-            var result = await controller.DetailsPost(ucasCode, viewModel);
+            var result = await controller.DetailsPost(instCode, viewModel);
 
             var actionResult = result as RedirectToActionResult;
 
             Assert.IsNotNull(actionResult);
             Assert.AreEqual("Details", actionResult.ActionName);
-            Assert.AreEqual(ucasCode, actionResult.RouteValues[ucasCode]);
+            Assert.AreEqual(instCode, actionResult.RouteValues[instCode]);
         }
 
         [Test]
         public async Task DetailsPost_PublishOrganisation_invalid()
         {
-            var ucasCode = "UCASCODE";
+            var instCode = "INSTCODE";
 
             var organisationName = "OrganisationName";
 
@@ -434,7 +434,7 @@ namespace ManageCoursesUi.Tests
             {
                 new UserOrganisation
                 {
-                UcasCode = ucasCode,
+                UcasCode = instCode,
                 OrganisationName = organisationName
                 }
             };
@@ -448,12 +448,12 @@ namespace ManageCoursesUi.Tests
             {
                 Courses = new ObservableCollection<Course>
                 {
-                new Course { },
-                new Course { AccreditingProviderId = ucasCode.ToUpperInvariant() },
-                new Course { AccreditingProviderId = ucasCode.ToLowerInvariant() },
-                new Course { AccreditingProviderId = ucasCode },
-                new Course { AccreditingProviderId = ucasCode + 1, AccreditingProviderName = institutionName },
-                new Course { AccreditingProviderId = ucasCode + 2 },
+                    new Course { },
+                    new Course { AccreditingInstitution = new Institution { InstCode = instCode.ToUpperInvariant() }},
+                    new Course { AccreditingInstitution = new Institution { InstCode = instCode.ToLowerInvariant() }},
+                    new Course { AccreditingInstitution = new Institution { InstCode = instCode }},
+                    new Course { AccreditingInstitution = new Institution { InstCode = instCode + 1, InstName = institutionName }},
+                    new Course { AccreditingInstitution = new Institution { InstCode = instCode + 2 }},
                 }
             };
             var now = DateTime.Now;
@@ -465,7 +465,7 @@ namespace ManageCoursesUi.Tests
                 {
                 AccreditingProviderEnrichments = new ObservableCollection<AccreditingProviderEnrichment>
                 {
-                new AccreditingProviderEnrichment { UcasInstitutionCode = ucasCode + 2, Description = description }
+                new AccreditingProviderEnrichment { UcasInstitutionCode = instCode + 2, Description = description }
                 },
                 TrainWithUs = trainWithUs,
                 TrainWithDisability = trainWithDisability
@@ -479,34 +479,34 @@ namespace ManageCoursesUi.Tests
 
             var apiMock = new Mock<IManageApi>();
 
-            apiMock.Setup(x => x.GetUcasInstitution(ucasCode))
-                .ReturnsAsync(new UcasInstitution { InstCode = ucasCode, InstFull = organisationName });
+            apiMock.Setup(x => x.GetInstitutionSummary(instCode))
+                .ReturnsAsync(new UserOrganisation { UcasCode = instCode, OrganisationName = organisationName });
 
-            apiMock.Setup(x => x.GetOrganisations())
+            apiMock.Setup(x => x.GetInstitutionSummaries())
                 .ReturnsAsync(userOrganisations);
 
-            apiMock.Setup(x => x.GetCoursesByOrganisation(ucasCode))
+            apiMock.Setup(x => x.GetCoursesOfInstitution(instCode))
                 .ReturnsAsync(institutionCourses);
 
-            apiMock.Setup(x => x.GetEnrichmentOrganisation(ucasCode))
+            apiMock.Setup(x => x.GetInstitutitionEnrichment(instCode))
                 .ReturnsAsync(ucasInstitutionEnrichmentGetModel);
 
-            apiMock.Setup(x => x.PublishCoursesToSearchAndCompare(ucasCode))
+            apiMock.Setup(x => x.PublishAllCoursesOfInstitutionToSearchAndCompare(instCode))
                 .ReturnsAsync(true);
             var controller = new OrganisationControllerMockedValidation(apiMock.Object);
 
-            var result = await controller.DetailsPost(ucasCode, viewModel);
+            var result = await controller.DetailsPost(instCode, viewModel);
 
             var viewResult = result as ViewResult;
 
             Assert.IsNotNull(viewResult);
             var organisationViewModel = viewResult.ViewData.Model as OrganisationViewModel;
 
-            Assert.AreEqual(organisationName, organisationViewModel.InstitutionName);
+            Assert.AreEqual(organisationName, organisationViewModel.InstName);
             Assert.AreEqual(trainWithUs, organisationViewModel.TrainWithUs);
             Assert.AreEqual(2, organisationViewModel.AboutTrainingProviders.Count);
-            Assert.AreEqual(description, organisationViewModel.AboutTrainingProviders.First(x => x.InstitutionCode == ucasCode + 2).Description);
-            Assert.AreEqual(institutionName, organisationViewModel.AboutTrainingProviders.First(x => x.InstitutionCode == ucasCode + 1).InstitutionName);
+            Assert.AreEqual(description, organisationViewModel.AboutTrainingProviders.First(x => x.InstCode == instCode + 2).Description);
+            Assert.AreEqual(institutionName, organisationViewModel.AboutTrainingProviders.First(x => x.InstCode == instCode + 1).InstName);
             Assert.AreEqual(trainWithDisability, organisationViewModel.TrainWithDisability);
             Assert.AreEqual(now, organisationViewModel.LastPublishedTimestampUtc);
             Assert.AreEqual(EnumStatus.Published, organisationViewModel.Status);
@@ -531,16 +531,16 @@ namespace ManageCoursesUi.Tests
             };
 
             var apiMock = new Mock<IManageApi>();
-            apiMock.Setup(x => x.GetEnrichmentOrganisation("ABC")).ReturnsAsync(existingEnrichment);
+            apiMock.Setup(x => x.GetInstitutitionEnrichment("ABC")).ReturnsAsync(existingEnrichment);
 
             UcasInstitutionEnrichmentPostModel result = null;
 
-            apiMock.Setup(x => x.SaveEnrichmentOrganisation("ABC", It.IsAny<UcasInstitutionEnrichmentPostModel>()))
+            apiMock.Setup(x => x.SaveInstitutionEnrichment("ABC", It.IsAny<UcasInstitutionEnrichmentPostModel>()))
                 .Callback((string a, UcasInstitutionEnrichmentPostModel b) => result = b)
                 .Returns(Task.CompletedTask);
 
-            apiMock.Setup(x => x.GetCoursesByOrganisation("ABC")).ReturnsAsync(new InstitutionCourses{
-                Courses = new ObservableCollection<Course> { new Course { AccreditingProviderId = "ACC" } }
+            apiMock.Setup(x => x.GetCoursesOfInstitution("ABC")).ReturnsAsync(new InstitutionCourses{
+                Courses = new ObservableCollection<Course> { new Course { AccreditingInstitution = new Institution { InstCode = "ACC" } }}
             });
 
             var objectValidator = new Mock<IObjectModelValidator>();
@@ -558,7 +558,7 @@ namespace ManageCoursesUi.Tests
                 {
                     new TrainingProviderViewModel
                     {
-                        InstitutionCode = "ACC",
+                        InstCode = "ACC",
                         Description = null // not an empty string... this is how MVC model binding behaves
                     }
                 }
@@ -573,7 +573,7 @@ namespace ManageCoursesUi.Tests
         [Test]
         public void AboutPost_ModelState_WordCount()
         {
-            var ucasCode = "UCASCODE";
+            var instCode = "INSTCODE";
             var exceed100Words = "";
             for (int i = 0; i < 101; i++)
             {
@@ -585,8 +585,8 @@ namespace ManageCoursesUi.Tests
             {
                 AboutTrainingProviders = new List<TrainingProviderViewModel>() {
                     new TrainingProviderViewModel{ Description = exceed100Words,
-                    InstitutionName = institutionName,
-                    InstitutionCode = ucasCode + 1}
+                    InstName = institutionName,
+                    InstCode = instCode + 1}
                 }
             };
 
@@ -594,17 +594,17 @@ namespace ManageCoursesUi.Tests
             {
                 Courses = new ObservableCollection<Course>
                 {
-                new Course { },
-                new Course { AccreditingProviderId = ucasCode.ToUpperInvariant() },
-                new Course { AccreditingProviderId = ucasCode.ToLowerInvariant() },
-                new Course { AccreditingProviderId = ucasCode },
-                new Course { AccreditingProviderId = ucasCode + 1, AccreditingProviderName = institutionName },
-                new Course { AccreditingProviderId = ucasCode + 2 },
+                    new Course { },
+                    new Course { AccreditingInstitution = new Institution { InstCode = instCode.ToUpperInvariant() }},
+                    new Course { AccreditingInstitution = new Institution { InstCode = instCode.ToLowerInvariant() }},
+                    new Course { AccreditingInstitution = new Institution { InstCode = instCode }},
+                    new Course { AccreditingInstitution = new Institution { InstCode = instCode + 1, InstName = institutionName }},
+                    new Course { AccreditingInstitution = new Institution { InstCode = instCode + 2 }},
                 }
             };
 
             var apiMock = new Mock<IManageApi>();
-            apiMock.Setup(x => x.GetCoursesByOrganisation(ucasCode))
+            apiMock.Setup(x => x.GetCoursesOfInstitution(instCode))
                 .ReturnsAsync(institutionCourses);
 
 
@@ -615,10 +615,10 @@ namespace ManageCoursesUi.Tests
                 EnrichmentModel = enrichmentModel
             };
 
-            apiMock.Setup(x => x.GetOrganisations())
+            apiMock.Setup(x => x.GetInstitutionSummaries())
                 .ReturnsAsync(new List<UserOrganisation> {new UserOrganisation()});
 
-            apiMock.Setup(x => x.GetEnrichmentOrganisation(ucasCode))
+            apiMock.Setup(x => x.GetInstitutitionEnrichment(instCode))
                 .ReturnsAsync(ucasInstitutionEnrichmentGetModel);
 
             var objectValidator = new Mock<IObjectModelValidator>();
@@ -635,7 +635,7 @@ namespace ManageCoursesUi.Tests
 
             Assert.IsFalse(controller.ModelState.Any());
             Assert.IsTrue(controller.ModelState.IsValid);
-            var result = controller.AboutPost(ucasCode, viewModel).Result;
+            var result = controller.AboutPost(instCode, viewModel).Result;
 
 
             Assert.IsTrue(controller.ModelState.Any());
@@ -647,8 +647,8 @@ namespace ManageCoursesUi.Tests
             var organisationViewModel = viewResult.ViewData.Model as OrganisationViewModelForAbout;
 
             Assert.IsNotNull(viewResult);
-            Assert.AreEqual(exceed100Words, organisationViewModel.AboutTrainingProviders.First(x => x.InstitutionCode == ucasCode + 1).Description);
-            Assert.AreEqual(institutionName, organisationViewModel.AboutTrainingProviders.First(x => x.InstitutionCode == ucasCode + 1).InstitutionName);
+            Assert.AreEqual(exceed100Words, organisationViewModel.AboutTrainingProviders.First(x => x.InstCode == instCode + 1).Description);
+            Assert.AreEqual(institutionName, organisationViewModel.AboutTrainingProviders.First(x => x.InstCode == instCode + 1).InstName);
 
         }
     }

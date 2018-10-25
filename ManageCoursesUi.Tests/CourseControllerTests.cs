@@ -39,7 +39,7 @@ namespace ManageCoursesUi.Tests
                 {
                 OrganisationId = testData.InstitutionCode,
                 OrganisationName = testData.InstitutionName,
-                UcasCode = TestHelper.InstitutionCode,
+                UcasCode = TestHelper.InstCode,
                 TotalCourses = testData.Courses.Count
                 }
             };
@@ -49,20 +49,20 @@ namespace ManageCoursesUi.Tests
             var enrichmentModel = new CourseEnrichmentModel { AboutCourse = "AboutCourse", InterviewProcess = "InterviewProcess", HowSchoolPlacementsWork = "HowSchoolPlacementsWork" };
             var ucasCourseEnrichmentGetModel = new UcasCourseEnrichmentGetModel { EnrichmentModel = enrichmentModel };
 
-            manageApi.Setup(x => x.GetOrganisations()).ReturnsAsync(testOrgs);
-            manageApi.Setup(x => x.GetCourseByUcasCode(TestHelper.InstitutionCode, TestHelper.TargetedUcasCode)).ReturnsAsync(testCourse);
+            manageApi.Setup(x => x.GetInstitutionSummaries()).ReturnsAsync(testOrgs);
+            manageApi.Setup(x => x.GetCourse(TestHelper.InstCode, TestHelper.TargetedInstCode)).ReturnsAsync(testCourse);
 
-            manageApi.Setup(x => x.GetEnrichmentCourse(TestHelper.InstitutionCode, TestHelper.TargetedUcasCode)).ReturnsAsync(ucasCourseEnrichmentGetModel);
+            manageApi.Setup(x => x.GetCourseEnrichment(TestHelper.InstCode, TestHelper.TargetedInstCode)).ReturnsAsync(ucasCourseEnrichmentGetModel);
 
-            manageApi.Setup(x => x.GetEnrichmentCourse(TestHelper.InstitutionCode, TestHelper.TargetedUcasCode)).ReturnsAsync(ucasCourseEnrichmentGetModel);
+            manageApi.Setup(x => x.GetCourseEnrichment(TestHelper.InstCode, TestHelper.TargetedInstCode)).ReturnsAsync(ucasCourseEnrichmentGetModel);
 
             var controller = new CourseController(manageApi.Object, new SearchAndCompareUrlService("http://www.example.com"));
-            var result = await controller.Show(TestHelper.InstitutionCode, TestHelper.AccreditedProviderId, TestHelper.TargetedUcasCode);
+            var result = await controller.Show(TestHelper.InstCode, TestHelper.AccreditedProviderId, TestHelper.TargetedInstCode);
 
             var viewResult = result as ViewResult;
             Assert.IsNotNull(viewResult);
 
-            var model = viewResult.Model as VariantViewModel;
+            var model = viewResult.Model as CourseViewModel;
             var routeData = model.CourseEnrichment.RouteData;
             Assert.IsNotNull(model);
             Assert.AreEqual(TestHelper.TargetedCourseTitle, model.CourseTitle);
@@ -70,9 +70,8 @@ namespace ManageCoursesUi.Tests
 
             Assert.AreEqual(TestHelper.OrganisationName, model.OrganisationName);
 
-            Assert.AreEqual(TestHelper.InstitutionCode, routeData.InstCode);
-            Assert.AreEqual(TestHelper.AccreditedProviderId, routeData.AccreditingProviderId);
-            Assert.AreEqual(TestHelper.TargetedUcasCode, routeData.UcasCode);
+            Assert.AreEqual(TestHelper.InstCode, routeData.InstCode);
+            Assert.AreEqual(TestHelper.TargetedInstCode, routeData.CourseCode);
 
             Assert.AreEqual(enrichmentModel.AboutCourse, model.CourseEnrichment.AboutCourse);
             Assert.AreEqual(enrichmentModel.InterviewProcess, model.CourseEnrichment.InterviewProcess);
@@ -99,12 +98,12 @@ namespace ManageCoursesUi.Tests
             };
 
             var testCourse = testData.Courses.FirstOrDefault(x => x.Name == TestHelper.TargetedCourseTitle);
-            manageApi.Setup(x => x.GetOrganisations()).ReturnsAsync(testOrgs);
-            manageApi.Setup(x => x.GetCourseByUcasCode(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(testCourse);
+            manageApi.Setup(x => x.GetInstitutionSummaries()).ReturnsAsync(testOrgs);
+            manageApi.Setup(x => x.GetCourse(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(testCourse);
 
             var controller = new CourseController(manageApi.Object, new SearchAndCompareUrlService("http://www.example.com"));
 
-            var res = controller.Show(TestHelper.InstitutionCode, TestHelper.AccreditedProviderId, TestHelper.TargetedUcasCode).Result;
+            var res = controller.Show(TestHelper.InstCode, TestHelper.AccreditedProviderId, TestHelper.TargetedInstCode).Result;
 
             Assert.That(res is NotFoundObjectResult);
             Assert.AreEqual(404, (res as NotFoundObjectResult).StatusCode);
@@ -122,17 +121,17 @@ namespace ManageCoursesUi.Tests
                 {
                 OrganisationId = testData.InstitutionCode,
                 OrganisationName = testData.InstitutionName,
-                UcasCode = TestHelper.InstitutionCode,
+                UcasCode = TestHelper.InstCode,
                 TotalCourses = testData.Courses.Count
                 }
             };
 
-            manageApi.Setup(x => x.GetOrganisations()).ReturnsAsync(testOrgs);
-            manageApi.Setup(x => x.GetCourseByUcasCode(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync((Course) null);
+            manageApi.Setup(x => x.GetInstitutionSummaries()).ReturnsAsync(testOrgs);
+            manageApi.Setup(x => x.GetCourse(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync((Course) null);
 
             var controller = new CourseController(manageApi.Object, new SearchAndCompareUrlService("http://www.example.com"));
 
-            var result = await controller.Show(TestHelper.InstitutionCode, TestHelper.AccreditedProviderId, TestHelper.TargetedUcasCode);
+            var result = await controller.Show(TestHelper.InstCode, TestHelper.AccreditedProviderId, TestHelper.TargetedInstCode);
 
             Assert.NotNull(result);
             Assert.IsInstanceOf(typeof(NotFoundResult), result);
@@ -156,14 +155,14 @@ namespace ManageCoursesUi.Tests
                 {
                 OrganisationId = testData.InstitutionCode,
                 OrganisationName = testData.InstitutionName,
-                UcasCode = TestHelper.InstitutionCode,
+                UcasCode = TestHelper.InstCode,
                 TotalCourses = testData.Courses.Count
                 }
             };
 
             var testCourse = testData.Courses.FirstOrDefault(x => x.Name == TestHelper.TargetedCourseTitle);
-            manageApi.Setup(x => x.GetOrganisations()).ReturnsAsync(testOrgs);
-            manageApi.Setup(x => x.GetCourseByUcasCode(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(testCourse);
+            manageApi.Setup(x => x.GetInstitutionSummaries()).ReturnsAsync(testOrgs);
+            manageApi.Setup(x => x.GetCourse(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(testCourse);
 
             var controller = new CourseController(manageApi.Object, new SearchAndCompareUrlService("http://www.example.com"));
             Assert.ThrowsAsync<ArgumentNullException>(async() => await controller.Show(institutionCode, accreditedProviderId, ucasCode));
@@ -174,11 +173,11 @@ namespace ManageCoursesUi.Tests
         {
             var manageApi = new Mock<IManageApi>();
 
-            manageApi.Setup(x => x.GetOrganisations()).ThrowsAsync(new Exception());
+            manageApi.Setup(x => x.GetInstitutionSummaries()).ThrowsAsync(new Exception());
 
             var controller = new CourseController(manageApi.Object, new SearchAndCompareUrlService("http://www.example.com"));
 
-            Assert.ThrowsAsync<Exception>(async() => await controller.Show(TestHelper.InstitutionCode, TestHelper.AccreditedProviderId, TestHelper.TargetedUcasCode));
+            Assert.ThrowsAsync<Exception>(async() => await controller.Show(TestHelper.InstCode, TestHelper.AccreditedProviderId, TestHelper.TargetedInstCode));
         }
 
         [Test]
@@ -194,17 +193,17 @@ namespace ManageCoursesUi.Tests
                 {
                 OrganisationId = testData.InstitutionCode,
                 OrganisationName = testData.InstitutionName,
-                UcasCode = TestHelper.InstitutionCode,
+                UcasCode = TestHelper.InstCode,
                 TotalCourses = testData.Courses.Count
                 }
             };
 
-            manageApi.Setup(x => x.GetOrganisations()).ReturnsAsync(testOrgs);
-            manageApi.Setup(x => x.GetCourseByUcasCode(It.IsAny<string>(), It.IsAny<string>())).ThrowsAsync(new Exception());
+            manageApi.Setup(x => x.GetInstitutionSummaries()).ReturnsAsync(testOrgs);
+            manageApi.Setup(x => x.GetCourse(It.IsAny<string>(), It.IsAny<string>())).ThrowsAsync(new Exception());
 
             var controller = new CourseController(manageApi.Object, new SearchAndCompareUrlService("http://www.example.com"));
 
-            Assert.ThrowsAsync<Exception>(async() => await controller.Show(TestHelper.InstitutionCode, TestHelper.AccreditedProviderId, TestHelper.TargetedUcasCode));
+            Assert.ThrowsAsync<Exception>(async() => await controller.Show(TestHelper.InstCode, TestHelper.AccreditedProviderId, TestHelper.TargetedInstCode));
         }
 
         [Test]
@@ -220,10 +219,10 @@ namespace ManageCoursesUi.Tests
             var ucasCourseEnrichmentGetModel = new UcasCourseEnrichmentGetModel { EnrichmentModel = enrichmentModel };
 
             var mockApi = new Mock<IManageApi>();
-            mockApi.Setup(x => x.GetEnrichmentCourse(TestHelper.InstitutionCode, TestHelper.TargetedUcasCode)).ReturnsAsync(ucasCourseEnrichmentGetModel).Verifiable();
-            mockApi.Setup(x => x.PublishCourseToSearchAndCompare(TestHelper.InstitutionCode, TestHelper.TargetedUcasCode)).ReturnsAsync(true).Verifiable();
+            mockApi.Setup(x => x.GetCourseEnrichment(TestHelper.InstCode, TestHelper.TargetedInstCode)).ReturnsAsync(ucasCourseEnrichmentGetModel).Verifiable();
+            mockApi.Setup(x => x.PublishCourseToSearchAndCompare(TestHelper.InstCode, TestHelper.TargetedInstCode)).ReturnsAsync(true).Verifiable();
 
-            mockApi.Setup(x => x.GetCourseByUcasCode(TestHelper.InstitutionCode, TestHelper.TargetedUcasCode)).ReturnsAsync(new Course { ProgramType = "" }).Verifiable();
+            mockApi.Setup(x => x.GetCourse(TestHelper.InstCode, TestHelper.TargetedInstCode)).ReturnsAsync(new Course { ProgramType = "", Institution = new Institution() }).Verifiable();
 
             var objectValidator = new Mock<IObjectModelValidator>();
             BaseCourseEnrichmentViewModel objectToVerify = null;
@@ -242,7 +241,7 @@ namespace ManageCoursesUi.Tests
             courseController.ObjectValidator = objectValidator.Object;
             courseController.TempData = new TempDataDictionary(new DefaultHttpContext(), Mock.Of<ITempDataProvider>());
 
-            var res = courseController.ShowPublish(TestHelper.InstitutionCode, "def", TestHelper.TargetedUcasCode).Result;
+            var res = courseController.ShowPublish(TestHelper.InstCode, "def", TestHelper.TargetedInstCode).Result;
 
             mockApi.VerifyAll();
             objectValidator.VerifyAll();
@@ -264,14 +263,14 @@ namespace ManageCoursesUi.Tests
             var enrichmentModel = new CourseEnrichmentModel { AboutCourse = "AboutCourse", InterviewProcess = "InterviewProcess", HowSchoolPlacementsWork = "HowSchoolPlacementsWork" };
             var ucasCourseEnrichmentGetModel = new UcasCourseEnrichmentGetModel { EnrichmentModel = enrichmentModel };
 
-            manageApi.Setup(x => x.GetEnrichmentCourse(TestHelper.InstitutionCode, TestHelper.TargetedUcasCode)).ReturnsAsync(ucasCourseEnrichmentGetModel);
+            manageApi.Setup(x => x.GetCourseEnrichment(TestHelper.InstCode, TestHelper.TargetedInstCode)).ReturnsAsync(ucasCourseEnrichmentGetModel);
 
             var testCourse = new Course() { Name = "Name", CourseCode = "CourseCode" };
 
-            manageApi.Setup(x => x.GetCourseByUcasCode(TestHelper.InstitutionCode, TestHelper.TargetedUcasCode)).ReturnsAsync(testCourse);
+            manageApi.Setup(x => x.GetCourse(TestHelper.InstCode, TestHelper.TargetedInstCode)).ReturnsAsync(testCourse);
 
             var controller = new CourseController(manageApi.Object, new SearchAndCompareUrlService("http://www.example.com"));
-            var result = await controller.About(TestHelper.InstitutionCode, TestHelper.AccreditedProviderId, TestHelper.TargetedUcasCode);
+            var result = await controller.About(TestHelper.InstCode, TestHelper.AccreditedProviderId, TestHelper.TargetedInstCode);
 
             var viewResult = result as ViewResult;
             Assert.IsNotNull(viewResult);
@@ -280,9 +279,8 @@ namespace ManageCoursesUi.Tests
 
             Assert.IsNotNull(model);
 
-            Assert.AreEqual(TestHelper.InstitutionCode, model.RouteData.InstCode);
-            Assert.AreEqual(TestHelper.AccreditedProviderId, model.RouteData.AccreditingProviderId);
-            Assert.AreEqual(TestHelper.TargetedUcasCode, model.RouteData.UcasCode);
+            Assert.AreEqual(TestHelper.InstCode, model.RouteData.InstCode);
+            Assert.AreEqual(TestHelper.TargetedInstCode, model.RouteData.CourseCode);
 
             Assert.AreEqual(enrichmentModel.AboutCourse, model.AboutCourse);
             Assert.AreEqual(enrichmentModel.InterviewProcess, model.InterviewProcess);
@@ -297,13 +295,13 @@ namespace ManageCoursesUi.Tests
             var viewModel = new AboutCourseEnrichmentViewModel { AboutCourse = "AboutCourse", InterviewProcess = "InterviewProcess", HowSchoolPlacementsWork = "HowSchoolPlacementsWork" };
             var testCourse = new Course() { Name = "Name", CourseCode = "CourseCode" };
 
-            manageApi.Setup(x => x.GetCourseByUcasCode(TestHelper.InstitutionCode, TestHelper.TargetedUcasCode)).ReturnsAsync(testCourse);
+            manageApi.Setup(x => x.GetCourse(TestHelper.InstCode, TestHelper.TargetedInstCode)).ReturnsAsync(testCourse);
 
             var controller = new CourseController(manageApi.Object, new SearchAndCompareUrlService("http://www.example.com"));
 
             controller.ModelState.AddModelError("you", "failed");
 
-            var result = await controller.AboutPost(TestHelper.InstitutionCode, TestHelper.AccreditedProviderId, TestHelper.TargetedUcasCode, viewModel);
+            var result = await controller.AboutPost(TestHelper.InstCode, TestHelper.AccreditedProviderId, TestHelper.TargetedInstCode, viewModel);
 
             var viewResult = result as ViewResult;
             Assert.IsNotNull(viewResult);
@@ -313,9 +311,8 @@ namespace ManageCoursesUi.Tests
 
             Assert.IsNotNull(model);
 
-            Assert.AreEqual(TestHelper.InstitutionCode, model.RouteData.InstCode);
-            Assert.AreEqual(TestHelper.AccreditedProviderId, model.RouteData.AccreditingProviderId);
-            Assert.AreEqual(TestHelper.TargetedUcasCode, model.RouteData.UcasCode);
+            Assert.AreEqual(TestHelper.InstCode, model.RouteData.InstCode);
+            Assert.AreEqual(TestHelper.TargetedInstCode, model.RouteData.CourseCode);
 
             Assert.AreEqual(viewModel.AboutCourse, model.AboutCourse);
             Assert.AreEqual(viewModel.InterviewProcess, model.InterviewProcess);
@@ -332,7 +329,7 @@ namespace ManageCoursesUi.Tests
             var enrichmentModel = new CourseEnrichmentModel { AboutCourse = "", InterviewProcess = "", HowSchoolPlacementsWork = "" };
             var ucasCourseEnrichmentGetModel = new UcasCourseEnrichmentGetModel { EnrichmentModel = enrichmentModel };
 
-            manageApi.Setup(x => x.GetEnrichmentCourse(TestHelper.InstitutionCode, TestHelper.TargetedUcasCode)).ReturnsAsync(ucasCourseEnrichmentGetModel);
+            manageApi.Setup(x => x.GetCourseEnrichment(TestHelper.InstCode, TestHelper.TargetedInstCode)).ReturnsAsync(ucasCourseEnrichmentGetModel);
 
             var tempDataMock = new Mock<ITempDataDictionary>();
             var urlHelperMock = new Mock<IUrlHelper>();
@@ -345,7 +342,7 @@ namespace ManageCoursesUi.Tests
             var controller = new CourseController(manageApi.Object, new SearchAndCompareUrlService("http://www.example.com"));
             controller.TempData = tempDataMock.Object;
             controller.Url = urlHelperMock.Object;
-            var result = await controller.AboutPost(TestHelper.InstitutionCode, TestHelper.AccreditedProviderId, TestHelper.TargetedUcasCode, viewModel);
+            var result = await controller.AboutPost(TestHelper.InstCode, TestHelper.AccreditedProviderId, TestHelper.TargetedInstCode, viewModel);
 
             var redirectToActionResult = result as RedirectToActionResult;
             Assert.IsNotNull(redirectToActionResult);
@@ -357,11 +354,11 @@ namespace ManageCoursesUi.Tests
 
             var routeValues = redirectToActionResult.RouteValues;
 
-            Assert.AreEqual(TestHelper.InstitutionCode, routeValues["instCode"]);
-            Assert.AreEqual(TestHelper.AccreditedProviderId, routeValues["accreditingProviderId"]);
-            Assert.AreEqual(TestHelper.TargetedUcasCode, routeValues["ucasCode"]);
+            Assert.AreEqual(TestHelper.InstCode, routeValues["instCode"]);
+            Assert.AreEqual(TestHelper.AccreditedProviderId, routeValues["accreditingInstCode"]);
+            Assert.AreEqual(TestHelper.TargetedInstCode, routeValues["courseCode"]);
 
-            manageApi.Verify(x => x.SaveEnrichmentCourse(TestHelper.InstitutionCode, TestHelper.TargetedUcasCode, It.Is<CourseEnrichmentModel>(c => Check(c, viewModel))), Times.Once());
+            manageApi.Verify(x => x.SaveCourseEnrichment(TestHelper.InstCode, TestHelper.TargetedInstCode, It.Is<CourseEnrichmentModel>(c => Check(c, viewModel))), Times.Once());
         }
 
         [Test]
@@ -372,14 +369,14 @@ namespace ManageCoursesUi.Tests
             var enrichmentModel = new CourseEnrichmentModel { Qualifications = "Qualifications", PersonalQualities = "PersonalQualities", OtherRequirements = "OtherRequirements" };
             var ucasCourseEnrichmentGetModel = new UcasCourseEnrichmentGetModel { EnrichmentModel = enrichmentModel };
 
-            manageApi.Setup(x => x.GetEnrichmentCourse(TestHelper.InstitutionCode, TestHelper.TargetedUcasCode)).ReturnsAsync(ucasCourseEnrichmentGetModel);
+            manageApi.Setup(x => x.GetCourseEnrichment(TestHelper.InstCode, TestHelper.TargetedInstCode)).ReturnsAsync(ucasCourseEnrichmentGetModel);
 
             var testCourse = new Course() { Name = "Name", CourseCode = "CourseCode" };
 
-            manageApi.Setup(x => x.GetCourseByUcasCode(TestHelper.InstitutionCode, TestHelper.TargetedUcasCode)).ReturnsAsync(testCourse);
+            manageApi.Setup(x => x.GetCourse(TestHelper.InstCode, TestHelper.TargetedInstCode)).ReturnsAsync(testCourse);
 
             var controller = new CourseController(manageApi.Object, new SearchAndCompareUrlService("http://www.example.com"));
-            var result = await controller.Requirements(TestHelper.InstitutionCode, TestHelper.AccreditedProviderId, TestHelper.TargetedUcasCode);
+            var result = await controller.Requirements(TestHelper.InstCode, TestHelper.AccreditedProviderId, TestHelper.TargetedInstCode);
 
             var viewResult = result as ViewResult;
             Assert.IsNotNull(viewResult);
@@ -388,9 +385,8 @@ namespace ManageCoursesUi.Tests
 
             Assert.IsNotNull(model);
 
-            Assert.AreEqual(TestHelper.InstitutionCode, model.RouteData.InstCode);
-            Assert.AreEqual(TestHelper.AccreditedProviderId, model.RouteData.AccreditingProviderId);
-            Assert.AreEqual(TestHelper.TargetedUcasCode, model.RouteData.UcasCode);
+            Assert.AreEqual(TestHelper.InstCode, model.RouteData.InstCode);
+            Assert.AreEqual(TestHelper.TargetedInstCode, model.RouteData.CourseCode);
 
             Assert.AreEqual(enrichmentModel.Qualifications, model.Qualifications);
             Assert.AreEqual(enrichmentModel.PersonalQualities, model.PersonalQualities);
@@ -406,13 +402,13 @@ namespace ManageCoursesUi.Tests
 
             var testCourse = new Course() { Name = "Name", CourseCode = "CourseCode" };
 
-            manageApi.Setup(x => x.GetCourseByUcasCode(TestHelper.InstitutionCode, TestHelper.TargetedUcasCode)).ReturnsAsync(testCourse);
+            manageApi.Setup(x => x.GetCourse(TestHelper.InstCode, TestHelper.TargetedInstCode)).ReturnsAsync(testCourse);
 
             var controller = new CourseController(manageApi.Object, new SearchAndCompareUrlService("http://www.example.com"));
 
             controller.ModelState.AddModelError("you", "failed");
 
-            var result = await controller.RequirementsPost(TestHelper.InstitutionCode, TestHelper.AccreditedProviderId, TestHelper.TargetedUcasCode, viewModel);
+            var result = await controller.RequirementsPost(TestHelper.InstCode, TestHelper.AccreditedProviderId, TestHelper.TargetedInstCode, viewModel);
 
             var viewResult = result as ViewResult;
             Assert.IsNotNull(viewResult);
@@ -422,9 +418,8 @@ namespace ManageCoursesUi.Tests
 
             Assert.IsNotNull(model);
 
-            Assert.AreEqual(TestHelper.InstitutionCode, model.RouteData.InstCode);
-            Assert.AreEqual(TestHelper.AccreditedProviderId, model.RouteData.AccreditingProviderId);
-            Assert.AreEqual(TestHelper.TargetedUcasCode, model.RouteData.UcasCode);
+            Assert.AreEqual(TestHelper.InstCode, model.RouteData.InstCode);
+            Assert.AreEqual(TestHelper.TargetedInstCode, model.RouteData.CourseCode);
 
             Assert.AreEqual(viewModel.Qualifications, model.Qualifications);
             Assert.AreEqual(viewModel.PersonalQualities, model.PersonalQualities);
@@ -441,7 +436,7 @@ namespace ManageCoursesUi.Tests
             var enrichmentModel = new CourseEnrichmentModel { Qualifications = "", PersonalQualities = "", OtherRequirements = "" };
             var ucasCourseEnrichmentGetModel = new UcasCourseEnrichmentGetModel { EnrichmentModel = enrichmentModel };
 
-            manageApi.Setup(x => x.GetEnrichmentCourse(TestHelper.InstitutionCode, TestHelper.TargetedUcasCode)).ReturnsAsync(ucasCourseEnrichmentGetModel);
+            manageApi.Setup(x => x.GetCourseEnrichment(TestHelper.InstCode, TestHelper.TargetedInstCode)).ReturnsAsync(ucasCourseEnrichmentGetModel);
 
             var tempDataMock = new Mock<ITempDataDictionary>();
             var urlHelperMock = new Mock<IUrlHelper>();
@@ -456,7 +451,7 @@ namespace ManageCoursesUi.Tests
             controller.TempData = tempDataMock.Object;
             controller.Url = urlHelperMock.Object;
 
-            var result = await controller.RequirementsPost(TestHelper.InstitutionCode, TestHelper.AccreditedProviderId, TestHelper.TargetedUcasCode, viewModel);
+            var result = await controller.RequirementsPost(TestHelper.InstCode, TestHelper.AccreditedProviderId, TestHelper.TargetedInstCode, viewModel);
 
             var redirectToActionResult = result as RedirectToActionResult;
             Assert.IsNotNull(redirectToActionResult);
@@ -468,11 +463,11 @@ namespace ManageCoursesUi.Tests
 
             var routeValues = redirectToActionResult.RouteValues;
 
-            Assert.AreEqual(TestHelper.InstitutionCode, routeValues["instCode"]);
-            Assert.AreEqual(TestHelper.AccreditedProviderId, routeValues["accreditingProviderId"]);
-            Assert.AreEqual(TestHelper.TargetedUcasCode, routeValues["ucasCode"]);
+            Assert.AreEqual(TestHelper.InstCode, routeValues["instCode"]);
+            Assert.AreEqual(TestHelper.AccreditedProviderId, routeValues["accreditingInstCode"]);
+            Assert.AreEqual(TestHelper.TargetedInstCode, routeValues["courseCode"]);
 
-            manageApi.Verify(x => x.SaveEnrichmentCourse(TestHelper.InstitutionCode, TestHelper.TargetedUcasCode, It.Is<CourseEnrichmentModel>(c => Check(c, viewModel))), Times.Once());
+            manageApi.Verify(x => x.SaveCourseEnrichment(TestHelper.InstCode, TestHelper.TargetedInstCode, It.Is<CourseEnrichmentModel>(c => Check(c, viewModel))), Times.Once());
         }
 
         [Test]
@@ -486,14 +481,14 @@ namespace ManageCoursesUi.Tests
             };
             var ucasCourseEnrichmentGetModel = new UcasCourseEnrichmentGetModel { EnrichmentModel = enrichmentModel };
 
-            manageApi.Setup(x => x.GetEnrichmentCourse(TestHelper.InstitutionCode, TestHelper.TargetedUcasCode)).ReturnsAsync(ucasCourseEnrichmentGetModel);
+            manageApi.Setup(x => x.GetCourseEnrichment(TestHelper.InstCode, TestHelper.TargetedInstCode)).ReturnsAsync(ucasCourseEnrichmentGetModel);
 
             var testCourse = new Course() { Name = "Name", CourseCode = "CourseCode" };
 
-            manageApi.Setup(x => x.GetCourseByUcasCode(TestHelper.InstitutionCode, TestHelper.TargetedUcasCode)).ReturnsAsync(testCourse);
+            manageApi.Setup(x => x.GetCourse(TestHelper.InstCode, TestHelper.TargetedInstCode)).ReturnsAsync(testCourse);
 
             var controller = new CourseController(manageApi.Object, new SearchAndCompareUrlService("http://www.example.com"));
-            var result = await controller.Salary(TestHelper.InstitutionCode, TestHelper.AccreditedProviderId, TestHelper.TargetedUcasCode);
+            var result = await controller.Salary(TestHelper.InstCode, TestHelper.AccreditedProviderId, TestHelper.TargetedInstCode);
 
             var viewResult = result as ViewResult;
             Assert.IsNotNull(viewResult);
@@ -502,9 +497,8 @@ namespace ManageCoursesUi.Tests
 
             Assert.IsNotNull(model);
 
-            Assert.AreEqual(TestHelper.InstitutionCode, model.RouteData.InstCode);
-            Assert.AreEqual(TestHelper.AccreditedProviderId, model.RouteData.AccreditingProviderId);
-            Assert.AreEqual(TestHelper.TargetedUcasCode, model.RouteData.UcasCode);
+            Assert.AreEqual(TestHelper.InstCode, model.RouteData.InstCode);
+            Assert.AreEqual(TestHelper.TargetedInstCode, model.RouteData.CourseCode);
 
             Assert.AreEqual(enrichmentModel.CourseLength, model.CourseLength);
             Assert.AreEqual(enrichmentModel.SalaryDetails, model.SalaryDetails);
@@ -519,13 +513,13 @@ namespace ManageCoursesUi.Tests
 
             var testCourse = new Course() { Name = "Name", CourseCode = "CourseCode" };
 
-            manageApi.Setup(x => x.GetCourseByUcasCode(TestHelper.InstitutionCode, TestHelper.TargetedUcasCode)).ReturnsAsync(testCourse);
+            manageApi.Setup(x => x.GetCourse(TestHelper.InstCode, TestHelper.TargetedInstCode)).ReturnsAsync(testCourse);
 
             var controller = new CourseController(manageApi.Object, new SearchAndCompareUrlService("http://www.example.com"));
 
             controller.ModelState.AddModelError("you", "failed");
 
-            var result = await controller.SalaryPost(TestHelper.InstitutionCode, TestHelper.AccreditedProviderId, TestHelper.TargetedUcasCode, viewModel);
+            var result = await controller.SalaryPost(TestHelper.InstCode, TestHelper.AccreditedProviderId, TestHelper.TargetedInstCode, viewModel);
 
             var viewResult = result as ViewResult;
             Assert.IsNotNull(viewResult);
@@ -535,9 +529,8 @@ namespace ManageCoursesUi.Tests
 
             Assert.IsNotNull(model);
 
-            Assert.AreEqual(TestHelper.InstitutionCode, model.RouteData.InstCode);
-            Assert.AreEqual(TestHelper.AccreditedProviderId, model.RouteData.AccreditingProviderId);
-            Assert.AreEqual(TestHelper.TargetedUcasCode, model.RouteData.UcasCode);
+            Assert.AreEqual(TestHelper.InstCode, model.RouteData.InstCode);
+            Assert.AreEqual(TestHelper.TargetedInstCode, model.RouteData.CourseCode);
 
             Assert.AreEqual(viewModel.CourseLength, model.CourseLength);
             Assert.AreEqual(viewModel.SalaryDetails, model.SalaryDetails);
@@ -554,7 +547,7 @@ namespace ManageCoursesUi.Tests
 
             var ucasCourseEnrichmentGetModel = new UcasCourseEnrichmentGetModel { EnrichmentModel = enrichmentModel };
 
-            manageApi.Setup(x => x.GetEnrichmentCourse(TestHelper.InstitutionCode, TestHelper.TargetedUcasCode)).ReturnsAsync(ucasCourseEnrichmentGetModel);
+            manageApi.Setup(x => x.GetCourseEnrichment(TestHelper.InstCode, TestHelper.TargetedInstCode)).ReturnsAsync(ucasCourseEnrichmentGetModel);
 
             var tempDataMock = new Mock<ITempDataDictionary>();
             var urlHelperMock = new Mock<IUrlHelper>();
@@ -569,7 +562,7 @@ namespace ManageCoursesUi.Tests
             controller.TempData = tempDataMock.Object;
             controller.Url = urlHelperMock.Object;
 
-            var result = await controller.SalaryPost(TestHelper.InstitutionCode, TestHelper.AccreditedProviderId, TestHelper.TargetedUcasCode, viewModel);
+            var result = await controller.SalaryPost(TestHelper.InstCode, TestHelper.AccreditedProviderId, TestHelper.TargetedInstCode, viewModel);
 
             var redirectToActionResult = result as RedirectToActionResult;
             Assert.IsNotNull(redirectToActionResult);
@@ -581,11 +574,11 @@ namespace ManageCoursesUi.Tests
 
             var routeValues = redirectToActionResult.RouteValues;
 
-            Assert.AreEqual(TestHelper.InstitutionCode, routeValues["instCode"]);
-            Assert.AreEqual(TestHelper.AccreditedProviderId, routeValues["accreditingProviderId"]);
-            Assert.AreEqual(TestHelper.TargetedUcasCode, routeValues["ucasCode"]);
+            Assert.AreEqual(TestHelper.InstCode, routeValues["instCode"]);
+            Assert.AreEqual(TestHelper.AccreditedProviderId, routeValues["accreditingInstCode"]);
+            Assert.AreEqual(TestHelper.TargetedInstCode, routeValues["courseCode"]);
 
-            manageApi.Verify(x => x.SaveEnrichmentCourse(TestHelper.InstitutionCode, TestHelper.TargetedUcasCode, It.Is<CourseEnrichmentModel>(c => Check(c, viewModel))), Times.Once());
+            manageApi.Verify(x => x.SaveCourseEnrichment(TestHelper.InstCode, TestHelper.TargetedInstCode, It.Is<CourseEnrichmentModel>(c => Check(c, viewModel))), Times.Once());
         }
 
         [Test]
@@ -599,14 +592,14 @@ namespace ManageCoursesUi.Tests
             };
             var ucasCourseEnrichmentGetModel = new UcasCourseEnrichmentGetModel { EnrichmentModel = enrichmentModel };
 
-            manageApi.Setup(x => x.GetEnrichmentCourse(TestHelper.InstitutionCode, TestHelper.TargetedUcasCode)).ReturnsAsync(ucasCourseEnrichmentGetModel);
+            manageApi.Setup(x => x.GetCourseEnrichment(TestHelper.InstCode, TestHelper.TargetedInstCode)).ReturnsAsync(ucasCourseEnrichmentGetModel);
 
             var testCourse = new Course() { Name = "Name", CourseCode = "CourseCode" };
 
-            manageApi.Setup(x => x.GetCourseByUcasCode(TestHelper.InstitutionCode, TestHelper.TargetedUcasCode)).ReturnsAsync(testCourse);
+            manageApi.Setup(x => x.GetCourse(TestHelper.InstCode, TestHelper.TargetedInstCode)).ReturnsAsync(testCourse);
 
             var controller = new CourseController(manageApi.Object, new SearchAndCompareUrlService("http://www.example.com"));
-            var result = await controller.Fees(TestHelper.InstitutionCode, TestHelper.AccreditedProviderId, TestHelper.TargetedUcasCode);
+            var result = await controller.Fees(TestHelper.InstCode, TestHelper.AccreditedProviderId, TestHelper.TargetedInstCode);
 
             var viewResult = result as ViewResult;
             Assert.IsNotNull(viewResult);
@@ -615,9 +608,8 @@ namespace ManageCoursesUi.Tests
 
             Assert.IsNotNull(model);
 
-            Assert.AreEqual(TestHelper.InstitutionCode, model.RouteData.InstCode);
-            Assert.AreEqual(TestHelper.AccreditedProviderId, model.RouteData.AccreditingProviderId);
-            Assert.AreEqual(TestHelper.TargetedUcasCode, model.RouteData.UcasCode);
+            Assert.AreEqual(TestHelper.InstCode, model.RouteData.InstCode);
+            Assert.AreEqual(TestHelper.TargetedInstCode, model.RouteData.CourseCode);
 
             Assert.AreEqual(enrichmentModel.CourseLength, model.CourseLength);
             Assert.AreEqual(enrichmentModel.FeeDetails, model.FeeDetails);
@@ -635,13 +627,13 @@ namespace ManageCoursesUi.Tests
 
             var testCourse = new Course() { Name = "Name", CourseCode = "CourseCode" };
 
-            manageApi.Setup(x => x.GetCourseByUcasCode(TestHelper.InstitutionCode, TestHelper.TargetedUcasCode)).ReturnsAsync(testCourse);
+            manageApi.Setup(x => x.GetCourse(TestHelper.InstCode, TestHelper.TargetedInstCode)).ReturnsAsync(testCourse);
 
             var controller = new CourseController(manageApi.Object, new SearchAndCompareUrlService("http://www.example.com"));
 
             controller.ModelState.AddModelError("you", "failed");
 
-            var result = await controller.FeesPost(TestHelper.InstitutionCode, TestHelper.AccreditedProviderId, TestHelper.TargetedUcasCode, viewModel);
+            var result = await controller.FeesPost(TestHelper.InstCode, TestHelper.AccreditedProviderId, TestHelper.TargetedInstCode, viewModel);
 
             var viewResult = result as ViewResult;
             Assert.IsNotNull(viewResult);
@@ -651,9 +643,8 @@ namespace ManageCoursesUi.Tests
 
             Assert.IsNotNull(model);
 
-            Assert.AreEqual(TestHelper.InstitutionCode, model.RouteData.InstCode);
-            Assert.AreEqual(TestHelper.AccreditedProviderId, model.RouteData.AccreditingProviderId);
-            Assert.AreEqual(TestHelper.TargetedUcasCode, model.RouteData.UcasCode);
+            Assert.AreEqual(TestHelper.InstCode, model.RouteData.InstCode);
+            Assert.AreEqual(TestHelper.TargetedInstCode, model.RouteData.CourseCode);
 
             Assert.AreEqual(viewModel.CourseLength, model.CourseLength);
             Assert.AreEqual(viewModel.FeeDetails, model.FeeDetails);
@@ -673,7 +664,7 @@ namespace ManageCoursesUi.Tests
 
             var ucasCourseEnrichmentGetModel = new UcasCourseEnrichmentGetModel { EnrichmentModel = enrichmentModel };
 
-            manageApi.Setup(x => x.GetEnrichmentCourse(TestHelper.InstitutionCode, TestHelper.TargetedUcasCode)).ReturnsAsync(ucasCourseEnrichmentGetModel);
+            manageApi.Setup(x => x.GetCourseEnrichment(TestHelper.InstCode, TestHelper.TargetedInstCode)).ReturnsAsync(ucasCourseEnrichmentGetModel);
 
             var tempDataMock = new Mock<ITempDataDictionary>();
             var urlHelperMock = new Mock<IUrlHelper>();
@@ -688,7 +679,7 @@ namespace ManageCoursesUi.Tests
             controller.TempData = tempDataMock.Object;
             controller.Url = urlHelperMock.Object;
 
-            var result = await controller.FeesPost(TestHelper.InstitutionCode, TestHelper.AccreditedProviderId, TestHelper.TargetedUcasCode, viewModel);
+            var result = await controller.FeesPost(TestHelper.InstCode, TestHelper.AccreditedProviderId, TestHelper.TargetedInstCode, viewModel);
 
             var redirectToActionResult = result as RedirectToActionResult;
             Assert.IsNotNull(redirectToActionResult);
@@ -700,11 +691,11 @@ namespace ManageCoursesUi.Tests
 
             var routeValues = redirectToActionResult.RouteValues;
 
-            Assert.AreEqual(TestHelper.InstitutionCode, routeValues["instCode"]);
-            Assert.AreEqual(TestHelper.AccreditedProviderId, routeValues["accreditingProviderId"]);
-            Assert.AreEqual(TestHelper.TargetedUcasCode, routeValues["ucasCode"]);
+            Assert.AreEqual(TestHelper.InstCode, routeValues["instCode"]);
+            Assert.AreEqual(TestHelper.AccreditedProviderId, routeValues["accreditingInstCode"]);
+            Assert.AreEqual(TestHelper.TargetedInstCode, routeValues["courseCode"]);
 
-            manageApi.Verify(x => x.SaveEnrichmentCourse(TestHelper.InstitutionCode, TestHelper.TargetedUcasCode, It.Is<CourseEnrichmentModel>(c => Check(c, viewModel))), Times.Once());
+            manageApi.Verify(x => x.SaveCourseEnrichment(TestHelper.InstCode, TestHelper.TargetedInstCode, It.Is<CourseEnrichmentModel>(c => Check(c, viewModel))), Times.Once());
         }
 
         private bool Check(CourseEnrichmentModel model, ICourseEnrichmentViewModel viewModel)

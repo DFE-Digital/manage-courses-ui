@@ -10,18 +10,17 @@ namespace GovUk.Education.ManageCourses.Ui
 {
     public interface IManageApi
     {
-        Task<InstitutionCourses> GetCoursesByOrganisation(string ucasCode);
-        Task<Course> GetCourseByUcasCode(string instCode, string ucasCode);
-        Task<IEnumerable<UserOrganisation>> GetOrganisations();
-        Task<UserOrganisation> GetOrganisation(string instCode);
-        Task<UcasInstitution> GetUcasInstitution(string instCode);
-        Task LogAccessRequest(AccessRequest accessRequest);
+        Task<InstitutionCourses> GetCoursesOfInstitution(string instCode);
+        Task<Course> GetCourse(string instCode, string courseCode);
+        Task<IEnumerable<UserOrganisation>> GetInstitutionSummaries();
+        Task<UserOrganisation> GetInstitutionSummary(string instCode);
+        Task CreateAccessRequest(AccessRequest accessRequest);
         Task LogAcceptTerms();
-        Task SaveEnrichmentOrganisation(string institutionCode, UcasInstitutionEnrichmentPostModel organisation);
-        Task<UcasInstitutionEnrichmentGetModel> GetEnrichmentOrganisation(string ucasCode);
-        Task<bool> PublishCoursesToSearchAndCompare(string ucasCode);
-        Task<UcasCourseEnrichmentGetModel> GetEnrichmentCourse(string instCode, string ucasCode);
-        Task SaveEnrichmentCourse(string instCode, string ucasCode, CourseEnrichmentModel course);
+        Task SaveInstitutionEnrichment(string instCode, UcasInstitutionEnrichmentPostModel organisation);
+        Task<UcasInstitutionEnrichmentGetModel> GetInstitutitionEnrichment(string instCode);
+        Task<bool> PublishAllCoursesOfInstitutionToSearchAndCompare(string instCode);
+        Task<UcasCourseEnrichmentGetModel> GetCourseEnrichment(string instCode, string courseCode);
+        Task SaveCourseEnrichment(string instCode, string courseCode, CourseEnrichmentModel course);
         Task<SearchAndCompare.Domain.Models.Course> GetSearchAndCompareCourse(string instCode, string courseCode);
         Task<bool> PublishCourseToSearchAndCompare(string instCode, string courseCode);
     }

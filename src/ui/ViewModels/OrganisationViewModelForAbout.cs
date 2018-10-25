@@ -15,9 +15,9 @@ namespace GovUk.Education.ManageCourses.Ui.ViewModels
             AboutTrainingProviders = new List<TrainingProviderViewModel>();
         }
 
-        public string InstitutionCode { get; set; }
+        public string InstCode { get; set; }
 
-        public string InstitutionName { get; set; }
+        public string InstName { get; set; }
 
         [RegularExpression(@"^\s*(\S+\s+|\S+$){0,250}$", ErrorMessage = "Reduce the word count in training with you")]
         public string TrainWithUs { get; set; }
@@ -35,8 +35,8 @@ namespace GovUk.Education.ManageCourses.Ui.ViewModels
         {
             return new OrganisationViewModelForAbout
             {
-                InstitutionCode = model.InstitutionCode,
-                InstitutionName = model.InstitutionName,
+                InstCode = model.InstCode,
+                InstName = model.InstName,
                 TrainWithUs = model.TrainWithUs,
                 AboutTrainingProviders = model.AboutTrainingProviders,
                 TrainWithDisability = model.TrainWithDisability,
@@ -55,7 +55,7 @@ namespace GovUk.Education.ManageCourses.Ui.ViewModels
             var aboutTrainingProviders = new ObservableCollection<AccreditingProviderEnrichment>(
                 AboutTrainingProviders.Select(x => new AccreditingProviderEnrichment
                 {
-                    UcasInstitutionCode = x.InstitutionCode,
+                    UcasInstitutionCode = x.InstCode,
                     Description = x.Description
                 }));
             

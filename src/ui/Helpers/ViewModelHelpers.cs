@@ -12,15 +12,15 @@ namespace GovUk.Education.ManageCourses.Ui.Helpers
         public static string GetCourseStatus(this Course course)
         {
             var result = "";
-            if (course.Schools.Any(s => String.Equals(s.Status, "r", StringComparison.InvariantCultureIgnoreCase)))
+            if (course.CourseSites.Any(s => String.Equals(s.Status, "r", StringComparison.InvariantCultureIgnoreCase)))
             {
                 result = "Running";
             }
-            else if (course.Schools.Any(s => String.Equals(s.Status, "n", StringComparison.InvariantCultureIgnoreCase)))
+            else if (course.CourseSites.Any(s => String.Equals(s.Status, "n", StringComparison.InvariantCultureIgnoreCase)))
             {
                 result = "New – not yet running";
             }
-            else if (course.Schools.Any(s => String.Equals(s.Status, "d", StringComparison.InvariantCultureIgnoreCase)) || course.Schools.Any(s => String.Equals(s.Status, "s", StringComparison.InvariantCultureIgnoreCase)))
+            else if (course.CourseSites.Any(s => String.Equals(s.Status, "d", StringComparison.InvariantCultureIgnoreCase)) || course.CourseSites.Any(s => String.Equals(s.Status, "s", StringComparison.InvariantCultureIgnoreCase)))
             {
                 result = "Not running";
             }
@@ -32,7 +32,7 @@ namespace GovUk.Education.ManageCourses.Ui.Helpers
             return course != null && course.GetCourseStatus() != "Not running";
         }
 
-        public static string GetSchoolStatus(this SchoolViewModel school)
+        public static string GetSiteStatus(this SiteViewModel school)
         {
             var result = "";
             switch ((school.Status ?? "").ToLower())
@@ -53,7 +53,7 @@ namespace GovUk.Education.ManageCourses.Ui.Helpers
             return result;
         }
 
-        public static string GetVacancyStatus(this SchoolViewModel school)
+        public static string GetVacancyStatus(this SiteViewModel school)
         {
             var result = "";
             switch (school.VacStatus?.ToLower())
@@ -81,7 +81,7 @@ namespace GovUk.Education.ManageCourses.Ui.Helpers
                 : course.HasVacancies ? "Yes" : "No";
         }
 
-        public static string GetRoute(this CourseVariantViewModel viewModel)
+        public static string GetRoute(this CourseDetailsViewModel viewModel)
         {
             var result = "";
 
@@ -124,12 +124,12 @@ namespace GovUk.Education.ManageCourses.Ui.Helpers
         }
 
 
-        public static string GetStudyMode(this CourseVariantViewModel viewModel)
+        public static string GetStudyMode(this CourseDetailsViewModel viewModel)
         {
             return UppercaseFirst(GetStudyModeText(viewModel.StudyMode));
         }
 
-        public static string GetAgeRange(this CourseVariantViewModel viewModel)
+        public static string GetAgeRange(this CourseDetailsViewModel viewModel)
         {
             var result = "";
 
@@ -163,7 +163,7 @@ namespace GovUk.Education.ManageCourses.Ui.Helpers
             return result;
         }
 
-        public static string GetQualification(this CourseVariantViewModel viewModel)
+        public static string GetQualification(this CourseDetailsViewModel viewModel)
         {
             var result = "";
 
@@ -234,17 +234,17 @@ namespace GovUk.Education.ManageCourses.Ui.Helpers
 
         private static bool CourseIsDiscontinuedOrSuspended(this Course course)
         {
-            return course.Schools.All(s => SchoolIsDiscontinued(s) || SchoolIsSuspended(s));
+            return course.CourseSites.All(s => SiteIsDiscontinued(s) || SiteIsSuspended(s));
         }
 
-        private static bool SchoolIsDiscontinued(School school)
+        private static bool SiteIsDiscontinued(CourseSite courseSite)
         {
-            return String.Equals(school.Status, "d", StringComparison.InvariantCultureIgnoreCase);
+            return String.Equals(courseSite.Status, "d", StringComparison.InvariantCultureIgnoreCase);
         }
 
-        private static bool SchoolIsSuspended(School school)
+        private static bool SiteIsSuspended(CourseSite courseSite)
         {
-            return String.Equals(school.Status, "s", StringComparison.InvariantCultureIgnoreCase);
+            return String.Equals(courseSite.Status, "s", StringComparison.InvariantCultureIgnoreCase);
         }
     }
 }
