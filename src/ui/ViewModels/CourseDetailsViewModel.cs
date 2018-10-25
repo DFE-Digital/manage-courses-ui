@@ -24,7 +24,7 @@ namespace GovUk.Education.ManageCourses.Ui.ViewModels
               : string.Equals("not running", Status ?? "", StringComparison.InvariantCultureIgnoreCase) ? CourseRunningStatus.NotRunning
               : CourseRunningStatus.New;
 
-        public IEnumerable<SchoolViewModel> Schools { get; set; }
+        public IEnumerable<SiteViewModel> Sites { get; set; }
 
     }
 }

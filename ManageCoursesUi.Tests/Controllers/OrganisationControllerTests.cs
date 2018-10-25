@@ -34,10 +34,10 @@ namespace ManageCoursesUi.Tests
                 InstitutionName = organisationName,
                 Courses = new ObservableCollection<Course>
                 {
-                new Course
-                {
-                InstCode = instCode
-                }
+                    new Course
+                    {
+                        Institution = new Institution { InstCode = instCode }
+                    }
                 }
             };
             var orgs = new List<UserOrganisation>
@@ -71,7 +71,7 @@ namespace ManageCoursesUi.Tests
         }
 
         [Test]
-        public async Task RequestAccess()
+        public void RequestAccess()
         {
             var instCode = "INSTCODE";
             var organisationName = "organisationName";
@@ -92,7 +92,7 @@ namespace ManageCoursesUi.Tests
 
             var controller = new OrganisationController(apiMock.Object);
 
-            var result = await controller.RequestAccess(instCode);
+            var result = controller.RequestAccess(instCode);
 
             var viewResult = result as ViewResult;
 
@@ -187,12 +187,12 @@ namespace ManageCoursesUi.Tests
             {
                 Courses = new ObservableCollection<Course>
                 {
-                new Course { },
-                new Course { AccreditingProviderId = instCode.ToUpperInvariant() },
-                new Course { AccreditingProviderId = instCode.ToLowerInvariant() },
-                new Course { AccreditingProviderId = instCode },
-                new Course { AccreditingProviderId = instCode + 1, AccreditingProviderName = institutionName },
-                new Course { AccreditingProviderId = instCode + 2 },
+                    new Course { },
+                    new Course { AccreditingInstitution = new Institution { InstCode = instCode.ToUpperInvariant() }},
+                    new Course { AccreditingInstitution = new Institution { InstCode = instCode.ToLowerInvariant() }},
+                    new Course { AccreditingInstitution = new Institution { InstCode = instCode }},
+                    new Course { AccreditingInstitution = new Institution { InstCode = instCode + 1, InstName = institutionName }},
+                    new Course { AccreditingInstitution = new Institution { InstCode = instCode + 2 }},
                 }
             };
             var now = DateTime.Now;
@@ -257,12 +257,12 @@ namespace ManageCoursesUi.Tests
             {
                 Courses = new ObservableCollection<Course>
                 {
-                new Course { },
-                new Course { AccreditingProviderId = instCode.ToUpperInvariant() },
-                new Course { AccreditingProviderId = instCode.ToLowerInvariant() },
-                new Course { AccreditingProviderId = instCode },
-                new Course { AccreditingProviderId = instCode + 1, AccreditingProviderName = institutionName },
-                new Course { AccreditingProviderId = instCode + 2 },
+                    new Course { },
+                    new Course { AccreditingInstitution = new Institution { InstCode = instCode.ToUpperInvariant() }},
+                    new Course { AccreditingInstitution = new Institution { InstCode = instCode.ToLowerInvariant() }},
+                    new Course { AccreditingInstitution = new Institution { InstCode = instCode }},
+                    new Course { AccreditingInstitution = new Institution { InstCode = instCode + 1, InstName = institutionName }},
+                    new Course { AccreditingInstitution = new Institution { InstCode = instCode + 2 }},
                 }
             };
 
@@ -319,12 +319,12 @@ namespace ManageCoursesUi.Tests
             {
                 Courses = new ObservableCollection<Course>
                 {
-                new Course { },
-                new Course { AccreditingProviderId = instCode.ToUpperInvariant() },
-                new Course { AccreditingProviderId = instCode.ToLowerInvariant() },
-                new Course { AccreditingProviderId = instCode },
-                new Course { AccreditingProviderId = instCode + 1, AccreditingProviderName = institutionName },
-                new Course { AccreditingProviderId = instCode + 2 },
+                    new Course { },
+                    new Course { AccreditingInstitution = new Institution { InstCode = instCode.ToUpperInvariant() }},
+                    new Course { AccreditingInstitution = new Institution { InstCode = instCode.ToLowerInvariant() }},
+                    new Course { AccreditingInstitution = new Institution { InstCode = instCode }},
+                    new Course { AccreditingInstitution = new Institution { InstCode = instCode + 1, InstName = institutionName }},
+                    new Course { AccreditingInstitution = new Institution { InstCode = instCode + 2 }},
                 }
             };
 
@@ -375,12 +375,12 @@ namespace ManageCoursesUi.Tests
             {
                 Courses = new ObservableCollection<Course>
                 {
-                new Course { },
-                new Course { AccreditingProviderId = instCode.ToUpperInvariant() },
-                new Course { AccreditingProviderId = instCode.ToLowerInvariant() },
-                new Course { AccreditingProviderId = instCode },
-                new Course { AccreditingProviderId = instCode + 1, AccreditingProviderName = institutionName },
-                new Course { AccreditingProviderId = instCode + 2 },
+                    new Course { },
+                    new Course { AccreditingInstitution = new Institution { InstCode = instCode.ToUpperInvariant() }},
+                    new Course { AccreditingInstitution = new Institution { InstCode = instCode.ToLowerInvariant() }},
+                    new Course { AccreditingInstitution = new Institution { InstCode = instCode }},
+                    new Course { AccreditingInstitution = new Institution { InstCode = instCode + 1, InstName = institutionName }},
+                    new Course { AccreditingInstitution = new Institution { InstCode = instCode + 2 }},
                 }
             };
             var apiMock = new Mock<IManageApi>();
@@ -448,12 +448,12 @@ namespace ManageCoursesUi.Tests
             {
                 Courses = new ObservableCollection<Course>
                 {
-                new Course { },
-                new Course { AccreditingProviderId = instCode.ToUpperInvariant() },
-                new Course { AccreditingProviderId = instCode.ToLowerInvariant() },
-                new Course { AccreditingProviderId = instCode },
-                new Course { AccreditingProviderId = instCode + 1, AccreditingProviderName = institutionName },
-                new Course { AccreditingProviderId = instCode + 2 },
+                    new Course { },
+                    new Course { AccreditingInstitution = new Institution { InstCode = instCode.ToUpperInvariant() }},
+                    new Course { AccreditingInstitution = new Institution { InstCode = instCode.ToLowerInvariant() }},
+                    new Course { AccreditingInstitution = new Institution { InstCode = instCode }},
+                    new Course { AccreditingInstitution = new Institution { InstCode = instCode + 1, InstName = institutionName }},
+                    new Course { AccreditingInstitution = new Institution { InstCode = instCode + 2 }},
                 }
             };
             var now = DateTime.Now;
@@ -540,7 +540,7 @@ namespace ManageCoursesUi.Tests
                 .Returns(Task.CompletedTask);
 
             apiMock.Setup(x => x.GetCoursesOfInstitution("ABC")).ReturnsAsync(new InstitutionCourses{
-                Courses = new ObservableCollection<Course> { new Course { AccreditingProviderId = "ACC" } }
+                Courses = new ObservableCollection<Course> { new Course { AccreditingInstitution = new Institution { InstCode = "ACC" } }}
             });
 
             var objectValidator = new Mock<IObjectModelValidator>();
@@ -594,12 +594,12 @@ namespace ManageCoursesUi.Tests
             {
                 Courses = new ObservableCollection<Course>
                 {
-                new Course { },
-                new Course { AccreditingProviderId = instCode.ToUpperInvariant() },
-                new Course { AccreditingProviderId = instCode.ToLowerInvariant() },
-                new Course { AccreditingProviderId = instCode },
-                new Course { AccreditingProviderId = instCode + 1, AccreditingProviderName = institutionName },
-                new Course { AccreditingProviderId = instCode + 2 },
+                    new Course { },
+                    new Course { AccreditingInstitution = new Institution { InstCode = instCode.ToUpperInvariant() }},
+                    new Course { AccreditingInstitution = new Institution { InstCode = instCode.ToLowerInvariant() }},
+                    new Course { AccreditingInstitution = new Institution { InstCode = instCode }},
+                    new Course { AccreditingInstitution = new Institution { InstCode = instCode + 1, InstName = institutionName }},
+                    new Course { AccreditingInstitution = new Institution { InstCode = instCode + 2 }},
                 }
             };
 

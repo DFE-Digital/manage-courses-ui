@@ -50,7 +50,7 @@ namespace ManageCoursesUi.Tests
             var ucasCourseEnrichmentGetModel = new UcasCourseEnrichmentGetModel { EnrichmentModel = enrichmentModel };
 
             manageApi.Setup(x => x.GetInstitutionSummaries()).ReturnsAsync(testOrgs);
-            manageApi.Setup(x => x.GetCourseByCode(TestHelper.InstCode, TestHelper.TargetedInstCode)).ReturnsAsync(testCourse);
+            manageApi.Setup(x => x.GetCourse(TestHelper.InstCode, TestHelper.TargetedInstCode)).ReturnsAsync(testCourse);
 
             manageApi.Setup(x => x.GetCourseEnrichment(TestHelper.InstCode, TestHelper.TargetedInstCode)).ReturnsAsync(ucasCourseEnrichmentGetModel);
 
@@ -99,7 +99,7 @@ namespace ManageCoursesUi.Tests
 
             var testCourse = testData.Courses.FirstOrDefault(x => x.Name == TestHelper.TargetedCourseTitle);
             manageApi.Setup(x => x.GetInstitutionSummaries()).ReturnsAsync(testOrgs);
-            manageApi.Setup(x => x.GetCourseByCode(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(testCourse);
+            manageApi.Setup(x => x.GetCourse(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(testCourse);
 
             var controller = new CourseController(manageApi.Object, new SearchAndCompareUrlService("http://www.example.com"));
 
@@ -127,7 +127,7 @@ namespace ManageCoursesUi.Tests
             };
 
             manageApi.Setup(x => x.GetInstitutionSummaries()).ReturnsAsync(testOrgs);
-            manageApi.Setup(x => x.GetCourseByCode(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync((Course) null);
+            manageApi.Setup(x => x.GetCourse(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync((Course) null);
 
             var controller = new CourseController(manageApi.Object, new SearchAndCompareUrlService("http://www.example.com"));
 
@@ -162,7 +162,7 @@ namespace ManageCoursesUi.Tests
 
             var testCourse = testData.Courses.FirstOrDefault(x => x.Name == TestHelper.TargetedCourseTitle);
             manageApi.Setup(x => x.GetInstitutionSummaries()).ReturnsAsync(testOrgs);
-            manageApi.Setup(x => x.GetCourseByCode(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(testCourse);
+            manageApi.Setup(x => x.GetCourse(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(testCourse);
 
             var controller = new CourseController(manageApi.Object, new SearchAndCompareUrlService("http://www.example.com"));
             Assert.ThrowsAsync<ArgumentNullException>(async() => await controller.Show(institutionCode, accreditedProviderId, ucasCode));
@@ -199,7 +199,7 @@ namespace ManageCoursesUi.Tests
             };
 
             manageApi.Setup(x => x.GetInstitutionSummaries()).ReturnsAsync(testOrgs);
-            manageApi.Setup(x => x.GetCourseByCode(It.IsAny<string>(), It.IsAny<string>())).ThrowsAsync(new Exception());
+            manageApi.Setup(x => x.GetCourse(It.IsAny<string>(), It.IsAny<string>())).ThrowsAsync(new Exception());
 
             var controller = new CourseController(manageApi.Object, new SearchAndCompareUrlService("http://www.example.com"));
 
@@ -222,7 +222,7 @@ namespace ManageCoursesUi.Tests
             mockApi.Setup(x => x.GetCourseEnrichment(TestHelper.InstCode, TestHelper.TargetedInstCode)).ReturnsAsync(ucasCourseEnrichmentGetModel).Verifiable();
             mockApi.Setup(x => x.PublishCourseToSearchAndCompare(TestHelper.InstCode, TestHelper.TargetedInstCode)).ReturnsAsync(true).Verifiable();
 
-            mockApi.Setup(x => x.GetCourseByCode(TestHelper.InstCode, TestHelper.TargetedInstCode)).ReturnsAsync(new Course { ProgramType = "" }).Verifiable();
+            mockApi.Setup(x => x.GetCourse(TestHelper.InstCode, TestHelper.TargetedInstCode)).ReturnsAsync(new Course { ProgramType = "" }).Verifiable();
 
             var objectValidator = new Mock<IObjectModelValidator>();
             BaseCourseEnrichmentViewModel objectToVerify = null;
@@ -267,7 +267,7 @@ namespace ManageCoursesUi.Tests
 
             var testCourse = new Course() { Name = "Name", CourseCode = "CourseCode" };
 
-            manageApi.Setup(x => x.GetCourseByCode(TestHelper.InstCode, TestHelper.TargetedInstCode)).ReturnsAsync(testCourse);
+            manageApi.Setup(x => x.GetCourse(TestHelper.InstCode, TestHelper.TargetedInstCode)).ReturnsAsync(testCourse);
 
             var controller = new CourseController(manageApi.Object, new SearchAndCompareUrlService("http://www.example.com"));
             var result = await controller.About(TestHelper.InstCode, TestHelper.AccreditedProviderId, TestHelper.TargetedInstCode);
@@ -295,7 +295,7 @@ namespace ManageCoursesUi.Tests
             var viewModel = new AboutCourseEnrichmentViewModel { AboutCourse = "AboutCourse", InterviewProcess = "InterviewProcess", HowSchoolPlacementsWork = "HowSchoolPlacementsWork" };
             var testCourse = new Course() { Name = "Name", CourseCode = "CourseCode" };
 
-            manageApi.Setup(x => x.GetCourseByCode(TestHelper.InstCode, TestHelper.TargetedInstCode)).ReturnsAsync(testCourse);
+            manageApi.Setup(x => x.GetCourse(TestHelper.InstCode, TestHelper.TargetedInstCode)).ReturnsAsync(testCourse);
 
             var controller = new CourseController(manageApi.Object, new SearchAndCompareUrlService("http://www.example.com"));
 
@@ -373,7 +373,7 @@ namespace ManageCoursesUi.Tests
 
             var testCourse = new Course() { Name = "Name", CourseCode = "CourseCode" };
 
-            manageApi.Setup(x => x.GetCourseByCode(TestHelper.InstCode, TestHelper.TargetedInstCode)).ReturnsAsync(testCourse);
+            manageApi.Setup(x => x.GetCourse(TestHelper.InstCode, TestHelper.TargetedInstCode)).ReturnsAsync(testCourse);
 
             var controller = new CourseController(manageApi.Object, new SearchAndCompareUrlService("http://www.example.com"));
             var result = await controller.Requirements(TestHelper.InstCode, TestHelper.AccreditedProviderId, TestHelper.TargetedInstCode);
@@ -402,7 +402,7 @@ namespace ManageCoursesUi.Tests
 
             var testCourse = new Course() { Name = "Name", CourseCode = "CourseCode" };
 
-            manageApi.Setup(x => x.GetCourseByCode(TestHelper.InstCode, TestHelper.TargetedInstCode)).ReturnsAsync(testCourse);
+            manageApi.Setup(x => x.GetCourse(TestHelper.InstCode, TestHelper.TargetedInstCode)).ReturnsAsync(testCourse);
 
             var controller = new CourseController(manageApi.Object, new SearchAndCompareUrlService("http://www.example.com"));
 
@@ -485,7 +485,7 @@ namespace ManageCoursesUi.Tests
 
             var testCourse = new Course() { Name = "Name", CourseCode = "CourseCode" };
 
-            manageApi.Setup(x => x.GetCourseByCode(TestHelper.InstCode, TestHelper.TargetedInstCode)).ReturnsAsync(testCourse);
+            manageApi.Setup(x => x.GetCourse(TestHelper.InstCode, TestHelper.TargetedInstCode)).ReturnsAsync(testCourse);
 
             var controller = new CourseController(manageApi.Object, new SearchAndCompareUrlService("http://www.example.com"));
             var result = await controller.Salary(TestHelper.InstCode, TestHelper.AccreditedProviderId, TestHelper.TargetedInstCode);
@@ -513,7 +513,7 @@ namespace ManageCoursesUi.Tests
 
             var testCourse = new Course() { Name = "Name", CourseCode = "CourseCode" };
 
-            manageApi.Setup(x => x.GetCourseByCode(TestHelper.InstCode, TestHelper.TargetedInstCode)).ReturnsAsync(testCourse);
+            manageApi.Setup(x => x.GetCourse(TestHelper.InstCode, TestHelper.TargetedInstCode)).ReturnsAsync(testCourse);
 
             var controller = new CourseController(manageApi.Object, new SearchAndCompareUrlService("http://www.example.com"));
 
@@ -596,7 +596,7 @@ namespace ManageCoursesUi.Tests
 
             var testCourse = new Course() { Name = "Name", CourseCode = "CourseCode" };
 
-            manageApi.Setup(x => x.GetCourseByCode(TestHelper.InstCode, TestHelper.TargetedInstCode)).ReturnsAsync(testCourse);
+            manageApi.Setup(x => x.GetCourse(TestHelper.InstCode, TestHelper.TargetedInstCode)).ReturnsAsync(testCourse);
 
             var controller = new CourseController(manageApi.Object, new SearchAndCompareUrlService("http://www.example.com"));
             var result = await controller.Fees(TestHelper.InstCode, TestHelper.AccreditedProviderId, TestHelper.TargetedInstCode);
@@ -627,7 +627,7 @@ namespace ManageCoursesUi.Tests
 
             var testCourse = new Course() { Name = "Name", CourseCode = "CourseCode" };
 
-            manageApi.Setup(x => x.GetCourseByCode(TestHelper.InstCode, TestHelper.TargetedInstCode)).ReturnsAsync(testCourse);
+            manageApi.Setup(x => x.GetCourse(TestHelper.InstCode, TestHelper.TargetedInstCode)).ReturnsAsync(testCourse);
 
             var controller = new CourseController(manageApi.Object, new SearchAndCompareUrlService("http://www.example.com"));
 

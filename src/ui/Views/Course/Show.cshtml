@@ -108,27 +108,27 @@
 
         <div class="course-parts__item">
           <h2 class="course-parts__title">Training locations</h2>
-          @foreach (var school in Model.Course.Schools)
+          @foreach (var site in Model.Course.Sites)
           {
-            <h3 class="govuk-heading-s">@school.LocationName (Code: @school.CampusCode)</h3>
+            <h3 class="govuk-heading-s">@site.LocationName (Code: @site.Code)</h3>
             <dl class="govuk-list govuk-list--description">
-              @if (!string.IsNullOrEmpty(@school.Address)) {
+              @if (!string.IsNullOrEmpty(@site.Address)) {
                 <dt>Address:</dt>
-                <dd>@school.Address</dd>
+                <dd>@site.Address</dd>
               }
-              @if (!string.IsNullOrEmpty(@school.Status))
+              @if (!string.IsNullOrEmpty(@site.Status))
               {
                 <dt>Status:</dt>
-                <dd>@school.GetSchoolStatus()</dd>
+                <dd>@site.GetSiteStatus()</dd>
               }
-              @if (!string.IsNullOrEmpty(@school.VacStatus))
+              @if (!string.IsNullOrEmpty(@site.VacStatus))
               {
                 <dt>Vacancies:</dt>
-                <dd>@school.GetVacancyStatus()</dd>
+                <dd>@site.GetVacancyStatus()</dd>
               }
-              @if (!string.IsNullOrEmpty(@school.ApplicationsAcceptedFrom)) {
+              @if (!string.IsNullOrEmpty(@site.ApplicationsAcceptedFrom)) {
                 <dt>Apply from:</dt>
-                <dd>@school.ApplicationsAcceptedFrom</dd>
+                <dd>@site.ApplicationsAcceptedFrom</dd>
               }
             </dl>
           }

@@ -11,7 +11,7 @@ namespace GovUk.Education.ManageCourses.Ui
     public interface IManageApi
     {
         Task<InstitutionCourses> GetCoursesOfInstitution(string instCode);
-        Task<Course> GetCourseByCode(string instCode, string courseCode);
+        Task<Course> GetCourse(string instCode, string courseCode);
         Task<IEnumerable<UserOrganisation>> GetInstitutionSummaries();
         Task<UserOrganisation> GetInstitutionSummary(string instCode);
         Task CreateAccessRequest(AccessRequest accessRequest);

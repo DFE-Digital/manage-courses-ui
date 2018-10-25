@@ -2,11 +2,11 @@ using System;
 
 namespace GovUk.Education.ManageCourses.Ui.ViewModels
 {
-    public class SchoolViewModel
+    public class SiteViewModel
     {
         public string LocationName { get; set; }
         public string Address { get; set; }
-        public string CampusCode { get; set; }
+        public string Code { get; set; }
         public string Status { get; set; }
         public string VacStatus { get; set; }
 

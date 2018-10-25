@@ -10,7 +10,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
   {
     [Authorize]
     [Route("organisation/{instCode}/courses")]
-    public async Task<IActionResult> LegacyCoursePage(string instCode)
+    public IActionResult LegacyCoursePage(string instCode)
     {
       return RedirectToAction("Show", "Organisation", new { instCode });
     }

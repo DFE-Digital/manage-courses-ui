@@ -118,22 +118,24 @@ namespace ManageCoursesUi.Tests.Helpers
                         ProfpostFlag = "",
                         ProgramType = "SC",
                         Subjects = courseTitle + ",Secondary",
-                        CourseCode = instCode,
+                        CourseCode = "CC"+count,
                         Name = courseTitle,
-                        InstCode = instCode,
-                        Schools = new ObservableCollection<School>
+                        Institution = new Institution { InstCode = instCode },
+                        CourseSites = new ObservableCollection<CourseSite>
                         {
-                            new School
-                            {
+                            new CourseSite { 
+                                Status = "R",
                                 ApplicationsAcceptedFrom = "2018-10-16 00:00:00",
-                                Code = TargetedInstCode,
-                                Address1 = "address1",
-                                Address2 = "address2",
-                                Address3 = "address3",
-                                Address4 = "address4",
-                                PostCode = "AS123D",
-                                Status = "R"
-                            }
+
+                                Site = new Site 
+                                {
+                                    Code = TargetedInstCode,
+                                    Address1 = "address1",
+                                    Address2 = "address2",
+                                    Address3 = "address3",
+                                    Address4 = "address4",
+                                    Postcode = "AS123D"                                
+                            }}
                         }
                     }
                 );

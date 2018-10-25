@@ -33,7 +33,7 @@ namespace GovUk.Education.ManageCourses.Ui
             var courses = await _apiClient.Courses_GetAllAsync(instCode);
             return courses;
         }
-        public async Task<Course> GetCourseByCode(string instCode, string courseCode)
+        public async Task<Course> GetCourse(string instCode, string courseCode)
         {
             var course = await _apiClient.Courses_GetAsync(instCode, courseCode);
             return course;

@@ -40,7 +40,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
 
             if (org == null) { return NotFound($"Organisation with code '{courseCode}' not found"); }
 
-            var course = await _manageApi.GetCourseByCode(instCode, courseCode);
+            var course = await _manageApi.GetCourse(instCode, courseCode);
 
             if (course == null) return NotFound();
 
@@ -57,7 +57,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
         [Route("{instCode}/course/{accreditingInstCode=self}/{courseCode}", Name = "publish")]
         public async Task<IActionResult> ShowPublish(string instCode, string accreditingInstCode, string courseCode)
         {
-            var course = await _manageApi.GetCourseByCode(instCode, courseCode);
+            var course = await _manageApi.GetCourse(instCode, courseCode);
             var isSalary = course.ProgramType.Equals("SS", StringComparison.InvariantCultureIgnoreCase)
                         || course.ProgramType.Equals("TA", StringComparison.InvariantCultureIgnoreCase);
             var enrichment = await _manageApi.GetCourseEnrichment(instCode, courseCode);
@@ -77,7 +77,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             {
                 TempData["MessageType"] = "success";
                 TempData["MessageTitle"] = "Your course has been published";
-                var searchUrl = searchAndCompareUrlService.GetCoursePageUri(course.InstCode, course.CourseCode);
+                var searchUrl = searchAndCompareUrlService.GetCoursePageUri(course.Institution.InstCode, course.CourseCode);
                 TempData["MessageBodyHtml"] = $@"
                     <p class=""govuk-body"">
                         The link for this course is:
@@ -111,7 +111,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
         [Route("{instCode}/course/{accreditingInstCode=self}/{courseCode}/about")]
         public async Task<IActionResult> About(string instCode, string accreditingInstCode, string courseCode, string copyFrom = null)
         {
-            var courseDetails = await _manageApi.GetCourseByCode(instCode, courseCode);
+            var courseDetails = await _manageApi.GetCourse(instCode, courseCode);
             var ucasCourseEnrichmentGetModel = await _manageApi.GetCourseEnrichment(instCode, courseCode);
 
             var routeData = GetCourseRouteDataViewModel(instCode, courseCode);
@@ -162,7 +162,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
         {
             if (!ModelState.IsValid)
             {
-                var courseDetails = await _manageApi.GetCourseByCode(instCode, courseCode);
+                var courseDetails = await _manageApi.GetCourse(instCode, courseCode);
                 var courseInfo = new CourseInfoViewModel { ProgrammeCode = courseDetails.CourseCode, Name = courseDetails.Name };
                 var routeData = GetCourseRouteDataViewModel(instCode, courseCode);
                 viewModel.RouteData = routeData;
@@ -183,7 +183,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
         [Route("{instCode}/course/{accreditingInstCode=self}/{courseCode}/requirements")]
         public async Task<IActionResult> Requirements(string instCode, string accreditingInstCode, string courseCode, string copyFrom = null)
         {
-            var courseDetails = await _manageApi.GetCourseByCode(instCode, courseCode);
+            var courseDetails = await _manageApi.GetCourse(instCode, courseCode);
             var ucasCourseEnrichmentGetModel = await _manageApi.GetCourseEnrichment(instCode, courseCode);
             var routeData = GetCourseRouteDataViewModel(instCode, courseCode);
             var courseInfo = new CourseInfoViewModel { ProgrammeCode = courseDetails.CourseCode, Name = courseDetails.Name };
@@ -223,7 +223,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
         {
             if (!ModelState.IsValid)
             {
-                var courseDetails = await _manageApi.GetCourseByCode(instCode, courseCode);
+                var courseDetails = await _manageApi.GetCourse(instCode, courseCode);
                 var courseInfo = new CourseInfoViewModel { ProgrammeCode = courseDetails.CourseCode, Name = courseDetails.Name };
                 var routeData = GetCourseRouteDataViewModel(instCode, courseCode);
                 viewModel.RouteData = routeData;
@@ -244,7 +244,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
         [Route("{instCode}/course/{accreditingInstCode=self}/{courseCode}/salary")]
         public async Task<IActionResult> Salary(string instCode, string accreditingInstCode, string courseCode, string copyFrom = null)
         {
-            var courseDetails = await _manageApi.GetCourseByCode(instCode, courseCode);
+            var courseDetails = await _manageApi.GetCourse(instCode, courseCode);
             var ucasCourseEnrichmentGetModel = await _manageApi.GetCourseEnrichment(instCode, courseCode);
             var routeData = GetCourseRouteDataViewModel(instCode, courseCode);
             var courseInfo = new CourseInfoViewModel { ProgrammeCode = courseDetails.CourseCode, Name = courseDetails.Name };
@@ -285,7 +285,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             if (!ModelState.IsValid)
             {
                 var routeData = GetCourseRouteDataViewModel(instCode, courseCode);
-                var courseDetails = await _manageApi.GetCourseByCode(instCode, courseCode);
+                var courseDetails = await _manageApi.GetCourse(instCode, courseCode);
                 var courseInfo = new CourseInfoViewModel { ProgrammeCode = courseDetails.CourseCode, Name = courseDetails.Name };
                 viewModel.RouteData = routeData;
                 viewModel.CourseInfo = courseInfo;
@@ -303,7 +303,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
         [Route("{instCode}/course/{accreditingInstCode=self}/{courseCode}/fees-and-length")]
         public async Task<IActionResult> Fees(string instCode, string accreditingInstCode, string courseCode, string copyFrom = null)
         {
-            var courseDetails = await _manageApi.GetCourseByCode(instCode, courseCode);
+            var courseDetails = await _manageApi.GetCourse(instCode, courseCode);
             var ucasCourseEnrichmentGetModel = await _manageApi.GetCourseEnrichment(instCode, courseCode);
             var routeData = GetCourseRouteDataViewModel(instCode, courseCode);
             var courseInfo = new CourseInfoViewModel { ProgrammeCode = courseDetails.CourseCode, Name = courseDetails.Name };
@@ -347,7 +347,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             if (!ModelState.IsValid)
             {
                 var routeData = GetCourseRouteDataViewModel(instCode, courseCode);
-                var courseDetails = await _manageApi.GetCourseByCode(instCode, courseCode);
+                var courseDetails = await _manageApi.GetCourse(instCode, courseCode);
                 var courseInfo = new CourseInfoViewModel { ProgrammeCode = courseDetails.CourseCode, Name = courseDetails.Name };
                 viewModel.RouteData = routeData;
                 viewModel.CourseInfo = courseInfo;
@@ -405,39 +405,39 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
                 {
                     CourseTitle = course.Name,
                     Type = course.TypeDescription,
-                    AccreditingInstName = course.AccreditingProviderName,
-                    AccreditingInstCode = course.AccreditingProviderId,
+                    AccreditingInstName = course.AccreditingInstitution?.InstName,
+                    AccreditingInstCode = course.AccreditingInstitution?.InstCode,
                     CourseCode = course.CourseCode,
-                    InstCode = course.InstCode,
+                    InstCode = course.Institution.InstCode,
                     AgeRange = course.AgeRange,
                     Route = course.ProgramType,
                     Qualifications = course.ProfpostFlag,
                     StudyMode = course.StudyMode,
                     Subjects = course.Subjects,
                     Status = course.GetCourseStatus(),
-                    Schools = course.Schools.Select(campus =>
+                    Sites = course.CourseSites.Select(courseSite =>
                     {
                         var addressLines = (new List<string>()
                             {
-                                    campus.Address1,
-                                        campus.Address2,
-                                        campus.Address3,
-                                        campus.Address4,
-                                        campus.PostCode
+                                    courseSite.Site.Address1,
+                                    courseSite.Site.Address2,
+                                    courseSite.Site.Address3,
+                                    courseSite.Site.Address4,
+                                    courseSite.Site.Postcode
                             })
                             .Where(line => !string.IsNullOrEmpty(line));
 
                         var address = addressLines.Count() > 0 ? addressLines.Where(line => !string.IsNullOrEmpty(line))
                             .Aggregate((string current, string next) => current + ", " + next) : "";
 
-                        return new SchoolViewModel
+                        return new SiteViewModel
                         {
-                            ApplicationsAcceptedFrom = campus.ApplicationsAcceptedFrom,
-                            CampusCode = campus.Code,
-                            LocationName = campus.LocationName,
+                            ApplicationsAcceptedFrom = courseSite.ApplicationsAcceptedFrom,
+                            Code = courseSite.Site.Code,
+                            LocationName = courseSite.Site.LocationName,
                             Address = address,
-                            Status = campus.Status,
-                            VacStatus = campus.VacStatus
+                            Status = courseSite.Status,
+                            VacStatus = courseSite.VacStatus
                         };
                     })
                 };
@@ -450,7 +450,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
                 OrganisationName = org.OrganisationName,
                 OrganisationId = org.OrganisationId,
                 CourseTitle = course.Name,
-                AccreditingProviderId = course.AccreditingProviderId,
+                AccreditingProviderId = course.AccreditingInstitution.InstCode,
                 MultipleOrganisations = multipleOrganisations,
                 Course = courseVariant,
                 CourseEnrichment = courseEnrichmentViewModel,
