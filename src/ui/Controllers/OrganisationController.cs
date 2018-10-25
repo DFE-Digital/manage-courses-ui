@@ -218,8 +218,8 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
 
             var accreditingProviders = ucasData.Courses
                 .Where(x =>
-                    false == string.Equals(x.AccreditingInstitution.InstCode, instCode, StringComparison.InvariantCultureIgnoreCase) &&
-                    false == string.IsNullOrWhiteSpace(x.AccreditingInstitution.InstCode))
+                    false == string.Equals(x.AccreditingInstitution?.InstCode, instCode, StringComparison.InvariantCultureIgnoreCase) &&
+                    false == string.IsNullOrWhiteSpace(x.AccreditingInstitution?.InstCode))
                 .Distinct(new AccreditingProviderIdComparer()).ToList();
             var accreditingProviderEnrichments = enrichmentModel?.AccreditingProviderEnrichments ?? new ObservableCollection<AccreditingProviderEnrichment>();
 
@@ -231,7 +231,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
                         var aboutTrainingProviders = (fromModel ?? new List<TrainingProviderViewModel>());
 
                         var newAccreditingProviderModel = aboutTrainingProviders.FirstOrDefault(
-                            atp => (atp.InstCode.Equals(x.AccreditingInstitution.InstCode, StringComparison.InvariantCultureIgnoreCase)));
+                            atp => (atp.InstCode.Equals(x.AccreditingInstitution?.InstCode, StringComparison.InvariantCultureIgnoreCase)));
 
                         if (newAccreditingProviderModel != null)
                         {
@@ -241,8 +241,8 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
 
                         var tpvm = new TrainingProviderViewModel()
                         {
-                            InstName = x.AccreditingInstitution.InstName,
-                            InstCode = x.AccreditingInstitution.InstCode,
+                            InstName = x.AccreditingInstitution?.InstName,
+                            InstCode = x.AccreditingInstitution?.InstCode,
                             Description = description
                         };
 
@@ -301,19 +301,19 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
 
         private static Func<AccreditingProviderEnrichment, bool> TrainingProviderMatchesProviderCourse(Course x)
         {
-            return y => String.Equals(x.AccreditingInstitution.InstCode,
+            return y => String.Equals(x.AccreditingInstitution?.InstCode,
                 y.UcasInstitutionCode, StringComparison.InvariantCultureIgnoreCase);
         }
 
         private List<ViewModels.Provider> GetProviders(InstitutionCourses institutionCourses)
         {
-            var uniqueAccreditingProviderIds = institutionCourses.Courses.Select(c => c.AccreditingInstitution.InstCode).Distinct();
+            var uniqueAccreditingProviderIds = institutionCourses.Courses.Select(c => c.AccreditingInstitution?.InstCode).Distinct();
             var providers = new List<ViewModels.Provider>();
             foreach (var uniqueAccreditingProviderId in uniqueAccreditingProviderIds)
             {
-                var name = institutionCourses.Courses.First(c => c.AccreditingInstitution.InstCode == uniqueAccreditingProviderId)
-                    .AccreditingInstitution.InstName;
-                var courses = institutionCourses.Courses.Where(c => c.AccreditingInstitution.InstCode == uniqueAccreditingProviderId).ToList();
+                var name = institutionCourses.Courses.First(c => c.AccreditingInstitution?.InstCode == uniqueAccreditingProviderId)
+                    .AccreditingInstitution?.InstName;
+                var courses = institutionCourses.Courses.Where(c => c.AccreditingInstitution?.InstCode == uniqueAccreditingProviderId).ToList();
                 providers.Add(new ViewModels.Provider
                 {
                     InstCode = uniqueAccreditingProviderId,

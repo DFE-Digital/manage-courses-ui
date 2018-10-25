@@ -11,12 +11,12 @@ namespace GovUk.Education.ManageCourses.Ui.Utilities
     {
         public bool Equals(Course x, Course y)
         {
-            return string.Equals(x.AccreditingInstitution.InstCode, y.AccreditingInstitution.InstCode, StringComparison.InvariantCultureIgnoreCase);
+            return string.Equals(x.AccreditingInstitution?.InstCode, y.AccreditingInstitution?.InstCode, StringComparison.InvariantCultureIgnoreCase);
         }
 
         public int GetHashCode(Course obj)
         {
-            return obj.AccreditingInstitution.InstCode.ToLowerInvariant().GetHashCode();
+            return (obj.AccreditingInstitution?.InstCode ?? "").ToLowerInvariant().GetHashCode();
         }
     }
 }

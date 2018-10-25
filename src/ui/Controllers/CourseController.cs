@@ -450,7 +450,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
                 OrganisationName = org.OrganisationName,
                 OrganisationId = org.OrganisationId,
                 CourseTitle = course.Name,
-                AccreditingProviderId = course.AccreditingInstitution.InstCode,
+                AccreditingProviderId = course.AccreditingInstitution?.InstCode,
                 MultipleOrganisations = multipleOrganisations,
                 Course = courseVariant,
                 CourseEnrichment = courseEnrichmentViewModel,
