@@ -51,6 +51,8 @@ namespace ManageCoursesUi.Tests
 
             apiMock.Setup(x => x.GetInstitutionSummaries()).ReturnsAsync(orgs);
 
+            apiMock.Setup(x => x.GetInstitutionSummary(It.IsAny<string>())).ReturnsAsync(orgs[1]);
+
             var controller = new OrganisationController(apiMock.Object);
 
             var result = await controller.Show(instCode);

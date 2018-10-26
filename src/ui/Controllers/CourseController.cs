@@ -38,7 +38,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             var multipleOrganisations = userOrganisations.Count() > 1;
             var org = userOrganisations.ToList().FirstOrDefault(x => instCode.ToLower() == x.InstCode.ToLower());
 
-            if (org == null) { return NotFound($"Organisation with code '{courseCode}' not found"); }
+            if (org == null) { return NotFound(); }
 
             var course = await _manageApi.GetCourse(instCode, courseCode);
 

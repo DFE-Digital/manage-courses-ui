@@ -37,6 +37,8 @@ namespace ManageCoursesUi.Tests
             {
                 new InstitutionSummary
                 {
+                    InstCode = TestHelper.InstCode,
+                    InstName = TestHelper.InstName,
                     TotalCourses = testData.Count
                 }
             };
@@ -63,9 +65,9 @@ namespace ManageCoursesUi.Tests
             var routeData = model.CourseEnrichment.RouteData;
             Assert.IsNotNull(model);
             Assert.AreEqual(TestHelper.TargetedCourseTitle, model.CourseTitle);
-            Assert.AreEqual(TestHelper.OrganisationId, model.InstCode);
+            Assert.AreEqual(TestHelper.InstCode, model.InstCode);
 
-            Assert.AreEqual(TestHelper.OrganisationName, model.InstName);
+            Assert.AreEqual(TestHelper.InstName, model.InstName);
 
             Assert.AreEqual(TestHelper.InstCode, routeData.InstCode);
             Assert.AreEqual(TestHelper.TargetedInstCode, routeData.CourseCode);
@@ -100,8 +102,8 @@ namespace ManageCoursesUi.Tests
 
             var res = controller.Show(TestHelper.InstCode, TestHelper.AccreditingInstCode, TestHelper.TargetedInstCode).Result;
 
-            Assert.That(res is NotFoundObjectResult);
-            Assert.AreEqual(404, (res as NotFoundObjectResult).StatusCode);
+            Assert.That(res is NotFoundResult);
+            Assert.AreEqual(404, (res as NotFoundResult).StatusCode);
         }
 
         [Test]
@@ -184,6 +186,7 @@ namespace ManageCoursesUi.Tests
             {
                 new InstitutionSummary
                 {
+                    InstCode = TestHelper.InstCode,
                     TotalCourses = testData.Count
                 }
             };

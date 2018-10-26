@@ -12,8 +12,7 @@ namespace ManageCoursesUi.Tests.Helpers
     /// </summary>
     internal static class TestHelper
     {        
-        public static string OrganisationId { get; } = "5697";
-        public static string OrganisationName { get; } = "Test Organisation";
+        public static string InstName { get; } = "Test Organisation";
         public static string InstCode { get; } = "2AT";
         public static string AccreditingInstCode { get; } = "self";
         public static string TargetedInstCode { get; } = "35L6";
