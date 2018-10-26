@@ -28,25 +28,21 @@ namespace ManageCoursesUi.Tests
             var instCode = "INSTCODE";
             var organisationName = "organisationName";
             // Todo: fix this ObservableCollection.
-            var instCourses = new InstitutionCourses
-            {
-                InstitutionCode = instCode,
-                InstitutionName = organisationName,
-                Courses = new ObservableCollection<Course>
+            var instCourses = new List<Course>
                 {
                     new Course
                     {
-                        Institution = new Institution { InstCode = instCode }
+                        Institution = new Institution { InstCode = instCode, InstName = organisationName }
                     }
-                }
-            };
-            var orgs = new List<UserOrganisation>
+                };
+
+            var orgs = new List<InstitutionSummary>
             {
-                new UserOrganisation(),
-                new UserOrganisation
+                new InstitutionSummary(),
+                new InstitutionSummary
                 {
-                UcasCode = instCode,
-                OrganisationName = organisationName
+                    InstCode = instCode,
+                    InstName = organisationName
                 }
             };
 
@@ -76,12 +72,12 @@ namespace ManageCoursesUi.Tests
             var instCode = "INSTCODE";
             var organisationName = "organisationName";
 
-            var orgs = new List<UserOrganisation>
+            var orgs = new List<InstitutionSummary>
             {
-                new UserOrganisation
+                new InstitutionSummary
                 {
-                UcasCode = instCode,
-                OrganisationName = organisationName
+                InstCode = instCode,
+                InstName = organisationName
                 }
             };
 
@@ -108,12 +104,12 @@ namespace ManageCoursesUi.Tests
             var instCode = "INSTCODE";
             var organisationName = "organisationName";
 
-            var orgs = new List<UserOrganisation>
+            var orgs = new List<InstitutionSummary>
             {
-                new UserOrganisation
+                new InstitutionSummary
                 {
-                UcasCode = instCode,
-                OrganisationName = organisationName
+                InstCode = instCode,
+                InstName = organisationName
                 }
             };
 
@@ -169,12 +165,12 @@ namespace ManageCoursesUi.Tests
             var instCode = "INSTCODE";
             var organisationName = "OrganisationName";
 
-            var userOrganisations = new List<UserOrganisation>
+            var InstitutionSummaries = new List<InstitutionSummary>
             {
-                new UserOrganisation
+                new InstitutionSummary
                 {
-                UcasCode = instCode,
-                OrganisationName = organisationName
+                InstCode = instCode,
+                InstName = organisationName
                 }
             };
 
@@ -183,9 +179,7 @@ namespace ManageCoursesUi.Tests
 
             var description = "Description";
             var institutionName = "InstitutionName";
-            var institutionCourses = new InstitutionCourses
-            {
-                Courses = new ObservableCollection<Course>
+            var institutionCourses =  new List<Course>
                 {
                     new Course { },
                     new Course { AccreditingInstitution = new Institution { InstCode = instCode.ToUpperInvariant() }},
@@ -193,8 +187,8 @@ namespace ManageCoursesUi.Tests
                     new Course { AccreditingInstitution = new Institution { InstCode = instCode }},
                     new Course { AccreditingInstitution = new Institution { InstCode = instCode + 1, InstName = institutionName }},
                     new Course { AccreditingInstitution = new Institution { InstCode = instCode + 2 }},
-                }
-            };
+                };
+
             var now = DateTime.Now;
             var ucasInstitutionEnrichmentGetModel = new UcasInstitutionEnrichmentGetModel()
             {
@@ -214,7 +208,7 @@ namespace ManageCoursesUi.Tests
             var apiMock = new Mock<IManageApi>();
 
             apiMock.Setup(x => x.GetInstitutionSummary(instCode)).ReturnsAsync(
-                new UserOrganisation { UcasCode = instCode, OrganisationName = organisationName }
+                new InstitutionSummary { InstCode = instCode, InstName = organisationName }
             );
 
             apiMock.Setup(x => x.GetCoursesOfInstitution(instCode))
@@ -253,9 +247,7 @@ namespace ManageCoursesUi.Tests
 
             var institutionName = "InstitutionName";
 
-            var institutionCourses = new InstitutionCourses
-            {
-                Courses = new ObservableCollection<Course>
+            var institutionCourses = new List<Course>
                 {
                     new Course { },
                     new Course { AccreditingInstitution = new Institution { InstCode = instCode.ToUpperInvariant() }},
@@ -263,8 +255,7 @@ namespace ManageCoursesUi.Tests
                     new Course { AccreditingInstitution = new Institution { InstCode = instCode }},
                     new Course { AccreditingInstitution = new Institution { InstCode = instCode + 1, InstName = institutionName }},
                     new Course { AccreditingInstitution = new Institution { InstCode = instCode + 2 }},
-                }
-            };
+                };
 
             var apiMock = new Mock<IManageApi>();
             apiMock.Setup(x => x.GetCoursesOfInstitution(instCode))
@@ -315,9 +306,7 @@ namespace ManageCoursesUi.Tests
                 AboutTrainingProviders = new List<TrainingProviderViewModel>()
             };
 
-            var institutionCourses = new InstitutionCourses
-            {
-                Courses = new ObservableCollection<Course>
+            var institutionCourses = new List<Course>
                 {
                     new Course { },
                     new Course { AccreditingInstitution = new Institution { InstCode = instCode.ToUpperInvariant() }},
@@ -325,13 +314,12 @@ namespace ManageCoursesUi.Tests
                     new Course { AccreditingInstitution = new Institution { InstCode = instCode }},
                     new Course { AccreditingInstitution = new Institution { InstCode = instCode + 1, InstName = institutionName }},
                     new Course { AccreditingInstitution = new Institution { InstCode = instCode + 2 }},
-                }
-            };
+                };
 
             var apiMock = new Mock<IManageApi>();
 
             apiMock.Setup(x => x.GetInstitutionSummary(instCode))
-                .ReturnsAsync(new UserOrganisation { UcasCode = instCode, OrganisationName = institutionName });
+                .ReturnsAsync(new InstitutionSummary { InstCode = instCode, InstName = institutionName });
 
             apiMock.Setup(x => x.GetCoursesOfInstitution(instCode))
                 .ReturnsAsync(institutionCourses);
@@ -371,9 +359,7 @@ namespace ManageCoursesUi.Tests
 
             var institutionName = "InstitutionName";
 
-            var institutionCourses = new InstitutionCourses
-            {
-                Courses = new ObservableCollection<Course>
+            var institutionCourses = new List<Course>
                 {
                     new Course { },
                     new Course { AccreditingInstitution = new Institution { InstCode = instCode.ToUpperInvariant() }},
@@ -381,12 +367,11 @@ namespace ManageCoursesUi.Tests
                     new Course { AccreditingInstitution = new Institution { InstCode = instCode }},
                     new Course { AccreditingInstitution = new Institution { InstCode = instCode + 1, InstName = institutionName }},
                     new Course { AccreditingInstitution = new Institution { InstCode = instCode + 2 }},
-                }
-            };
+                };
             var apiMock = new Mock<IManageApi>();
 
             apiMock.Setup(x => x.GetInstitutionSummary(instCode))
-                .ReturnsAsync(new UserOrganisation { UcasCode = instCode, OrganisationName = institutionName });
+                .ReturnsAsync(new InstitutionSummary { InstCode = instCode, InstName = institutionName });
 
             apiMock.Setup(x => x.GetCoursesOfInstitution(instCode))
                 .ReturnsAsync(institutionCourses);
@@ -430,12 +415,12 @@ namespace ManageCoursesUi.Tests
 
             var organisationName = "OrganisationName";
 
-            var userOrganisations = new List<UserOrganisation>
+            var InstitutionSummaries = new List<InstitutionSummary>
             {
-                new UserOrganisation
+                new InstitutionSummary
                 {
-                UcasCode = instCode,
-                OrganisationName = organisationName
+                InstCode = instCode,
+                InstName = organisationName
                 }
             };
 
@@ -444,9 +429,7 @@ namespace ManageCoursesUi.Tests
 
             var description = "Description";
             var institutionName = "InstitutionName";
-            var institutionCourses = new InstitutionCourses
-            {
-                Courses = new ObservableCollection<Course>
+            var institutionCourses = new List<Course>
                 {
                     new Course { },
                     new Course { AccreditingInstitution = new Institution { InstCode = instCode.ToUpperInvariant() }},
@@ -454,8 +437,8 @@ namespace ManageCoursesUi.Tests
                     new Course { AccreditingInstitution = new Institution { InstCode = instCode }},
                     new Course { AccreditingInstitution = new Institution { InstCode = instCode + 1, InstName = institutionName }},
                     new Course { AccreditingInstitution = new Institution { InstCode = instCode + 2 }},
-                }
-            };
+                };
+
             var now = DateTime.Now;
             var ucasInstitutionEnrichmentGetModel = new UcasInstitutionEnrichmentGetModel()
             {
@@ -480,10 +463,10 @@ namespace ManageCoursesUi.Tests
             var apiMock = new Mock<IManageApi>();
 
             apiMock.Setup(x => x.GetInstitutionSummary(instCode))
-                .ReturnsAsync(new UserOrganisation { UcasCode = instCode, OrganisationName = organisationName });
+                .ReturnsAsync(new InstitutionSummary { InstCode = instCode, InstName = organisationName });
 
             apiMock.Setup(x => x.GetInstitutionSummaries())
-                .ReturnsAsync(userOrganisations);
+                .ReturnsAsync(InstitutionSummaries);
 
             apiMock.Setup(x => x.GetCoursesOfInstitution(instCode))
                 .ReturnsAsync(institutionCourses);
@@ -539,9 +522,7 @@ namespace ManageCoursesUi.Tests
                 .Callback((string a, UcasInstitutionEnrichmentPostModel b) => result = b)
                 .Returns(Task.CompletedTask);
 
-            apiMock.Setup(x => x.GetCoursesOfInstitution("ABC")).ReturnsAsync(new InstitutionCourses{
-                Courses = new ObservableCollection<Course> { new Course { AccreditingInstitution = new Institution { InstCode = "ACC" } }}
-            });
+            apiMock.Setup(x => x.GetCoursesOfInstitution("ABC")).ReturnsAsync(new List<Course> { new Course { AccreditingInstitution = new Institution { InstCode = "ACC" } }});
 
             var objectValidator = new Mock<IObjectModelValidator>();
             objectValidator.Setup(o => o.Validate(It.IsAny<ActionContext>(),
@@ -590,9 +571,7 @@ namespace ManageCoursesUi.Tests
                 }
             };
 
-            var institutionCourses = new InstitutionCourses
-            {
-                Courses = new ObservableCollection<Course>
+            var institutionCourses = new List<Course>
                 {
                     new Course { },
                     new Course { AccreditingInstitution = new Institution { InstCode = instCode.ToUpperInvariant() }},
@@ -600,8 +579,7 @@ namespace ManageCoursesUi.Tests
                     new Course { AccreditingInstitution = new Institution { InstCode = instCode }},
                     new Course { AccreditingInstitution = new Institution { InstCode = instCode + 1, InstName = institutionName }},
                     new Course { AccreditingInstitution = new Institution { InstCode = instCode + 2 }},
-                }
-            };
+                };
 
             var apiMock = new Mock<IManageApi>();
             apiMock.Setup(x => x.GetCoursesOfInstitution(instCode))
@@ -616,7 +594,7 @@ namespace ManageCoursesUi.Tests
             };
 
             apiMock.Setup(x => x.GetInstitutionSummaries())
-                .ReturnsAsync(new List<UserOrganisation> {new UserOrganisation()});
+                .ReturnsAsync(new List<InstitutionSummary> {new InstitutionSummary()});
 
             apiMock.Setup(x => x.GetInstitutitionEnrichment(instCode))
                 .ReturnsAsync(ucasInstitutionEnrichmentGetModel);

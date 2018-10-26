@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using GovUk.Education.ManageCourses.ApiClient;
 using GovUk.Education.ManageCourses.Ui.Helpers;
@@ -22,16 +23,16 @@ namespace GovUk.Education.ManageCourses.Ui
         }
 
         // Do not handled any exception let it thro as it should be handled by McExceptionFilter or startup configuration.
-        public async Task<UserOrganisation> GetInstitutionSummary(string instCode)
+        public async Task<InstitutionSummary> GetInstitutionSummary(string instCode)
         {
             var courses = await _apiClient.Organisations_GetAsync(instCode);
             return courses;
         }
 
-        public async Task<InstitutionCourses> GetCoursesOfInstitution(string instCode)
+        public async Task<List<Course>> GetCoursesOfInstitution(string instCode)
         {
             var courses = await _apiClient.Courses_GetAllAsync(instCode);
-            return courses;
+            return courses.ToList();
         }
         public async Task<Course> GetCourse(string instCode, string courseCode)
         {
@@ -39,7 +40,7 @@ namespace GovUk.Education.ManageCourses.Ui
             return course;
         }
 
-        public async Task<IEnumerable<UserOrganisation>> GetInstitutionSummaries()
+        public async Task<IEnumerable<InstitutionSummary>> GetInstitutionSummaries()
         {
             var orgs = await _apiClient.Organisations_GetAllAsync();
             return orgs;

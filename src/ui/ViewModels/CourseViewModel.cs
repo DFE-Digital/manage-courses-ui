@@ -4,11 +4,11 @@ namespace GovUk.Education.ManageCourses.Ui.ViewModels
 {
     public class CourseViewModel
     {
-        public string OrganisationName { get; set; }
-        public string OrganisationId { get; set; }
+        public string InstName { get; set; }
+        public string InstCode { get; set; }
         public bool MultipleOrganisations { get; set; }
         public string CourseTitle { get; set; }
-        public string AccreditingProviderId { get; set; }
+        public string AccreditingInstCode { get; set; }
         public CourseDetailsViewModel Course { get; set; }
         public BaseCourseEnrichmentViewModel CourseEnrichment { get; set; }
         public Uri LiveSearchUrl { get; set; }

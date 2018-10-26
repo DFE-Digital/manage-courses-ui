@@ -36,7 +36,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             var orgsList = await _manageApi.GetInstitutionSummaries();
             var userOrganisations = orgsList.ToList();
             var multipleOrganisations = userOrganisations.Count() > 1;
-            var org = userOrganisations.ToList().FirstOrDefault(x => instCode.ToLower() == x.UcasCode.ToLower());
+            var org = userOrganisations.ToList().FirstOrDefault(x => instCode.ToLower() == x.InstCode.ToLower());
 
             if (org == null) { return NotFound($"Organisation with code '{courseCode}' not found"); }
 
@@ -153,7 +153,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             courseCode = courseCode.ToUpper();
 
             var copyable = await _manageApi.GetCoursesOfInstitution(instCode);
-            ViewBag.CopyableCourses = copyable != null ? copyable.Courses.Where(x => x.EnrichmentWorkflowStatus != null && x.CourseCode != courseCode) : new List<ApiClient.Course>();
+            ViewBag.CopyableCourses = copyable != null ? copyable.Where(x => x.EnrichmentWorkflowStatus != null && x.CourseCode != courseCode) : new List<ApiClient.Course>();
         }
 
         [HttpPost]
@@ -398,7 +398,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             TempData["MessageBodyHtml"] = messageBodyHtml;
         }
 
-        private CourseViewModel LoadViewModel(UserOrganisation org, ApiClient.Course course, bool multipleOrganisations, UcasCourseEnrichmentGetModel ucasCourseEnrichmentGetModel, CourseRouteDataViewModel routeData)
+        private CourseViewModel LoadViewModel(InstitutionSummary org, ApiClient.Course course, bool multipleOrganisations, UcasCourseEnrichmentGetModel ucasCourseEnrichmentGetModel, CourseRouteDataViewModel routeData)
         {
             var courseVariant =
                 new ViewModels.CourseDetailsViewModel
@@ -447,14 +447,14 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             var courseEnrichmentViewModel = GetCourseEnrichmentViewModel(ucasCourseEnrichmentGetModel, isSalary, routeData);
             var viewModel = new CourseViewModel
             {
-                OrganisationName = org.OrganisationName,
-                OrganisationId = org.OrganisationId,
+                InstName = org.InstName,
+                InstCode = org.InstCode,
                 CourseTitle = course.Name,
-                AccreditingProviderId = course.AccreditingInstitution?.InstCode,
+                AccreditingInstCode = course.AccreditingInstitution?.InstCode,
                 MultipleOrganisations = multipleOrganisations,
                 Course = courseVariant,
                 CourseEnrichment = courseEnrichmentViewModel,
-                LiveSearchUrl = searchAndCompareUrlService.GetCoursePageUri(org.UcasCode, courseVariant.CourseCode),
+                LiveSearchUrl = searchAndCompareUrlService.GetCoursePageUri(org.InstCode, courseVariant.CourseCode),
                 IsSalary = isSalary
             };
             return viewModel;

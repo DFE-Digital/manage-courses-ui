@@ -29,7 +29,7 @@ namespace ManageCoursesUi.Tests
         public void Index_IfNoOrgs_Returns401()
         {
             mockApi.Setup(x => x.GetInstitutionSummaries())
-                .Returns(Task.FromResult((IEnumerable<UserOrganisation>) new List<UserOrganisation>()));
+                .Returns(Task.FromResult((IEnumerable<InstitutionSummary>) new List<InstitutionSummary>()));
 
             var res = sut.Index().Result;
 

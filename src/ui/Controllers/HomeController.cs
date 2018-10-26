@@ -22,7 +22,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
         [Authorize]
         public async Task<ActionResult> Index()
         {
-            IEnumerable<UserOrganisation> orgs;
+            IEnumerable<InstitutionSummary> orgs;
 
             try
             {
@@ -43,7 +43,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             var userOrganisations = orgs.ToList();
             if (userOrganisations.Count() == 1)
             {
-                return this.RedirectToAction("Show", "Organisation", new { instCode = userOrganisations[0].UcasCode });
+                return this.RedirectToAction("Show", "Organisation", new { instCode = userOrganisations[0].InstCode });
             }
 
             if (userOrganisations.Count() > 1)
