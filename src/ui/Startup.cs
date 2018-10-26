@@ -238,7 +238,12 @@ namespace GovUk.Education.ManageCourses.Ui
             });
             services.AddScoped<SearchAndCompare.UI.Shared.Features.IFeatureFlags, SearchAndCompare.UI.Shared.Features.FeatureFlags>();
             services.AddSingleton<ISearchAndCompareUrlService>(x => new SearchAndCompareUrlService(Configuration.GetValue("SearchAndCompare:UiBaseUrl", "")));
-            services.AddSingleton<IManageCoursesApiClientConfiguration, ManageCoursesApiClientConfiguration>();
+            services.AddSingleton<IManageCoursesApiClientConfiguration>(serviceProvider => {
+                var httpContextAccessor = serviceProvider.GetService<IHttpContextAccessor>();
+                var config = serviceProvider.GetService<ManageCoursesConfig>();
+
+                return new ManageCoursesApiClientConfiguration(httpContextAccessor, config.ApiUrl);
+            });
             services.AddScoped(provider => AnalyticsPolicy.FromEnv());
             services.AddScoped<AnalyticsAttribute>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
@@ -246,12 +251,13 @@ namespace GovUk.Education.ManageCourses.Ui
             services.AddSingleton<IManageApi, ManageApi>();
             services.AddSingleton<ITelemetryInitializer, SubjectTelemetryInitialiser>();
             services.AddApplicationInsightsTelemetry();
+
+            // Look at thois
             services.AddSingleton(serviceProvider =>
             {
                 var manageCoursesApiClientConfiguration = serviceProvider.GetService<IManageCoursesApiClientConfiguration>();
                 var manageCoursesApiClient = new ManageCoursesApiClient(manageCoursesApiClientConfiguration, new System.Net.Http.HttpClient());
                 var config = serviceProvider.GetService<ManageCoursesConfig>();
-                manageCoursesApiClient.BaseUrl = config.ApiUrl;
                 return manageCoursesApiClient;
             });
         }

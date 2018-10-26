@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using GovUk.Education.ManageCourses.ApiClient;
+using GovUk.Education.ManageCourses.Api.Model;
+using GovUk.Education.ManageCourses.Domain.Models;
 using ManageCoursesUi.Tests.Enums;
 
 namespace ManageCoursesUi.Tests.Helpers
@@ -11,7 +12,7 @@ namespace ManageCoursesUi.Tests.Helpers
     /// It also generates non-targeted data so that the end point will error
     /// </summary>
     internal static class TestHelper
-    {        
+    {
         public static string InstName { get; } = "Test Organisation";
         public static string InstCode { get; } = "2AT";
         public static string AccreditingInstCode { get; } = "self";
@@ -31,7 +32,7 @@ namespace ManageCoursesUi.Tests.Helpers
         /// <returns></returns>
         private static List<Course> GenerateCourseDetails(EnumDataType type)
         {
-            var listToReturn = new List<Course>();            
+            var listToReturn = new List<Course>();
             int variantCount;
             bool happyPath;
             switch (type)
@@ -79,7 +80,7 @@ namespace ManageCoursesUi.Tests.Helpers
             var listToReturn = new List<Course>();
 
             for (var counter = 1; counter <= count; counter++)
-            {                
+            {
                 var targetedPosition = count > 1 ? 2 : 1;//sets the position of the targed variant. This is important as there have been errors when the targed variant is not in the first position
                 var instCode = "00";
                 if (happyPath && counter == targetedPosition)
@@ -102,18 +103,18 @@ namespace ManageCoursesUi.Tests.Helpers
                         Institution = new Institution { InstCode = instCode },
                         CourseSites = new ObservableCollection<CourseSite>
                         {
-                            new CourseSite { 
+                            new CourseSite {
                                 Status = "R",
                                 ApplicationsAcceptedFrom = "2018-10-16 00:00:00",
 
-                                Site = new Site 
+                                Site = new Site
                                 {
                                     Code = TargetedInstCode,
                                     Address1 = "address1",
                                     Address2 = "address2",
                                     Address3 = "address3",
                                     Address4 = "address4",
-                                    Postcode = "AS123D"                                
+                                    Postcode = "AS123D"
                             }}
                         }
                     }

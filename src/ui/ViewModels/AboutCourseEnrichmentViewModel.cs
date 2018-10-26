@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using GovUk.Education.ManageCourses.ApiClient;
+using GovUk.Education.ManageCourses.Api.Model;
+using GovUk.Education.ManageCourses.Domain.Models;
 
 namespace GovUk.Education.ManageCourses.Ui.ViewModels
 {
@@ -21,15 +22,15 @@ namespace GovUk.Education.ManageCourses.Ui.ViewModels
         public CourseInfoViewModel CourseInfo { get; set; }
 
         public bool IsEmpty() =>
-            string.IsNullOrEmpty(AboutCourse) && 
-            string.IsNullOrEmpty(InterviewProcess) && 
+            string.IsNullOrEmpty(AboutCourse) &&
+            string.IsNullOrEmpty(InterviewProcess) &&
             string.IsNullOrEmpty(HowSchoolPlacementsWork);
 
         public void MapInto(ref CourseEnrichmentModel enrichmentModel)
         {
             enrichmentModel.AboutCourse = AboutCourse;
             enrichmentModel.InterviewProcess = InterviewProcess;
-            enrichmentModel.HowSchoolPlacementsWork = HowSchoolPlacementsWork;            
+            enrichmentModel.HowSchoolPlacementsWork = HowSchoolPlacementsWork;
         }
 
         public IEnumerable<CopiedField> CopyFrom(CourseEnrichmentModel model)
@@ -58,7 +59,7 @@ namespace GovUk.Education.ManageCourses.Ui.ViewModels
                 HowSchoolPlacementsWork = model.HowSchoolPlacementsWork;
                 res.Add(new CopiedField(nameof(model.HowSchoolPlacementsWork), CourseEnrichmentFieldNames.HowSchoolPlacementsWork));
             }
-            
+
             return res;
         }
     }

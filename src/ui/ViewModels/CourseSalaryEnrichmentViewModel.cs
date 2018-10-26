@@ -1,7 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using GovUk.Education.ManageCourses.ApiClient;
+using GovUk.Education.ManageCourses.Api.Model;
+using GovUk.Education.ManageCourses.Domain.Models;
 using GovUk.Education.ManageCourses.Ui.ViewModels.Enums;
 
 namespace GovUk.Education.ManageCourses.Ui.ViewModels
@@ -54,8 +55,8 @@ namespace GovUk.Education.ManageCourses.Ui.ViewModels
                 SalaryDetails = model.SalaryDetails;
                 res.Add(new CopiedField(nameof(model.SalaryDetails), CourseEnrichmentFieldNames.SalaryDetails));
             }
-            
-            return res;            
+
+            return res;
         }
     }
 }

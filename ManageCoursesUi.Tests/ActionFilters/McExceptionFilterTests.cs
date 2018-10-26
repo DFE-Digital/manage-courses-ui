@@ -1,7 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Net;
-using GovUk.Education.ManageCourses.ApiClient;
+using GovUk.Education.ManageCourses.Api.Model;
+using GovUk.Education.ManageCourses.Domain.Models;
 using GovUk.Education.ManageCourses.Ui.ActionFilters;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
@@ -53,7 +54,7 @@ namespace ManageCoursesUi.Tests
 
             sut.OnException(exceptionContext);
 
-            Assert.IsNotNull(exceptionContext.Exception);            
+            Assert.IsNotNull(exceptionContext.Exception);
             Assert.IsNotNull(exceptionContext.Result as ViewResult);
             Assert.AreEqual(500, (exceptionContext.Result as ViewResult).StatusCode);
             Assert.True(exceptionContext.ExceptionHandled);

@@ -1,5 +1,5 @@
 @{
-  IEnumerable<GovUk.Education.ManageCourses.ApiClient.Course> copyables = ViewBag.CopyableCourses as IEnumerable<GovUk.Education.ManageCourses.ApiClient.Course> ?? new List<GovUk.Education.ManageCourses.ApiClient.Course>();
+  IEnumerable<GovUk.Education.ManageCourses.Domain.Models.Course> copyables = ViewBag.CopyableCourses as IEnumerable<GovUk.Education.ManageCourses.Domain.Models.Course> ?? new List<GovUk.Education.ManageCourses.Domain.Models.Course>();
   var accreditedCopyables = copyables.GroupBy(x => x.AccreditingInstitution?.InstCode).Where(x => !string.IsNullOrEmpty(x.Key) && x.Any());
   var selfAccreditedCopyables = copyables.GroupBy(x => x.AccreditingInstitution?.InstCode).SingleOrDefault(x => string.IsNullOrEmpty(x.Key));
 }

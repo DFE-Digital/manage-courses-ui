@@ -20,24 +20,26 @@ namespace GovUk.Education.ManageCourses.Ui.ActionFilters
 
         public void OnException(ExceptionContext context)
         {
-            var swaggerException = context.Exception as SwaggerException;
+            var swaggerException = context.Exception as ManageCoursesApiException;
 
-            if (swaggerException?.StatusCode >= 400 && swaggerException.StatusCode <= 404)
+            if (swaggerException != null && swaggerException.StatusCode.HasValue)
             {
-                context.Result = StatusCodeViewResult(context, swaggerException.StatusCode);
-                context.ExceptionHandled = true;
-                return;
-            }
+                var statusCode = swaggerException.StatusCode.Value;
+                var statusCodeInt = (int)statusCode;
+                if (statusCodeInt >= 400 && statusCodeInt <= 404)
+                {
+                    context.Result = StatusCodeViewResult(context, (int)statusCode);
+                    context.ExceptionHandled = true;
+                    return;
+                }
 
-            if (swaggerException?.StatusCode == (int)HttpStatusCode.UnavailableForLegalReasons)
-            {
-                context.Result = new RedirectToActionResult("AcceptTerms", "Home", null);
-                context.ExceptionHandled = true;
-                return;
-            }
-
-            if (swaggerException == null)
-            {
+                if (statusCode == HttpStatusCode.UnavailableForLegalReasons)
+                {
+                    context.Result = new RedirectToActionResult("AcceptTerms", "Home", null);
+                    context.ExceptionHandled = true;
+                    return;
+                }
+            } else {
                 // not a swagger exception - so make sure AI gets notified despite us handling it here.
 
                 // MS Doc examples instantiate TelemetryClient immediately before use rather than keeping an

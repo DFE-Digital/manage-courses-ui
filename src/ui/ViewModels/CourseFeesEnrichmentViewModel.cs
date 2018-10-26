@@ -1,7 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using GovUk.Education.ManageCourses.ApiClient;
+using GovUk.Education.ManageCourses.Api.Model;
+using GovUk.Education.ManageCourses.Domain.Models;
 using GovUk.Education.ManageCourses.Ui.Helpers;
 using GovUk.Education.ManageCourses.Ui.ViewModels.Enums;
 

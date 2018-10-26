@@ -2,7 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using GovUk.Education.ManageCourses.ApiClient;
+using GovUk.Education.ManageCourses.Api.Model;
+using GovUk.Education.ManageCourses.Domain.Models;
 using GovUk.Education.ManageCourses.Ui;
 using GovUk.Education.ManageCourses.Ui.ViewModels;
 using GovUk.Education.ManageCourses.Ui.Controllers;

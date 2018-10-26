@@ -1,11 +1,12 @@
 using System;
 using System.ComponentModel.DataAnnotations;
-using GovUk.Education.ManageCourses.ApiClient;
+using GovUk.Education.ManageCourses.Api.Model;
+using GovUk.Education.ManageCourses.Domain.Models;
 
 namespace GovUk.Education.ManageCourses.Ui.ViewModels
 {
     public class OrganisationViewModelForContact
-    {        
+    {
         public string InstCode { get; set; }
 
         public string InstName { get; set; }
@@ -29,7 +30,7 @@ namespace GovUk.Education.ManageCourses.Ui.ViewModels
         public string Addr4 { get; set; }
 
         public string Postcode { get; set; }
-        
+
         public DateTime? LastPublishedTimestampUtc { get; set; }
 
         public EnumStatus Status { get; set; }
@@ -49,13 +50,13 @@ namespace GovUk.Education.ManageCourses.Ui.ViewModels
                 Addr4 = model.Addr4,
                 Postcode = model.Postcode,
                 LastPublishedTimestampUtc = model.LastPublishedTimestampUtc,
-                Status = model.Status                
+                Status = model.Status
             };
         }
 
         public bool IsEmpty()
         {
-            return 
+            return
                 string.IsNullOrWhiteSpace(EmailAddress) &&
                 string.IsNullOrWhiteSpace(Telephone) &&
                 string.IsNullOrWhiteSpace(Url) &&
@@ -63,7 +64,7 @@ namespace GovUk.Education.ManageCourses.Ui.ViewModels
                 string.IsNullOrWhiteSpace(Addr2) &&
                 string.IsNullOrWhiteSpace(Addr3) &&
                 string.IsNullOrWhiteSpace(Addr4) &&
-                string.IsNullOrWhiteSpace(Postcode);                
+                string.IsNullOrWhiteSpace(Postcode);
         }
 
         public void MergeIntoEnrichmentModel(ref InstitutionEnrichmentModel enrichmentModel)
@@ -80,9 +81,9 @@ namespace GovUk.Education.ManageCourses.Ui.ViewModels
             enrichmentModel.Address2 = Addr2;
             enrichmentModel.Address3 = Addr3;
             enrichmentModel.Address4 = Addr4;
-            enrichmentModel.Postcode = Postcode;            
+            enrichmentModel.Postcode = Postcode;
         }
-        
+
         public static bool IsContactProperty(string property)
         {
             return Array.IndexOf(new string[] {

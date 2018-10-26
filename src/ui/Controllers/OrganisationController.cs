@@ -4,7 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using GovUk.Education.ManageCourses.ApiClient;
+using GovUk.Education.ManageCourses.Api.Model;
 using GovUk.Education.ManageCourses.Ui;
 using GovUk.Education.ManageCourses.Ui.Helpers;
 using GovUk.Education.ManageCourses.Ui.Utilities;
@@ -300,7 +300,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             return RedirectToAction("Details", "Organisation", new { instCode });
         }
 
-        private static Func<AccreditingProviderEnrichment, bool> TrainingProviderMatchesProviderCourse(Course x)
+        private static Func<AccreditingProviderEnrichment, bool> TrainingProviderMatchesProviderCourse(Domain.Models.Course x)
         {
             return y => String.Equals(x.AccreditingInstitution?.InstCode,
                 y.UcasInstitutionCode, StringComparison.InvariantCultureIgnoreCase);

@@ -11,7 +11,8 @@ namespace GovUk.Education.ManageCourses.Ui
     public class ManageCoursesApiClientConfiguration : IManageCoursesApiClientConfiguration
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
-        public ManageCoursesApiClientConfiguration(IHttpContextAccessor httpContextAccessor)
+        private readonly string _apiUrl;
+        public ManageCoursesApiClientConfiguration(IHttpContextAccessor httpContextAccessor, string apiUrl)
         {
             _httpContextAccessor = httpContextAccessor;
         }
@@ -22,5 +23,7 @@ namespace GovUk.Education.ManageCourses.Ui
             var accessToken = claims.FirstOrDefault(x => x.Type =="access_token")?.Value ?? "";
             return accessToken;
         }
+
+        public string GetBaseUrl() => _apiUrl;
     }
 }

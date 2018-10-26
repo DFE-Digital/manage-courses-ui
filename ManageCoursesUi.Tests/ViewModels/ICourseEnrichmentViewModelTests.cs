@@ -1,5 +1,6 @@
 using FluentAssertions;
-using GovUk.Education.ManageCourses.ApiClient;
+using GovUk.Education.ManageCourses.Api.Model;
+using GovUk.Education.ManageCourses.Domain.Models;
 using GovUk.Education.ManageCourses.Ui.ViewModels;
 using GovUk.Education.ManageCourses.Ui.ViewModels.Enums;
 using NUnit.Framework;
@@ -61,7 +62,7 @@ namespace ManageCoursesUi.Tests.ViewModels
             viewModel.FeeDetails.Should().Be("M.FeeDetails");
             viewModel.FinancialSupport.Should().BeNull();
         }
-             
+
         [Test]
         public void CourseSalaryEnrichmentViewModel_CopyFrom()
         {
@@ -95,7 +96,7 @@ namespace ManageCoursesUi.Tests.ViewModels
                 FeeInternational = null, //empty!!
                 FeeDetails = "M.FeeDetails",
                 FinancialSupport = null, //empty!!
-                
+
             };
             return model;
         }

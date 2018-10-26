@@ -2,6 +2,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using GovUk.Education.ManageCourses.ApiClient;
+using GovUk.Education.ManageCourses.Api.Model;
+
 using GovUk.Education.ManageCourses.Ui.Helpers;
 using Newtonsoft.Json;
 
@@ -34,7 +36,7 @@ namespace GovUk.Education.ManageCourses.Ui
             var courses = await _apiClient.Courses_GetAllAsync(instCode);
             return courses.ToList();
         }
-        public async Task<Course> GetCourse(string instCode, string courseCode)
+        public async Task<Domain.Models.Course> GetCourse(string instCode, string courseCode)
         {
             var course = await _apiClient.Courses_GetAsync(instCode, courseCode);
             return course;
@@ -89,12 +91,12 @@ namespace GovUk.Education.ManageCourses.Ui
         public async Task<SearchAndCompare.Domain.Models.Course> GetSearchAndCompareCourse(string instCode, string courseCode)
         {
             var result = await _apiClient.Publish_GetSearchAndCompareCourseAsync(instCode, courseCode);
-            //the result is an identical obect to the SearchAnCompareCourse that we want only it's an ApiClient version of it
-            //so we need to serialize/deserialize in order to get the required object to return
-            var jsonCourse = JsonConvert.SerializeObject(result, _jsonSerializerSettings);
-            SearchAndCompare.Domain.Models.Course deserializedCourse = JsonConvert.DeserializeObject<SearchAndCompare.Domain.Models.Course>(jsonCourse);
+            // //the result is an identical obect to the SearchAnCompareCourse that we want only it's an ApiClient version of it
+            // //so we need to serialize/deserialize in order to get the required object to return
+            // var jsonCourse = JsonConvert.SerializeObject(result, _jsonSerializerSettings);
+            // SearchAndCompare.Domain.Models.Course deserializedCourse = JsonConvert.DeserializeObject<SearchAndCompare.Domain.Models.Course>(jsonCourse);
 
-            return deserializedCourse;
+            return result;
         }
 
 

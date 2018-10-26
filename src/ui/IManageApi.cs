@@ -3,17 +3,17 @@ using System.Collections.Generic;
 using System.Dynamic;
 using System.Linq;
 using System.Threading.Tasks;
-using GovUk.Education.ManageCourses.ApiClient;
+using GovUk.Education.ManageCourses.Api.Model;
 using GovUk.Education.ManageCourses.Ui.ViewModels;
 
 namespace GovUk.Education.ManageCourses.Ui
 {
     public interface IManageApi
     {
-        Task<List<Course>> GetCoursesOfInstitution(string instCode);
-        Task<Course> GetCourse(string instCode, string courseCode);
-        Task<IEnumerable<InstitutionSummary>> GetInstitutionSummaries();
-        Task<InstitutionSummary> GetInstitutionSummary(string instCode);
+        Task<InstitutionCourses> GetCoursesOfInstitution(string instCode);
+        Task<Domain.Models.Course> GetCourse(string instCode, string courseCode);
+        Task<IEnumerable<UserOrganisation>> GetInstitutionSummaries();
+        Task<UserOrganisation> GetInstitutionSummary(string instCode);
         Task CreateAccessRequest(AccessRequest accessRequest);
         Task LogAcceptTerms();
         Task SaveInstitutionEnrichment(string instCode, UcasInstitutionEnrichmentPostModel organisation);
