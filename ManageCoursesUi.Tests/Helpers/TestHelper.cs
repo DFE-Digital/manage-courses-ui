@@ -30,9 +30,9 @@ namespace ManageCoursesUi.Tests.Helpers
         /// </summary>
         /// <param name="type">The type of test data that needs to be generated</param>
         /// <returns></returns>
-        private static List<Course> GenerateCourseDetails(EnumDataType type)
+        private static List<Domain.Model.Course> GenerateCourseDetails(EnumDataType type)
         {
-            var listToReturn = new List<Course>();
+            var listToReturn = new List<Domain.Model.Course>();
             int variantCount;
             bool happyPath;
             switch (type)
