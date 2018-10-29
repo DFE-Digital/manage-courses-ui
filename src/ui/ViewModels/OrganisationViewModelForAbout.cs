@@ -53,7 +53,7 @@ namespace GovUk.Education.ManageCourses.Ui.ViewModels
                 enrichmentModel = new InstitutionEnrichmentModel();
             }
 
-            var aboutTrainingProviders = new ObservableCollection<AccreditingProviderEnrichment>(
+            var aboutTrainingProviders = new List<AccreditingProviderEnrichment>(
                 AboutTrainingProviders.Select(x => new AccreditingProviderEnrichment
                 {
                     UcasInstitutionCode = x.InstCode,

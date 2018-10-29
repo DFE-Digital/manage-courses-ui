@@ -97,11 +97,11 @@ namespace ManageCoursesUi.Tests.Helpers
                         StudyMode = "F",
                         ProfpostFlag = "",
                         ProgramType = "SC",
-                        Subjects = courseTitle + ",Secondary",
+                        CourseSubjects = new List<CourseSubject>{ new CourseSubject{ Subject = new Subject {SubjectName = courseTitle + ",Secondary"}}},
                         CourseCode = "CC"+count,
                         Name = courseTitle,
                         Institution = new Institution { InstCode = instCode },
-                        CourseSites = new ObservableCollection<CourseSite>
+                        CourseSites = new List<CourseSite>
                         {
                             new CourseSite {
                                 Status = "R",

@@ -1,15 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using FluentAssertions;
 using GovUk.Education.ManageCourses.Api.Model;
 using GovUk.Education.ManageCourses.Domain.Models;
 using GovUk.Education.ManageCourses.Ui;
 using GovUk.Education.ManageCourses.Ui.Controllers;
-using GovUk.Education.ManageCourses.Ui.Helpers;
 using GovUk.Education.ManageCourses.Ui.ViewModels;
 using ManageCoursesUi.Tests.Mocks;
 using Microsoft.AspNetCore.Mvc;
@@ -150,7 +147,7 @@ namespace ManageCoursesUi.Tests
             var result = await controller.RequestAccessPost(instCode, viewModel);
 
             apiMock.Verify(x => x.GetInstitutionSummaries(), Times.Never);
-            apiMock.Verify(x => x.CreateAccessRequest(It.IsAny<AccessRequest>()), Times.Once);
+            apiMock.Verify(x => x.CreateAccessRequest(It.IsAny<GovUk.Education.ManageCourses.Api.Model.AccessRequest>()), Times.Once);
 
             tempDataMock.Verify(x => x.Add(tempKey, $"{viewModel.FirstName} {viewModel.LastName}"));
 
@@ -199,7 +196,7 @@ namespace ManageCoursesUi.Tests
                 Status = EnumStatus.Published,
                 EnrichmentModel = new InstitutionEnrichmentModel
                 {
-                AccreditingProviderEnrichments = new ObservableCollection<AccreditingProviderEnrichment>
+                AccreditingProviderEnrichments = new List<AccreditingProviderEnrichment>
                 {
                 new AccreditingProviderEnrichment { UcasInstitutionCode = instCode + 2, Description = description }
                 },
@@ -264,7 +261,7 @@ namespace ManageCoursesUi.Tests
             apiMock.Setup(x => x.GetCoursesOfInstitution(instCode))
                 .ReturnsAsync(institutionCourses);
 
-            var enrichmentModel = new InstitutionEnrichmentModel { AccreditingProviderEnrichments = new ObservableCollection<AccreditingProviderEnrichment> { } };
+            var enrichmentModel = new InstitutionEnrichmentModel { AccreditingProviderEnrichments = new List<AccreditingProviderEnrichment> { } };
 
             var ucasInstitutionEnrichmentGetModel = new UcasInstitutionEnrichmentGetModel()
             {
@@ -327,7 +324,7 @@ namespace ManageCoursesUi.Tests
             apiMock.Setup(x => x.GetCoursesOfInstitution(instCode))
                 .ReturnsAsync(institutionCourses);
 
-            var enrichmentModel = new InstitutionEnrichmentModel { AccreditingProviderEnrichments = new ObservableCollection<AccreditingProviderEnrichment> { } };
+            var enrichmentModel = new InstitutionEnrichmentModel { AccreditingProviderEnrichments = new List<AccreditingProviderEnrichment> { } };
 
             var ucasInstitutionEnrichmentGetModel = new UcasInstitutionEnrichmentGetModel()
             {
@@ -379,7 +376,7 @@ namespace ManageCoursesUi.Tests
             apiMock.Setup(x => x.GetCoursesOfInstitution(instCode))
                 .ReturnsAsync(institutionCourses);
 
-            var enrichmentModel = new InstitutionEnrichmentModel { AccreditingProviderEnrichments = new ObservableCollection<AccreditingProviderEnrichment>() };
+            var enrichmentModel = new InstitutionEnrichmentModel { AccreditingProviderEnrichments = new List<AccreditingProviderEnrichment>() };
 
             var ucasInstitutionEnrichmentGetModel = new UcasInstitutionEnrichmentGetModel()
             {
@@ -449,7 +446,7 @@ namespace ManageCoursesUi.Tests
                 Status = EnumStatus.Published,
                 EnrichmentModel = new InstitutionEnrichmentModel
                 {
-                AccreditingProviderEnrichments = new ObservableCollection<AccreditingProviderEnrichment>
+                AccreditingProviderEnrichments = new List<AccreditingProviderEnrichment>
                 {
                 new AccreditingProviderEnrichment { UcasInstitutionCode = instCode + 2, Description = description }
                 },
@@ -505,7 +502,7 @@ namespace ManageCoursesUi.Tests
             {
                 EnrichmentModel = new InstitutionEnrichmentModel()
                 {
-                    AccreditingProviderEnrichments = new ObservableCollection<AccreditingProviderEnrichment>
+                    AccreditingProviderEnrichments = new List<AccreditingProviderEnrichment>
                     {
                         new AccreditingProviderEnrichment
                         {
@@ -589,7 +586,7 @@ namespace ManageCoursesUi.Tests
                 .ReturnsAsync(institutionCourses);
 
 
-            var enrichmentModel = new InstitutionEnrichmentModel { AccreditingProviderEnrichments = new ObservableCollection<AccreditingProviderEnrichment> { } };
+            var enrichmentModel = new InstitutionEnrichmentModel { AccreditingProviderEnrichments = new List<AccreditingProviderEnrichment> { } };
 
             var ucasInstitutionEnrichmentGetModel = new UcasInstitutionEnrichmentGetModel()
             {

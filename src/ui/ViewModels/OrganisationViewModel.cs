@@ -67,7 +67,7 @@ namespace GovUk.Education.ManageCourses.Ui.ViewModels
 
         public static OrganisationViewModel FromEnrichmentModel(UcasInstitutionEnrichmentGetModel ucasInstitutionEnrichmentGetModel, List<TrainingProviderViewModel> aboutAccreditingTrainingProviders, InstitutionSummary institutionSummary)
         {
-            ucasInstitutionEnrichmentGetModel = ucasInstitutionEnrichmentGetModel ?? new UcasInstitutionEnrichmentGetModel { EnrichmentModel = new InstitutionEnrichmentModel() { AccreditingProviderEnrichments = new ObservableCollection<AccreditingProviderEnrichment>() } };
+            ucasInstitutionEnrichmentGetModel = ucasInstitutionEnrichmentGetModel ?? new UcasInstitutionEnrichmentGetModel { EnrichmentModel = new InstitutionEnrichmentModel() { AccreditingProviderEnrichments = new List<AccreditingProviderEnrichment>() } };
 
             var enrichmentModel = ucasInstitutionEnrichmentGetModel.EnrichmentModel;
 
