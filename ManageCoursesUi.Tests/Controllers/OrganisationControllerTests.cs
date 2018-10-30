@@ -26,9 +26,9 @@ namespace ManageCoursesUi.Tests
             var instCode = "INSTCODE";
             var organisationName = "organisationName";
             // Todo: fix this ObservableCollection.
-            var instCourses = new List<Domain.Model.Course>
+            var instCourses = new List<Course>
                 {
-                    new Domain.Model.Course
+                    new Course
                     {
                         Institution = new Institution { InstCode = instCode, InstName = organisationName }
                     }
@@ -179,14 +179,14 @@ namespace ManageCoursesUi.Tests
 
             var description = "Description";
             var institutionName = "InstitutionName";
-            var institutionCourses =  new List<Domain.Model.Course>
+            var institutionCourses =  new List<Course>
                 {
-                    new Domain.Model.Course { },
-                    new Domain.Model.Course { AccreditingInstitution = new Institution { InstCode = instCode.ToUpperInvariant() }},
-                    new Domain.Model.Course { AccreditingInstitution = new Institution { InstCode = instCode.ToLowerInvariant() }},
-                    new Domain.Model.Course { AccreditingInstitution = new Institution { InstCode = instCode }},
-                    new Domain.Model.Course { AccreditingInstitution = new Institution { InstCode = instCode + 1, InstName = institutionName }},
-                    new Domain.Model.Course { AccreditingInstitution = new Institution { InstCode = instCode + 2 }},
+                    new Course { },
+                    new Course { AccreditingInstitution = new Institution { InstCode = instCode.ToUpperInvariant() }},
+                    new Course { AccreditingInstitution = new Institution { InstCode = instCode.ToLowerInvariant() }},
+                    new Course { AccreditingInstitution = new Institution { InstCode = instCode }},
+                    new Course { AccreditingInstitution = new Institution { InstCode = instCode + 1, InstName = institutionName }},
+                    new Course { AccreditingInstitution = new Institution { InstCode = instCode + 2 }},
                 };
 
             var now = DateTime.Now;
@@ -247,14 +247,14 @@ namespace ManageCoursesUi.Tests
 
             var institutionName = "InstitutionName";
 
-            var institutionCourses = new List<Domain.Model.Course>
+            var institutionCourses = new List<Course>
                 {
-                    new Domain.Model.Course { },
-                    new Domain.Model.Course { AccreditingInstitution = new Institution { InstCode = instCode.ToUpperInvariant() }},
-                    new Domain.Model.Course { AccreditingInstitution = new Institution { InstCode = instCode.ToLowerInvariant() }},
-                    new Domain.Model.Course { AccreditingInstitution = new Institution { InstCode = instCode }},
-                    new Domain.Model.Course { AccreditingInstitution = new Institution { InstCode = instCode + 1, InstName = institutionName }},
-                    new Domain.Model.Course { AccreditingInstitution = new Institution { InstCode = instCode + 2 }},
+                    new Course { },
+                    new Course { AccreditingInstitution = new Institution { InstCode = instCode.ToUpperInvariant() }},
+                    new Course { AccreditingInstitution = new Institution { InstCode = instCode.ToLowerInvariant() }},
+                    new Course { AccreditingInstitution = new Institution { InstCode = instCode }},
+                    new Course { AccreditingInstitution = new Institution { InstCode = instCode + 1, InstName = institutionName }},
+                    new Course { AccreditingInstitution = new Institution { InstCode = instCode + 2 }},
                 };
 
             var apiMock = new Mock<IManageApi>();
@@ -306,14 +306,14 @@ namespace ManageCoursesUi.Tests
                 AboutTrainingProviders = new List<TrainingProviderViewModel>()
             };
 
-            var institutionCourses = new List<Domain.Model.Course>
+            var institutionCourses = new List<Course>
                 {
-                    new Domain.Model.Course { },
-                    new Domain.Model.Course { AccreditingInstitution = new Institution { InstCode = instCode.ToUpperInvariant() }},
-                    new Domain.Model.Course { AccreditingInstitution = new Institution { InstCode = instCode.ToLowerInvariant() }},
-                    new Domain.Model.Course { AccreditingInstitution = new Institution { InstCode = instCode }},
-                    new Domain.Model.Course { AccreditingInstitution = new Institution { InstCode = instCode + 1, InstName = institutionName }},
-                    new Domain.Model.Course { AccreditingInstitution = new Institution { InstCode = instCode + 2 }},
+                    new Course { },
+                    new Course { AccreditingInstitution = new Institution { InstCode = instCode.ToUpperInvariant() }},
+                    new Course { AccreditingInstitution = new Institution { InstCode = instCode.ToLowerInvariant() }},
+                    new Course { AccreditingInstitution = new Institution { InstCode = instCode }},
+                    new Course { AccreditingInstitution = new Institution { InstCode = instCode + 1, InstName = institutionName }},
+                    new Course { AccreditingInstitution = new Institution { InstCode = instCode + 2 }},
                 };
 
             var apiMock = new Mock<IManageApi>();
@@ -359,14 +359,14 @@ namespace ManageCoursesUi.Tests
 
             var institutionName = "InstitutionName";
 
-            var institutionCourses = new List<Domain.Model.Course>
+            var institutionCourses = new List<Course>
                 {
-                    new Domain.Model.Course { },
-                    new Domain.Model.Course { AccreditingInstitution = new Institution { InstCode = instCode.ToUpperInvariant() }},
-                    new Domain.Model.Course { AccreditingInstitution = new Institution { InstCode = instCode.ToLowerInvariant() }},
-                    new Domain.Model.Course { AccreditingInstitution = new Institution { InstCode = instCode }},
-                    new Domain.Model.Course { AccreditingInstitution = new Institution { InstCode = instCode + 1, InstName = institutionName }},
-                    new Domain.Model.Course { AccreditingInstitution = new Institution { InstCode = instCode + 2 }},
+                    new Course { },
+                    new Course { AccreditingInstitution = new Institution { InstCode = instCode.ToUpperInvariant() }},
+                    new Course { AccreditingInstitution = new Institution { InstCode = instCode.ToLowerInvariant() }},
+                    new Course { AccreditingInstitution = new Institution { InstCode = instCode }},
+                    new Course { AccreditingInstitution = new Institution { InstCode = instCode + 1, InstName = institutionName }},
+                    new Course { AccreditingInstitution = new Institution { InstCode = instCode + 2 }},
                 };
             var apiMock = new Mock<IManageApi>();
 
@@ -429,14 +429,14 @@ namespace ManageCoursesUi.Tests
 
             var description = "Description";
             var institutionName = "InstitutionName";
-            var institutionCourses = new List<Domain.Model.Course>
+            var institutionCourses = new List<Course>
                 {
-                    new Domain.Model.Course { },
-                    new Domain.Model.Course { AccreditingInstitution = new Institution { InstCode = instCode.ToUpperInvariant() }},
-                    new Domain.Model.Course { AccreditingInstitution = new Institution { InstCode = instCode.ToLowerInvariant() }},
-                    new Domain.Model.Course { AccreditingInstitution = new Institution { InstCode = instCode }},
-                    new Domain.Model.Course { AccreditingInstitution = new Institution { InstCode = instCode + 1, InstName = institutionName }},
-                    new Domain.Model.Course { AccreditingInstitution = new Institution { InstCode = instCode + 2 }},
+                    new Course { },
+                    new Course { AccreditingInstitution = new Institution { InstCode = instCode.ToUpperInvariant() }},
+                    new Course { AccreditingInstitution = new Institution { InstCode = instCode.ToLowerInvariant() }},
+                    new Course { AccreditingInstitution = new Institution { InstCode = instCode }},
+                    new Course { AccreditingInstitution = new Institution { InstCode = instCode + 1, InstName = institutionName }},
+                    new Course { AccreditingInstitution = new Institution { InstCode = instCode + 2 }},
                 };
 
             var now = DateTime.Now;
@@ -522,7 +522,7 @@ namespace ManageCoursesUi.Tests
                 .Callback((string a, UcasInstitutionEnrichmentPostModel b) => result = b)
                 .Returns(Task.CompletedTask);
 
-            apiMock.Setup(x => x.GetCoursesOfInstitution("ABC")).ReturnsAsync(new List<Domain.Model.Course> { new Domain.Model.Course { AccreditingInstitution = new Institution { InstCode = "ACC" } }});
+            apiMock.Setup(x => x.GetCoursesOfInstitution("ABC")).ReturnsAsync(new List<Course> { new Course { AccreditingInstitution = new Institution { InstCode = "ACC" } }});
 
             var objectValidator = new Mock<IObjectModelValidator>();
             objectValidator.Setup(o => o.Validate(It.IsAny<ActionContext>(),
@@ -571,14 +571,14 @@ namespace ManageCoursesUi.Tests
                 }
             };
 
-            var institutionCourses = new List<Domain.Model.Course>
+            var institutionCourses = new List<Course>
                 {
-                    new Domain.Model.Course { },
-                    new Domain.Model.Course { AccreditingInstitution = new Institution { InstCode = instCode.ToUpperInvariant() }},
-                    new Domain.Model.Course { AccreditingInstitution = new Institution { InstCode = instCode.ToLowerInvariant() }},
-                    new Domain.Model.Course { AccreditingInstitution = new Institution { InstCode = instCode }},
-                    new Domain.Model.Course { AccreditingInstitution = new Institution { InstCode = instCode + 1, InstName = institutionName }},
-                    new Domain.Model.Course { AccreditingInstitution = new Institution { InstCode = instCode + 2 }},
+                    new Course { },
+                    new Course { AccreditingInstitution = new Institution { InstCode = instCode.ToUpperInvariant() }},
+                    new Course { AccreditingInstitution = new Institution { InstCode = instCode.ToLowerInvariant() }},
+                    new Course { AccreditingInstitution = new Institution { InstCode = instCode }},
+                    new Course { AccreditingInstitution = new Institution { InstCode = instCode + 1, InstName = institutionName }},
+                    new Course { AccreditingInstitution = new Institution { InstCode = instCode + 2 }},
                 };
 
             var apiMock = new Mock<IManageApi>();

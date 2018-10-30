@@ -399,7 +399,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             TempData["MessageBodyHtml"] = messageBodyHtml;
         }
 
-        private CourseViewModel LoadViewModel(UserOrganisation org, Domain.Models.Course course, bool multipleOrganisations, UcasCourseEnrichmentGetModel ucasCourseEnrichmentGetModel, CourseRouteDataViewModel routeData)
+        private CourseViewModel LoadViewModel(InstitutionSummary org, Domain.Models.Course course, bool multipleOrganisations, UcasCourseEnrichmentGetModel ucasCourseEnrichmentGetModel, CourseRouteDataViewModel routeData)
         {
             var courseVariant =
                 new ViewModels.CourseDetailsViewModel

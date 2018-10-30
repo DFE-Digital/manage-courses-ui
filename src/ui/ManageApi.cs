@@ -31,7 +31,7 @@ namespace GovUk.Education.ManageCourses.Ui
             return courses;
         }
 
-        public async Task<List<Course>> GetCoursesOfInstitution(string instCode)
+        public async Task<List<Domain.Models.Course>> GetCoursesOfInstitution(string instCode)
         {
             var courses = await _apiClient.Courses_GetAllAsync(instCode);
             return courses.ToList();

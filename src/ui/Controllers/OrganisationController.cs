@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using GovUk.Education.ManageCourses.Api.Model;
+using GovUk.Education.ManageCourses.Domain.Models;
 using GovUk.Education.ManageCourses.Ui;
 using GovUk.Education.ManageCourses.Ui.Helpers;
 using GovUk.Education.ManageCourses.Ui.Utilities;
@@ -199,7 +200,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
                 return View("RequestAccess", model);
             }
 
-            await _manageApi.CreateAccessRequest(new AccessRequest()
+            await _manageApi.CreateAccessRequest(new Api.Model.AccessRequest()
             {
                 FirstName = model.FirstName,
                 LastName = model.LastName,
@@ -306,7 +307,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
                 y.UcasInstitutionCode, StringComparison.InvariantCultureIgnoreCase);
         }
 
-        private List<ViewModels.Provider> GetProviders(List<Course> institutionCourses)
+        private List<ViewModels.Provider> GetProviders(List<Domain.Models.Course> institutionCourses)
         {
             var uniqueAccreditingInstCodes = institutionCourses.Select(c => c.AccreditingInstitution?.InstCode).Distinct();
             var providers = new List<ViewModels.Provider>();
