@@ -121,11 +121,8 @@
                 <dt>Status:</dt>
                 <dd>@site.GetSiteStatus()</dd>
               }
-              @if (!string.IsNullOrEmpty(@site.VacStatus))
-              {
-                <dt>Vacancies:</dt>
-                <dd>@site.GetVacancyStatus()</dd>
-              }
+              <dt>Vacancies:</dt>
+              <dd>@site.GetVacancyStatus()</dd>
               @if (!string.IsNullOrEmpty(@site.ApplicationsAcceptedFrom)) {
                 <dt>Apply from:</dt>
                 <dd>@site.ApplicationsAcceptedFrom</dd>
