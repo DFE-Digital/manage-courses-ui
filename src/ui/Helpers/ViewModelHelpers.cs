@@ -12,19 +12,19 @@ namespace GovUk.Education.ManageCourses.Ui.Helpers
         public static string GetCourseStatus(this Course course)
         {
             var result = "";
-            if (course.Schools.Any(s => String.Equals(s.Status, "r", StringComparison.InvariantCultureIgnoreCase) && String.Equals(s.Publish, "y", StringComparison.InvariantCultureIgnoreCase)))
+            if (course.CourseSites.Any(s => String.Equals(s.Status, "r", StringComparison.InvariantCultureIgnoreCase) && String.Equals(s.Publish, "y", StringComparison.InvariantCultureIgnoreCase)))
             {
                 result = "Running";
             }
             else {
-                if (course.Schools.Any(s => String.Equals(s.Status, "r", StringComparison.InvariantCultureIgnoreCase) && String.Equals(s.Publish, "n", StringComparison.InvariantCultureIgnoreCase))){
+                if (course.CourseSites.Any(s => String.Equals(s.Status, "r", StringComparison.InvariantCultureIgnoreCase) && String.Equals(s.Publish, "n", StringComparison.InvariantCultureIgnoreCase))){
                     result  = "Needs attention in UCAS";
                 }
-                else if (course.Schools.Any(s => String.Equals(s.Status, "n", StringComparison.InvariantCultureIgnoreCase)))
+                else if (course.CourseSites.Any(s => String.Equals(s.Status, "n", StringComparison.InvariantCultureIgnoreCase)))
                 {
                     result = "New – not yet running";
                 }
-                else if (course.Schools.Any(s => String.Equals(s.Status, "d", StringComparison.InvariantCultureIgnoreCase)) || course.Schools.Any(s => String.Equals(s.Status, "s", StringComparison.InvariantCultureIgnoreCase)))
+                else if (course.CourseSites.Any(s => String.Equals(s.Status, "d", StringComparison.InvariantCultureIgnoreCase)) || course.CourseSites.Any(s => String.Equals(s.Status, "s", StringComparison.InvariantCultureIgnoreCase)))
                 {
                     result = "Not running";
                 }

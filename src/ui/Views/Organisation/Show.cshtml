@@ -71,7 +71,7 @@
         <tbody class="govuk-table__body">
         @foreach (var course in provider.Courses)
         {
-          var courseUrl = Url.Action("show", "course", new {instCode = Model.InstitutionId, accreditingProviderId = course.AccreditingProviderId, ucasCode = course.CourseCode});
+          var courseUrl = Url.Action("show", "course",new {instCode = Model.InstCode, accreditingInstCode = course.AccreditingInstitution?.InstCode, courseCode = course.CourseCode});
           var courseStatus = course.GetCourseStatus();
           var needsAttention = courseStatus.Equals("Needs attention in UCAS");
 

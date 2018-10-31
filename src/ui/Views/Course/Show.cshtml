@@ -28,11 +28,11 @@
 
           @if(Model.Course.StatusAsEnum != CourseRunningStatus.Running)
           {
-            @if(Model.Course.StatusAsEnum == CourseVariantStatus.NeedsAttention)
+            @if(Model.Course.StatusAsEnum == CourseRunningStatus.NeedsAttention)
             {
               @await Html.PartialAsync("Shared/CourseStatus/_NeedsAttention.cshtml");
             } else {
-              if(Model.Course.StatusAsEnum == CourseVariantStatus.RunningButNeedsAttention) {
+              if(Model.Course.StatusAsEnum == CourseRunningStatus.RunningButNeedsAttention) {
                 @await Html.PartialAsync("Shared/CourseStatus/_RunningButNeedsAttention.cshtml");
               } else {
                 @await Html.PartialAsync("Shared/CourseStatus/_NewOrNotRunning.cshtml");
@@ -109,7 +109,7 @@
               }
               @if (!string.IsNullOrEmpty(@site.Status))
               {
-                @if(school.GetSiteStatus() == "Needs attention in UCAS") {
+                @if(site.GetSiteStatus() == "Needs attention in UCAS") {
                   <dt class="govuk-!-margin-top-4">Status:</dt>
                   <dd class="govuk-!-margin-top-0 govuk-!-margin-top-4--l">
                     <text>
@@ -119,7 +119,7 @@
                   </dd>
                 } else {
                   <dt>Status:</dt>
-                  <dd>@school.GetSiteStatus()</dd>
+                  <dd>@site.GetSiteStatus()</dd>
                 }
               }
               <dt>Vacancies:</dt>

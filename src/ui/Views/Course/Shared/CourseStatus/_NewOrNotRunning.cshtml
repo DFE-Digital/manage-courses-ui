@@ -1,7 +1,7 @@
-@model VariantViewModel
+@model CourseViewModel
 @{
-    var isNew = Model.Course.StatusAsEnum == CourseVariantStatus.New;
-    var isNotRunning = Model.Course.StatusAsEnum == CourseVariantStatus.NotRunning;
+    var isNew = Model.Course.StatusAsEnum == CourseRunningStatus.New;
+    var isNotRunning = Model.Course.StatusAsEnum == CourseRunningStatus.NotRunning;
 }
 
 @if(isNew || isNotRunning){

@@ -1,6 +1,6 @@
-@model VariantViewModel
+@model CourseViewModel
 @{
-  var needsAttentions = Model.Course.Schools
+  var needsAttentions = Model.Course.Sites
     .Where(x => x.Status.Equals("r", StringComparison.InvariantCultureIgnoreCase) && !x.Publish.Equals("y", StringComparison.InvariantCultureIgnoreCase))
     .Select(x => $"{x.LocationName} (Code: {x.Code})")
     .ToList();
