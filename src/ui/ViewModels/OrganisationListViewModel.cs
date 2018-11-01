@@ -8,6 +8,6 @@ namespace GovUk.Education.ManageCourses.Ui.ViewModels
 {
     public class OrganisationListViewModel
     {
-        public IEnumerable<UserOrganisation> Organisations { get; set; }
+        public IEnumerable<InstitutionSummary> InstitutionSummaries { get; set; }
     }
 }

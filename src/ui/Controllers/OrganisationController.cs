@@ -31,7 +31,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             var orgs = await _manageApi.GetInstitutionSummaries();
             var model = new OrganisationListViewModel
             {
-                Organisations = orgs
+                InstitutionSummaries = orgs
             };
             return View(model);
         }
@@ -41,6 +41,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
         {
             var ucasInstitutionEnrichmentGetModel = await _manageApi.GetInstitutitionEnrichment(instCode);
             var institutionCourses = await _manageApi.GetCoursesOfInstitution(instCode);
+            var summary = await _manageApi.GetInstitutionSummary(instCode);
             var multipleOrganisations = (await _manageApi.GetInstitutionSummaries()).Count() > 1;
             var providers = GetProviders(institutionCourses);
 
@@ -48,8 +49,8 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
 
             var model = new CourseListViewModel
             {
-                InstName = institutionCourses.InstitutionName,
-                InstCode = institutionCourses.InstitutionCode,
+                InstName = summary.InstName,
+                InstCode = summary.InstCode,
                 Providers = providers,
                 MultipleOrganisations = multipleOrganisations,
                 Status = status
@@ -118,7 +119,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
 
             if (!ModelState.IsValid)
             {
-                model.InstName = (await _manageApi.GetInstitutionSummaries()).FirstOrDefault(x => x.UcasCode == instCode.ToUpperInvariant())?.OrganisationName;
+                model.InstName = (await _manageApi.GetInstitutionSummaries()).FirstOrDefault(x => x.InstCode == instCode.ToUpperInvariant())?.InstName;
                 return View("About", model);
             }
 
@@ -216,11 +217,11 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
         {
             var ucasData = await _manageApi.GetCoursesOfInstitution(instCode);
 
-            var accreditingProviders = ucasData.Courses
+            var accreditingProviders = ucasData
                 .Where(x =>
                     false == string.Equals(x.AccreditingInstitution?.InstCode, instCode, StringComparison.InvariantCultureIgnoreCase) &&
                     false == string.IsNullOrWhiteSpace(x.AccreditingInstitution?.InstCode))
-                .Distinct(new AccreditingProviderIdComparer()).ToList();
+                .Distinct(new AccreditingInstCodeComparer()).ToList();
             var accreditingProviderEnrichments = enrichmentModel?.AccreditingProviderEnrichments ?? new ObservableCollection<AccreditingProviderEnrichment>();
 
             var result = accreditingProviders.Select(x =>
@@ -305,18 +306,18 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
                 y.UcasInstitutionCode, StringComparison.InvariantCultureIgnoreCase);
         }
 
-        private List<ViewModels.Provider> GetProviders(InstitutionCourses institutionCourses)
+        private List<ViewModels.Provider> GetProviders(List<Course> institutionCourses)
         {
-            var uniqueAccreditingProviderIds = institutionCourses.Courses.Select(c => c.AccreditingInstitution?.InstCode).Distinct();
+            var uniqueAccreditingInstCodes = institutionCourses.Select(c => c.AccreditingInstitution?.InstCode).Distinct();
             var providers = new List<ViewModels.Provider>();
-            foreach (var uniqueAccreditingProviderId in uniqueAccreditingProviderIds)
+            foreach (var uniqueAccreditingInstCode in uniqueAccreditingInstCodes)
             {
-                var name = institutionCourses.Courses.First(c => c.AccreditingInstitution?.InstCode == uniqueAccreditingProviderId)
+                var name = institutionCourses.First(c => c.AccreditingInstitution?.InstCode == uniqueAccreditingInstCode)
                     .AccreditingInstitution?.InstName;
-                var courses = institutionCourses.Courses.Where(c => c.AccreditingInstitution?.InstCode == uniqueAccreditingProviderId).ToList();
+                var courses = institutionCourses.Where(c => c.AccreditingInstitution?.InstCode == uniqueAccreditingInstCode).ToList();
                 providers.Add(new ViewModels.Provider
                 {
-                    InstCode = uniqueAccreditingProviderId,
+                    InstCode = uniqueAccreditingInstCode,
                     InstName = name,
                     Courses = courses,
                     TotalCount = courses.Count,
