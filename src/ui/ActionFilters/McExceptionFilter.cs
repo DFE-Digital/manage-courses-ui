@@ -20,11 +20,11 @@ namespace GovUk.Education.ManageCourses.Ui.ActionFilters
 
         public void OnException(ExceptionContext context)
         {
-            var swaggerException = context.Exception as ManageCoursesApiException;
+            var ex = context.Exception as ManageCoursesApiException;
 
-            if (swaggerException != null && swaggerException.StatusCode.HasValue)
+            if (ex != null && ex.StatusCode.HasValue)
             {
-                var statusCode = swaggerException.StatusCode.Value;
+                var statusCode = ex.StatusCode.Value;
                 var statusCodeInt = (int)statusCode;
                 if (statusCodeInt >= 400 && statusCodeInt <= 404)
                 {
@@ -40,7 +40,7 @@ namespace GovUk.Education.ManageCourses.Ui.ActionFilters
                     return;
                 }
             } else {
-                // not a swagger exception - so make sure AI gets notified despite us handling it here.
+                // not a ManageCoursesApiException - so make sure AI gets notified despite us handling it here.
 
                 // MS Doc examples instantiate TelemetryClient immediately before use rather than keeping an
                 // instance around. It's not clear why but here I'm following this example.
