@@ -53,10 +53,11 @@ namespace GovUk.Education.ManageCourses.Ui
 
             services.AddMvc(options =>
                 options.Filters.Add(typeof(McExceptionFilter))
-            ).ConfigureApplicationPartManager(apm =>
+            )
+            .ConfigureApplicationPartManager(apm =>
             {
                 var apiClientAssembly = typeof(GovUk.Education.ManageCourses.ApiClient.ManageCoursesApiClient).GetTypeInfo().Assembly.GetName().Name;
-            var api = typeof(GovUk.Education.ManageCourses.Api.Startup).GetTypeInfo().Assembly.GetName().Name;
+                var api = typeof(GovUk.Education.ManageCourses.Api.Startup).GetTypeInfo().Assembly.GetName().Name;
                 var dependentLibraries = apm.ApplicationParts.Where(x  => x.Name == api || x.Name == apiClientAssembly).ToList();
 
                 foreach (var item in dependentLibraries)
@@ -64,7 +65,6 @@ namespace GovUk.Education.ManageCourses.Ui
                     apm.ApplicationParts.Remove(item);
                 }
             })
-
             .AddApplicationPart(sharedAssembly);
 
             services.Configure<RazorViewEngineOptions>(o => o.FileProviders.Add(new EmbeddedFileProvider(sharedAssembly, "GovUk.Education.SearchAndCompare.UI.Shared")));
