@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Text;
 using FluentAssertions;
-using GovUk.Education.ManageCourses.ApiClient;
+using GovUk.Education.ManageCourses.Api.Model;
+using GovUk.Education.ManageCourses.Domain.Models;
 using GovUk.Education.ManageCourses.Ui.Helpers;
 using GovUk.Education.ManageCourses.Ui.ViewModels;
 using NUnit.Framework;
@@ -63,7 +64,7 @@ namespace ManageCoursesUi.Tests
             };
             var course = new Course
             {
-                CourseSites = new ObservableCollection<CourseSite>(schools)
+                CourseSites = new List<CourseSite>(schools)
             };
             var result = course.GetCourseStatus();
             result.Should().Be(expectedResult);
@@ -86,22 +87,33 @@ namespace ManageCoursesUi.Tests
         }
 
         [Test]
-        [TestCase("d", true, "")]
-        [TestCase("d", false, "")]
-        [TestCase("s", true, "")]
-        [TestCase("s", false, "")]
-        [TestCase("b", true, "Yes")]
-        [TestCase("b", false, "No")]
-        public void TestGetHasVacancies(string status, bool hasVacancies, string expectedResult)
+        [TestCase("d", "B", "")]
+        [TestCase("d", "F", "")]
+        [TestCase("d", "P", "")]
+        [TestCase("s", "B", "")]
+        [TestCase("s", "F", "")]
+        [TestCase("s", "P", "")]
+
+        [TestCase("", "", "No")]
+        [TestCase("b", "B", "Yes")]
+        [TestCase("b", "F", "Yes")]
+        [TestCase("b", "P", "Yes")]
+        [TestCase("b", "", "No")]
+
+        // These are probably wrong
+        [TestCase("", "B", "Yes")]
+        [TestCase("", "F", "Yes")]
+        [TestCase("", "P", "Yes")]
+        public void TestGetHasVacancies(string status, string vacStatus, string expectedResult)
         {
             var schools = new List<CourseSite>
             {
-                new CourseSite {Status = status},
+                new CourseSite {Status = status, VacStatus = vacStatus},
             };
             var course = new Course
             {
-                CourseSites = new ObservableCollection<CourseSite>(schools),
-                HasVacancies = hasVacancies
+                CourseSites = new List<CourseSite>(schools),
+
             };
             var result = course.GetHasVacancies();
             result.Should().Be(expectedResult);

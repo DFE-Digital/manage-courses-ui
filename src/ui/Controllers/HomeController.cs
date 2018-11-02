@@ -3,6 +3,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using GovUk.Education.ManageCourses.ApiClient;
+using GovUk.Education.ManageCourses.Api.Model;
+using GovUk.Education.ManageCourses.Domain.Models;
 using GovUk.Education.ManageCourses.Ui.ViewModels;
 using System.Collections.Generic;
 
@@ -28,9 +30,9 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             {
                 orgs = await _manageApi.GetInstitutionSummaries();
             }
-            catch (SwaggerException e)
+            catch (ManageCoursesApiException e)
             {
-                if (e.StatusCode == 401)
+                if ((int)e.StatusCode == 401)
                 {
                     return StatusCode(401);
                 }

@@ -4,7 +4,8 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using GovUk.Education.ManageCourses.ApiClient;
+using GovUk.Education.ManageCourses.Api.Model;
+using GovUk.Education.ManageCourses.Domain.Models;
 using GovUk.Education.ManageCourses.Ui;
 using GovUk.Education.ManageCourses.Ui.Helpers;
 using GovUk.Education.ManageCourses.Ui.Utilities;
@@ -65,7 +66,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
         {
             var ucasInstitutionEnrichmentGetModel = await _manageApi.GetInstitutitionEnrichment(instCode);
 
-            ucasInstitutionEnrichmentGetModel = ucasInstitutionEnrichmentGetModel ?? new UcasInstitutionEnrichmentGetModel { EnrichmentModel = new InstitutionEnrichmentModel() { AccreditingProviderEnrichments = new ObservableCollection<AccreditingProviderEnrichment>() } };
+            ucasInstitutionEnrichmentGetModel = ucasInstitutionEnrichmentGetModel ?? new UcasInstitutionEnrichmentGetModel { EnrichmentModel = new InstitutionEnrichmentModel() { AccreditingProviderEnrichments = new List<AccreditingProviderEnrichment>() } };
 
             var enrichmentModel = ucasInstitutionEnrichmentGetModel.EnrichmentModel;
             var aboutAccreditingTrainingProviders = await MergeTrainingProviderViewModels(instCode, enrichmentModel);
@@ -92,7 +93,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
         {
             var ucasInstitutionEnrichmentGetModel = await _manageApi.GetInstitutitionEnrichment(instCode);
 
-            ucasInstitutionEnrichmentGetModel = ucasInstitutionEnrichmentGetModel ?? new UcasInstitutionEnrichmentGetModel { EnrichmentModel = new InstitutionEnrichmentModel() { AccreditingProviderEnrichments = new ObservableCollection<AccreditingProviderEnrichment>() } };
+            ucasInstitutionEnrichmentGetModel = ucasInstitutionEnrichmentGetModel ?? new UcasInstitutionEnrichmentGetModel { EnrichmentModel = new InstitutionEnrichmentModel() { AccreditingProviderEnrichments = new List<AccreditingProviderEnrichment>() } };
 
             var enrichmentModel = ucasInstitutionEnrichmentGetModel.EnrichmentModel;
             var aboutAccreditingTrainingProviders = await MergeTrainingProviderViewModels(instCode, enrichmentModel);
@@ -142,7 +143,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
         {
             var ucasInstitutionEnrichmentGetModel = await _manageApi.GetInstitutitionEnrichment(instCode);
 
-            ucasInstitutionEnrichmentGetModel = ucasInstitutionEnrichmentGetModel ?? new UcasInstitutionEnrichmentGetModel { EnrichmentModel = new InstitutionEnrichmentModel() { AccreditingProviderEnrichments = new ObservableCollection<AccreditingProviderEnrichment>() } };
+            ucasInstitutionEnrichmentGetModel = ucasInstitutionEnrichmentGetModel ?? new UcasInstitutionEnrichmentGetModel { EnrichmentModel = new InstitutionEnrichmentModel() { AccreditingProviderEnrichments = new List<AccreditingProviderEnrichment>() } };
 
             var enrichmentModel = ucasInstitutionEnrichmentGetModel.EnrichmentModel;
             var institutionSummary = await _manageApi.GetInstitutionSummary(instCode);
@@ -199,7 +200,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
                 return View("RequestAccess", model);
             }
 
-            await _manageApi.CreateAccessRequest(new AccessRequest()
+            await _manageApi.CreateAccessRequest(new Api.Model.AccessRequest()
             {
                 FirstName = model.FirstName,
                 LastName = model.LastName,
@@ -222,7 +223,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
                     false == string.Equals(x.AccreditingInstitution?.InstCode, instCode, StringComparison.InvariantCultureIgnoreCase) &&
                     false == string.IsNullOrWhiteSpace(x.AccreditingInstitution?.InstCode))
                 .Distinct(new AccreditingInstCodeComparer()).ToList();
-            var accreditingProviderEnrichments = enrichmentModel?.AccreditingProviderEnrichments ?? new ObservableCollection<AccreditingProviderEnrichment>();
+            var accreditingProviderEnrichments = enrichmentModel?.AccreditingProviderEnrichments ?? new List<AccreditingProviderEnrichment>();
 
             var result = accreditingProviders.Select(x =>
 
@@ -300,13 +301,13 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             return RedirectToAction("Details", "Organisation", new { instCode });
         }
 
-        private static Func<AccreditingProviderEnrichment, bool> TrainingProviderMatchesProviderCourse(Course x)
+        private static Func<AccreditingProviderEnrichment, bool> TrainingProviderMatchesProviderCourse(Domain.Models.Course x)
         {
             return y => String.Equals(x.AccreditingInstitution?.InstCode,
                 y.UcasInstitutionCode, StringComparison.InvariantCultureIgnoreCase);
         }
 
-        private List<ViewModels.Provider> GetProviders(List<Course> institutionCourses)
+        private List<ViewModels.Provider> GetProviders(List<Domain.Models.Course> institutionCourses)
         {
             var uniqueAccreditingInstCodes = institutionCourses.Select(c => c.AccreditingInstitution?.InstCode).Distinct();
             var providers = new List<ViewModels.Provider>();

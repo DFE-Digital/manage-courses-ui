@@ -18,5 +18,4 @@
   <ItemGroup>
     <ProjectReference Include="..\src\ui\ManageCoursesUi.csproj" />
   </ItemGroup>
-
 </Project>

@@ -1,16 +1,16 @@
-using System;
-using System.Collections.Generic;
-using System.Net;
 using GovUk.Education.ManageCourses.ApiClient;
 using GovUk.Education.ManageCourses.Ui.ActionFilters;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Routing;
-using Microsoft.AspNetCore.Mvc.Abstractions;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Abstractions;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Logging;
 using Moq;
 using NUnit.Framework;
+using System;
+using System.Collections.Generic;
+using System.Net;
 
 namespace ManageCoursesUi.Tests
 {
@@ -43,17 +43,17 @@ namespace ManageCoursesUi.Tests
         }
 
         [Test]
-        public void OnException_SwaggerException()
+        public void OnException_ManageCoursesApiException()
         {
             var exceptionContext = GetExceptionContext();
 
-            exceptionContext.Exception = new SwaggerException("SwaggerException", 123, "SwaggerException", null, null);
+            exceptionContext.Exception = new ManageCoursesApiException("ManageCoursesApiException", HttpStatusCode.Ambiguous, "ManageCoursesApiException");
             Assert.IsNotNull(exceptionContext.Exception);
             Assert.IsNull(exceptionContext.Result);
 
             sut.OnException(exceptionContext);
 
-            Assert.IsNotNull(exceptionContext.Exception);            
+            Assert.IsNotNull(exceptionContext.Exception);
             Assert.IsNotNull(exceptionContext.Result as ViewResult);
             Assert.AreEqual(500, (exceptionContext.Result as ViewResult).StatusCode);
             Assert.True(exceptionContext.ExceptionHandled);
@@ -61,11 +61,11 @@ namespace ManageCoursesUi.Tests
         }
 
         [Test]
-        public void OnException_SwaggerException_Unauthorized()
+        public void OnException_ManageCoursesApiException_Unauthorized()
         {
             var exceptionContext = GetExceptionContext();
 
-            exceptionContext.Exception = new SwaggerException("SwaggerException", (int)HttpStatusCode.Unauthorized, "SwaggerException", null, null);
+            exceptionContext.Exception = new ManageCoursesApiException("ManageCoursesApiException", HttpStatusCode.Unauthorized, "ManageCoursesApiException");
             Assert.IsNotNull(exceptionContext.Exception);
             Assert.IsNull(exceptionContext.Result);
 
@@ -82,11 +82,11 @@ namespace ManageCoursesUi.Tests
         }
 
         [Test]
-        public void OnException_SwaggerException_UnavailableForLegalReasons()
+        public void OnException_ManageCoursesApiException_UnavailableForLegalReasons()
         {
             var exceptionContext = GetExceptionContext();
 
-            exceptionContext.Exception = new SwaggerException("SwaggerException", 451, "SwaggerException", null, null);
+            exceptionContext.Exception = new ManageCoursesApiException("ManageCoursesApiException", HttpStatusCode.UnavailableForLegalReasons, "ManageCoursesApiException");
             Assert.IsNotNull(exceptionContext.Exception);
             Assert.IsNull(exceptionContext.Result);
 

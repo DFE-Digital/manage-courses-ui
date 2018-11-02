@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using GovUk.Education.ManageCourses.ApiClient;
+using GovUk.Education.ManageCourses.Api.Model;
+using GovUk.Education.ManageCourses.Domain.Models;
 using GovUk.Education.ManageCourses.Ui;
 using GovUk.Education.ManageCourses.Ui.Helpers;
 using GovUk.Education.ManageCourses.Ui.Services;
@@ -137,7 +138,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
                 ViewBag.CopiedFrom = new CourseInfoViewModel
                 {
                     ProgrammeCode = copyFrom,
-                    Name = (ViewBag.CopyableCourses as IEnumerable<ApiClient.Course>).SingleOrDefault(x => x.CourseCode == copyFrom)?.Name
+                    Name = (ViewBag.CopyableCourses as IEnumerable<Domain.Models.Course>).SingleOrDefault(x => x.CourseCode == copyFrom)?.Name
                 };
 
                 ViewBag.CopiedFields = model.CopyFrom(copiedEnrichment?.EnrichmentModel);
@@ -153,7 +154,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             courseCode = courseCode.ToUpper();
 
             var copyable = await _manageApi.GetCoursesOfInstitution(instCode);
-            ViewBag.CopyableCourses = copyable != null ? copyable.Where(x => x.EnrichmentWorkflowStatus != null && x.CourseCode != courseCode) : new List<ApiClient.Course>();
+            ViewBag.CopyableCourses = copyable != null ? copyable.Where(x => x.EnrichmentWorkflowStatus != null && x.CourseCode != courseCode) : new List<Domain.Models.Course>();
         }
 
         [HttpPost]
@@ -208,7 +209,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
                 ViewBag.CopiedFrom = new CourseInfoViewModel
                 {
                     ProgrammeCode = copyFrom,
-                    Name = (ViewBag.CopyableCourses as IEnumerable<ApiClient.Course>).SingleOrDefault(x => x.CourseCode == copyFrom)?.Name
+                    Name = (ViewBag.CopyableCourses as IEnumerable<Domain.Models.Course>).SingleOrDefault(x => x.CourseCode == copyFrom)?.Name
                 };
 
                 ViewBag.CopiedFields = model.CopyFrom(copiedEnrichment?.EnrichmentModel);
@@ -269,7 +270,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
                 ViewBag.CopiedFrom = new CourseInfoViewModel
                 {
                     ProgrammeCode = copyFrom,
-                    Name = (ViewBag.CopyableCourses as IEnumerable<ApiClient.Course>).SingleOrDefault(x => x.CourseCode == copyFrom)?.Name
+                    Name = (ViewBag.CopyableCourses as IEnumerable<Domain.Models.Course>).SingleOrDefault(x => x.CourseCode == copyFrom)?.Name
                 };
 
                 ViewBag.CopiedFields = model.CopyFrom(copiedEnrichment?.EnrichmentModel);
@@ -331,7 +332,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
                 ViewBag.CopiedFrom = new CourseInfoViewModel
                 {
                     ProgrammeCode = copyFrom,
-                    Name = (ViewBag.CopyableCourses as IEnumerable<ApiClient.Course>).SingleOrDefault(x => x.CourseCode == copyFrom)?.Name
+                    Name = (ViewBag.CopyableCourses as IEnumerable<Domain.Models.Course>).SingleOrDefault(x => x.CourseCode == copyFrom)?.Name
                 };
 
                 ViewBag.CopiedFields = model.CopyFrom(copiedEnrichment?.EnrichmentModel);
@@ -398,7 +399,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             TempData["MessageBodyHtml"] = messageBodyHtml;
         }
 
-        private CourseViewModel LoadViewModel(InstitutionSummary org, ApiClient.Course course, bool multipleOrganisations, UcasCourseEnrichmentGetModel ucasCourseEnrichmentGetModel, CourseRouteDataViewModel routeData)
+        private CourseViewModel LoadViewModel(InstitutionSummary org, Domain.Models.Course course, bool multipleOrganisations, UcasCourseEnrichmentGetModel ucasCourseEnrichmentGetModel, CourseRouteDataViewModel routeData)
         {
             var courseVariant =
                 new ViewModels.CourseDetailsViewModel

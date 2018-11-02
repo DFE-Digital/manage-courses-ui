@@ -1,7 +1,9 @@
 
 using System;
+using System.Net;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using GovUk.Education.ManageCourses.Api.Model;
 using GovUk.Education.ManageCourses.ApiClient;
 using GovUk.Education.ManageCourses.Ui;
 using GovUk.Education.ManageCourses.Ui.ViewModels;
@@ -41,7 +43,7 @@ namespace ManageCoursesUi.Tests
         public void Index_IfApiThrows401_Returns401()
         {
             mockApi.Setup(x => x.GetInstitutionSummaries())
-                .ThrowsAsync(new SwaggerException("uh-oh...", 401, "", new Dictionary<string, IEnumerable<string>>(), new Exception("inner")));
+                .ThrowsAsync(new ManageCoursesApiException("uh-oh...", HttpStatusCode.Unauthorized, null));
 
             var res = sut.Index().Result;
 

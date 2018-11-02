@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
-using System.Reflection;
-using System.Security.Claims;
-using System.Threading.Tasks;
-using GovUk.Education.ManageCourses.ApiClient;
+﻿using GovUk.Education.ManageCourses.ApiClient;
 using GovUk.Education.ManageCourses.Ui.ActionFilters;
 using GovUk.Education.ManageCourses.Ui.Services;
 using GovUk.Education.SearchAndCompare.UI.Shared.ViewComponents;
@@ -25,6 +19,14 @@ using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Serilog;
+using System;
+using System.Linq;
+using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
+using System.Net.Http;
+using System.Reflection;
+using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace GovUk.Education.ManageCourses.Ui
 {
@@ -47,9 +49,23 @@ namespace GovUk.Education.ManageCourses.Ui
                 loggingBuilder.AddSerilog(dispose: true));
 
             var sharedAssembly = typeof(CourseDetailsViewComponent).GetTypeInfo().Assembly;
+
+
             services.AddMvc(options =>
                 options.Filters.Add(typeof(McExceptionFilter))
-            ).AddApplicationPart(sharedAssembly);
+            )
+            .ConfigureApplicationPartManager(apm =>
+            {
+                var apiClientAssembly = typeof(GovUk.Education.ManageCourses.ApiClient.ManageCoursesApiClient).GetTypeInfo().Assembly.GetName().Name;
+                var api = typeof(GovUk.Education.ManageCourses.Api.Startup).GetTypeInfo().Assembly.GetName().Name;
+                var dependentLibraries = apm.ApplicationParts.Where(x  => x.Name == api || x.Name == apiClientAssembly).ToList();
+
+                foreach (var item in dependentLibraries)
+                {
+                    apm.ApplicationParts.Remove(item);
+                }
+            })
+            .AddApplicationPart(sharedAssembly);
 
             services.Configure<RazorViewEngineOptions>(o => o.FileProviders.Add(new EmbeddedFileProvider(sharedAssembly, "GovUk.Education.SearchAndCompare.UI.Shared")));
 
@@ -238,7 +254,12 @@ namespace GovUk.Education.ManageCourses.Ui
             });
             services.AddScoped<SearchAndCompare.UI.Shared.Features.IFeatureFlags, SearchAndCompare.UI.Shared.Features.FeatureFlags>();
             services.AddSingleton<ISearchAndCompareUrlService>(x => new SearchAndCompareUrlService(Configuration.GetValue("SearchAndCompare:UiBaseUrl", "")));
-            services.AddSingleton<IManageCoursesApiClientConfiguration, ManageCoursesApiClientConfiguration>();
+            services.AddSingleton<IHttpClient>(serviceProvider => {
+                var httpContextAccessor = serviceProvider.GetService<IHttpContextAccessor>();
+
+
+                return new ManageCoursesApiHttpClientWrapper(httpContextAccessor, new HttpClient());
+            });
             services.AddScoped(provider => AnalyticsPolicy.FromEnv());
             services.AddScoped<AnalyticsAttribute>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
@@ -246,12 +267,12 @@ namespace GovUk.Education.ManageCourses.Ui
             services.AddSingleton<IManageApi, ManageApi>();
             services.AddSingleton<ITelemetryInitializer, SubjectTelemetryInitialiser>();
             services.AddApplicationInsightsTelemetry();
+
             services.AddSingleton(serviceProvider =>
             {
-                var manageCoursesApiClientConfiguration = serviceProvider.GetService<IManageCoursesApiClientConfiguration>();
-                var manageCoursesApiClient = new ManageCoursesApiClient(manageCoursesApiClientConfiguration, new System.Net.Http.HttpClient());
+                var clientWrapper = serviceProvider.GetService<IHttpClient>();
                 var config = serviceProvider.GetService<ManageCoursesConfig>();
-                manageCoursesApiClient.BaseUrl = config.ApiUrl;
+                var manageCoursesApiClient = new ManageCoursesApiClient(config.ApiUrl, clientWrapper);
                 return manageCoursesApiClient;
             });
         }
