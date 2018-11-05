@@ -1,6 +1,9 @@
 <!-- 
     Save a copy of this file as dev-mc-api.targets in the UI Project folder if you want to use local builds of the API Client Project
     Update the path to the .csproj file to match your local environment, and don't commit it :)
+	Note that for Visual Studio build to work you'll need temporarily add the below csproj to the solution, otherwise you get
+	"Unable to read project information ..."
+	https://docs.microsoft.com/en-us/nuget/reference/errors-and-warnings/nu1105
 -->
 <Project>
     <ItemGroup>
