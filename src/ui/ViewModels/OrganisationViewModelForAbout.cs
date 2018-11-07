@@ -46,17 +46,17 @@ namespace GovUk.Education.ManageCourses.Ui.ViewModels
             };
         }
 
-        public void MergeIntoEnrichmentModel(ref InstitutionEnrichmentModel enrichmentModel)
+        public void MergeIntoEnrichmentModel(ref ProviderEnrichmentModel enrichmentModel)
         {
             if (enrichmentModel == null)
             {
-                enrichmentModel = new InstitutionEnrichmentModel();
+                enrichmentModel = new ProviderEnrichmentModel();
             }
 
             var aboutTrainingProviders = new List<AccreditingProviderEnrichment>(
                 AboutTrainingProviders.Select(x => new AccreditingProviderEnrichment
                 {
-                    UcasInstitutionCode = x.InstCode,
+                    UcasProviderCode = x.InstCode,
                     Description = x.Description
                 }));
 

@@ -34,12 +34,12 @@ namespace ManageCoursesUi.Tests
         {
             var manageApi = new Mock<IManageApi>();
             var testData = TestHelper.GetTestData(type);
-            var testOrgs = new List<InstitutionSummary>
+            var testOrgs = new List<ProviderSummary>
             {
-                new InstitutionSummary
+                new ProviderSummary
                 {
-                    InstCode = TestHelper.InstCode,
-                    InstName = TestHelper.InstName,
+                    ProviderCode = TestHelper.InstCode,
+                    ProviderName = TestHelper.InstName,
                     TotalCourses = testData.Count
                 }
             };
@@ -49,7 +49,7 @@ namespace ManageCoursesUi.Tests
             var enrichmentModel = new CourseEnrichmentModel { AboutCourse = "AboutCourse", InterviewProcess = "InterviewProcess", HowSchoolPlacementsWork = "HowSchoolPlacementsWork" };
             var ucasCourseEnrichmentGetModel = new UcasCourseEnrichmentGetModel { EnrichmentModel = enrichmentModel };
 
-            manageApi.Setup(x => x.GetInstitutionSummaries()).ReturnsAsync(testOrgs);
+            manageApi.Setup(x => x.GetProviderSummaries()).ReturnsAsync(testOrgs);
             manageApi.Setup(x => x.GetCourse(TestHelper.InstCode, TestHelper.TargetedInstCode)).ReturnsAsync(testCourse);
 
             manageApi.Setup(x => x.GetCourseEnrichment(TestHelper.InstCode, TestHelper.TargetedInstCode)).ReturnsAsync(ucasCourseEnrichmentGetModel);
@@ -86,17 +86,17 @@ namespace ManageCoursesUi.Tests
             var manageApi = new Mock<IManageApi>();
             var testData = TestHelper.GetTestData(type);
 
-            var testOrgs = new List<InstitutionSummary>
+            var testOrgs = new List<ProviderSummary>
             {
-                new InstitutionSummary
+                new ProviderSummary
                 {
-                    InstCode = "123",
+                    ProviderCode = "123",
                     TotalCourses = testData.Count
                 }
             };
 
             var testCourse = testData.FirstOrDefault(x => x.Name == TestHelper.TargetedCourseTitle);
-            manageApi.Setup(x => x.GetInstitutionSummaries()).ReturnsAsync(testOrgs);
+            manageApi.Setup(x => x.GetProviderSummaries()).ReturnsAsync(testOrgs);
             manageApi.Setup(x => x.GetCourse(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(testCourse);
 
             var controller = new CourseController(manageApi.Object, new SearchAndCompareUrlService("http://www.example.com"));
@@ -115,17 +115,17 @@ namespace ManageCoursesUi.Tests
             const string instName = "provider Name";
             var testData = TestHelper.GetTestData(EnumDataType.SingleVariantOneMatch);
 
-            var testOrgs = new List<InstitutionSummary>
+            var testOrgs = new List<ProviderSummary>
             {
-                new InstitutionSummary
+                new ProviderSummary
                 {
-                    InstName = instName,
-                    InstCode = instCode,
+                    ProviderName = instName,
+                    ProviderCode = instCode,
                     TotalCourses = testData.Count
                 }
             };
 
-            manageApi.Setup(x => x.GetInstitutionSummaries()).ReturnsAsync(testOrgs);
+            manageApi.Setup(x => x.GetProviderSummaries()).ReturnsAsync(testOrgs);
             manageApi.Setup(x => x.GetCourse(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync((Course) null);
 
             var controller = new CourseController(manageApi.Object, new SearchAndCompareUrlService("http://www.example.com"));
@@ -148,16 +148,16 @@ namespace ManageCoursesUi.Tests
             var manageApi = new Mock<IManageApi>();
             var testData = TestHelper.GetTestData(EnumDataType.SingleVariantOneMatch);
 
-            var testOrgs = new List<InstitutionSummary>
+            var testOrgs = new List<ProviderSummary>
             {
-                new InstitutionSummary
+                new ProviderSummary
                 {
                     TotalCourses = testData.Count
                 }
             };
 
             var testCourse = testData.FirstOrDefault(x => x.Name == TestHelper.TargetedCourseTitle);
-            manageApi.Setup(x => x.GetInstitutionSummaries()).ReturnsAsync(testOrgs);
+            manageApi.Setup(x => x.GetProviderSummaries()).ReturnsAsync(testOrgs);
             manageApi.Setup(x => x.GetCourse(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(testCourse);
 
             var controller = new CourseController(manageApi.Object, new SearchAndCompareUrlService("http://www.example.com"));
@@ -169,7 +169,7 @@ namespace ManageCoursesUi.Tests
         {
             var manageApi = new Mock<IManageApi>();
 
-            manageApi.Setup(x => x.GetInstitutionSummaries()).ThrowsAsync(new Exception());
+            manageApi.Setup(x => x.GetProviderSummaries()).ThrowsAsync(new Exception());
 
             var controller = new CourseController(manageApi.Object, new SearchAndCompareUrlService("http://www.example.com"));
 
@@ -183,16 +183,16 @@ namespace ManageCoursesUi.Tests
         {
             var manageApi = new Mock<IManageApi>();
             var testData = TestHelper.GetTestData(type);
-            var testOrgs = new List<InstitutionSummary>
+            var testOrgs = new List<ProviderSummary>
             {
-                new InstitutionSummary
+                new ProviderSummary
                 {
-                    InstCode = TestHelper.InstCode,
+                    ProviderCode = TestHelper.InstCode,
                     TotalCourses = testData.Count
                 }
             };
 
-            manageApi.Setup(x => x.GetInstitutionSummaries()).ReturnsAsync(testOrgs);
+            manageApi.Setup(x => x.GetProviderSummaries()).ReturnsAsync(testOrgs);
             manageApi.Setup(x => x.GetCourse(It.IsAny<string>(), It.IsAny<string>())).ThrowsAsync(new Exception());
 
             var controller = new CourseController(manageApi.Object, new SearchAndCompareUrlService("http://www.example.com"));
@@ -216,7 +216,7 @@ namespace ManageCoursesUi.Tests
             mockApi.Setup(x => x.GetCourseEnrichment(TestHelper.InstCode, TestHelper.TargetedInstCode)).ReturnsAsync(ucasCourseEnrichmentGetModel).Verifiable();
             mockApi.Setup(x => x.PublishCourseToSearchAndCompare(TestHelper.InstCode, TestHelper.TargetedInstCode)).ReturnsAsync(true).Verifiable();
 
-            mockApi.Setup(x => x.GetCourse(TestHelper.InstCode, TestHelper.TargetedInstCode)).ReturnsAsync(new Course { ProgramType = "", Institution = new Institution() }).Verifiable();
+            mockApi.Setup(x => x.GetCourse(TestHelper.InstCode, TestHelper.TargetedInstCode)).ReturnsAsync(new Course { ProgramType = "", Provider = new GovUk.Education.ManageCourses.Domain.Models.Provider() }).Verifiable();
 
             var objectValidator = new Mock<IObjectModelValidator>();
             BaseCourseEnrichmentViewModel objectToVerify = null;

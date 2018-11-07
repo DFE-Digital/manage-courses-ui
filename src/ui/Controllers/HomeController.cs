@@ -24,11 +24,11 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
         [Authorize]
         public async Task<ActionResult> Index()
         {
-            IEnumerable<InstitutionSummary> orgs;
+            IEnumerable<ProviderSummary> orgs;
 
             try
             {
-                orgs = await _manageApi.GetInstitutionSummaries();
+                orgs = await _manageApi.GetProviderSummaries();
             }
             catch (ManageCoursesApiException e)
             {
@@ -45,7 +45,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             var userOrganisations = orgs.ToList();
             if (userOrganisations.Count() == 1)
             {
-                return this.RedirectToAction("Show", "Organisation", new { instCode = userOrganisations[0].InstCode });
+                return this.RedirectToAction("Show", "Organisation", new { instCode = userOrganisations[0].ProviderCode });
             }
 
             if (userOrganisations.Count() > 1)

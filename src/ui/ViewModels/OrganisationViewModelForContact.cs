@@ -67,11 +67,11 @@ namespace GovUk.Education.ManageCourses.Ui.ViewModels
                 string.IsNullOrWhiteSpace(Postcode);
         }
 
-        public void MergeIntoEnrichmentModel(ref InstitutionEnrichmentModel enrichmentModel)
+        public void MergeIntoEnrichmentModel(ref ProviderEnrichmentModel enrichmentModel)
         {
             if (enrichmentModel == null)
             {
-                enrichmentModel = new InstitutionEnrichmentModel();
+                enrichmentModel = new ProviderEnrichmentModel();
             }
 
             enrichmentModel.Email = EmailAddress;

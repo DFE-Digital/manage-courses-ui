@@ -65,20 +65,20 @@ namespace GovUk.Education.ManageCourses.Ui.ViewModels
 
         public EnumStatus Status { get; set; }
 
-        public static OrganisationViewModel FromEnrichmentModel(UcasInstitutionEnrichmentGetModel ucasInstitutionEnrichmentGetModel, List<TrainingProviderViewModel> aboutAccreditingTrainingProviders, InstitutionSummary institutionSummary)
+        public static OrganisationViewModel FromEnrichmentModel(UcasProviderEnrichmentGetModel ucasProviderEnrichmentGetModel, List<TrainingProviderViewModel> aboutAccreditingTrainingProviders, ProviderSummary providerSummary)
         {
-            ucasInstitutionEnrichmentGetModel = ucasInstitutionEnrichmentGetModel ?? new UcasInstitutionEnrichmentGetModel { EnrichmentModel = new InstitutionEnrichmentModel() { AccreditingProviderEnrichments = new List<AccreditingProviderEnrichment>() } };
+            ucasProviderEnrichmentGetModel = ucasProviderEnrichmentGetModel ?? new UcasProviderEnrichmentGetModel { EnrichmentModel = new ProviderEnrichmentModel() { AccreditingProviderEnrichments = new List<AccreditingProviderEnrichment>() } };
 
-            var enrichmentModel = ucasInstitutionEnrichmentGetModel.EnrichmentModel;
+            var enrichmentModel = ucasProviderEnrichmentGetModel.EnrichmentModel;
 
             var result = new OrganisationViewModel
             {
-                InstCode = institutionSummary.InstCode,
-                InstName = institutionSummary.InstName,
+                InstCode = providerSummary.ProviderCode,
+                InstName = providerSummary.ProviderName,
                 TrainWithUs = enrichmentModel.TrainWithUs,
                 TrainWithDisability = enrichmentModel.TrainWithDisability,
-                LastPublishedTimestampUtc = ucasInstitutionEnrichmentGetModel.LastPublishedTimestampUtc,
-                Status = ucasInstitutionEnrichmentGetModel.Status,
+                LastPublishedTimestampUtc = ucasProviderEnrichmentGetModel.LastPublishedTimestampUtc,
+                Status = ucasProviderEnrichmentGetModel.Status,
                 AboutTrainingProviders = aboutAccreditingTrainingProviders,
 
                 Addr1 = enrichmentModel.Address1,

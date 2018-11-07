@@ -34,10 +34,10 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
         {
             Validate(instCode, accreditingInstCode, courseCode);
 
-            var orgsList = await _manageApi.GetInstitutionSummaries();
+            var orgsList = await _manageApi.GetProviderSummaries();
             var userOrganisations = orgsList.ToList();
             var multipleOrganisations = userOrganisations.Count() > 1;
-            var org = userOrganisations.ToList().FirstOrDefault(x => instCode.ToLower() == x.InstCode.ToLower());
+            var org = userOrganisations.ToList().FirstOrDefault(x => instCode.ToLower() == x.ProviderCode.ToLower());
 
             if (org == null) { return NotFound(); }
 
@@ -78,7 +78,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             {
                 TempData["MessageType"] = "success";
                 TempData["MessageTitle"] = "Your course has been published";
-                var searchUrl = searchAndCompareUrlService.GetCoursePageUri(course.Institution.InstCode, course.CourseCode);
+                var searchUrl = searchAndCompareUrlService.GetCoursePageUri(course.Provider.ProviderCode, course.CourseCode);
                 TempData["MessageBodyHtml"] = $@"
                     <p class=""govuk-body"">
                         The link for this course is:
@@ -153,7 +153,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             instCode = instCode.ToUpper();
             courseCode = courseCode.ToUpper();
 
-            var copyable = await _manageApi.GetCoursesOfInstitution(instCode);
+            var copyable = await _manageApi.GetCoursesOfProvider(instCode);
             ViewBag.CopyableCourses = copyable != null ? copyable.Where(x => x.EnrichmentWorkflowStatus != null && x.CourseCode != courseCode) : new List<Domain.Models.Course>();
         }
 
@@ -399,17 +399,17 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             TempData["MessageBodyHtml"] = messageBodyHtml;
         }
 
-        private CourseViewModel LoadViewModel(InstitutionSummary org, Domain.Models.Course course, bool multipleOrganisations, UcasCourseEnrichmentGetModel ucasCourseEnrichmentGetModel, CourseRouteDataViewModel routeData)
+        private CourseViewModel LoadViewModel(ProviderSummary org, Domain.Models.Course course, bool multipleOrganisations, UcasCourseEnrichmentGetModel ucasCourseEnrichmentGetModel, CourseRouteDataViewModel routeData)
         {
             var courseVariant =
                 new ViewModels.CourseDetailsViewModel
                 {
                     CourseTitle = course.Name,
                     Type = course.TypeDescription,
-                    AccreditingInstName = course.AccreditingInstitution?.InstName,
-                    AccreditingInstCode = course.AccreditingInstitution?.InstCode,
+                    AccreditingInstName = course.AccreditingProvider?.ProviderName,
+                    AccreditingInstCode = course.AccreditingProvider?.ProviderCode,
                     CourseCode = course.CourseCode,
-                    InstCode = course.Institution.InstCode,
+                    InstCode = course.Provider.ProviderCode,
                     AgeRange = course.AgeRange,
                     Route = course.ProgramType,
                     Qualifications = course.ProfpostFlag,
@@ -448,14 +448,14 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             var courseEnrichmentViewModel = GetCourseEnrichmentViewModel(ucasCourseEnrichmentGetModel, isSalary, routeData);
             var viewModel = new CourseViewModel
             {
-                InstName = org.InstName,
-                InstCode = org.InstCode,
+                InstName = org.ProviderName,
+                InstCode = org.ProviderCode,
                 CourseTitle = course.Name,
-                AccreditingInstCode = course.AccreditingInstitution?.InstCode,
+                AccreditingInstCode = course.AccreditingProvider?.ProviderCode,
                 MultipleOrganisations = multipleOrganisations,
                 Course = courseVariant,
                 CourseEnrichment = courseEnrichmentViewModel,
-                LiveSearchUrl = searchAndCompareUrlService.GetCoursePageUri(org.InstCode, courseVariant.CourseCode),
+                LiveSearchUrl = searchAndCompareUrlService.GetCoursePageUri(org.ProviderCode, courseVariant.CourseCode),
                 IsSalary = isSalary
             };
             return viewModel;

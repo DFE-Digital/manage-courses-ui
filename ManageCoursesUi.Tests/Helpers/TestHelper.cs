@@ -100,7 +100,7 @@ namespace ManageCoursesUi.Tests.Helpers
                         CourseSubjects = new List<CourseSubject>{ new CourseSubject{ Subject = new Subject {SubjectName = courseTitle + ",Secondary"}}},
                         CourseCode = "CC"+count,
                         Name = courseTitle,
-                        Institution = new Institution { InstCode = instCode },
+                        Provider = new Provider { ProviderCode = instCode },
                         CourseSites = new List<CourseSite>
                         {
                             new CourseSite {
