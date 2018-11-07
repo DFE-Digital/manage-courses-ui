@@ -3,7 +3,7 @@
 
     public class CourseRouteDataViewModel
     {
-        public string InstCode { get; set; }
+        public string ProviderCode { get; set; }
         public string CourseCode { get; set; }
     }
 }

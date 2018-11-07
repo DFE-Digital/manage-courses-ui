@@ -29,25 +29,25 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             this.searchAndCompareUrlService = searchAndCompareUrlHelper;
         }
 
-        [Route("{instCode}/course/{accreditingInstCode=self}/{courseCode}")]
-        public async Task<IActionResult> Show(string instCode, string accreditingInstCode, string courseCode)
+        [Route("{providerCode}/course/{accreditingProviderCode=self}/{courseCode}")]
+        public async Task<IActionResult> Show(string providerCode, string accreditingProviderCode, string courseCode)
         {
-            Validate(instCode, accreditingInstCode, courseCode);
+            Validate(providerCode, accreditingProviderCode, courseCode);
 
             var orgsList = await _manageApi.GetProviderSummaries();
             var userOrganisations = orgsList.ToList();
             var multipleOrganisations = userOrganisations.Count() > 1;
-            var org = userOrganisations.ToList().FirstOrDefault(x => instCode.ToLower() == x.ProviderCode.ToLower());
+            var org = userOrganisations.ToList().FirstOrDefault(x => providerCode.ToLower() == x.ProviderCode.ToLower());
 
             if (org == null) { return NotFound(); }
 
-            var course = await _manageApi.GetCourse(instCode, courseCode);
+            var course = await _manageApi.GetCourse(providerCode, courseCode);
 
             if (course == null) return NotFound();
 
-            var ucasCourseEnrichmentGetModel = await _manageApi.GetCourseEnrichment(instCode, courseCode);
+            var ucasCourseEnrichmentGetModel = await _manageApi.GetCourseEnrichment(providerCode, courseCode);
 
-            var routeData = GetCourseRouteDataViewModel(instCode, courseCode);
+            var routeData = GetCourseRouteDataViewModel(providerCode, courseCode);
 
             var viewModel = LoadViewModel(org, course, multipleOrganisations, ucasCourseEnrichmentGetModel, routeData);
 
@@ -55,13 +55,13 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
         }
 
         [HttpPost]
-        [Route("{instCode}/course/{accreditingInstCode=self}/{courseCode}", Name = "publish")]
-        public async Task<IActionResult> ShowPublish(string instCode, string accreditingInstCode, string courseCode)
+        [Route("{providerCode}/course/{accreditingProviderCode=self}/{courseCode}", Name = "publish")]
+        public async Task<IActionResult> ShowPublish(string providerCode, string accreditingProviderCode, string courseCode)
         {
-            var course = await _manageApi.GetCourse(instCode, courseCode);
+            var course = await _manageApi.GetCourse(providerCode, courseCode);
             var isSalary = course.ProgramType.Equals("SS", StringComparison.InvariantCultureIgnoreCase)
                         || course.ProgramType.Equals("TA", StringComparison.InvariantCultureIgnoreCase);
-            var enrichment = await _manageApi.GetCourseEnrichment(instCode, courseCode);
+            var enrichment = await _manageApi.GetCourseEnrichment(providerCode, courseCode);
             var enrichmentModel = GetCourseEnrichmentViewModel(enrichment, isSalary);
 
             ModelState.Clear();
@@ -69,10 +69,10 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
 
             if (!ModelState.IsValid)
             {
-                return await Show(instCode, accreditingInstCode, courseCode);
+                return await Show(providerCode, accreditingProviderCode, courseCode);
             }
 
-            var result = await _manageApi.PublishCourseToSearchAndCompare(instCode, courseCode);
+            var result = await _manageApi.PublishCourseToSearchAndCompare(providerCode, courseCode);
 
             if (result)
             {
@@ -87,13 +87,13 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
                     </p>";
             }
 
-            return RedirectToAction("Show", new { instCode, accreditingInstCode, courseCode });
+            return RedirectToAction("Show", new { providerCode = providerCode, accreditingProviderCode = accreditingProviderCode, courseCode });
         }
 
-        [Route("{instCode}/course/{accreditingInstCode=self}/{courseCode}/preview")]
-        public IActionResult Preview(string instCode, string accreditingInstCode, string courseCode)
+        [Route("{providerCode}/course/{accreditingProviderCode=self}/{courseCode}/preview")]
+        public IActionResult Preview(string providerCode, string accreditingProviderCode, string courseCode)
         {
-            var course = _manageApi.GetSearchAndCompareCourse(instCode, courseCode).Result;
+            var course = _manageApi.GetSearchAndCompareCourse(providerCode, courseCode).Result;
             if (course == null)
             {
                 return NotFound();
@@ -101,7 +101,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
 
             return View(new SearchAndCompare.UI.Shared.ViewModels.CourseDetailsViewModel
             {
-                AboutYourOrgLink = Url.Action("About", "Organisation", new { instCode = instCode }),
+                AboutYourOrgLink = Url.Action("About", "Organisation", new { providerCode = providerCode }),
                 PreviewMode = true,
                 Course = course,
                 Finance = new FinanceViewModel(course, new FeeCaps())
@@ -109,13 +109,13 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
         }
 
         [HttpGet]
-        [Route("{instCode}/course/{accreditingInstCode=self}/{courseCode}/about")]
-        public async Task<IActionResult> About(string instCode, string accreditingInstCode, string courseCode, string copyFrom = null)
+        [Route("{providerCode}/course/{accreditingProviderCode=self}/{courseCode}/about")]
+        public async Task<IActionResult> About(string providerCode, string accreditingProviderCode, string courseCode, string copyFrom = null)
         {
-            var courseDetails = await _manageApi.GetCourse(instCode, courseCode);
-            var ucasCourseEnrichmentGetModel = await _manageApi.GetCourseEnrichment(instCode, courseCode);
+            var courseDetails = await _manageApi.GetCourse(providerCode, courseCode);
+            var ucasCourseEnrichmentGetModel = await _manageApi.GetCourseEnrichment(providerCode, courseCode);
 
-            var routeData = GetCourseRouteDataViewModel(instCode, courseCode);
+            var routeData = GetCourseRouteDataViewModel(providerCode, courseCode);
             var courseInfo = new CourseInfoViewModel { ProgrammeCode = courseDetails.CourseCode, Name = courseDetails.Name };
 
             var enrichmentModel = ucasCourseEnrichmentGetModel?.EnrichmentModel ?? new CourseEnrichmentModel();
@@ -129,12 +129,12 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
                 CourseInfo = courseInfo
             };
 
-            await LoadCopyableCoursesIntoViewBag(instCode, courseCode);
+            await LoadCopyableCoursesIntoViewBag(providerCode, courseCode);
 
             if (!string.IsNullOrEmpty(copyFrom))
             {
                 copyFrom = copyFrom.ToUpper();
-                var copiedEnrichment = await _manageApi.GetCourseEnrichment(instCode, copyFrom);
+                var copiedEnrichment = await _manageApi.GetCourseEnrichment(providerCode, copyFrom);
                 ViewBag.CopiedFrom = new CourseInfoViewModel
                 {
                     ProgrammeCode = copyFrom,
@@ -148,45 +148,45 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             return View(model);
         }
 
-        private async Task LoadCopyableCoursesIntoViewBag(string instCode, string courseCode)
+        private async Task LoadCopyableCoursesIntoViewBag(string providerCode, string courseCode)
         {
-            instCode = instCode.ToUpper();
+            providerCode = providerCode.ToUpper();
             courseCode = courseCode.ToUpper();
 
-            var copyable = await _manageApi.GetCoursesOfProvider(instCode);
+            var copyable = await _manageApi.GetCoursesOfProvider(providerCode);
             ViewBag.CopyableCourses = copyable != null ? copyable.Where(x => x.EnrichmentWorkflowStatus != null && x.CourseCode != courseCode) : new List<Domain.Models.Course>();
         }
 
         [HttpPost]
-        [Route("{instCode}/course/{accreditingInstCode=self}/{courseCode}/about")]
-        public async Task<IActionResult> AboutPost(string instCode, string accreditingInstCode, string courseCode, AboutCourseEnrichmentViewModel viewModel)
+        [Route("{providerCode}/course/{accreditingProviderCode=self}/{courseCode}/about")]
+        public async Task<IActionResult> AboutPost(string providerCode, string accreditingProviderCode, string courseCode, AboutCourseEnrichmentViewModel viewModel)
         {
             if (!ModelState.IsValid)
             {
-                var courseDetails = await _manageApi.GetCourse(instCode, courseCode);
+                var courseDetails = await _manageApi.GetCourse(providerCode, courseCode);
                 var courseInfo = new CourseInfoViewModel { ProgrammeCode = courseDetails.CourseCode, Name = courseDetails.Name };
-                var routeData = GetCourseRouteDataViewModel(instCode, courseCode);
+                var routeData = GetCourseRouteDataViewModel(providerCode, courseCode);
                 viewModel.RouteData = routeData;
                 viewModel.CourseInfo = courseInfo;
-                await LoadCopyableCoursesIntoViewBag(instCode, courseCode);
+                await LoadCopyableCoursesIntoViewBag(providerCode, courseCode);
                 return View("About", viewModel);
             }
 
-            if (await SaveEnrichment(instCode, courseCode, viewModel))
+            if (await SaveEnrichment(providerCode, courseCode, viewModel))
             {
                 CourseSavedMessage();
             }
 
-            return RedirectToAction("Show", new { instCode, accreditingInstCode, courseCode });
+            return RedirectToAction("Show", new { providerCode = providerCode, accreditingProviderCode = accreditingProviderCode, courseCode });
         }
 
         [HttpGet]
-        [Route("{instCode}/course/{accreditingInstCode=self}/{courseCode}/requirements")]
-        public async Task<IActionResult> Requirements(string instCode, string accreditingInstCode, string courseCode, string copyFrom = null)
+        [Route("{providerCode}/course/{accreditingProviderCode=self}/{courseCode}/requirements")]
+        public async Task<IActionResult> Requirements(string providerCode, string accreditingProviderCode, string courseCode, string copyFrom = null)
         {
-            var courseDetails = await _manageApi.GetCourse(instCode, courseCode);
-            var ucasCourseEnrichmentGetModel = await _manageApi.GetCourseEnrichment(instCode, courseCode);
-            var routeData = GetCourseRouteDataViewModel(instCode, courseCode);
+            var courseDetails = await _manageApi.GetCourse(providerCode, courseCode);
+            var ucasCourseEnrichmentGetModel = await _manageApi.GetCourseEnrichment(providerCode, courseCode);
+            var routeData = GetCourseRouteDataViewModel(providerCode, courseCode);
             var courseInfo = new CourseInfoViewModel { ProgrammeCode = courseDetails.CourseCode, Name = courseDetails.Name };
 
             var enrichmentModel = ucasCourseEnrichmentGetModel?.EnrichmentModel ?? new CourseEnrichmentModel();
@@ -200,12 +200,12 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
                 CourseInfo = courseInfo
             };
 
-            await LoadCopyableCoursesIntoViewBag(instCode, courseCode);
+            await LoadCopyableCoursesIntoViewBag(providerCode, courseCode);
 
             if (!string.IsNullOrEmpty(copyFrom))
             {
                 copyFrom = copyFrom.ToUpper();
-                var copiedEnrichment = await _manageApi.GetCourseEnrichment(instCode, copyFrom);
+                var copiedEnrichment = await _manageApi.GetCourseEnrichment(providerCode, copyFrom);
                 ViewBag.CopiedFrom = new CourseInfoViewModel
                 {
                     ProgrammeCode = copyFrom,
@@ -219,35 +219,35 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
         }
 
         [HttpPost]
-        [Route("{instCode}/course/{accreditingInstCode=self}/{courseCode}/requirements")]
-        public async Task<IActionResult> RequirementsPost(string instCode, string accreditingInstCode, string courseCode, CourseRequirementsEnrichmentViewModel viewModel)
+        [Route("{providerCode}/course/{accreditingProviderCode=self}/{courseCode}/requirements")]
+        public async Task<IActionResult> RequirementsPost(string providerCode, string accreditingProviderCode, string courseCode, CourseRequirementsEnrichmentViewModel viewModel)
         {
             if (!ModelState.IsValid)
             {
-                var courseDetails = await _manageApi.GetCourse(instCode, courseCode);
+                var courseDetails = await _manageApi.GetCourse(providerCode, courseCode);
                 var courseInfo = new CourseInfoViewModel { ProgrammeCode = courseDetails.CourseCode, Name = courseDetails.Name };
-                var routeData = GetCourseRouteDataViewModel(instCode, courseCode);
+                var routeData = GetCourseRouteDataViewModel(providerCode, courseCode);
                 viewModel.RouteData = routeData;
                 viewModel.CourseInfo = courseInfo;
-                await LoadCopyableCoursesIntoViewBag(instCode, courseCode);
+                await LoadCopyableCoursesIntoViewBag(providerCode, courseCode);
                 return View("Requirements", viewModel);
             }
 
-            if (await SaveEnrichment(instCode, courseCode, viewModel))
+            if (await SaveEnrichment(providerCode, courseCode, viewModel))
             {
                 CourseSavedMessage();
             }
 
-            return RedirectToAction("Show", new { instCode, accreditingInstCode, courseCode });
+            return RedirectToAction("Show", new { providerCode = providerCode, accreditingProviderCode = accreditingProviderCode, courseCode });
         }
 
         [HttpGet]
-        [Route("{instCode}/course/{accreditingInstCode=self}/{courseCode}/salary")]
-        public async Task<IActionResult> Salary(string instCode, string accreditingInstCode, string courseCode, string copyFrom = null)
+        [Route("{providerCode}/course/{accreditingProviderCode=self}/{courseCode}/salary")]
+        public async Task<IActionResult> Salary(string providerCode, string accreditingProviderCode, string courseCode, string copyFrom = null)
         {
-            var courseDetails = await _manageApi.GetCourse(instCode, courseCode);
-            var ucasCourseEnrichmentGetModel = await _manageApi.GetCourseEnrichment(instCode, courseCode);
-            var routeData = GetCourseRouteDataViewModel(instCode, courseCode);
+            var courseDetails = await _manageApi.GetCourse(providerCode, courseCode);
+            var ucasCourseEnrichmentGetModel = await _manageApi.GetCourseEnrichment(providerCode, courseCode);
+            var routeData = GetCourseRouteDataViewModel(providerCode, courseCode);
             var courseInfo = new CourseInfoViewModel { ProgrammeCode = courseDetails.CourseCode, Name = courseDetails.Name };
 
             var enrichmentModel = ucasCourseEnrichmentGetModel?.EnrichmentModel ?? new CourseEnrichmentModel();
@@ -261,12 +261,12 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
                 CourseInfo = courseInfo
             };
 
-            await LoadCopyableCoursesIntoViewBag(instCode, courseCode);
+            await LoadCopyableCoursesIntoViewBag(providerCode, courseCode);
 
             if (!string.IsNullOrEmpty(copyFrom))
             {
                 copyFrom = copyFrom.ToUpper();
-                var copiedEnrichment = await _manageApi.GetCourseEnrichment(instCode, copyFrom);
+                var copiedEnrichment = await _manageApi.GetCourseEnrichment(providerCode, copyFrom);
                 ViewBag.CopiedFrom = new CourseInfoViewModel
                 {
                     ProgrammeCode = copyFrom,
@@ -280,33 +280,33 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
         }
 
         [HttpPost]
-        [Route("{instCode}/course/{accreditingInstCode=self}/{courseCode}/salary")]
-        public async Task<IActionResult> SalaryPost(string instCode, string accreditingInstCode, string courseCode, CourseSalaryEnrichmentViewModel viewModel)
+        [Route("{providerCode}/course/{accreditingProviderCode=self}/{courseCode}/salary")]
+        public async Task<IActionResult> SalaryPost(string providerCode, string accreditingProviderCode, string courseCode, CourseSalaryEnrichmentViewModel viewModel)
         {
             if (!ModelState.IsValid)
             {
-                var routeData = GetCourseRouteDataViewModel(instCode, courseCode);
-                var courseDetails = await _manageApi.GetCourse(instCode, courseCode);
+                var routeData = GetCourseRouteDataViewModel(providerCode, courseCode);
+                var courseDetails = await _manageApi.GetCourse(providerCode, courseCode);
                 var courseInfo = new CourseInfoViewModel { ProgrammeCode = courseDetails.CourseCode, Name = courseDetails.Name };
                 viewModel.RouteData = routeData;
                 viewModel.CourseInfo = courseInfo;
-                await LoadCopyableCoursesIntoViewBag(instCode, courseCode);
+                await LoadCopyableCoursesIntoViewBag(providerCode, courseCode);
                 return View("Salary", viewModel);
             }
-            if (await SaveEnrichment(instCode, courseCode, viewModel))
+            if (await SaveEnrichment(providerCode, courseCode, viewModel))
             {
                 CourseSavedMessage();
             }
-            return RedirectToAction("Show", new { instCode, accreditingInstCode, courseCode });
+            return RedirectToAction("Show", new { providerCode = providerCode, accreditingProviderCode = accreditingProviderCode, courseCode });
         }
 
         [HttpGet]
-        [Route("{instCode}/course/{accreditingInstCode=self}/{courseCode}/fees-and-length")]
-        public async Task<IActionResult> Fees(string instCode, string accreditingInstCode, string courseCode, string copyFrom = null)
+        [Route("{providerCode}/course/{accreditingProviderCode=self}/{courseCode}/fees-and-length")]
+        public async Task<IActionResult> Fees(string providerCode, string accreditingProviderCode, string courseCode, string copyFrom = null)
         {
-            var courseDetails = await _manageApi.GetCourse(instCode, courseCode);
-            var ucasCourseEnrichmentGetModel = await _manageApi.GetCourseEnrichment(instCode, courseCode);
-            var routeData = GetCourseRouteDataViewModel(instCode, courseCode);
+            var courseDetails = await _manageApi.GetCourse(providerCode, courseCode);
+            var ucasCourseEnrichmentGetModel = await _manageApi.GetCourseEnrichment(providerCode, courseCode);
+            var routeData = GetCourseRouteDataViewModel(providerCode, courseCode);
             var courseInfo = new CourseInfoViewModel { ProgrammeCode = courseDetails.CourseCode, Name = courseDetails.Name };
 
             var enrichmentModel = ucasCourseEnrichmentGetModel?.EnrichmentModel ?? new CourseEnrichmentModel();
@@ -323,12 +323,12 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
                 CourseInfo = courseInfo
             };
 
-            await LoadCopyableCoursesIntoViewBag(instCode, courseCode);
+            await LoadCopyableCoursesIntoViewBag(providerCode, courseCode);
 
             if (!string.IsNullOrEmpty(copyFrom))
             {
                 copyFrom = copyFrom.ToUpper();
-                var copiedEnrichment = await _manageApi.GetCourseEnrichment(instCode, copyFrom);
+                var copiedEnrichment = await _manageApi.GetCourseEnrichment(providerCode, copyFrom);
                 ViewBag.CopiedFrom = new CourseInfoViewModel
                 {
                     ProgrammeCode = copyFrom,
@@ -342,29 +342,29 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
         }
 
         [HttpPost]
-        [Route("{instCode}/course/{accreditingInstCode=self}/{courseCode}/fees-and-length")]
-        public async Task<IActionResult> FeesPost(string instCode, string accreditingInstCode, string courseCode, CourseFeesEnrichmentViewModel viewModel)
+        [Route("{providerCode}/course/{accreditingProviderCode=self}/{courseCode}/fees-and-length")]
+        public async Task<IActionResult> FeesPost(string providerCode, string accreditingProviderCode, string courseCode, CourseFeesEnrichmentViewModel viewModel)
         {
             if (!ModelState.IsValid)
             {
-                var routeData = GetCourseRouteDataViewModel(instCode, courseCode);
-                var courseDetails = await _manageApi.GetCourse(instCode, courseCode);
+                var routeData = GetCourseRouteDataViewModel(providerCode, courseCode);
+                var courseDetails = await _manageApi.GetCourse(providerCode, courseCode);
                 var courseInfo = new CourseInfoViewModel { ProgrammeCode = courseDetails.CourseCode, Name = courseDetails.Name };
                 viewModel.RouteData = routeData;
                 viewModel.CourseInfo = courseInfo;
-                await LoadCopyableCoursesIntoViewBag(instCode, courseCode);
+                await LoadCopyableCoursesIntoViewBag(providerCode, courseCode);
                 return View("Fees", viewModel);
             }
-            if (await SaveEnrichment(instCode, courseCode, viewModel))
+            if (await SaveEnrichment(providerCode, courseCode, viewModel))
             {
                 CourseSavedMessage();
             }
-            return RedirectToAction("Show", new { instCode, accreditingInstCode, courseCode });
+            return RedirectToAction("Show", new { providerCode = providerCode, accreditingProviderCode = accreditingProviderCode, courseCode });
         }
 
-        private async Task<bool> SaveEnrichment(string instCode, string courseCode, ICourseEnrichmentViewModel viewModel)
+        private async Task<bool> SaveEnrichment(string providerCode, string courseCode, ICourseEnrichmentViewModel viewModel)
         {
-            var course = await _manageApi.GetCourseEnrichment(instCode, courseCode);
+            var course = await _manageApi.GetCourseEnrichment(providerCode, courseCode);
 
             if (course == null && viewModel.IsEmpty())
             {
@@ -375,14 +375,14 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             var enrichmentModel = course?.EnrichmentModel ?? new CourseEnrichmentModel();
             viewModel.MapInto(ref enrichmentModel);
 
-            await _manageApi.SaveCourseEnrichment(instCode, courseCode, enrichmentModel);
+            await _manageApi.SaveCourseEnrichment(providerCode, courseCode, enrichmentModel);
             return true;
         }
 
-        private void Validate(string instCode, string accreditingInstCode, string courseCode)
+        private void Validate(string providerCode, string accreditingProviderCode, string courseCode)
         {
-            if (string.IsNullOrEmpty(instCode)) { throw new ArgumentNullException(instCode, "instCode cannot be null or empty"); }
-            if (string.IsNullOrEmpty(accreditingInstCode)) { throw new ArgumentNullException(accreditingInstCode, "accreditingInstCode cannot be null or empty"); }
+            if (string.IsNullOrEmpty(providerCode)) { throw new ArgumentNullException(providerCode, "providerCode cannot be null or empty"); }
+            if (string.IsNullOrEmpty(accreditingProviderCode)) { throw new ArgumentNullException(accreditingProviderCode, "accreditingProviderCode cannot be null or empty"); }
             if (string.IsNullOrEmpty(courseCode)) { throw new ArgumentNullException(courseCode, "courseCode cannot be null or empty"); }
         }
 
@@ -406,10 +406,10 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
                 {
                     CourseTitle = course.Name,
                     Type = course.TypeDescription,
-                    AccreditingInstName = course.AccreditingProvider?.ProviderName,
-                    AccreditingInstCode = course.AccreditingProvider?.ProviderCode,
+                    AccreditingProviderName = course.AccreditingProvider?.ProviderName,
+                    AccreditingProviderCode = course.AccreditingProvider?.ProviderCode,
                     CourseCode = course.CourseCode,
-                    InstCode = course.Provider.ProviderCode,
+                    ProviderCode = course.Provider.ProviderCode,
                     AgeRange = course.AgeRange,
                     Route = course.ProgramType,
                     Qualifications = course.ProfpostFlag,
@@ -448,10 +448,10 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             var courseEnrichmentViewModel = GetCourseEnrichmentViewModel(ucasCourseEnrichmentGetModel, isSalary, routeData);
             var viewModel = new CourseViewModel
             {
-                InstName = org.ProviderName,
-                InstCode = org.ProviderCode,
+                ProviderName = org.ProviderName,
+                ProviderCode = org.ProviderCode,
                 CourseTitle = course.Name,
-                AccreditingInstCode = course.AccreditingProvider?.ProviderCode,
+                AccreditingProviderCode = course.AccreditingProvider?.ProviderCode,
                 MultipleOrganisations = multipleOrganisations,
                 Course = courseVariant,
                 CourseEnrichment = courseEnrichmentViewModel,
@@ -514,11 +514,11 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
 
         }
 
-        private CourseRouteDataViewModel GetCourseRouteDataViewModel(string instCode, string courseCode)
+        private CourseRouteDataViewModel GetCourseRouteDataViewModel(string providerCode, string courseCode)
         {
             return new CourseRouteDataViewModel
             {
-                InstCode = instCode,
+                ProviderCode = providerCode,
                 CourseCode = courseCode
             };
         }

@@ -8,9 +8,9 @@ namespace GovUk.Education.ManageCourses.Ui.ViewModels
         public string CourseTitle { get; set; }
         public string CourseCode { get; set; }
         public string Type { get; set; }
-        public string InstCode { get; set; }
-        public string AccreditingInstCode { get; set; }
-        public string AccreditingInstName { get; set; }
+        public string ProviderCode { get; set; }
+        public string AccreditingProviderCode { get; set; }
+        public string AccreditingProviderName { get; set; }
         public string Route { get; set; }
         public string Subjects { get; set; }
         public string AgeRange { get; set; }

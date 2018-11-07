@@ -66,11 +66,11 @@ namespace ManageCoursesUi.Tests
             var routeData = model.CourseEnrichment.RouteData;
             Assert.IsNotNull(model);
             Assert.AreEqual(TestHelper.TargetedCourseTitle, model.CourseTitle);
-            Assert.AreEqual(TestHelper.InstCode, model.InstCode);
+            Assert.AreEqual(TestHelper.InstCode, model.ProviderCode);
 
-            Assert.AreEqual(TestHelper.InstName, model.InstName);
+            Assert.AreEqual(TestHelper.InstName, model.ProviderName);
 
-            Assert.AreEqual(TestHelper.InstCode, routeData.InstCode);
+            Assert.AreEqual(TestHelper.InstCode, routeData.ProviderCode);
             Assert.AreEqual(TestHelper.TargetedInstCode, routeData.CourseCode);
 
             Assert.AreEqual(enrichmentModel.AboutCourse, model.CourseEnrichment.AboutCourse);
@@ -273,7 +273,7 @@ namespace ManageCoursesUi.Tests
 
             Assert.IsNotNull(model);
 
-            Assert.AreEqual(TestHelper.InstCode, model.RouteData.InstCode);
+            Assert.AreEqual(TestHelper.InstCode, model.RouteData.ProviderCode);
             Assert.AreEqual(TestHelper.TargetedInstCode, model.RouteData.CourseCode);
 
             Assert.AreEqual(enrichmentModel.AboutCourse, model.AboutCourse);
@@ -305,7 +305,7 @@ namespace ManageCoursesUi.Tests
 
             Assert.IsNotNull(model);
 
-            Assert.AreEqual(TestHelper.InstCode, model.RouteData.InstCode);
+            Assert.AreEqual(TestHelper.InstCode, model.RouteData.ProviderCode);
             Assert.AreEqual(TestHelper.TargetedInstCode, model.RouteData.CourseCode);
 
             Assert.AreEqual(viewModel.AboutCourse, model.AboutCourse);
@@ -379,7 +379,7 @@ namespace ManageCoursesUi.Tests
 
             Assert.IsNotNull(model);
 
-            Assert.AreEqual(TestHelper.InstCode, model.RouteData.InstCode);
+            Assert.AreEqual(TestHelper.InstCode, model.RouteData.ProviderCode);
             Assert.AreEqual(TestHelper.TargetedInstCode, model.RouteData.CourseCode);
 
             Assert.AreEqual(enrichmentModel.Qualifications, model.Qualifications);
@@ -412,7 +412,7 @@ namespace ManageCoursesUi.Tests
 
             Assert.IsNotNull(model);
 
-            Assert.AreEqual(TestHelper.InstCode, model.RouteData.InstCode);
+            Assert.AreEqual(TestHelper.InstCode, model.RouteData.ProviderCode);
             Assert.AreEqual(TestHelper.TargetedInstCode, model.RouteData.CourseCode);
 
             Assert.AreEqual(viewModel.Qualifications, model.Qualifications);
@@ -491,7 +491,7 @@ namespace ManageCoursesUi.Tests
 
             Assert.IsNotNull(model);
 
-            Assert.AreEqual(TestHelper.InstCode, model.RouteData.InstCode);
+            Assert.AreEqual(TestHelper.InstCode, model.RouteData.ProviderCode);
             Assert.AreEqual(TestHelper.TargetedInstCode, model.RouteData.CourseCode);
 
             Assert.AreEqual(enrichmentModel.CourseLength, model.CourseLength);
@@ -523,7 +523,7 @@ namespace ManageCoursesUi.Tests
 
             Assert.IsNotNull(model);
 
-            Assert.AreEqual(TestHelper.InstCode, model.RouteData.InstCode);
+            Assert.AreEqual(TestHelper.InstCode, model.RouteData.ProviderCode);
             Assert.AreEqual(TestHelper.TargetedInstCode, model.RouteData.CourseCode);
 
             Assert.AreEqual(viewModel.CourseLength, model.CourseLength);
@@ -602,7 +602,7 @@ namespace ManageCoursesUi.Tests
 
             Assert.IsNotNull(model);
 
-            Assert.AreEqual(TestHelper.InstCode, model.RouteData.InstCode);
+            Assert.AreEqual(TestHelper.InstCode, model.RouteData.ProviderCode);
             Assert.AreEqual(TestHelper.TargetedInstCode, model.RouteData.CourseCode);
 
             Assert.AreEqual(enrichmentModel.CourseLength, model.CourseLength);
@@ -637,7 +637,7 @@ namespace ManageCoursesUi.Tests
 
             Assert.IsNotNull(model);
 
-            Assert.AreEqual(TestHelper.InstCode, model.RouteData.InstCode);
+            Assert.AreEqual(TestHelper.InstCode, model.RouteData.ProviderCode);
             Assert.AreEqual(TestHelper.TargetedInstCode, model.RouteData.CourseCode);
 
             Assert.AreEqual(viewModel.CourseLength, model.CourseLength);
