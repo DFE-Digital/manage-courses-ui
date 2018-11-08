@@ -111,16 +111,16 @@ namespace ManageCoursesUi.Tests
         public async Task TestController_should_return_not_found_status()
         {
             var manageApi = new Mock<IManageApi>();
-            const string instCode = "123";
-            const string instName = "provider Name";
+            const string providerCode = "123";
+            const string providerName = "provider Name";
             var testData = TestHelper.GetTestData(EnumDataType.SingleVariantOneMatch);
 
             var testOrgs = new List<ProviderSummary>
             {
                 new ProviderSummary
                 {
-                    ProviderName = instName,
-                    ProviderCode = instCode,
+                    ProviderName = providerName,
+                    ProviderCode = providerCode,
                     TotalCourses = testData.Count
                 }
             };
@@ -143,7 +143,7 @@ namespace ManageCoursesUi.Tests
         [TestCase("2AT", null, "35L6")]
         [TestCase("2AT", "self", "")]
         [TestCase("2AT", "self", null)]
-        public void TestController_Show_with_null_or_empty_parameters_should_return_exception(string instCode, string accreditingInstCode, string courseCode)
+        public void TestController_Show_with_null_or_empty_parameters_should_return_exception(string providerCode, string accreditingProviderCode, string courseCode)
         {
             var manageApi = new Mock<IManageApi>();
             var testData = TestHelper.GetTestData(EnumDataType.SingleVariantOneMatch);
@@ -161,7 +161,7 @@ namespace ManageCoursesUi.Tests
             manageApi.Setup(x => x.GetCourse(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(testCourse);
 
             var controller = new CourseController(manageApi.Object, new SearchAndCompareUrlService("http://www.example.com"));
-            Assert.ThrowsAsync<ArgumentNullException>(async() => await controller.Show(instCode, accreditingInstCode, courseCode));
+            Assert.ThrowsAsync<ArgumentNullException>(async() => await controller.Show(providerCode, accreditingProviderCode, courseCode));
         }
 
         [Test]

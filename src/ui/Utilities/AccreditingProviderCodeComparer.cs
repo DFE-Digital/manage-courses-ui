@@ -8,7 +8,7 @@ namespace GovUk.Education.ManageCourses.Ui.Utilities
     ///<summary>
     ///  Considers two providers equal if the ID (AKA the UCAS Code) are equivalent.
     ///</summary>
-    public class AccreditingInstCodeComparer : IEqualityComparer<Course>
+    public class AccreditingProviderCodeComparer : IEqualityComparer<Course>
     {
         public bool Equals(Course x, Course y)
         {

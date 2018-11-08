@@ -21,9 +21,9 @@ namespace GovUk.Education.ManageCourses.Ui.ViewModels
             AboutTrainingProviders = new List<TrainingProviderViewModel>();
         }
 
-        public string InstCode { get; set; }
+        public string ProviderCode { get; set; }
 
-        public string InstName { get; set; }
+        public string ProviderName { get; set; }
 
         [RegularExpression(@"^\s*(\S+\s+|\S+$){0,250}$", ErrorMessage = "Reduce the word count in training with you")]
         [Required(ErrorMessage = "Enter details about training with you")]
@@ -73,8 +73,8 @@ namespace GovUk.Education.ManageCourses.Ui.ViewModels
 
             var result = new OrganisationViewModel
             {
-                InstCode = providerSummary.ProviderCode,
-                InstName = providerSummary.ProviderName,
+                ProviderCode = providerSummary.ProviderCode,
+                ProviderName = providerSummary.ProviderName,
                 TrainWithUs = enrichmentModel.TrainWithUs,
                 TrainWithDisability = enrichmentModel.TrainWithDisability,
                 LastPublishedTimestampUtc = ucasProviderEnrichmentGetModel.LastPublishedTimestampUtc,

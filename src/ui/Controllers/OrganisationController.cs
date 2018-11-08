@@ -37,12 +37,12 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             return View(model);
         }
 
-        [Route("{instCode}")]
-        public async Task<IActionResult> Show(string instCode)
+        [Route("{providerCode}")]
+        public async Task<IActionResult> Show(string providerCode)
         {
-            var ucasProviderEnrichmentGetModel = await _manageApi.GetProviderEnrichment(instCode);
-            var providerCourses = await _manageApi.GetCoursesOfProvider(instCode);
-            var summary = await _manageApi.GetProviderSummary(instCode);
+            var ucasProviderEnrichmentGetModel = await _manageApi.GetProviderEnrichment(providerCode);
+            var providerCourses = await _manageApi.GetCoursesOfProvider(providerCode);
+            var summary = await _manageApi.GetProviderSummary(providerCode);
             var multipleOrganisations = (await _manageApi.GetProviderSummaries()).Count() > 1;
             var providers = GetProviders(providerCourses);
 
@@ -50,8 +50,8 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
 
             var model = new CourseListViewModel
             {
-                InstName = summary.ProviderName,
-                InstCode = summary.ProviderCode,
+                ProviderName = summary.ProviderName,
+                ProviderCode = summary.ProviderCode,
                 Providers = providers,
                 MultipleOrganisations = multipleOrganisations,
                 Status = status
@@ -61,16 +61,16 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
         }
 
         [HttpGet]
-        [Route("{instCode}/details")]
-        public async Task<IActionResult> Details(string instCode)
+        [Route("{providerCode}/details")]
+        public async Task<IActionResult> Details(string providerCode)
         {
-            var ucasProviderEnrichmentGetModel = await _manageApi.GetProviderEnrichment(instCode);
+            var ucasProviderEnrichmentGetModel = await _manageApi.GetProviderEnrichment(providerCode);
 
             ucasProviderEnrichmentGetModel = ucasProviderEnrichmentGetModel ?? new UcasProviderEnrichmentGetModel { EnrichmentModel = new ProviderEnrichmentModel() { AccreditingProviderEnrichments = new List<AccreditingProviderEnrichment>() } };
 
             var enrichmentModel = ucasProviderEnrichmentGetModel.EnrichmentModel;
-            var aboutAccreditingTrainingProviders = await MergeTrainingProviderViewModels(instCode, enrichmentModel);
-            var providerSummary = await _manageApi.GetProviderSummary(instCode);
+            var aboutAccreditingTrainingProviders = await MergeTrainingProviderViewModels(providerCode, enrichmentModel);
+            var providerSummary = await _manageApi.GetProviderSummary(providerCode);
 
             var model = OrganisationViewModel.FromEnrichmentModel(
                 ucasProviderEnrichmentGetModel, aboutAccreditingTrainingProviders, providerSummary);
@@ -79,25 +79,25 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
         }
 
         [HttpPost]
-        [Route("{instCode}/details")]
-        public async Task<ActionResult> DetailsPost(string instCode, OrganisationViewModel model)
+        [Route("{providerCode}/details")]
+        public async Task<ActionResult> DetailsPost(string providerCode, OrganisationViewModel model)
         {
-            var ucasProviderEnrichmentGetModel = await _manageApi.GetProviderEnrichment(instCode);
-            var result = await PublishOrgansation(ucasProviderEnrichmentGetModel, instCode);
+            var ucasProviderEnrichmentGetModel = await _manageApi.GetProviderEnrichment(providerCode);
+            var result = await PublishOrgansation(ucasProviderEnrichmentGetModel, providerCode);
             return result;
         }
 
         [HttpGet]
-        [Route("{instCode}/about")]
-        public async Task<IActionResult> About(string instCode)
+        [Route("{providerCode}/about")]
+        public async Task<IActionResult> About(string providerCode)
         {
-            var ucasProviderEnrichmentGetModel = await _manageApi.GetProviderEnrichment(instCode);
+            var ucasProviderEnrichmentGetModel = await _manageApi.GetProviderEnrichment(providerCode);
 
             ucasProviderEnrichmentGetModel = ucasProviderEnrichmentGetModel ?? new UcasProviderEnrichmentGetModel { EnrichmentModel = new ProviderEnrichmentModel() { AccreditingProviderEnrichments = new List<AccreditingProviderEnrichment>() } };
 
             var enrichmentModel = ucasProviderEnrichmentGetModel.EnrichmentModel;
-            var aboutAccreditingTrainingProviders = await MergeTrainingProviderViewModels(instCode, enrichmentModel);
-            var providerSummary = await _manageApi.GetProviderSummary(instCode);
+            var aboutAccreditingTrainingProviders = await MergeTrainingProviderViewModels(providerCode, enrichmentModel);
+            var providerSummary = await _manageApi.GetProviderSummary(providerCode);
 
             var model = OrganisationViewModel.FromEnrichmentModel(ucasProviderEnrichmentGetModel, aboutAccreditingTrainingProviders, providerSummary);
 
@@ -107,46 +107,46 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
         }
 
         [HttpPost]
-        [Route("{instCode}/about")]
-        public async Task<ActionResult> AboutPost(string instCode, OrganisationViewModelForAbout model)
+        [Route("{providerCode}/about")]
+        public async Task<ActionResult> AboutPost(string providerCode, OrganisationViewModelForAbout model)
         {
-            var ucasProviderEnrichmentGetModel = await _manageApi.GetProviderEnrichment(instCode);
+            var ucasProviderEnrichmentGetModel = await _manageApi.GetProviderEnrichment(providerCode);
             var enrichmentModel = ucasProviderEnrichmentGetModel?.EnrichmentModel;
 
-            var aboutAccreditingTrainingProviders = await MergeTrainingProviderViewModels(instCode, enrichmentModel, model?.AboutTrainingProviders);
+            var aboutAccreditingTrainingProviders = await MergeTrainingProviderViewModels(providerCode, enrichmentModel, model?.AboutTrainingProviders);
             model.AboutTrainingProviders = aboutAccreditingTrainingProviders;
 
             ValidateAboutModel(model);
 
             if (!ModelState.IsValid)
             {
-                model.InstName = (await _manageApi.GetProviderSummaries()).FirstOrDefault(x => x.ProviderCode == instCode.ToUpperInvariant())?.ProviderName;
+                model.ProviderName = (await _manageApi.GetProviderSummaries()).FirstOrDefault(x => x.ProviderCode == providerCode.ToUpperInvariant())?.ProviderName;
                 return View("About", model);
             }
 
             if (enrichmentModel == null && model.IsEmpty())
             {
                 // Draft state is "New" and no changes have been made - don't insert a draft
-                return RedirectToAction("Details", "Organisation", new { instCode });
+                return RedirectToAction("Details", "Organisation", new { providerCode = providerCode });
             }
 
             model.MergeIntoEnrichmentModel(ref enrichmentModel);
 
-            var result = await SaveValidatedOrgansation(enrichmentModel, instCode);
+            var result = await SaveValidatedOrgansation(enrichmentModel, providerCode);
             return result;
         }
 
         // TODO: Not currently visible to the public, add edit link on details view
         [HttpGet]
-        [Route("{instCode}/contact")]
-        public async Task<IActionResult> Contact(string instCode)
+        [Route("{providerCode}/contact")]
+        public async Task<IActionResult> Contact(string providerCode)
         {
-            var ucasProviderEnrichmentGetModel = await _manageApi.GetProviderEnrichment(instCode);
+            var ucasProviderEnrichmentGetModel = await _manageApi.GetProviderEnrichment(providerCode);
 
             ucasProviderEnrichmentGetModel = ucasProviderEnrichmentGetModel ?? new UcasProviderEnrichmentGetModel { EnrichmentModel = new ProviderEnrichmentModel() { AccreditingProviderEnrichments = new List<AccreditingProviderEnrichment>() } };
 
             var enrichmentModel = ucasProviderEnrichmentGetModel.EnrichmentModel;
-            var providerSummary = await _manageApi.GetProviderSummary(instCode);
+            var providerSummary = await _manageApi.GetProviderSummary(providerCode);
 
             var model = OrganisationViewModel.FromEnrichmentModel(ucasProviderEnrichmentGetModel, null, providerSummary);
 
@@ -157,10 +157,10 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
 
         // TODO: Ensure this actually persists the contact data correctly
         [HttpPost]
-        [Route("{instCode}/contact")]
-        public async Task<ActionResult> ContactPost(string instCode, OrganisationViewModelForContact model)
+        [Route("{providerCode}/contact")]
+        public async Task<ActionResult> ContactPost(string providerCode, OrganisationViewModelForContact model)
         {
-            var providerEnrichmentGetModel = await _manageApi.GetProviderEnrichment(instCode);
+            var providerEnrichmentGetModel = await _manageApi.GetProviderEnrichment(providerCode);
             var enrichmentModel = providerEnrichmentGetModel?.EnrichmentModel;
 
             ValidateContactModel(model);
@@ -173,30 +173,30 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             if (enrichmentModel == null && model.IsEmpty())
             {
                 // Draft state is "New" and no changes have been made - don't insert a draft
-                return RedirectToAction("Details", "Organisation", new { instCode });
+                return RedirectToAction("Details", "Organisation", new { providerCode = providerCode });
             }
 
             model.MergeIntoEnrichmentModel(ref enrichmentModel);
 
-            var result = await SaveValidatedOrgansation(enrichmentModel, instCode);
+            var result = await SaveValidatedOrgansation(enrichmentModel, providerCode);
             return result;
         }
 
         [HttpGet]
-        [Route("{instCode}/request-access")]
-        public ViewResult RequestAccess(string instCode)
+        [Route("{providerCode}/request-access")]
+        public ViewResult RequestAccess(string providerCode)
         {
-            ViewBag.InstCode = instCode;
+            ViewBag.ProviderCode = providerCode;
             return View(new RequestAccessViewModel() );
         }
 
         [HttpPost]
-        [Route("{instCode}/request-access")]
-        public async Task<ActionResult> RequestAccessPost(string instCode, RequestAccessViewModel model)
+        [Route("{providerCode}/request-access")]
+        public async Task<ActionResult> RequestAccessPost(string providerCode, RequestAccessViewModel model)
         {
             if (!ModelState.IsValid)
             {
-                ViewBag.InstCode = instCode;
+                ViewBag.ProviderCode = providerCode;
                 return View("RequestAccess", model);
             }
 
@@ -211,18 +211,18 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
 
             this.TempData.Add("RequestAccess_To_Name", $"{model.FirstName} {model.LastName}");
 
-            return new RedirectToActionResult("Show", "Organisation", new { instCode });
+            return new RedirectToActionResult("Show", "Organisation", new { providerCode = providerCode });
         }
 
-        private async Task<List<TrainingProviderViewModel>> MergeTrainingProviderViewModels(string instCode, ProviderEnrichmentModel enrichmentModel, IEnumerable<TrainingProviderViewModel> fromModel = null)
+        private async Task<List<TrainingProviderViewModel>> MergeTrainingProviderViewModels(string providerCode, ProviderEnrichmentModel enrichmentModel, IEnumerable<TrainingProviderViewModel> fromModel = null)
         {
-            var ucasData = await _manageApi.GetCoursesOfProvider(instCode);
+            var ucasData = await _manageApi.GetCoursesOfProvider(providerCode);
 
             var accreditingProviders = ucasData
                 .Where(x =>
-                    false == string.Equals(x.AccreditingProvider?.ProviderCode, instCode, StringComparison.InvariantCultureIgnoreCase) &&
+                    false == string.Equals(x.AccreditingProvider?.ProviderCode, providerCode, StringComparison.InvariantCultureIgnoreCase) &&
                     false == string.IsNullOrWhiteSpace(x.AccreditingProvider?.ProviderCode))
-                .Distinct(new AccreditingInstCodeComparer()).ToList();
+                .Distinct(new AccreditingProviderCodeComparer()).ToList();
             var accreditingProviderEnrichments = enrichmentModel?.AccreditingProviderEnrichments ?? new List<AccreditingProviderEnrichment>();
 
             var result = accreditingProviders.Select(x =>
@@ -233,7 +233,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
                         var aboutTrainingProviders = (fromModel ?? new List<TrainingProviderViewModel>());
 
                         var newAccreditingProviderModel = aboutTrainingProviders.FirstOrDefault(
-                            atp => (atp.InstCode.Equals(x.AccreditingProvider?.ProviderCode, StringComparison.InvariantCultureIgnoreCase)));
+                            atp => (atp.ProviderCode.Equals(x.AccreditingProvider?.ProviderCode, StringComparison.InvariantCultureIgnoreCase)));
 
                         if (newAccreditingProviderModel != null)
                         {
@@ -243,8 +243,8 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
 
                         var tpvm = new TrainingProviderViewModel()
                         {
-                            InstName = x.AccreditingProvider?.ProviderName,
-                            InstCode = x.AccreditingProvider?.ProviderCode,
+                            ProviderName = x.AccreditingProvider?.ProviderName,
+                            ProviderCode = x.AccreditingProvider?.ProviderCode,
                             Description = description
                         };
 
@@ -256,12 +256,12 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             return result;
         }
 
-        private async Task<ActionResult> PublishOrgansation(UcasProviderEnrichmentGetModel ucasProviderEnrichmentGetModel, string instCode)
+        private async Task<ActionResult> PublishOrgansation(UcasProviderEnrichmentGetModel ucasProviderEnrichmentGetModel, string providerCode)
         {
-            var providerSummary = await _manageApi.GetProviderSummary(instCode);
+            var providerSummary = await _manageApi.GetProviderSummary(providerCode);
 
             var enrichmentModel = ucasProviderEnrichmentGetModel.EnrichmentModel;
-            var aboutAccreditingTrainingProviders = await MergeTrainingProviderViewModels(instCode, enrichmentModel);
+            var aboutAccreditingTrainingProviders = await MergeTrainingProviderViewModels(providerCode, enrichmentModel);
             var model = OrganisationViewModel.FromEnrichmentModel(ucasProviderEnrichmentGetModel, aboutAccreditingTrainingProviders, providerSummary);
 
             ValidateModelForPublication(model);
@@ -272,7 +272,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             }
             else
             {
-                var result = await _manageApi.PublishAllCoursesOfProviderToSearchAndCompare(instCode);
+                var result = await _manageApi.PublishAllCoursesOfProviderToSearchAndCompare(providerCode);
 
                 if (result)
                 {
@@ -280,25 +280,25 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
                     TempData["MessageType"] = "success";
                     TempData["MessageTitle"] = "Your changes have been published – this content will appear on all of your course pages";
 
-                    return RedirectToAction("Details", new { instCode });
+                    return RedirectToAction("Details", new { providerCode = providerCode });
                 }
                 else
                 {
                     // This is a no ops, there should not be any viable valid reason that api rejects, hence dead end.
-                    throw new InvalidOperationException("attempting to publish nonexistent organisation enrichment: " + instCode);
+                    throw new InvalidOperationException("attempting to publish nonexistent organisation enrichment: " + providerCode);
                 }
             }
         }
-        private async Task<ActionResult> SaveValidatedOrgansation(ProviderEnrichmentModel enrichmentModel, string instCode)
+        private async Task<ActionResult> SaveValidatedOrgansation(ProviderEnrichmentModel enrichmentModel, string providerCode)
         {
             var postModel = new UcasProviderEnrichmentPostModel { EnrichmentModel = enrichmentModel };
 
-            await _manageApi.SaveProviderEnrichment(instCode, postModel);
+            await _manageApi.SaveProviderEnrichment(providerCode, postModel);
 
             TempData["MessageType"] = "success";
             TempData["MessageTitle"] = "Your changes have been saved";
             TempData["MessageBodyHtml"] = "<p class=\"govuk-body\">Preview any course to see how it will look to applicants.</p>";
-            return RedirectToAction("Details", "Organisation", new { instCode });
+            return RedirectToAction("Details", "Organisation", new { providerCode = providerCode });
         }
 
         private static Func<AccreditingProviderEnrichment, bool> TrainingProviderMatchesProviderCourse(Domain.Models.Course x)
@@ -309,17 +309,17 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
 
         private List<ViewModels.Provider> GetProviders(List<Domain.Models.Course> providerCourses)
         {
-            var uniqueAccreditingInstCodes = providerCourses.Select(c => c.AccreditingProvider?.ProviderCode).Distinct();
+            var uniqueAccreditingProviderCodes = providerCourses.Select(c => c.AccreditingProvider?.ProviderCode).Distinct();
             var providers = new List<ViewModels.Provider>();
-            foreach (var uniqueAccreditingInstCode in uniqueAccreditingInstCodes)
+            foreach (var uniqueAccreditingProviderCode in uniqueAccreditingProviderCodes)
             {
-                var name = providerCourses.First(c => c.AccreditingProvider?.ProviderCode == uniqueAccreditingInstCode)
+                var name = providerCourses.First(c => c.AccreditingProvider?.ProviderCode == uniqueAccreditingProviderCode)
                     .AccreditingProvider?.ProviderName;
-                var courses = providerCourses.Where(c => c.AccreditingProvider?.ProviderCode == uniqueAccreditingInstCode).ToList();
+                var courses = providerCourses.Where(c => c.AccreditingProvider?.ProviderCode == uniqueAccreditingProviderCode).ToList();
                 providers.Add(new ViewModels.Provider
                 {
-                    InstCode = uniqueAccreditingInstCode,
-                    InstName = name,
+                    ProviderCode = uniqueAccreditingProviderCode,
+                    ProviderName = name,
                     Courses = courses,
                     TotalCount = courses.Count,
                 });

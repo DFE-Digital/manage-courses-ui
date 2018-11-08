@@ -1,7 +1,7 @@
 ﻿@model CourseListViewModel;
 
 @{
-  ViewBag.Title = Model.InstName;
+  ViewBag.Title = Model.ProviderName;
 }
 
 @if (Model.MultipleOrganisations) {
@@ -11,7 +11,7 @@
         <a href="@Url.Action("index", "Organisations")" class="govuk-breadcrumbs__link">Organisations</a>
       </li>
       <li class="govuk-breadcrumbs__list-item" aria-current="page">
-        @Model.InstName
+        @Model.ProviderName
       </li>
     </ol>
   </nav>
@@ -23,7 +23,7 @@
 
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
-      <h1 class="govuk-heading-xl">@Model.InstName</h1>
+      <h1 class="govuk-heading-xl">@Model.ProviderName</h1>
       <h2 class="govuk-heading-l">Step 1. About your organisation</h2>
       <p class="govuk-body">You need to add a description of your organisation - this is a chance to tell applicants why they should train with you. You should also say what you do for candidates with disabilities and other needs, and check your contact details to make sure they're correct.</p>
       <p class="govuk-body">Once you’ve published your organisation information, it will show on each of your course pages. You’ll have to add your course details separately in Step 2 below.</p>
@@ -50,11 +50,11 @@
 
     @foreach (var provider in Model.Providers)
     {
-      if (!string.IsNullOrWhiteSpace(provider.InstCode))
+      if (!string.IsNullOrWhiteSpace(provider.ProviderCode))
       {
         <h3 class="govuk-heading-m">
           <span class="govuk-caption-m">Accredited provider</span>
-          @provider.InstName
+          @provider.ProviderName
         </h3>
       }
 
@@ -73,7 +73,7 @@
         {
           <tr class="govuk-table__row">
             <td class="govuk-table__cell">
-              <a href="@Url.Action("show", "course", new {instCode = Model.InstCode, accreditingInstCode = course.AccreditingProvider?.ProviderCode, courseCode = course.CourseCode})" class="govuk-link">@course.Name (@course.CourseCode)</a>
+              <a href="@Url.Action("show", "course", new {providerCode = Model.ProviderCode, accreditingInstCode = course.AccreditingProvider?.ProviderCode, courseCode = course.CourseCode})" class="govuk-link">@course.Name (@course.CourseCode)</a>
             </td>
             <td class="govuk-table__cell">@course.TypeDescription</td>
             <td class="govuk-table__cell">@course.GetCourseStatus()</td>

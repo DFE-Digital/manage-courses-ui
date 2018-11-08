@@ -45,7 +45,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             var userOrganisations = orgs.ToList();
             if (userOrganisations.Count() == 1)
             {
-                return this.RedirectToAction("Show", "Organisation", new { instCode = userOrganisations[0].ProviderCode });
+                return this.RedirectToAction("Show", "Organisation", new { providerCode = userOrganisations[0].ProviderCode });
             }
 
             if (userOrganisations.Count() > 1)

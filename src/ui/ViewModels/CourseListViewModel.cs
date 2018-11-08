@@ -9,8 +9,8 @@ namespace GovUk.Education.ManageCourses.Ui.ViewModels
 {
     public class CourseListViewModel
     {
-        public string InstName { get; set; }
-        public string InstCode { get; set; }
+        public string ProviderName { get; set; }
+        public string ProviderCode { get; set; }
 
         public List<Provider> Providers { get; set; }
 

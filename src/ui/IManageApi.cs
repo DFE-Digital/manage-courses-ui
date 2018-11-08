@@ -10,18 +10,18 @@ namespace GovUk.Education.ManageCourses.Ui
 {
     public interface IManageApi
     {
-        Task<List<Domain.Models.Course>> GetCoursesOfProvider(string instCode);
-        Task<Domain.Models.Course> GetCourse(string instCode, string courseCode);
+        Task<List<Domain.Models.Course>> GetCoursesOfProvider(string providerCode);
+        Task<Domain.Models.Course> GetCourse(string providerCode, string courseCode);
         Task<IEnumerable<ProviderSummary>> GetProviderSummaries();
-        Task<ProviderSummary> GetProviderSummary(string instCode);
+        Task<ProviderSummary> GetProviderSummary(string providerCode);
         Task CreateAccessRequest(AccessRequest accessRequest);
         Task LogAcceptTerms();
-        Task SaveProviderEnrichment(string instCode, UcasProviderEnrichmentPostModel organisation);
-        Task<UcasProviderEnrichmentGetModel> GetProviderEnrichment(string instCode);
-        Task<bool> PublishAllCoursesOfProviderToSearchAndCompare(string instCode);
-        Task<UcasCourseEnrichmentGetModel> GetCourseEnrichment(string instCode, string courseCode);
-        Task SaveCourseEnrichment(string instCode, string courseCode, CourseEnrichmentModel course);
-        Task<SearchAndCompare.Domain.Models.Course> GetSearchAndCompareCourse(string instCode, string courseCode);
-        Task<bool> PublishCourseToSearchAndCompare(string instCode, string courseCode);
+        Task SaveProviderEnrichment(string providerCode, UcasProviderEnrichmentPostModel organisation);
+        Task<UcasProviderEnrichmentGetModel> GetProviderEnrichment(string providerCode);
+        Task<bool> PublishAllCoursesOfProviderToSearchAndCompare(string providerCode);
+        Task<UcasCourseEnrichmentGetModel> GetCourseEnrichment(string providerCode, string courseCode);
+        Task SaveCourseEnrichment(string providerCode, string courseCode, CourseEnrichmentModel course);
+        Task<SearchAndCompare.Domain.Models.Course> GetSearchAndCompareCourse(string providerCode, string courseCode);
+        Task<bool> PublishCourseToSearchAndCompare(string providerCode, string courseCode);
     }
 }

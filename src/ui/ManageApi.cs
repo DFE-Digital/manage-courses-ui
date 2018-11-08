@@ -25,20 +25,20 @@ namespace GovUk.Education.ManageCourses.Ui
         }
 
         // Do not handled any exception let it thro as it should be handled by McExceptionFilter or startup configuration.
-        public async Task<ProviderSummary> GetProviderSummary(string instCode)
+        public async Task<ProviderSummary> GetProviderSummary(string providerCode)
         {
-            var courses = await _apiClient.Organisations_GetAsync(instCode);
+            var courses = await _apiClient.Organisations_GetAsync(providerCode);
             return courses;
         }
 
-        public async Task<List<Domain.Models.Course>> GetCoursesOfProvider(string instCode)
+        public async Task<List<Domain.Models.Course>> GetCoursesOfProvider(string providerCode)
         {
-            var courses = await _apiClient.Courses_GetAllAsync(instCode);
+            var courses = await _apiClient.Courses_GetAllAsync(providerCode);
             return courses.ToList();
         }
-        public async Task<Domain.Models.Course> GetCourse(string instCode, string courseCode)
+        public async Task<Domain.Models.Course> GetCourse(string providerCode, string courseCode)
         {
-            var course = await _apiClient.Courses_GetAsync(instCode, courseCode);
+            var course = await _apiClient.Courses_GetAsync(providerCode, courseCode);
             return course;
         }
 
@@ -58,46 +58,46 @@ namespace GovUk.Education.ManageCourses.Ui
             await _apiClient.AcceptTerms_IndexAsync();
         }
 
-        public async Task SaveProviderEnrichment(string instCode, UcasProviderEnrichmentPostModel organisation)
+        public async Task SaveProviderEnrichment(string providerCode, UcasProviderEnrichmentPostModel organisation)
         {
-            await _apiClient.Enrichment_SaveProviderAsync(instCode, organisation);
+            await _apiClient.Enrichment_SaveProviderAsync(providerCode, organisation);
         }
 
-        public async Task<UcasProviderEnrichmentGetModel> GetProviderEnrichment(string instCode)
+        public async Task<UcasProviderEnrichmentGetModel> GetProviderEnrichment(string providerCode)
         {
-            var result = await _apiClient.Enrichment_GetProviderAsync(instCode);
+            var result = await _apiClient.Enrichment_GetProviderAsync(providerCode);
 
             return result;
         }
 
-        public async Task<bool> PublishAllCoursesOfProviderToSearchAndCompare(string instCode)
+        public async Task<bool> PublishAllCoursesOfProviderToSearchAndCompare(string providerCode)
         {
-            var result = await _apiClient.Publish_PublishCoursesToSearchAndCompareAsync(instCode);
+            var result = await _apiClient.Publish_PublishCoursesToSearchAndCompareAsync(providerCode);
 
             return result;
         }
 
-        public async Task<UcasCourseEnrichmentGetModel> GetCourseEnrichment(string instCode, string courseCode)
+        public async Task<UcasCourseEnrichmentGetModel> GetCourseEnrichment(string providerCode, string courseCode)
         {
-            var result = await _apiClient.Enrichment_GetCourseAsync(instCode, courseCode);
+            var result = await _apiClient.Enrichment_GetCourseAsync(providerCode, courseCode);
 
             return result;
         }
-        public async Task SaveCourseEnrichment(string instCode, string courseCode, CourseEnrichmentModel course)
+        public async Task SaveCourseEnrichment(string providerCode, string courseCode, CourseEnrichmentModel course)
         {
-            await _apiClient.Enrichment_SaveCourseAsync(instCode, courseCode, course);
+            await _apiClient.Enrichment_SaveCourseAsync(providerCode, courseCode, course);
         }
 
-        public async Task<SearchAndCompare.Domain.Models.Course> GetSearchAndCompareCourse(string instCode, string courseCode)
+        public async Task<SearchAndCompare.Domain.Models.Course> GetSearchAndCompareCourse(string providerCode, string courseCode)
         {
-            var result = await _apiClient.Publish_GetSearchAndCompareCourseAsync(instCode, courseCode);
+            var result = await _apiClient.Publish_GetSearchAndCompareCourseAsync(providerCode, courseCode);
             
             return result;
         }
 
-        public async Task<bool> PublishCourseToSearchAndCompare(string instCode, string courseCode)
+        public async Task<bool> PublishCourseToSearchAndCompare(string providerCode, string courseCode)
         {
-            var result = await _apiClient.Publish_PublishCourseToSearchAndCompareAsync(instCode, courseCode);
+            var result = await _apiClient.Publish_PublishCourseToSearchAndCompareAsync(providerCode, courseCode);
 
             return result;
         }
