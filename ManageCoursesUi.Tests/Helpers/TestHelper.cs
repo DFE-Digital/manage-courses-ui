@@ -13,10 +13,10 @@ namespace ManageCoursesUi.Tests.Helpers
     /// </summary>
     internal static class TestHelper
     {
-        public static string InstName { get; } = "Test Organisation";
-        public static string InstCode { get; } = "2AT";
-        public static string AccreditingInstCode { get; } = "self";
-        public static string TargetedInstCode { get; } = "35L6";
+        public static string ProviderName { get; } = "Test Organisation";
+        public static string ProviderCode { get; } = "2AT";
+        public static string AccreditingProviderCode { get; } = "self";
+        public static string TargetedProviderCode { get; } = "35L6";
         public static string TargetedCourseTitle { get; } = "Chemistry";
 
         private static string _courseTitles = "Maths,Chemistry,Biology,Music,Languages";
@@ -82,14 +82,14 @@ namespace ManageCoursesUi.Tests.Helpers
             for (var counter = 1; counter <= count; counter++)
             {
                 var targetedPosition = count > 1 ? 2 : 1;//sets the position of the targed variant. This is important as there have been errors when the targed variant is not in the first position
-                var instCode = "00";
+                var providerCode = "00";
                 if (happyPath && counter == targetedPosition)
                 {
-                    instCode = TargetedInstCode;//this code should be present for a happy path test
+                    providerCode = TargetedProviderCode;//this code should be present for a happy path test
                 }
                 else
                 {
-                    instCode += counter;
+                    providerCode += counter;
                 }
                 listToReturn.Add(
                     new Course
@@ -100,7 +100,7 @@ namespace ManageCoursesUi.Tests.Helpers
                         CourseSubjects = new List<CourseSubject>{ new CourseSubject{ Subject = new Subject {SubjectName = courseTitle + ",Secondary"}}},
                         CourseCode = "CC"+count,
                         Name = courseTitle,
-                        Provider = new Provider { ProviderCode = instCode },
+                        Provider = new Provider { ProviderCode = providerCode },
                         CourseSites = new List<CourseSite>
                         {
                             new CourseSite {
@@ -109,7 +109,7 @@ namespace ManageCoursesUi.Tests.Helpers
 
                                 Site = new Site
                                 {
-                                    Code = TargetedInstCode,
+                                    Code = TargetedProviderCode,
                                     Address1 = "address1",
                                     Address2 = "address2",
                                     Address3 = "address3",
