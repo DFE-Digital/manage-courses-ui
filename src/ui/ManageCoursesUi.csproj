@@ -34,7 +34,7 @@
     <PackageReference Include="GovUk.Education.SearchAndCompare.Ui.Shared" Version="0.5.2.*" />
   </ItemGroup>
   <ItemGroup>
-    <None Update="Public\app_offline.htm.example">
+    <None Update="app_offline.htm.example">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
