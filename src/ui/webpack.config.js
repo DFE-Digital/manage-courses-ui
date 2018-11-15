@@ -46,6 +46,10 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
         to: 'images'
       },
       {
+        from: 'node_modules/govuk-frontend/assets/fonts',
+        to: 'fonts'
+      },
+      {
         from: 'Assets/Images',
         to: 'images'
       },

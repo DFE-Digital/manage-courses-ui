@@ -155,3 +155,7 @@ If you want to use a version of ManageCourses.ApiClient/SearchAndCompareUi.Share
 
 - https://signin-test-sup-as.azurewebsites.net/users/80BA7FAF-D6E1-47B4-9EDD-4539F53C8B9E/audit - The data
   here is always 15 mins out of date as its on an event stream (its more realtime in prod envs.)
+
+## Shutting down the service and showing the off line page.
+Rename the file "app_offline.htm.example" in the root folder to "app_offline.htm"
+
