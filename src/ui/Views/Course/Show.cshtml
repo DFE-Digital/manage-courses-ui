@@ -3,13 +3,13 @@
 @{
   Layout = "_Layout";
   ViewBag.Title = Model.Course.CourseTitle;
-  var link = $"mailto:becomingateacher@digital.education.gov.uk?subject=Problem%20with%20course%20{Model.Course.InstCode}%20{Model.Course.CourseCode}";
+  var link = $"mailto:becomingateacher@digital.education.gov.uk?subject=Problem%20with%20course%20{Model.Course.ProviderCode}%20{Model.Course.CourseCode}";
 
   var courseEnrichment = Model.CourseEnrichment;
   var routeData = courseEnrichment.RouteData;
 }
 
-<a href="@Url.Action("Show", "Organisation", new {instCode = Model.Course.InstCode})" class="govuk-back-link">Back</a>
+<a href="@Url.Action("Show", "Organisation", new {providerCode = Model.Course.ProviderCode})" class="govuk-back-link">Back</a>
 
 <main role="main" class="govuk-main-wrapper" id="main-content">
   @await Html.PartialAsync("~/Views/Shared/_Alerts.cshtml")
@@ -65,17 +65,17 @@
               <dt>Name:</dt>
               <dd>@Model.Course.CourseTitle</dd>
             }
-            @if (!string.IsNullOrEmpty(@Model.Course.InstCode)) {
+            @if (!string.IsNullOrEmpty(@Model.Course.ProviderCode)) {
               <dt>Training provider code:</dt>
-              <dd>@Model.Course.InstCode</dd>
+              <dd>@Model.Course.ProviderCode</dd>
             }
             @if (!string.IsNullOrEmpty(@Model.Course.CourseCode)) {
               <dt>Training programme code:</dt>
               <dd>@Model.Course.CourseCode</dd>
             }
-            @if (!string.IsNullOrEmpty(@Model.Course.AccreditingInstName)) {
+            @if (!string.IsNullOrEmpty(@Model.Course.AccreditingProviderName)) {
               <dt>Accredited provider:</dt>
-              <dd>@Model.Course.AccreditingInstName</dd>
+              <dd>@Model.Course.AccreditingProviderName</dd>
             }
             @if (!string.IsNullOrEmpty(@Model.Course.GetRoute())) {
               <dt>Route:</dt>

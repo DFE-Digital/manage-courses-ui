@@ -21,9 +21,9 @@ namespace GovUk.Education.ManageCourses.Ui.ViewModels
             AboutTrainingProviders = new List<TrainingProviderViewModel>();
         }
 
-        public string InstCode { get; set; }
+        public string ProviderCode { get; set; }
 
-        public string InstName { get; set; }
+        public string ProviderName { get; set; }
 
         [RegularExpression(@"^\s*(\S+\s+|\S+$){0,250}$", ErrorMessage = "Reduce the word count in training with you")]
         [Required(ErrorMessage = "Enter details about training with you")]
@@ -65,20 +65,20 @@ namespace GovUk.Education.ManageCourses.Ui.ViewModels
 
         public EnumStatus Status { get; set; }
 
-        public static OrganisationViewModel FromEnrichmentModel(UcasInstitutionEnrichmentGetModel ucasInstitutionEnrichmentGetModel, List<TrainingProviderViewModel> aboutAccreditingTrainingProviders, InstitutionSummary institutionSummary)
+        public static OrganisationViewModel FromEnrichmentModel(UcasProviderEnrichmentGetModel ucasProviderEnrichmentGetModel, List<TrainingProviderViewModel> aboutAccreditingTrainingProviders, ProviderSummary providerSummary)
         {
-            ucasInstitutionEnrichmentGetModel = ucasInstitutionEnrichmentGetModel ?? new UcasInstitutionEnrichmentGetModel { EnrichmentModel = new InstitutionEnrichmentModel() { AccreditingProviderEnrichments = new List<AccreditingProviderEnrichment>() } };
+            ucasProviderEnrichmentGetModel = ucasProviderEnrichmentGetModel ?? new UcasProviderEnrichmentGetModel { EnrichmentModel = new ProviderEnrichmentModel() { AccreditingProviderEnrichments = new List<AccreditingProviderEnrichment>() } };
 
-            var enrichmentModel = ucasInstitutionEnrichmentGetModel.EnrichmentModel;
+            var enrichmentModel = ucasProviderEnrichmentGetModel.EnrichmentModel;
 
             var result = new OrganisationViewModel
             {
-                InstCode = institutionSummary.InstCode,
-                InstName = institutionSummary.InstName,
+                ProviderCode = providerSummary.ProviderCode,
+                ProviderName = providerSummary.ProviderName,
                 TrainWithUs = enrichmentModel.TrainWithUs,
                 TrainWithDisability = enrichmentModel.TrainWithDisability,
-                LastPublishedTimestampUtc = ucasInstitutionEnrichmentGetModel.LastPublishedTimestampUtc,
-                Status = ucasInstitutionEnrichmentGetModel.Status,
+                LastPublishedTimestampUtc = ucasProviderEnrichmentGetModel.LastPublishedTimestampUtc,
+                Status = ucasProviderEnrichmentGetModel.Status,
                 AboutTrainingProviders = aboutAccreditingTrainingProviders,
 
                 Addr1 = enrichmentModel.Address1,

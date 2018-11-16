@@ -7,9 +7,9 @@ namespace GovUk.Education.ManageCourses.Ui.ViewModels
 {
     public class OrganisationViewModelForContact
     {
-        public string InstCode { get; set; }
+        public string ProviderCode { get; set; }
 
-        public string InstName { get; set; }
+        public string ProviderName { get; set; }
 
 
         [EmailAddress]
@@ -39,8 +39,8 @@ namespace GovUk.Education.ManageCourses.Ui.ViewModels
         {
             return new OrganisationViewModelForContact
             {
-                InstCode = model.InstCode,
-                InstName = model.InstName,
+                ProviderCode = model.ProviderCode,
+                ProviderName = model.ProviderName,
                 EmailAddress = model.EmailAddress,
                 Telephone = model.Telephone,
                 Url = model.Url,
@@ -67,11 +67,11 @@ namespace GovUk.Education.ManageCourses.Ui.ViewModels
                 string.IsNullOrWhiteSpace(Postcode);
         }
 
-        public void MergeIntoEnrichmentModel(ref InstitutionEnrichmentModel enrichmentModel)
+        public void MergeIntoEnrichmentModel(ref ProviderEnrichmentModel enrichmentModel)
         {
             if (enrichmentModel == null)
             {
-                enrichmentModel = new InstitutionEnrichmentModel();
+                enrichmentModel = new ProviderEnrichmentModel();
             }
 
             enrichmentModel.Email = EmailAddress;

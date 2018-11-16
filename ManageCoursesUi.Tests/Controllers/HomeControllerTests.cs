@@ -30,8 +30,8 @@ namespace ManageCoursesUi.Tests
         [Test]
         public void Index_IfNoOrgs_Returns401()
         {
-            mockApi.Setup(x => x.GetInstitutionSummaries())
-                .Returns(Task.FromResult((IEnumerable<InstitutionSummary>) new List<InstitutionSummary>()));
+            mockApi.Setup(x => x.GetProviderSummaries())
+                .Returns(Task.FromResult((IEnumerable<ProviderSummary>) new List<ProviderSummary>()));
 
             var res = sut.Index().Result;
 
@@ -42,7 +42,7 @@ namespace ManageCoursesUi.Tests
         [Test]
         public void Index_IfApiThrows401_Returns401()
         {
-            mockApi.Setup(x => x.GetInstitutionSummaries())
+            mockApi.Setup(x => x.GetProviderSummaries())
                 .ThrowsAsync(new ManageCoursesApiException("uh-oh...", HttpStatusCode.Unauthorized, null));
 
             var res = sut.Index().Result;

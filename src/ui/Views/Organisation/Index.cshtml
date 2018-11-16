@@ -10,12 +10,12 @@
     <div class="govuk-grid-column-two-thirds">
       <h1 class="govuk-heading-xl">Organisations</h1>
       <ul class="govuk-list">
-        @foreach (var institutionSummary in Model.InstitutionSummaries)
+        @foreach (var providerSummary in Model.ProviderSummaries)
         {
           <li>
             <h2 class="govuk-heading-m">
-              <a href="@Url.Action("Show", "Organisation", new {instCode = institutionSummary.InstCode})" class="govuk-link">@institutionSummary.InstName</a>
-              <span class="govuk-body govuk-!-font-weight-regular govuk-!-display-block">@institutionSummary.TotalCourses course@(institutionSummary.TotalCourses == 1 ? "" : "s")</span>
+              <a href="@Url.Action("Show", "Organisation", new {providerCode = providerSummary.ProviderCode})" class="govuk-link">@providerSummary.ProviderName</a>
+              <span class="govuk-body govuk-!-font-weight-regular govuk-!-display-block">@providerSummary.TotalCourses course@(providerSummary.TotalCourses == 1 ? "" : "s")</span>
             </h2>
           </li>
         }

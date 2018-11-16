@@ -9,10 +9,10 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
   public class RedirectController : CommonAttributesControllerBase
   {
     [Authorize]
-    [Route("organisation/{instCode}/courses")]
-    public IActionResult LegacyCoursePage(string instCode)
+    [Route("organisation/{providerCode}/courses")]
+    public IActionResult LegacyCoursePage(string providerCode)
     {
-      return RedirectToAction("Show", "Organisation", new { instCode });
+      return RedirectToAction("Show", "Organisation", new { providerCode = providerCode });
     }
   }
 }

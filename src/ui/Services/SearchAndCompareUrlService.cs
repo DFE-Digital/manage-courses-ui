@@ -11,9 +11,9 @@ namespace GovUk.Education.ManageCourses.Ui.Services
             this.searchAndComparBaseUrl = searchAndComparBaseUrl;
         }
 
-        public Uri GetCoursePageUri(string instCode, string courseCode)
+        public Uri GetCoursePageUri(string providerCode, string courseCode)
         {
-            return new Uri($"{searchAndComparBaseUrl}/course/{Uri.EscapeDataString(instCode)}/{Uri.EscapeDataString(courseCode)}");           
+            return new Uri($"{searchAndComparBaseUrl}/course/{Uri.EscapeDataString(providerCode)}/{Uri.EscapeDataString(courseCode)}");           
         }
     }
 }

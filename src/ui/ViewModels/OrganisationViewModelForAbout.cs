@@ -16,9 +16,9 @@ namespace GovUk.Education.ManageCourses.Ui.ViewModels
             AboutTrainingProviders = new List<TrainingProviderViewModel>();
         }
 
-        public string InstCode { get; set; }
+        public string ProviderCode { get; set; }
 
-        public string InstName { get; set; }
+        public string ProviderName { get; set; }
 
         [RegularExpression(@"^\s*(\S+\s+|\S+$){0,250}$", ErrorMessage = "Reduce the word count in training with you")]
         public string TrainWithUs { get; set; }
@@ -36,8 +36,8 @@ namespace GovUk.Education.ManageCourses.Ui.ViewModels
         {
             return new OrganisationViewModelForAbout
             {
-                InstCode = model.InstCode,
-                InstName = model.InstName,
+                ProviderCode = model.ProviderCode,
+                ProviderName = model.ProviderName,
                 TrainWithUs = model.TrainWithUs,
                 AboutTrainingProviders = model.AboutTrainingProviders,
                 TrainWithDisability = model.TrainWithDisability,
@@ -46,17 +46,17 @@ namespace GovUk.Education.ManageCourses.Ui.ViewModels
             };
         }
 
-        public void MergeIntoEnrichmentModel(ref InstitutionEnrichmentModel enrichmentModel)
+        public void MergeIntoEnrichmentModel(ref ProviderEnrichmentModel enrichmentModel)
         {
             if (enrichmentModel == null)
             {
-                enrichmentModel = new InstitutionEnrichmentModel();
+                enrichmentModel = new ProviderEnrichmentModel();
             }
 
             var aboutTrainingProviders = new List<AccreditingProviderEnrichment>(
                 AboutTrainingProviders.Select(x => new AccreditingProviderEnrichment
                 {
-                    UcasInstitutionCode = x.InstCode,
+                    UcasProviderCode = x.ProviderCode,
                     Description = x.Description
                 }));
 

@@ -9,7 +9,7 @@
   var rv = ViewData.ModelState["Reason"] != null && ViewData.ModelState["Reason"].Errors.Any();
 }
 
-<a href="@Url.Action("Show", "Organisation", new {instCode = @ViewBag.InstCode})" class="govuk-back-link">Back</a>
+<a href="@Url.Action("Show", "Organisation", new {providerCode = @ViewBag.ProviderCode})" class="govuk-back-link">Back</a>
 
 <main role="main" class="govuk-main-wrapper" id="main-content">
   @await Html.PartialAsync("~/Views/Shared/_Alerts.cshtml")
