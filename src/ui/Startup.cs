@@ -64,6 +64,8 @@ namespace GovUk.Education.ManageCourses.Ui
                 {
                     apm.ApplicationParts.Remove(item);
                 }
+            }).AddCookieTempDataProvider(options => {
+                options.Cookie.SecurePolicy= CookieSecurePolicy.Always;
             })
             .AddApplicationPart(sharedAssembly);
 
@@ -71,6 +73,9 @@ namespace GovUk.Education.ManageCourses.Ui
 
             services.AddRouting(options => options.LowercaseUrls = true);
 
+            services.AddAntiforgery(options => {
+                options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+            });
             services.AddAuthentication(options =>
             {
                 options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
