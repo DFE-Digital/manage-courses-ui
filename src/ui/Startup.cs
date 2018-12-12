@@ -36,10 +36,13 @@ namespace GovUk.Education.ManageCourses.Ui
 
         public IConfiguration Configuration { get; }
 
-        public Startup(IConfiguration configuration, ILoggerFactory logFactory)
+        private readonly IHostingEnvironment _env;
+
+        public Startup(IConfiguration configuration, ILoggerFactory logFactory, IHostingEnvironment env)
         {
             _logger = logFactory.CreateLogger<Startup>();
             Configuration = configuration;
+            _env = env;
         }
 
         // This method gets called by the runtime. Use this method to add services to the container.
@@ -50,6 +53,7 @@ namespace GovUk.Education.ManageCourses.Ui
 
             var sharedAssembly = typeof(CourseDetailsViewComponent).GetTypeInfo().Assembly;
 
+            var cookieSecurePolicy = _env.IsDevelopment() ? CookieSecurePolicy.SameAsRequest : CookieSecurePolicy.Always;
 
             services.AddMvc(options =>
                 options.Filters.Add(typeof(McExceptionFilter))
@@ -65,7 +69,7 @@ namespace GovUk.Education.ManageCourses.Ui
                     apm.ApplicationParts.Remove(item);
                 }
             }).AddCookieTempDataProvider(options => {
-                options.Cookie.SecurePolicy= CookieSecurePolicy.Always;
+                options.Cookie.SecurePolicy= cookieSecurePolicy;
             })
             .AddApplicationPart(sharedAssembly);
 
@@ -74,7 +78,7 @@ namespace GovUk.Education.ManageCourses.Ui
             services.AddRouting(options => options.LowercaseUrls = true);
 
             services.AddAntiforgery(options => {
-                options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+                options.Cookie.SecurePolicy = cookieSecurePolicy;
             });
             services.AddAuthentication(options =>
             {
@@ -283,9 +287,9 @@ namespace GovUk.Education.ManageCourses.Ui
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IServiceProvider serviceProvider)
+        public void Configure(IApplicationBuilder app, IServiceProvider serviceProvider)
         {
-            if (env.IsDevelopment())
+            if (_env.IsDevelopment())
             {
                 app.UseBrowserLink();
                 app.UseWebpackDevMiddleware(new WebpackDevMiddlewareOptions
