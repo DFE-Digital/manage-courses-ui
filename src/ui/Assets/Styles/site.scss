@@ -69,14 +69,13 @@ $success-green: #00823b;
     text-align: right;
   }
 
-  &__subject-col,
-  &__type-col {
-    width: 35%;
+  &__subject-col {
+    width: 50%;
   }
 
   &__status-col,
   &__content-status-col {
-    width: 15%;
+    width: 20%;
   }
 
   .govuk-table__row:last-child {
@@ -101,4 +100,3 @@ $success-green: #00823b;
   list-style-image: url('/images/dash.png');
   margin-bottom: govuk-spacing(8);
 }
-
