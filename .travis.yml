@@ -15,7 +15,9 @@ matrix:
           script: git fetch --unshallow && git push --force https://govuk-dfe-bat-deployment-user:$AZURE_WA_PASSWORD@bat-staging-manage-courses-ui-app.scm.azurewebsites.net:443/bat-staging-manage-courses-ui-app.git HEAD:refs/heads/master
           on: staging
         - provider: script
-          script: git fetch --unshallow && git push --force https://govuk-dfe-bat-deployment-user:$AZURE_WA_PASSWORD@bat-prod-manage-courses-ui-app.scm.azurewebsites.net:443/bat-prod-manage-courses-ui-app.git HEAD:refs/heads/master
+          script: 
+          - git fetch --unshallow && git push --force https://govuk-dfe-bat-deployment-user:$AZURE_WA_PASSWORD@bat-prod-manage-courses-ui-app.scm.azurewebsites.net:443/bat-prod-manage-courses-ui-app.git HEAD:refs/heads/master
+          - git fetch --unshallow && git push --force https://govuk-dfe-bat-deployment-user:$AZURE_WA_PASSWORD@bat-prod3-manage-courses-ui-app.scm.azurewebsites.net:443/bat-prod3-manage-courses-ui-app.git HEAD:refs/heads/master
           on: production
     - language: node_js
       node_js:
