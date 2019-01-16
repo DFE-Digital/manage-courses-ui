@@ -7,8 +7,26 @@
     padding-top: govuk-spacing(6);
     position: relative;
 
+    &--borderless {
+      border-top: none;
+    }
+
     &:first-of-type {
       margin-top: 0;
+    }
+
+    .govuk-summary-list {
+      &__value {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        max-width: 300px;
+      }
+      @include govuk-media-query($from: desktop) {
+        &__key {
+          width: 50%;
+        }
+      }
     }
   }
 

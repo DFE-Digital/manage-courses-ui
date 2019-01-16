@@ -10,40 +10,46 @@
   var other_requirements = ViewData.ModelState["OtherRequirements"] != null && ViewData.ModelState["OtherRequirements"].Errors.Any();
 }
 
-<div class="course-parts__item">
-  <h3 class="course-parts__title">Requirements and eligibility</h3>
-  <a class="course-parts__action" href="@url">Edit<span class="govuk-visually-hidden"> requirements and eligibility</span></a>
-  <dl class="course-parts__fields">
-    <dt class="course-parts__fields__label @(qualifications ? "course-parts__fields__label--error" : "")" id="section-Qualifications">
-      Qualifications needed
-    </dt>
-    <dd class="course-parts__fields__value @(string.IsNullOrWhiteSpace(courseEnrichment.Qualifications) ? "course-parts__fields__value--empty" : "")">
-      @if (qualifications) {
-          <a href="@url#Qualifications-wrapper" class="govuk-link"><span asp-validation-for="Qualifications" ></span></a>
+<div class="course-parts__item course-parts__item--borderless">
+  <h3 class="course-parts__title">
+    <a href="@url">Requirements and eligibility</a>
+  </h3>
+  <dl class="govuk-summary-list">
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key @(qualifications ? "course-parts__fields__label--error" : "")" id="section-Qualifications">
+        Qualifications needed
+      </dt>
+      <dd class="govuk-summary-list__value @(string.IsNullOrWhiteSpace(courseEnrichment.Qualifications) ? "course-parts__fields__value--empty" : "")">
+        @if (qualifications)
+        {
+            <a href="@url#Qualifications-wrapper" class="govuk-link"><span asp-validation-for="Qualifications" ></span></a>
         }
-
-      @courseEnrichment?.Qualifications.DisplayText()
-    </dd>
-    <dt class="course-parts__fields__label @(personal_qualities ? "course-parts__fields__label--error" : "")" id="section-PersonalQualities">
-      Personal qualities (optional)
-    </dt>
-    <dd class="course-parts__fields__value @(string.IsNullOrWhiteSpace(courseEnrichment.PersonalQualities) ? "course-parts__fields__value--empty" : "")">
-      @if (personal_qualities) {
-          <a href="@url#PersonalQualities-wrapper" class="govuk-link"><span asp-validation-for="PersonalQualities" ></span></a>
+        @courseEnrichment?.Qualifications.DisplayText()
+      </dd>
+    </div>
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key @(personal_qualities ? "course-parts__fields__label--error" : "")" id="section-PersonalQualities">
+        Personal qualities (optional)
+      </dt>
+      <dd class="govuk-summary-list__value @(string.IsNullOrWhiteSpace(courseEnrichment.PersonalQualities) ? "course-parts__fields__value--empty" : "")">
+        @if (personal_qualities)
+        {
+            <a href="@url#PersonalQualities-wrapper" class="govuk-link"><span asp-validation-for="PersonalQualities" ></span></a>
         }
-
-      @courseEnrichment?.PersonalQualities.DisplayText()
-    </dd>
-    <dt class="course-parts__fields__label @(other_requirements ? "course-parts__fields__label--error" : "")"id="section-OtherRequirements">
-      Other requirements (optional)
-    </dt>
-    <dd class="course-parts__fields__value @(string.IsNullOrWhiteSpace(courseEnrichment.OtherRequirements) ? "course-parts__fields__value--empty" : "")">
-      @if (other_requirements) {
-          <a href="@url#OtherRequirements-wrapper" class="govuk-link"><span asp-validation-for="OtherRequirements" ></span></a>
+        @courseEnrichment?.PersonalQualities.DisplayText()
+      </dd>
+    </div>
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key @(other_requirements ? "course-parts__fields__label--error" : "")"id="section-OtherRequirements">
+        Other requirements (optional)
+      </dt>
+      <dd class="govuk-summary-list__value @(string.IsNullOrWhiteSpace(courseEnrichment.OtherRequirements) ? "course-parts__fields__value--empty" : "")">
+        @if (other_requirements)
+        {
+            <a href="@url#OtherRequirements-wrapper" class="govuk-link"><span asp-validation-for="OtherRequirements" ></span></a>
         }
-
-      @courseEnrichment?.OtherRequirements.DisplayText()
-    </dd>
+        @courseEnrichment?.OtherRequirements.DisplayText()
+      </dd>
+    </div>
   </dl>
-  @await Html.PartialAsync("CopyCourseNotice")
 </div>
