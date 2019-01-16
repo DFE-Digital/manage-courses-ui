@@ -108,7 +108,7 @@
 
         <div class="course-parts__item">
           <h2 class="course-parts__title">Training locations</h2>
-          @foreach (var site in Model.Course.Sites)
+          @foreach (var site in Model.Course.Sites.Where(x => x.Status != "S"))
           {
             <h3 class="govuk-heading-s">@site.LocationName (Code: @site.Code)</h3>
             <dl class="govuk-list govuk-list--description">
@@ -129,6 +129,34 @@
               }
             </dl>
           }
+
+          @if(Model.Course.Sites.Where(x => x.Status == "S").Any()) {
+            <details class="govuk-details">
+              <summary class="govuk-details__summary">
+                <span class="govuk-details__summary-text">
+                  There are @(Model.Course.Sites.Where(x => x.Status == "S").Count()) suspended or discontinued training locations for this course
+                </span>
+              </summary>
+              <div class="govuk-details__text">
+                @foreach (var site in Model.Course.Sites.Where(x => x.Status == "S"))
+                {
+                  <h3 class="govuk-heading-s">@site.LocationName (Code: @site.Code)</h3>
+                  <dl class="govuk-list govuk-list--description">
+                    @if (!string.IsNullOrEmpty(@site.Address)) {
+                      <dt>Address:</dt>
+                      <dd>@site.Address</dd>
+                    }
+                    @if (!string.IsNullOrEmpty(@site.Status))
+                    {
+                      <dt>Status:</dt>
+                      <dd>@site.GetSiteStatus()</dd>
+                    }
+                  </dl>
+                }
+              </div>
+            </details>
+          }
+
         </div>
       </div>
       <p class="govuk-body">
