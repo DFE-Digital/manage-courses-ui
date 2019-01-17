@@ -25,7 +25,7 @@
           <a href="@url#CourseLength-wrapper" class="govuk-link"><span asp-validation-for="CourseLength" ></span></a>
         }
       </dt>
-      <dd class="govuk-summary-list__value @(courseEnrichment.CourseLength == null ? "course-parts__fields__value--empty" : "")">
+      <dd class="govuk-summary-list__value govuk-summary-list__value--truncated @(courseEnrichment.CourseLength == null ? "course-parts__fields__value--empty" : "")">
         @(@courseEnrichment?.CourseLength.DisplayText() == "Other" ? courseEnrichment.CourseLengthInput : courseEnrichment?.CourseLength.DisplayText())
       </dd>
     </div>
@@ -37,7 +37,7 @@
           <a href="@url#FeeUkEu-wrapper" class="govuk-link"><span asp-validation-for="FeeUkEu" ></span></a>
         }
       </dt>
-      <dd class="govuk-summary-list__value @(courseEnrichment.FeeUkEu == null ? "course-parts__fields__value--empty" : "")">
+      <dd class="govuk-summary-list__value govuk-summary-list__value--truncated @(courseEnrichment.FeeUkEu == null ? "course-parts__fields__value--empty" : "")">
         @courseEnrichment?.FeeUkEu.DisplayText()
       </dd>
     </div>
@@ -49,7 +49,7 @@
           <a href="@url#FeeInternational-wrapper" class="govuk-link"><span asp-validation-for="FeeInternational" ></span></a>
         }
       </dt>
-      <dd class="govuk-summary-list__value @(courseEnrichment.FeeInternational == null ? "course-parts__fields__value--empty" : "")">
+      <dd class="govuk-summary-list__value govuk-summary-list__value--truncated @(courseEnrichment.FeeInternational == null ? "course-parts__fields__value--empty" : "")">
         @courseEnrichment?.FeeInternational.DisplayText()
       </dd>
     </div>
@@ -61,7 +61,7 @@
           <a href="@url#FeeDetails-wrapper" class="govuk-link"><span asp-validation-for="FeeDetails" ></span></a>
         }
       </dt>
-      <dd class="govuk-summary-list__value @(string.IsNullOrWhiteSpace(courseEnrichment.FeeDetails) ? "course-parts__fields__value--empty" : "")">
+      <dd class="govuk-summary-list__value govuk-summary-list__value--truncated @(string.IsNullOrWhiteSpace(courseEnrichment.FeeDetails) ? "course-parts__fields__value--empty" : "")">
         @courseEnrichment?.FeeDetails.DisplayText()
       </dd>
     </div>
@@ -73,7 +73,7 @@
           <a href="@url#FinancialSupport-wrapper" class="govuk-link"><span asp-validation-for="FinancialSupport" ></span></a>
         }
       </dt>
-      <dd class="govuk-summary-list__value @(string.IsNullOrWhiteSpace(courseEnrichment.FinancialSupport) ? "course-parts__fields__value--empty" : "")">
+      <dd class="govuk-summary-list__value govuk-summary-list__value--truncated @(string.IsNullOrWhiteSpace(courseEnrichment.FinancialSupport) ? "course-parts__fields__value--empty" : "")">
         @courseEnrichment?.FinancialSupport.DisplayText()
       </dd>
     </div>

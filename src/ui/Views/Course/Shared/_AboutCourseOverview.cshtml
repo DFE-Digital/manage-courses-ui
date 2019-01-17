@@ -23,7 +23,7 @@
           <a href="@url#AboutCourse-wrapper" class="govuk-link"><span asp-validation-for="AboutCourse" ></span></a>
         }
       </dt>
-      <dd asp-for="AboutCourse" class="govuk-summary-list__value @(string.IsNullOrWhiteSpace(courseEnrichment.AboutCourse) ? "course-parts__fields__value--empty" : "")">
+      <dd asp-for="AboutCourse" class="govuk-summary-list__value govuk-summary-list__value--truncated @(string.IsNullOrWhiteSpace(courseEnrichment.AboutCourse) ? "course-parts__fields__value--empty" : "")">
         @courseEnrichment?.AboutCourse.DisplayText()
       </dd>
     </div>
@@ -35,7 +35,7 @@
           <a href="@url#InterviewProcess-wrapper" class="govuk-link"><span asp-validation-for="InterviewProcess" ></span></a>
         }
       </dt>
-      <dd class="govuk-summary-list__value @(string.IsNullOrWhiteSpace(courseEnrichment.InterviewProcess) ? "course-parts__fields__value--empty" : "")">
+      <dd class="govuk-summary-list__value govuk-summary-list__value--truncated @(string.IsNullOrWhiteSpace(courseEnrichment.InterviewProcess) ? "course-parts__fields__value--empty" : "")">
         @courseEnrichment?.InterviewProcess.DisplayText()
       </dd>
     </div>
@@ -48,7 +48,7 @@
             <span asp-validation-for="HowSchoolPlacementsWork" >@ViewData.ModelState["HowSchoolPlacementsWork"].Errors.First().ErrorMessage</span></a>
         }
       </dt>
-      <dd asp-for="HowSchoolPlacementsWork" class="govuk-summary-list__value @(string.IsNullOrWhiteSpace(courseEnrichment.HowSchoolPlacementsWork) ? "course-parts__fields__value--empty" : "")">
+      <dd asp-for="HowSchoolPlacementsWork" class="govuk-summary-list__value govuk-summary-list__value--truncated @(string.IsNullOrWhiteSpace(courseEnrichment.HowSchoolPlacementsWork) ? "course-parts__fields__value--empty" : "")">
         @courseEnrichment?.HowSchoolPlacementsWork.DisplayText()
       </dd>
     </div>

@@ -23,7 +23,7 @@
             <a href="@url#Qualifications-wrapper" class="govuk-link"><span asp-validation-for="Qualifications" ></span></a>
         }
       </dt>
-      <dd class="govuk-summary-list__value @(string.IsNullOrWhiteSpace(courseEnrichment.Qualifications) ? "course-parts__fields__value--empty" : "")">
+      <dd class="govuk-summary-list__value govuk-summary-list__value--truncated @(string.IsNullOrWhiteSpace(courseEnrichment.Qualifications) ? "course-parts__fields__value--empty" : "")">
         @courseEnrichment?.Qualifications.DisplayText()
       </dd>
     </div>
@@ -35,7 +35,7 @@
             <a href="@url#PersonalQualities-wrapper" class="govuk-link"><span asp-validation-for="PersonalQualities" ></span></a>
         }
       </dt>
-      <dd class="govuk-summary-list__value @(string.IsNullOrWhiteSpace(courseEnrichment.PersonalQualities) ? "course-parts__fields__value--empty" : "")">
+      <dd class="govuk-summary-list__value govuk-summary-list__value--truncated @(string.IsNullOrWhiteSpace(courseEnrichment.PersonalQualities) ? "course-parts__fields__value--empty" : "")">
         @courseEnrichment?.PersonalQualities.DisplayText()
       </dd>
     </div>
@@ -47,7 +47,7 @@
             <a href="@url#OtherRequirements-wrapper" class="govuk-link"><span asp-validation-for="OtherRequirements" ></span></a>
         }
       </dt>
-      <dd class="govuk-summary-list__value @(string.IsNullOrWhiteSpace(courseEnrichment.OtherRequirements) ? "course-parts__fields__value--empty" : "")">
+      <dd class="govuk-summary-list__value govuk-summary-list__value--truncated @(string.IsNullOrWhiteSpace(courseEnrichment.OtherRequirements) ? "course-parts__fields__value--empty" : "")">
         @courseEnrichment?.OtherRequirements.DisplayText()
       </dd>
     </div>
