@@ -17,24 +17,24 @@
     <div class="govuk-summary-list__row">
       <dt class="govuk-summary-list__key @(course_length ? "course-parts__fields__label--error" : "")">
         Course length
-      </dt>
-      <dd class="govuk-summary-list__value @(courseEnrichment.CourseLength == null ? "course-parts__fields__value--empty" : "")">
         @if (course_length)
         {
           <a href="@url#CourseLength-wrapper" class="govuk-link"><span asp-validation-for="CourseLength"></span></a>
         }
+      </dt>
+      <dd class="govuk-summary-list__value @(courseEnrichment.CourseLength == null ? "course-parts__fields__value--empty" : "")">
         @(@courseEnrichment?.CourseLength.DisplayText() == "Other" ? courseEnrichment.CourseLengthInput : courseEnrichment?.CourseLength.DisplayText())
       </dd>
     </div>
     <div class="govuk-summary-list__row">
       <dt class="govuk-summary-list__key @(salary ? "course-parts__fields__label--error" : "")">
         Salary
-      </dt>
-      <dd class="govuk-summary-list__value @(string.IsNullOrWhiteSpace(courseEnrichment.SalaryDetails) ? "course-parts__fields__value--empty" : "")">
         @if (salary)
         {
           <a href="@url#SalaryDetails-wrapper" class="govuk-link"><span asp-validation-for="SalaryDetails" ></span></a>
         }
+      </dt>
+      <dd class="govuk-summary-list__value @(string.IsNullOrWhiteSpace(courseEnrichment.SalaryDetails) ? "course-parts__fields__value--empty" : "")">
         @courseEnrichment?.SalaryDetails.DisplayText()
       </dd>
     </div>

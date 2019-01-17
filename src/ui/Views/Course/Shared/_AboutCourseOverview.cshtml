@@ -18,37 +18,37 @@
     <div class="govuk-summary-list__row">
       <dt class="govuk-summary-list__key @(about_course ? "course-parts__fields__label--error" : "")" id="section-AboutCourse">
         About this course
-      </dt>
-      <dd asp-for="AboutCourse" class="govuk-summary-list__value @(string.IsNullOrWhiteSpace(courseEnrichment.AboutCourse) ? "course-parts__fields__value--empty" : "")">
         @if (about_course)
         {
           <a href="@url#AboutCourse-wrapper" class="govuk-link"><span asp-validation-for="AboutCourse" ></span></a>
         }
+      </dt>
+      <dd asp-for="AboutCourse" class="govuk-summary-list__value @(string.IsNullOrWhiteSpace(courseEnrichment.AboutCourse) ? "course-parts__fields__value--empty" : "")">
         @courseEnrichment?.AboutCourse.DisplayText()
       </dd>
     </div>
     <div class="govuk-summary-list__row">
       <dt class="govuk-summary-list__key @(interview_process ? "course-parts__fields__label--error" : "")" id="section-InterviewProcess">
         Interview process (optional)
-      </dt>
-      <dd class="govuk-summary-list__value @(string.IsNullOrWhiteSpace(courseEnrichment.InterviewProcess) ? "course-parts__fields__value--empty" : "")">
         @if (interview_process)
         {
           <a href="@url#InterviewProcess-wrapper" class="govuk-link"><span asp-validation-for="InterviewProcess" ></span></a>
         }
+      </dt>
+      <dd class="govuk-summary-list__value @(string.IsNullOrWhiteSpace(courseEnrichment.InterviewProcess) ? "course-parts__fields__value--empty" : "")">
         @courseEnrichment?.InterviewProcess.DisplayText()
       </dd>
     </div>
     <div class="govuk-summary-list__row">
       <dt class="govuk-summary-list__key @(school_placement ? "course-parts__fields__label--error" : "")" id="section-HowSchoolPlacementsWork">
         How school placements work
-      </dt>
-      <dd asp-for="HowSchoolPlacementsWork" class="govuk-summary-list__value @(string.IsNullOrWhiteSpace(courseEnrichment.HowSchoolPlacementsWork) ? "course-parts__fields__value--empty" : "")">
         @if (school_placement)
         {
           <a href="@url#HowSchoolPlacementsWork-wrapper" class="govuk-link">
             <span asp-validation-for="HowSchoolPlacementsWork" >@ViewData.ModelState["HowSchoolPlacementsWork"].Errors.First().ErrorMessage</span></a>
         }
+      </dt>
+      <dd asp-for="HowSchoolPlacementsWork" class="govuk-summary-list__value @(string.IsNullOrWhiteSpace(courseEnrichment.HowSchoolPlacementsWork) ? "course-parts__fields__value--empty" : "")">
         @courseEnrichment?.HowSchoolPlacementsWork.DisplayText()
       </dd>
     </div>
