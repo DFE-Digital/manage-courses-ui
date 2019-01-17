@@ -7,8 +7,33 @@
     padding-top: govuk-spacing(6);
     position: relative;
 
+    &--borderless {
+      border-top: none;
+    }
+
     &:first-of-type {
       margin-top: 0;
+      padding-top: 0;
+    }
+
+    .govuk-summary-list {
+      &__key {
+        .govuk-link {
+          display: block;
+        }
+      }
+
+      &__value--truncated {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        max-width: 300px;
+      }
+      @include govuk-media-query($from: desktop) {
+        &__key {
+          width: 50%;
+        }
+      }
     }
   }
 
@@ -39,7 +64,6 @@
       &--error {
         color: $govuk-error-colour;
         border-left: 5px solid $govuk-error-colour;
-        padding-bottom: 0;
         padding-left: govuk-spacing(2);
         padding-top: govuk-spacing(1);
 

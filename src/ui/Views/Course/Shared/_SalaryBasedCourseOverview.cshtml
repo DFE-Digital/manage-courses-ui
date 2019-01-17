@@ -3,36 +3,40 @@
 @{
   var courseEnrichment = Model;
   var routeData = Model.RouteData;
-
   var url = Url.Action("Salary", "Course", routeData);
 
   var course_length = ViewData.ModelState["CourseLength"] != null && ViewData.ModelState["CourseLength"].Errors.Any();
   var salary = ViewData.ModelState["SalaryDetails"] != null && ViewData.ModelState["SalaryDetails"].Errors.Any();
 }
 
-<div class="course-parts__item">
-  <h3 class="course-parts__title">Course length and salary</h3>
-  <a class="course-parts__action" href="@url">Edit<span class="govuk-visually-hidden"> course length and salary</span></a>
-  <dl class="course-parts__fields">
-    <dt class="course-parts__fields__label @(course_length ? "course-parts__fields__label--error" : "")">
-      Course length
-    </dt>
-    <dd class="course-parts__fields__value @(courseEnrichment.CourseLength == null ? "course-parts__fields__value--empty" : "")">
-      @if (course_length)
-      {
-        <a href="@url#CourseLength-wrapper" class="govuk-link"><span asp-validation-for="CourseLength"></span></a>
-      }
-      @(@courseEnrichment?.CourseLength.DisplayText() == "Other" ? courseEnrichment.CourseLengthInput : courseEnrichment?.CourseLength.DisplayText())
-    </dd>
-    <dt class="course-parts__fields__label @(salary ? "course-parts__fields__label--error" : "")">
-      Salary
-    </dt>
-    <dd class="course-parts__fields__value @(string.IsNullOrWhiteSpace(courseEnrichment.SalaryDetails) ? "course-parts__fields__value--empty" : "")">
-      @if (salary) {
-        <a href="@url#SalaryDetails-wrapper" class="govuk-link"><span asp-validation-for="SalaryDetails" ></span></a>
-      }
-      @courseEnrichment?.SalaryDetails.DisplayText()
-    </dd>
+<div class="course-parts__item course-parts__item--borderless">
+  <h3 class="govuk-heading-m govuk-!-font-size-27">
+    <a href="@url">Course length and salary</a>
+  </h3>
+  <dl class="govuk-summary-list">
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key @(course_length ? "course-parts__fields__label--error" : "")">
+        Course length
+        @if (course_length)
+        {
+          <a href="@url#CourseLength-wrapper" class="govuk-link"><span asp-validation-for="CourseLength"></span></a>
+        }
+      </dt>
+      <dd class="govuk-summary-list__value govuk-summary-list__value--truncated @(courseEnrichment.CourseLength == null ? "course-parts__fields__value--empty" : "")">
+        @(@courseEnrichment?.CourseLength.DisplayText() == "Other" ? courseEnrichment.CourseLengthInput : courseEnrichment?.CourseLength.DisplayText())
+      </dd>
+    </div>
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key @(salary ? "course-parts__fields__label--error" : "")">
+        Salary
+        @if (salary)
+        {
+          <a href="@url#SalaryDetails-wrapper" class="govuk-link"><span asp-validation-for="SalaryDetails" ></span></a>
+        }
+      </dt>
+      <dd class="govuk-summary-list__value govuk-summary-list__value--truncated @(string.IsNullOrWhiteSpace(courseEnrichment.SalaryDetails) ? "course-parts__fields__value--empty" : "")">
+        @courseEnrichment?.SalaryDetails.DisplayText()
+      </dd>
+    </div>
   </dl>
-  @await Html.PartialAsync("CopyCourseNotice")
 </div>

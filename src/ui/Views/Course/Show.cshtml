@@ -23,8 +23,8 @@
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
       <div class="course-parts">
-        <div class="course-parts__item">
-          <h2 class="course-parts__title">Information from UCAS</h2>
+        <div class="course-parts__item course-parts__item--borderless">
+          <h2 class="govuk-heading-m govuk-!-font-size-27">Information from UCAS</h2>
 
           @if(Model.Course.StatusAsEnum != CourseRunningStatus.Running)
           {
@@ -55,43 +55,69 @@
 
           <p class="govuk-body">You can only change this information using <a href="https://update.ucas.co.uk/netupdate2/Welcome.htm">UCAS web-link</a>. Changes will usually appear here within one working day.</p>
 
-          <dl class="govuk-list govuk-list--description">
+          <dl class="govuk-summary-list">
             @if (!string.IsNullOrEmpty(@Model.Course.Status))
             {
-              <dt>Status:</dt>
-              <dd>@Model.Course.Status</dd>
+              <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">Status</dt>
+                <dd class="govuk-summary-list__value">@Model.Course.Status</dd>
+              </div>
             }
-            @if (!string.IsNullOrEmpty(@Model.Course.CourseTitle)) {
-              <dt>Name:</dt>
-              <dd>@Model.Course.CourseTitle</dd>
+            @if (!string.IsNullOrEmpty(@Model.Course.CourseTitle))
+            {
+              <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">Name</dt>
+                <dd class="govuk-summary-list__value">@Model.Course.CourseTitle</dd>
+              </div>
             }
-            @if (!string.IsNullOrEmpty(@Model.Course.ProviderCode)) {
-              <dt>Training provider code:</dt>
-              <dd>@Model.Course.ProviderCode</dd>
+            @if (!string.IsNullOrEmpty(@Model.Course.ProviderCode))
+            {
+              <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">Training provider code</dt>
+                <dd class="govuk-summary-list__value">@Model.Course.ProviderCode</dd>
+              </div>
             }
-            @if (!string.IsNullOrEmpty(@Model.Course.CourseCode)) {
-              <dt>Training programme code:</dt>
-              <dd>@Model.Course.CourseCode</dd>
+            @if (!string.IsNullOrEmpty(@Model.Course.CourseCode))
+            {
+              <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">Training programme code</dt>
+                <dd class="govuk-summary-list__value">@Model.Course.CourseCode</dd>
+              </div>
             }
-            @if (!string.IsNullOrEmpty(@Model.Course.AccreditingProviderName)) {
-              <dt>Accredited provider:</dt>
-              <dd>@Model.Course.AccreditingProviderName</dd>
+            @if (!string.IsNullOrEmpty(@Model.Course.AccreditingProviderName))
+            {
+              <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">Accredited provider</dt>
+                <dd class="govuk-summary-list__value">@Model.Course.AccreditingProviderName</dd>
+              </div>
             }
-            @if (!string.IsNullOrEmpty(@Model.Course.GetRoute())) {
-              <dt>Route:</dt>
-              <dd>@Model.Course.GetRoute()</dd>
+            @if (!string.IsNullOrEmpty(@Model.Course.GetRoute()))
+            {
+              <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">Route</dt>
+                <dd class="govuk-summary-list__value">@Model.Course.GetRoute()</dd>
+              </div>
             }
-            @if (!string.IsNullOrEmpty(@Model.Course.Subjects)) {
-              <dt>Subjects:</dt>
-              <dd>@Model.Course.Subjects</dd>
+            @if (!string.IsNullOrEmpty(@Model.Course.Subjects))
+            {
+              <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">Subjects</dt>
+                <dd class="govuk-summary-list__value">@Model.Course.Subjects</dd>
+              </div>
             }
-            @if (!string.IsNullOrEmpty(@Model.Course.GetStudyMode())) {
-              <dt>Mode of study:</dt>
-              <dd>@Model.Course.GetStudyMode()</dd>
+            @if (!string.IsNullOrEmpty(@Model.Course.GetStudyMode()))
+            {
+              <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">Mode of study</dt>
+                <dd class="govuk-summary-list__value">@Model.Course.GetStudyMode()</dd>
+              </div>
             }
-            @if (!string.IsNullOrEmpty(@Model.Course.GetQualification())) {
-              <dt>Qualification:</dt>
-              <dd>@Model.Course.GetQualification()</dd>
+            @if (!string.IsNullOrEmpty(@Model.Course.GetQualification()))
+            {
+              <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">Qualification</dt>
+                <dd class="govuk-summary-list__value">@Model.Course.GetQualification()</dd>
+              </div>
             }
           </dl>
         </div>
@@ -106,26 +132,36 @@
         @await Html.PartialAsync("shared/_RequirementsCourseOverview", Model.CourseEnrichment)
       }
 
-        <div class="course-parts__item">
-          <h2 class="course-parts__title">Training locations</h2>
+        <div class="course-parts__item course-parts__item--borderless">
+          <h2 class="govuk-heading-m govuk-!-font-size-27">Training locations</h2>
           @foreach (var site in Model.Course.Sites.Where(x => x.Status != "S"))
           {
-            <h3 class="govuk-heading-s">@site.LocationName (Code: @site.Code)</h3>
-            <dl class="govuk-list govuk-list--description">
-              @if (!string.IsNullOrEmpty(@site.Address)) {
-                <dt>Address:</dt>
-                <dd>@site.Address</dd>
+            <h3 class="govuk-heading-m">@site.LocationName (Code: @site.Code)</h3>
+            <dl class="govuk-summary-list">
+              @if (!string.IsNullOrEmpty(@site.Address))
+              {
+                <div class="govuk-summary-list__row">
+                  <dt class="govuk-summary-list__key">Address</dt>
+                  <dd class="govuk-summary-list__value">@site.Address</dd>
+                </div>
               }
               @if (!string.IsNullOrEmpty(@site.Status))
               {
-                <dt>Status:</dt>
-                <dd>@site.GetSiteStatus()</dd>
+                <div class="govuk-summary-list__row">
+                  <dt class="govuk-summary-list__key">Status</dt>
+                  <dd class="govuk-summary-list__value">@site.GetSiteStatus()</dd>
+                </div>
               }
-              <dt>Vacancies:</dt>
-              <dd>@site.GetVacancyStatus()</dd>
-              @if (!string.IsNullOrEmpty(@site.ApplicationsAcceptedFrom)) {
-                <dt>Apply from:</dt>
-                <dd>@site.ApplicationsAcceptedFrom</dd>
+              <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">Vacancies</dt>
+                <dd class="govuk-summary-list__value">@site.GetVacancyStatus()</dd>
+              </div>
+              @if (!string.IsNullOrEmpty(@site.ApplicationsAcceptedFrom))
+              {
+                <div class="govuk-summary-list__row">
+                  <dt class="govuk-summary-list__key">Apply from:</dt>
+                  <dd class="govuk-summary-list__value">@site.ApplicationsAcceptedFrom</dd>
+                </div>
               }
             </dl>
           }
@@ -140,16 +176,21 @@
               <div class="govuk-details__text">
                 @foreach (var site in Model.Course.Sites.Where(x => x.Status == "S"))
                 {
-                  <h3 class="govuk-heading-s">@site.LocationName (Code: @site.Code)</h3>
-                  <dl class="govuk-list govuk-list--description">
-                    @if (!string.IsNullOrEmpty(@site.Address)) {
-                      <dt>Address:</dt>
-                      <dd>@site.Address</dd>
+                  <h3 class="govuk-heading-m">@site.LocationName (Code: @site.Code)</h3>
+                  <dl class="govuk-summary-list">
+                    @if (!string.IsNullOrEmpty(@site.Address))
+                    {
+                      <div class="govuk-summary-list__row">
+                        <dt class="govuk-summary-list__key">Address:</dt>
+                        <dd class="govuk-summary-list__value">@site.Address</dd>
+                      </div>
                     }
                     @if (!string.IsNullOrEmpty(@site.Status))
                     {
-                      <dt>Status:</dt>
-                      <dd>@site.GetSiteStatus()</dd>
+                      <div class="govuk-summary-list__row">
+                        <dt class="govuk-summary-list__key">Status:</dt>
+                        <dd class="govuk-summary-list__value">@site.GetSiteStatus()</dd>
+                      </div>
                     }
                   </dl>
                 }
