@@ -111,21 +111,31 @@
           @foreach (var site in Model.Course.Sites.Where(x => x.Status != "S"))
           {
             <h3 class="govuk-heading-s">@site.LocationName (Code: @site.Code)</h3>
-            <dl class="govuk-list govuk-list--description">
-              @if (!string.IsNullOrEmpty(@site.Address)) {
-                <dt>Address:</dt>
-                <dd>@site.Address</dd>
+            <dl class="govuk-summary-list">
+              @if (!string.IsNullOrEmpty(@site.Address))
+              {
+                <div class="govuk-summary-list__row">
+                  <dt class="govuk-summary-list__key">Address:</dt>
+                  <dd class="govuk-summary-list__value">@site.Address</dd>
+                </div>
               }
               @if (!string.IsNullOrEmpty(@site.Status))
               {
-                <dt>Status:</dt>
-                <dd>@site.GetSiteStatus()</dd>
+                <div class="govuk-summary-list__row">
+                  <dt class="govuk-summary-list__key">Status:</dt>
+                  <dd class="govuk-summary-list__value">@site.GetSiteStatus()</dd>
+                </div>
               }
-              <dt>Vacancies:</dt>
-              <dd>@site.GetVacancyStatus()</dd>
-              @if (!string.IsNullOrEmpty(@site.ApplicationsAcceptedFrom)) {
-                <dt>Apply from:</dt>
-                <dd>@site.ApplicationsAcceptedFrom</dd>
+              <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">Vacancies:</dt>
+                <dd class="govuk-summary-list__value">@site.GetVacancyStatus()</dd>
+              </div>
+              @if (!string.IsNullOrEmpty(@site.ApplicationsAcceptedFrom))
+              {
+                <div class="govuk-summary-list__row">
+                  <dt class="govuk-summary-list__key">Apply from:</dt>
+                  <dd class="govuk-summary-list__value">@site.ApplicationsAcceptedFrom</dd>
+                </div>
               }
             </dl>
           }
@@ -141,15 +151,20 @@
                 @foreach (var site in Model.Course.Sites.Where(x => x.Status == "S"))
                 {
                   <h3 class="govuk-heading-s">@site.LocationName (Code: @site.Code)</h3>
-                  <dl class="govuk-list govuk-list--description">
-                    @if (!string.IsNullOrEmpty(@site.Address)) {
-                      <dt>Address:</dt>
-                      <dd>@site.Address</dd>
+                  <dl class="govuk-summary-list">
+                    @if (!string.IsNullOrEmpty(@site.Address))
+                    {
+                      <div class="govuk-summary-list__row">
+                        <dt class="govuk-summary-list__key">Address:</dt>
+                        <dd class="govuk-summary-list__value">@site.Address</dd>
+                      </div>
                     }
                     @if (!string.IsNullOrEmpty(@site.Status))
                     {
-                      <dt>Status:</dt>
-                      <dd>@site.GetSiteStatus()</dd>
+                      <div class="govuk-summary-list__row">
+                        <dt class="govuk-summary-list__key">Status:</dt>
+                        <dd class="govuk-summary-list__value">@site.GetSiteStatus()</dd>
+                      </div>
                     }
                   </dl>
                 }
