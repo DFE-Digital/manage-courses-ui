@@ -25,8 +25,13 @@
     <div class="govuk-grid-column-two-thirds">
       <h1 class="govuk-heading-xl">@Model.ProviderName</h1>
       <h2 class="govuk-heading-l">Step 1. About your organisation</h2>
-      <p class="govuk-body">You need to add a description of your organisation - this is a chance to tell applicants why they should train with you. You should also say what you do for candidates with disabilities and other needs, and check your contact details to make sure they're correct.</p>
-      <p class="govuk-body">Once you’ve published your organisation information, it will show on each of your course pages. You’ll have to add your course details separately in Step 2 below.</p>
+      <p>Use this section to:</p>
+      <ul class="govuk-list govuk-list--bullet">
+        <li>write about your organisation</li>
+        <li>set your contact details</li>
+        <li>publish this information on all course pages</li>
+      </ul>
+
       <p class="govuk-body"><strong class="govuk-tag govuk-tag--@Model.Status.ToLower() govuk-tag--inline">@Model.Status</strong> <a class="govuk-link" href="@Url.Action("Details", "Organisation")">Fill in your organisation information</a></p>
     </div>
   </div>
@@ -36,13 +41,14 @@
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
       <h2 class="govuk-heading-l">Step 2. Course details</h2>
-      <h3 class="govuk-heading-m">Preview and publish courses</h3>
-      <p class="govuk-body">Give more details about each of your courses - including their structure and content, information about fees and financial help, and the qualifications needed for them.</p>
-      <p class="govuk-body">Make sure you preview each course before you publish it, to see how it will look online to applicants.</p>
-      <p class="govuk-body">You will always be able to edit and publish course information.</p>
+      <p>Use this section to:</p>
+      <ul class="govuk-list govuk-list--bullet">
+        <li>write about each course</li>
+        <li>preview and publish courses</li>
+        <li>copy content between courses</li>
+      </ul>
 
-      <h3 class="govuk-heading-m">Copying content between courses</h3>
-      <p class="govuk-body">After you’ve saved your first course, when you’re completing the next you can use the ‘copy from course’ feature to fill in fields. This can be found on the ‘About this course’, ‘Course length and fees’ and ‘Requirements and eligibility’ pages.</p>
+      <p class="govuk-body">Preview each course before you publish it, to see how it will look online to applicants.</p>
     </div>
   </div>
 
