@@ -40,108 +40,143 @@
 
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
+
       <div class="course-parts">
-        <div class="course-parts__item">
-          <h3 class="course-parts__title">Contact details</h3>
-          <a class="course-parts__action" href="@Url.Action("Contact", "Organisation", new {providerCode = Model.ProviderCode})">Edit<span class="govuk-visually-hidden"> your organisation's contact details</span></a>
-          <dl class="course-parts__fields" role="contentinfo">
-            <dt class="course-parts__fields__label @(email_address ? "course-parts__fields__label--error" : "")">Email address</dt>
-            <dd class="course-parts__fields__value @(string.IsNullOrWhiteSpace(Model.EmailAddress) ? "course-parts__fields__value--empty" : "")">
-              @if (email_address) {
-                <a href="@urlForContact#EmailAddress-wrapper" class="govuk-link"><span asp-validation-for="EmailAddress" ></span></a>
-              }
-              @if (!String.IsNullOrWhiteSpace(Model.EmailAddress))
-              {
-                <a href="mailto:@Model.EmailAddress" title="Send email to course contact" aria-label="Send email to course contact" class="govuk-link">@Model.EmailAddress.DisplayText()</a>
-              }
-              else
-              {
-                @Model.EmailAddress.DisplayText()
-              }
-            </dd>
-            <dt class="course-parts__fields__label @(telephone ? "course-parts__fields__label--error" : "")">Telephone number</dt>
-            <dd class="course-parts__fields__value @(string.IsNullOrWhiteSpace(Model.Telephone) ? "course-parts__fields__value--empty" : "")">
-              @if (telephone) {
-                <a href="@urlForContact#Telephone-wrapper" class="govuk-link"><span asp-validation-for="Telephone" ></span></a>
-              }
-              @Model.Telephone.DisplayText()
-            </dd>
-            <dt class="course-parts__fields__label @(org_url ? "course-parts__fields__label--error" : "")">Website</dt>
-            <dd class="course-parts__fields__value @(string.IsNullOrWhiteSpace(Model.Url) ? "course-parts__fields__value--empty" : "")">
-              @if (org_url) {
-                <a href="@urlForContact#Url-wrapper" class="govuk-link"><span asp-validation-for="Url" ></span></a>
-              }
-              @if (!String.IsNullOrWhiteSpace(Model.Url))
-              {
-                <a href="@Model.Url" class="govuk-link">@Model.Url.DisplayText()</a>
-              }
-              else
-              {
-                @Model.Url.DisplayText()
-              }
-            </dd>
-            <dt class="course-parts__fields__label @(address ? "course-parts__fields__label--error" : "")">Contact address</dt>
-            <dd class="course-parts__fields__value">
-              @if(address) {
-                <a href="@urlForContact#Addr1-wrapper" class="govuk-link">Enter a complete address</a>
-              }
-              @if (!String.IsNullOrWhiteSpace(Model.Addr1))
-              {
-                @Model.Addr1<br>
-              }
-              @if (!String.IsNullOrWhiteSpace(Model.Addr2))
-              {
-                @Model.Addr2<br>
-              }
-              @if (!String.IsNullOrWhiteSpace(Model.Addr3))
-              {
-                @Model.Addr3<br>
-              }
-              @if (!String.IsNullOrWhiteSpace(Model.Addr4))
-              {
-                @Model.Addr4<br>
-              }
-              @if (!String.IsNullOrWhiteSpace(Model.Postcode))
-              {
-                @Model.Postcode
-              }
-            </dd>
+        <div class="course-parts__item course-parts__item--borderless">
+          <h3 class="govuk-heading-m govuk-!-font-size-27">
+            <a class="govuk-link" href="@Url.Action("Contact", "Organisation", new {providerCode = Model.ProviderCode})">
+              Contact details
+            </a>
+          </h3>
+          <dl class="govuk-summary-list">
+            <div class="govuk-summary-list__row">
+              <dt class="govuk-summary-list__key @(email_address ? "course-parts__fields__label--error" : "")">
+                Email address
+                @if (email_address) {
+                  <a href="@urlForContact#EmailAddress-wrapper" class="govuk-link"><span asp-validation-for="EmailAddress" ></span></a>
+                }
+              </dt>
+              <dd class="govuk-summary-list__value govuk-summary-list__value--truncated @(string.IsNullOrWhiteSpace(Model.EmailAddress) ? "course-parts__fields__value--empty" : "")">
+                @if (!String.IsNullOrWhiteSpace(Model.EmailAddress))
+                {
+                  <a href="mailto:@Model.EmailAddress" title="Send email to course contact" aria-label="Send email to course contact" class="govuk-link">@Model.EmailAddress.DisplayText()</a>
+                }
+                else
+                {
+                  @Model.EmailAddress.DisplayText()
+                }
+              </dd>
+            </div>
+            <div class="govuk-summary-list__row">
+              <dt class="govuk-summary-list__key @(telephone ? "course-parts__fields__label--error" : "")">
+                Telephone number
+                @if (telephone) {
+                  <a href="@urlForContact#Telephone-wrapper" class="govuk-link"><span asp-validation-for="Telephone" ></span></a>
+                }
+              </dt>
+              <dd class="govuk-summary-list__value govuk-summary-list__value--truncated @(string.IsNullOrWhiteSpace(Model.Telephone) ? "course-parts__fields__value--empty" : "")">
+                @Model.Telephone.DisplayText()
+              </dd>
+            </div>
+            <div class="govuk-summary-list__row">
+              <dt class="govuk-summary-list__key @(org_url ? "course-parts__fields__label--error" : "")">
+                Website
+                @if (org_url) {
+                  <a href="@urlForContact#Url-wrapper" class="govuk-link"><span asp-validation-for="Url" ></span></a>
+                }
+              </dt>
+              <dd class="govuk-summary-list__value govuk-summary-list__value--truncated @(string.IsNullOrWhiteSpace(Model.Url) ? "course-parts__fields__value--empty" : "")">
+                @if (!String.IsNullOrWhiteSpace(Model.Url))
+                {
+                  <a href="@Model.Url" class="govuk-link">@Model.Url.DisplayText()</a>
+                }
+                else
+                {
+                  @Model.Url.DisplayText()
+                }
+              </dd>
+            </div>
+            <div class="govuk-summary-list__row">
+              <dt class="govuk-summary-list__key @(address ? "course-parts__fields__label--error" : "")">
+                Contact address
+                @if(address) {
+                  <a href="@urlForContact#Addr1-wrapper" class="govuk-link">Enter a complete address</a>
+                }
+              </dt>
+              <dd class="govuk-summary-list__value">
+                @if (!String.IsNullOrWhiteSpace(Model.Addr1))
+                {
+                  @Model.Addr1<br>
+                }
+                @if (!String.IsNullOrWhiteSpace(Model.Addr2))
+                {
+                  @Model.Addr2<br>
+                }
+                @if (!String.IsNullOrWhiteSpace(Model.Addr3))
+                {
+                  @Model.Addr3<br>
+                }
+                @if (!String.IsNullOrWhiteSpace(Model.Addr4))
+                {
+                  @Model.Addr4<br>
+                }
+                @if (!String.IsNullOrWhiteSpace(Model.Postcode))
+                {
+                  @Model.Postcode
+                }
+              </dd>
+            </div>
           </dl>
         </div>
-        <div class="course-parts__item">
-          <h3 class="course-parts__title">About your organisation</h3>
-          <a class="course-parts__action" href="@Url.Action("About", "Organisation", new {providerCode = Model.ProviderCode})">Edit<span class="govuk-visually-hidden"> about your organisation</span></a>
-          <dl class="course-parts__fields">
-            <dt class="course-parts__fields__label @(train_with_us ? "course-parts__fields__label--error" : "")" id="section-TrainWithUs">About your organisation</dt>
-            <dd class="course-parts__fields__value @(string.IsNullOrWhiteSpace(Model.TrainWithUs) ? "course-parts__fields__value--empty" : "")">
-              @if (train_with_us) {
-                <a href="@url#TrainWithUs-wrapper" class="govuk-link"><span asp-validation-for="TrainWithUs" ></span></a>
-              }
-              @Model?.TrainWithUs.DisplayText()
-            </dd>
+
+        <div class="course-parts__item course-parts__item--borderless">
+          <h3 class="govuk-heading-m govuk-!-font-size-27">
+            <a class="govuk-link" href="@Url.Action("About", "Organisation", new {providerCode = Model.ProviderCode})">
+              About your organisation
+            </a>
+          </h3>
+          <dl class="govuk-summary-list">
+            <div class="govuk-summary-list__row">
+              <dt class="govuk-summary-list__key @(train_with_us ? "course-parts__fields__label--error" : "")" id="section-TrainWithUs">
+                About your organisation
+                @if (train_with_us) {
+                  <a href="@url#TrainWithUs-wrapper" class="govuk-link"><span asp-validation-for="TrainWithUs" ></span></a>
+                }
+              </dt>
+              <dd class="govuk-summary-list__value govuk-summary-list__value--truncated @(string.IsNullOrWhiteSpace(Model.TrainWithUs) ? "course-parts__fields__value--empty" : "")">
+                @Model?.TrainWithUs.DisplayText()
+              </dd>
+            </div>
             @if(Model.AboutTrainingProviders.Any()) {
               @for (int i = 0; i < Model.AboutTrainingProviders.Count; i++) {
-                  var aboutTrainingProviderKey = "AboutTrainingProviders_"+i+"__Description";
-                  var hasErrored = ViewData.ModelState[aboutTrainingProviderKey] != null && ViewData.ModelState[aboutTrainingProviderKey].Errors.Any();
-                <dt class="course-parts__fields__label @(hasErrored ? "course-parts__fields__label--error" : "")" id="AboutTrainingProviders_"+i+"__Description">
-                  @Model.AboutTrainingProviders[i].ProviderName (optional)
-                </dt>
-                <dd class="course-parts__fields__value @(string.IsNullOrWhiteSpace(Model.AboutTrainingProviders[i].Description) ? "course-parts__fields__value--empty" : "")">
-                  @Model.AboutTrainingProviders[i].Description.DisplayText()
-                </dd>
+                var aboutTrainingProviderKey = "AboutTrainingProviders_"+i+"__Description";
+                var hasErrored = ViewData.ModelState[aboutTrainingProviderKey] != null && ViewData.ModelState[aboutTrainingProviderKey].Errors.Any();
+                <div class="govuk-summary-list__row">
+                  <dt class="govuk-summary-list__key @(hasErrored ? "course-parts__fields__label--error" : "")" id="AboutTrainingProviders_"+i+"__Description">
+                    @Model.AboutTrainingProviders[i].ProviderName (optional)
+                  </dt>
+                  <dd class="govuk-summary-list__value govuk-summary-list__value--truncated @(string.IsNullOrWhiteSpace(Model.AboutTrainingProviders[i].Description) ? "course-parts__fields__value--empty" : "")">
+                    @Model.AboutTrainingProviders[i].Description.DisplayText()
+                  </dd>
+                </div>
               }
             }
-            <dt class="course-parts__fields__label @(train_with_disability ? "course-parts__fields__label--error" : "")" id="section-TrainWithDisability">Training with disabilities and other needs</dt>
-            <dd class="course-parts__fields__value @(string.IsNullOrWhiteSpace(Model.TrainWithDisability) ? "course-parts__fields__value--empty" : "")">
-              @if (train_with_disability) {
-                <a href="@url#TrainWithDisability-wrapper" class="govuk-link"><span asp-validation-for="TrainWithDisability" ></span></a>
-              }
-              @Model?.TrainWithDisability.DisplayText()
-            </dd>
+            <div class="govuk-summary-list__row">
+              <dt class="govuk-summary-list__key @(train_with_disability ? "course-parts__fields__label--error" : "")" id="section-TrainWithDisability">
+                Training with disabilities and other needs
+                @if (train_with_disability) {
+                  <a href="@url#TrainWithDisability-wrapper" class="govuk-link"><span asp-validation-for="TrainWithDisability" ></span></a>
+                }
+              </dt>
+              <dd class="govuk-summary-list__value govuk-summary-list__value--truncated @(string.IsNullOrWhiteSpace(Model.TrainWithDisability) ? "course-parts__fields__value--empty" : "")">
+                @Model?.TrainWithDisability.DisplayText()
+              </dd>
+            </div>
           </dl>
         </div>
       </div>
     </div>
+
     <div class="govuk-grid-column-one-third">
 
       <aside class="related">
