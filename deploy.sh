@@ -7,8 +7,8 @@ set -e
 env=$1
 
 # convert env to uppercase to match environment variable case
-upperenv=`echo "$env" | tr '[:lower:]' '[:upper:]'
-`
+upperenv=`echo "$env" | tr '[:lower:]' '[:upper:]'`
+
 eval "password=\$APP_CREDENTIALS_${upperenv}_PWD"
 
 git fetch --unshallow
