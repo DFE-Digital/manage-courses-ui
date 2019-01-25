@@ -9,13 +9,13 @@ matrix:
         - dotnet test ManageCoursesUi.Tests
       deploy:
         - provider: script
-          script: git fetch --unshallow && git push --force https://$bat-dev-manage-courses-ui-app:APP_CREDENTIALS_DEV_PWD@bat-dev-manage-courses-ui-app.scm.azurewebsites.net:443/bat-dev-manage-courses-ui-app.git HEAD:refs/heads/master
+          script: bash deploy.sh dev
           on: master
         - provider: script
-          script: git fetch --unshallow && git push --force https://$bat-staging-manage-courses-ui-app:APP_CREDENTIALS_STAGING_PWD@bat-staging-manage-courses-ui-app.scm.azurewebsites.net:443/bat-staging-manage-courses-ui-app.git HEAD:refs/heads/master
+          script: bash deploy.sh staging
           on: staging
         - provider: script
-          script: git fetch --unshallow && git push --force https://$bat-prod-manage-courses-ui-app:APP_CREDENTIALS_PROD_PWD@bat-prod-manage-courses-ui-app.scm.azurewebsites.net:443/bat-prod-manage-courses-ui-app.git HEAD:refs/heads/master
+          script: bash deploy.sh prod
           on: production
     - language: node_js
       node_js:
