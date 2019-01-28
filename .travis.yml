@@ -9,13 +9,13 @@ matrix:
     - dotnet test ManageCoursesUi.Tests
     deploy:
     - provider: script
-      script: bash deploy.sh dev
+      script: "./deploy.sh dev"
       on: master
     - provider: script
-      script: bash deploy.sh staging
+      script: "./deploy.sh staging"
       on: staging
     - provider: script
-      script: bash deploy.sh prod
+      script: "./deploy.sh prod"
       on: production
   - language: node_js
     node_js:
