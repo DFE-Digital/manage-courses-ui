@@ -60,6 +60,25 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             return View(model);
         }
 
+        [Route("{providerCode}/courses")]
+        public async Task<IActionResult> Courses(string providerCode)
+        {
+            var providerCourses = await _manageApi.GetCoursesOfProvider(providerCode);
+            var summary = await _manageApi.GetProviderSummary(providerCode);
+            var multipleOrganisations = (await _manageApi.GetProviderSummaries()).Count() > 1;
+            var providers = GetProviders(providerCourses);
+
+            var model = new CourseListViewModel
+            {
+                ProviderName = summary.ProviderName,
+                ProviderCode = summary.ProviderCode,
+                Providers = providers,
+                MultipleOrganisations = multipleOrganisations
+            };
+
+            return View(model);
+        }
+
         [HttpGet]
         [Route("{providerCode}/details")]
         public async Task<IActionResult> Details(string providerCode)
