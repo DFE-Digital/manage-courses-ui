@@ -9,7 +9,24 @@
   var routeData = courseEnrichment.RouteData;
 }
 
-<a href="@Url.Action("Show", "Organisation", new {providerCode = Model.Course.ProviderCode})" class="govuk-back-link">Back</a>
+<nav class="govuk-breadcrumbs">
+  <ol class="govuk-breadcrumbs__list">
+    @if (Model.MultipleOrganisations) {
+      <li class="govuk-breadcrumbs__list-item">
+        <a href="@Url.Action("index", "Organisations")" class="govuk-breadcrumbs__link">Organisations</a>
+      </li>
+    }
+    <li class="govuk-breadcrumbs__list-item">
+      <a href="@Url.Action("Show", "Organisation", new {providerCode = Model.Course.ProviderCode})" class="govuk-breadcrumbs__link">@Model.ProviderName</a>
+    </li>
+    <li class="govuk-breadcrumbs__list-item">
+      <a href="@Url.Action("Courses", "Organisation", new {providerCode = Model.Course.ProviderCode})" class="govuk-breadcrumbs__link">Courses</a>
+    </li>
+    <li class="govuk-breadcrumbs__list-item" aria-current="page">
+      @Model.Course.CourseTitle (@Model.Course.CourseCode)
+    </li>
+  </ol>
+</nav>
 
 <main role="main" class="govuk-main-wrapper" id="main-content">
   @await Html.PartialAsync("~/Views/Shared/_Alerts.cshtml")

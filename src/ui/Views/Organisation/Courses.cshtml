@@ -1,0 +1,91 @@
+@model CourseListViewModel;
+
+@{
+  ViewBag.Title = "Courses - " + Model.ProviderName;
+}
+
+<nav class="govuk-breadcrumbs">
+  <ol class="govuk-breadcrumbs__list">
+    @if (Model.MultipleOrganisations) {
+      <li class="govuk-breadcrumbs__list-item">
+        <a href="@Url.Action("index", "Organisations")" class="govuk-breadcrumbs__link">Organisations</a>
+      </li>
+    }
+    <li class="govuk-breadcrumbs__list-item">
+      <a href="@Url.Action("Show", "Organisation", new {providerCode = Model.ProviderCode})" class="govuk-breadcrumbs__link">@Model.ProviderName</a>
+    </li>
+    <li class="govuk-breadcrumbs__list-item" aria-current="page">
+      Courses
+    </li>
+  </ol>
+</nav>
+
+<main role="main" class="govuk-main-wrapper" id="main-content">
+  @await Html.PartialAsync("~/Views/Shared/_Alerts.cshtml")
+
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <h1 class="govuk-heading-xl">Courses</h1>
+      <p>Use this section to:</p>
+      <ul class="govuk-list govuk-list--bullet govuk-!-margin-bottom-8">
+        <li>write about each course</li>
+        <li>preview and publish courses</li>
+        <li>copy content between courses</li>
+      </ul>
+    </div>
+  </div>
+
+  @foreach (var provider in Model.Providers)
+  {
+    if (!string.IsNullOrWhiteSpace(provider.ProviderCode))
+    {
+      <h3 class="govuk-heading-m">
+        <span class="govuk-caption-m">Accredited body</span>
+        @provider.ProviderName
+      </h3>
+    }
+
+    <table class="ucas-info-table govuk-table">
+      <thead class="govuk-table__head">
+        <tr class="govuk-table__row">
+          <th class="govuk-table__header ucas-info-table__subject-col" scope="col">Course</th>
+          <th class="govuk-table__header ucas-info-table__status-col" scope="col">Status</th>
+          <th class="govuk-table__header ucas-info-table__content-status-col" scope="col">Content</th>
+          <th class="govuk-table__header ucas-info-table__has-vancancies-col" scope="col">Vacancies</th>
+        </tr>
+      </thead>
+      <tbody class="govuk-table__body">
+      @foreach (var course in provider.Courses)
+      {
+        <tr class="govuk-table__row">
+          <td class="govuk-table__cell">
+            <a href="@Url.Action("show", "course", new {providerCode = Model.ProviderCode, accreditingInstCode = course.AccreditingProvider?.ProviderCode, courseCode = course.CourseCode})" class="govuk-heading-s govuk-!-margin-0">@course.Name (@course.CourseCode)</a>
+            <span class="govuk-body-s">@course.TypeDescription</span>
+          </td>
+          <td class="govuk-table__cell">@course.GetCourseStatus()</td>
+          <td class="govuk-table__cell">
+            @if(course.CanHaveEnrichment())
+            {
+              @switch(course.EnrichmentWorkflowStatus)
+              {
+                case EnumStatus.Draft:
+                  <div class="govuk-tag govuk-tag--inline govuk-tag--draft">draft</div>
+                  break;
+                case EnumStatus.Published:
+                  <div class="govuk-tag govuk-tag--inline govuk-tag--published">published</div>
+                  break;
+                default:
+                  <div class="govuk-tag govuk-tag--inline govuk-tag--empty">empty</div>
+                  break;
+              }
+            }
+          </td>
+          <td class="govuk-table__cell">@course.GetHasVacancies()</td>
+        </tr>
+      }
+      </tbody>
+    </table>
+  }
+
+</main>
