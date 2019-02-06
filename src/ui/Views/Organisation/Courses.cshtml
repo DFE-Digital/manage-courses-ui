@@ -51,7 +51,10 @@
         <tr class="govuk-table__row">
           <th class="govuk-table__header ucas-info-table__subject-col" scope="col">Course</th>
           <th class="govuk-table__header ucas-info-table__status-col" scope="col">Status</th>
-          <th class="govuk-table__header ucas-info-table__content-status-col" scope="col">Content</th>
+          <th class="govuk-table__header ucas-info-table__content-status-col" scope="col">
+            Is it on <abbr title="Find postgraduate teacher training">Find</abbr>?
+          </th>
+          <th class="govuk-table__header ucas-info-table__has-vancancies-col" scope="col">Applications</th>
           <th class="govuk-table__header ucas-info-table__has-vancancies-col" scope="col">Vacancies</th>
         </tr>
       </thead>
@@ -70,17 +73,15 @@
               @switch(course.EnrichmentWorkflowStatus)
               {
                 case EnumStatus.Draft:
-                  <div class="govuk-tag govuk-tag--inline govuk-tag--draft">draft</div>
+                  <p class="govuk-body govuk-!-margin-0">No – still in draft</p>
                   break;
                 case EnumStatus.Published:
-                  <div class="govuk-tag govuk-tag--inline govuk-tag--published">published</div>
-                  break;
-                default:
-                  <div class="govuk-tag govuk-tag--inline govuk-tag--empty">empty</div>
+                  <a href="#TODO">Yes - view online</a>
                   break;
               }
             }
           </td>
+          <td class="govuk-table__cell"></td>
           <td class="govuk-table__cell">@course.GetHasVacancies()</td>
         </tr>
       }
