@@ -10,12 +10,36 @@ namespace GovUk.Education.ManageCourses.Ui.Helpers
 {
     public static class ViewModelHelpers
     {
+        private const string Running = "Running";
+        private const string NotRunning = "Not running";
+
+        public static bool IsRunning (this Course course) => course.GetCourseStatus() == Running;
+        public static bool IsNotRunning (this Course course) => course.GetCourseStatus() == NotRunning;
+        public static string GetApplicationStatus(this Course course)
+        {
+            var isOpen = course.CourseSites
+                .Where(s =>
+                    string.Equals(s.Status, "r", StringComparison.InvariantCultureIgnoreCase))
+                .Select(x => {
+                    DateTime? dateResult = null;
+                    DateTime date;
+                    if(DateTime.TryParse(x.ApplicationsAcceptedFrom, out date)){
+                        dateResult = date;
+                    }
+                    return dateResult;
+                })
+                .Select(x => x <= DateTime.UtcNow )
+                .Any(x => x);
+
+            return isOpen && course.HasVacancies ? "Open" : "Closed";
+        }
+
         public static string GetCourseStatus(this Course course)
         {
             var result = "";
             if (course.CourseSites.Any(s => String.Equals(s.Status, "r", StringComparison.InvariantCultureIgnoreCase)))
             {
-                result = "Running";
+                result = Running;
             }
             else if (course.CourseSites.Any(s => String.Equals(s.Status, "n", StringComparison.InvariantCultureIgnoreCase)))
             {
@@ -23,14 +47,14 @@ namespace GovUk.Education.ManageCourses.Ui.Helpers
             }
             else if (course.CourseSites.Any(s => String.Equals(s.Status, "d", StringComparison.InvariantCultureIgnoreCase)) || course.CourseSites.Any(s => String.Equals(s.Status, "s", StringComparison.InvariantCultureIgnoreCase)))
             {
-                result = "Not running";
+                result = NotRunning;
             }
             return result;
         }
 
         public static bool CanHaveEnrichment(this Course course)
         {
-            return course != null && course.GetCourseStatus() != "Not running";
+            return course != null && course.GetCourseStatus() != NotRunning;
         }
 
         public static string GetSiteStatus(this SiteViewModel school)

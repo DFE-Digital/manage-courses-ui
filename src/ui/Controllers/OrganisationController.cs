@@ -44,7 +44,6 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             var providerCourses = await _manageApi.GetCoursesOfProvider(providerCode);
             var summary = await _manageApi.GetProviderSummary(providerCode);
             var multipleOrganisations = (await _manageApi.GetProviderSummaries()).Count() > 1;
-            var providers = GetProviders(providerCourses);
 
             var status = ucasProviderEnrichmentGetModel?.Status.ToString() ?? "Empty";
 
@@ -52,28 +51,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             {
                 ProviderName = summary.ProviderName,
                 ProviderCode = summary.ProviderCode,
-                Providers = providers,
                 MultipleOrganisations = multipleOrganisations,
-                Status = status
-            };
-
-            return View(model);
-        }
-
-        [Route("{providerCode}/courses")]
-        public async Task<IActionResult> Courses(string providerCode)
-        {
-            var providerCourses = await _manageApi.GetCoursesOfProvider(providerCode);
-            var summary = await _manageApi.GetProviderSummary(providerCode);
-            var multipleOrganisations = (await _manageApi.GetProviderSummaries()).Count() > 1;
-            var providers = GetProviders(providerCourses);
-
-            var model = new CourseListViewModel
-            {
-                ProviderName = summary.ProviderName,
-                ProviderCode = summary.ProviderCode,
-                Providers = providers,
-                MultipleOrganisations = multipleOrganisations
             };
 
             return View(model);
@@ -324,26 +302,6 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
         {
             return y => String.Equals(x.AccreditingProvider?.ProviderCode,
                 y.UcasProviderCode, StringComparison.InvariantCultureIgnoreCase);
-        }
-
-        private List<ViewModels.Provider> GetProviders(List<Domain.Models.Course> providerCourses)
-        {
-            var uniqueAccreditingProviderCodes = providerCourses.Select(c => c.AccreditingProvider?.ProviderCode).Distinct();
-            var providers = new List<ViewModels.Provider>();
-            foreach (var uniqueAccreditingProviderCode in uniqueAccreditingProviderCodes)
-            {
-                var name = providerCourses.First(c => c.AccreditingProvider?.ProviderCode == uniqueAccreditingProviderCode)
-                    .AccreditingProvider?.ProviderName;
-                var courses = providerCourses.Where(c => c.AccreditingProvider?.ProviderCode == uniqueAccreditingProviderCode).ToList();
-                providers.Add(new ViewModels.Provider
-                {
-                    ProviderCode = uniqueAccreditingProviderCode,
-                    ProviderName = name,
-                    Courses = courses,
-                    TotalCount = courses.Count,
-                });
-            }
-            return providers;
         }
 
         public void ValidateContactModel(OrganisationViewModelForContact model)

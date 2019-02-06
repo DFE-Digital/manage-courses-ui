@@ -70,11 +70,12 @@ $success-green: #00823b;
   }
 
   &__subject-col {
-    width: 50%;
+    width: 40%;
   }
 
   &__status-col,
-  &__content-status-col {
+  &__content-status-col,
+  &__find-status-col {
     width: 20%;
   }
 
