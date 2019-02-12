@@ -101,3 +101,8 @@ $success-green: #00823b;
   list-style-image: url('/images/dash.png');
   margin-bottom: govuk-spacing(8);
 }
+
+.govuk-footer__content {
+  @include govuk-font($size: 16, $line-height: 1.5);
+  color: $govuk-text-colour;
+}
