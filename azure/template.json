@@ -1,0 +1,169 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "appServiceName": {
+            "type": "string",
+            "metadata": {
+                "description": "The name of the app service."
+            }
+        },
+        "appServicePlanName": {
+            "type": "string",
+            "metadata": {
+                "description": "The name of the app service plan."
+            }
+        },
+        "aspNetCoreEnvironment": {
+            "type": "string",
+            "defaultValue": "Production",
+            "metadata": {
+                "description": "Value for ASPNETCORE_ENVIRONMENT environment variable."
+            }
+        },
+        "searchAndCompareUiBaseUrl": {
+            "type": "string",
+            "metadata": {
+                "description": "The location of the search and compare UI, avoid trailing slash."
+            }
+        },
+        "manageCoursesApiUrl": {
+            "type": "string",
+            "metadata": {
+                "description": "The location of the manage courses API."
+            }
+        },
+        "signinClientSecret": {
+            "type": "string",
+            "metadata": {
+                "description": "The client secret for Signin"
+            }
+        },
+        "signinMetadataAddress": {
+            "type": "string",
+            "metadata": {
+                "description": "The .well-known config URL for Signin"
+            }
+        },
+        "signinTokenEndpoint": {
+            "type": "string",
+            "metadata": {
+                "description": "The /token endpoint as specified in the .well-known config URL for Signin"
+            }
+        },
+        "signinClientId": {
+            "type": "string",
+            "metadata": {
+                "description": "The Client ID to be used with Signin"
+            }
+        }
+    },
+    "variables": {
+        "templateBaseUrl": "https://raw.githubusercontent.com/DFE-Digital/bat-platform-building-blocks/master/templates/"
+    },
+    "resources": [
+        {
+            "name": "app-service-plan",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2017-05-10",
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[concat(variables('templateBaseUrl'), 'app-service-plan.json')]",
+                    "contentVersion": "1.0.0.0"
+                },
+                "parameters": {
+                    "appServicePlanName": {
+                        "value": "[parameters('appServicePlanName')]"
+                    },
+                    "appServicePlanOS": {
+                        "value": "Windows"
+                    }
+                }
+            }
+        },
+        {
+            "name": "app-service",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2017-05-10",
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[concat(variables('templateBaseUrl'), 'app-service-windows.json')]",
+                    "contentVersion": "1.0.0.0"
+                },
+                "parameters": {
+                    "appServiceName": {
+                        "value": "[parameters('appServiceName')]"
+                    },
+                    "appServicePlanResourceGroup": {
+                        "value": "[resourceGroup().name]"
+                    },
+                    "appServicePlanName": {
+                        "value": "[parameters('appServicePlanName')]"
+                    },
+                    "appServiceAppSettings": {
+                        "value": [
+                            {
+                                "name": "APPINSIGHTS_INSTRUMENTATIONKEY",
+                                "value": "[reference('app-insights').outputs.instrumentationKey.value]"
+                            },
+                            {
+                                "name": "SearchAndCompare__UiBaseUrl",
+                                "value": "[parameters('searchAndCompareUiBaseUrl')]"
+                            },
+                            {
+                                "name": "ASPNETCORE_ENVIRONMENT",
+                                "value": "[parameters('aspNetCoreEnvironment')]"
+                            },
+                            {
+                                "name": "API_URL",
+                                "value": "[parameters('manageCoursesApiUrl')]"
+                            },
+                            {
+                                "name": "DFE_SIGNIN_CLIENT_SECRET",
+                                "value": "[parameters('signinClientSecret')]"
+                            },
+                            {
+                                "name": "auth__oidc__metadataAddress",
+                                "value": "[parameters('signinMetadataAddress')]"
+                            },
+                            {
+                                "name": "auth__oidc__tokenEndpoint",
+                                "value": "[parameters('signinTokenEndpoint')]"
+                            },
+                            {
+                                "name": "auth__oidc__clientId",
+                                "value": "[parameters('signinClientId')]"
+                            }
+                        ]
+                    }
+                }
+            },
+            "dependsOn": [
+                "app-service-plan"
+            ]
+        },
+        {
+            "apiVersion": "2017-05-10",
+            "name": "app-insights",
+            "type": "Microsoft.Resources/deployments",
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[concat(variables('templateBaseUrl'), 'application-insights.json')]",
+                    "contentVersion": "1.0.0.0"
+                },
+                "parameters": {
+                    "appInsightsName": {
+                        "value": "[parameters('appServiceName')]"
+                    },
+                    "attachedService": {
+                        "value": "[parameters('appServiceName')]"
+                    }
+                }
+            }
+        }
+    ],
+    "outputs": {}
+}
