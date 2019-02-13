@@ -522,5 +522,42 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
                 CourseCode = courseCode
             };
         }
+        [Route("{providerCode}/courses")]
+        public async Task<IActionResult> Index(string providerCode)
+        {
+            var providerCourses = await _manageApi.GetCoursesOfProvider(providerCode);
+            var summary = await _manageApi.GetProviderSummary(providerCode);
+            var multipleOrganisations = (await _manageApi.GetProviderSummaries()).Count() > 1;
+            var providers = GetProviders(providerCourses);
+
+            var model = new CourseListViewModel
+            {
+                ProviderName = summary.ProviderName,
+                ProviderCode = summary.ProviderCode,
+                Providers = providers,
+                MultipleOrganisations = multipleOrganisations
+            };
+
+            return View(model);
+        }
+        private List<ViewModels.Provider> GetProviders(List<Domain.Models.Course> providerCourses)
+        {
+            var uniqueAccreditingProviderCodes = providerCourses.Select(c => c.AccreditingProvider?.ProviderCode).Distinct();
+            var providers = new List<ViewModels.Provider>();
+            foreach (var uniqueAccreditingProviderCode in uniqueAccreditingProviderCodes)
+            {
+                var name = providerCourses.First(c => c.AccreditingProvider?.ProviderCode == uniqueAccreditingProviderCode)
+                    .AccreditingProvider?.ProviderName;
+                var courses = providerCourses.Where(c => c.AccreditingProvider?.ProviderCode == uniqueAccreditingProviderCode).ToList();
+                providers.Add(new ViewModels.Provider
+                {
+                    ProviderCode = uniqueAccreditingProviderCode,
+                    ProviderName = name,
+                    Courses = courses,
+                    TotalCount = courses.Count,
+                });
+            }
+            return providers;
+        }
     }
 }

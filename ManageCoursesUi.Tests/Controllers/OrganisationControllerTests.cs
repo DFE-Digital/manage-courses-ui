@@ -61,7 +61,6 @@ namespace ManageCoursesUi.Tests
             var model = viewResult.ViewData.Model as CourseListViewModel;
 
             Assert.NotNull(model);
-            Assert.AreEqual(1, model.Providers.Count);
 
             Assert.IsTrue(model.MultipleOrganisations);
         }

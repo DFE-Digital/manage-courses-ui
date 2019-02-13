@@ -1,5 +1,7 @@
 @model CourseListViewModel;
 
+@inject GovUk.Education.ManageCourses.Ui.Services.ISearchAndCompareUrlService searchAndCompareUrlService;
+
 @{
   ViewBag.Title = "Courses - " + Model.ProviderName;
 }
@@ -50,8 +52,13 @@
       <thead class="govuk-table__head">
         <tr class="govuk-table__row">
           <th class="govuk-table__header ucas-info-table__subject-col" scope="col">Course</th>
-          <th class="govuk-table__header ucas-info-table__status-col" scope="col">Status</th>
+          <th class="govuk-table__header ucas-info-table__status-col" scope="col">UCAS Status</th>
           <th class="govuk-table__header ucas-info-table__content-status-col" scope="col">Content</th>
+
+          <th class="govuk-table__header ucas-info-table__find-status-col" scope="col">
+            Is it on <abbr title="Find postgraduate teacher training">Find</abbr>?
+          </th>
+          <th class="govuk-table__header ucas-info-table__has-applications-col" scope="col">Applications</th>
           <th class="govuk-table__header ucas-info-table__has-vancancies-col" scope="col">Vacancies</th>
         </tr>
       </thead>
@@ -70,7 +77,12 @@
               @switch(course.EnrichmentWorkflowStatus)
               {
                 case EnumStatus.Draft:
-                  <div class="govuk-tag govuk-tag--inline govuk-tag--draft">draft</div>
+                  @if(course.IsRunning()){
+                    <div class="govuk-tag govuk-tag--inline govuk-tag--published">published *</div>
+                    <div class="govuk-body govuk-body-s govuk-!-margin-0">* Unpublished changes</div>
+                  } else {
+                    <div class="govuk-tag govuk-tag--inline govuk-tag--draft">draft</div>
+                  }
                   break;
                 case EnumStatus.Published:
                   <div class="govuk-tag govuk-tag--inline govuk-tag--published">published</div>
@@ -81,7 +93,15 @@
               }
             }
           </td>
-          <td class="govuk-table__cell">@course.GetHasVacancies()</td>
+          <td class="govuk-table__cell">
+              @if(course.IsRunning()) {
+                  <a href="@searchAndCompareUrlService.GetCoursePageUri(course.Provider.ProviderCode, course.CourseCode)">Yes - view online</a>
+              } else {
+                <p class="govuk-body govuk-!-margin-0">@(course.IsNotRunning() ? "No" : "No – must be published on UCAS")</p>
+              }
+          </td>
+          <td class="govuk-table__cell">@(course.IsRunning() ? course.GetApplicationStatus() : "")</td>
+          <td class="govuk-table__cell">@(course.IsRunning() ? course.GetHasVacancies() : "")</td>
         </tr>
       }
       </tbody>
