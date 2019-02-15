@@ -232,7 +232,7 @@
             <div class="govuk-tag govuk-tag--empty">empty</div>
             break;
           case WorkflowStatus.SubsequentDraft:
-            <div class="govuk-tag govuk-tag--draft">draft</div>
+            <div class="govuk-tag govuk-tag--published">published *</div>
             break;
           case WorkflowStatus.Published:
             <div class="govuk-tag govuk-tag--published">published</div>
@@ -249,7 +249,7 @@
         @if (courseEnrichment.DeterminePublicationState() == WorkflowStatus.SubsequentDraft)
         {
           <div class="related__block">
-            <p class="govuk-body">You have unpublished changes.</p>
+            <p class="govuk-body">* You have unpublished changes.</p>
             <p class="govuk-body">Last saved:<br />@courseEnrichment.DraftLastUpdatedUtc.DateString()</p>
             @if (courseEnrichment.LastPublishedUtc.HasValue)
             {
