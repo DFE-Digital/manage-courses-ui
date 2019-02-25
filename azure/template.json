@@ -2,16 +2,44 @@
     "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "appServiceName": {
+        "resourceEnvironmentName": {
             "type": "string",
             "metadata": {
-                "description": "The name of the app service."
+                "description": "The environment of the resource."
             }
         },
-        "appServicePlanName": {
+        "serviceName": {
             "type": "string",
             "metadata": {
-                "description": "The name of the app service plan."
+                "description": "The abbriviation of the service name to be used when naming a resource."
+            }
+        },
+        "keyVaultName": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "The name of the key vault."
+            }
+        },
+        "keyVaultResourceGroup": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "The resource group for the key vault."
+            }
+        },
+        "customHostName": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "The custom hostname to add to the app service."
+            }
+        },
+        "certificateName": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "The name of the certificate in key vault."
             }
         },
         "aspNetCoreEnvironment": {
@@ -56,39 +84,14 @@
             "metadata": {
                 "description": "The Client ID to be used with Signin"
             }
-        },
-        "keyVaultName": {
-            "type": "string",
-            "defaultValue": "",
-            "metadata": {
-                "description": "The name of the key vault."
-            }
-        },
-        "keyVaultResourceGroup": {
-            "type": "string",
-            "defaultValue": "",
-            "metadata": {
-                "description": "The resource group for the key vault."
-            }
-        },
-        "customHostName": {
-            "type": "string",
-            "defaultValue": "",
-            "metadata": {
-                "description": "The custom hostname to add to the app service."
-            }
-        },
-        "certificateName": {
-            "type": "string",
-            "defaultValue": "",
-            "metadata": {
-                "description": "The name of the certificate in key vault."
-            }
         }
     },
     "variables": {
-        "templateBaseUrl": "https://raw.githubusercontent.com/DFE-Digital/bat-platform-building-blocks/master/templates/",
-        "keyvaultCertificateName": "[if(greater(length(parameters('certificateName')),0), parameters('certificateName'), replace(parameters('customHostName'), '.', '-'))]"
+        "deploymentUrlBase": "https://raw.githubusercontent.com/DFE-Digital/bat-platform-building-blocks/master/templates/",
+        "resourceNamePrefix": "[toLower(concat('bat-', parameters('resourceEnvironmentName'),'-', parameters('serviceName')))]",
+        "keyvaultCertificateName": "[if(greater(length(parameters('certificateName')),0), parameters('certificateName'), replace(parameters('customHostName'), '.', '-'))]",
+        "appServiceName": "[concat(variables('resourceNamePrefix'), '-as')]",
+        "appServicePlanName": "[concat(variables('resourceNamePrefix'), '-asp')]"
     },
     "resources": [
         {
@@ -99,7 +102,7 @@
             "properties": {
                 "mode": "Incremental",
                 "templateLink": {
-                    "uri": "[concat(variables('templateBaseUrl'), 'app-service-certificate.json')]",
+                    "uri": "[concat(variables('deploymentUrlBase'), 'app-service-certificate.json')]",
                     "contentVersion": "1.0.0.0"
                 },
                 "parameters": {
@@ -122,12 +125,12 @@
             "properties": {
                 "mode": "Incremental",
                 "templateLink": {
-                    "uri": "[concat(variables('templateBaseUrl'), 'app-service-plan.json')]",
+                    "uri": "[concat(variables('deploymentUrlBase'), 'app-service-plan.json')]",
                     "contentVersion": "1.0.0.0"
                 },
                 "parameters": {
                     "appServicePlanName": {
-                        "value": "[parameters('appServicePlanName')]"
+                        "value": "[variables('appServicePlanName')]"
                     },
                     "appServicePlanOS": {
                         "value": "Windows"
@@ -142,18 +145,18 @@
             "properties": {
                 "mode": "Incremental",
                 "templateLink": {
-                    "uri": "[concat(variables('templateBaseUrl'), 'app-service-windows.json')]",
+                    "uri": "[concat(variables('deploymentUrlBase'), 'app-service-windows.json')]",
                     "contentVersion": "1.0.0.0"
                 },
                 "parameters": {
                     "appServiceName": {
-                        "value": "[parameters('appServiceName')]"
+                        "value": "[variables('appServiceName')]"
                     },
                     "appServicePlanResourceGroup": {
                         "value": "[resourceGroup().name]"
                     },
                     "appServicePlanName": {
-                        "value": "[parameters('appServicePlanName')]"
+                        "value": "[variables('appServicePlanName')]"
                     },
                     "appServiceAppSettings": {
                         "value": [
@@ -210,19 +213,24 @@
             "properties": {
                 "mode": "Incremental",
                 "templateLink": {
-                    "uri": "[concat(variables('templateBaseUrl'), 'application-insights.json')]",
+                    "uri": "[concat(variables('deploymentUrlBase'), 'application-insights.json')]",
                     "contentVersion": "1.0.0.0"
                 },
                 "parameters": {
                     "appInsightsName": {
-                        "value": "[parameters('appServiceName')]"
+                        "value": "[variables('appServiceName')]"
                     },
                     "attachedService": {
-                        "value": "[parameters('appServiceName')]"
+                        "value": "[variables('appServiceName')]"
                     }
                 }
             }
         }
     ],
-    "outputs": {}
+    "outputs": {
+        "AppServiceName": {
+            "type": "string",
+            "value": "[variables('appServiceName')]"
+        }
+    }
 }
