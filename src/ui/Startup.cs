@@ -263,6 +263,7 @@ namespace GovUk.Education.ManageCourses.Ui
             });
             services.AddScoped<SearchAndCompare.UI.Shared.Features.IFeatureFlags, SearchAndCompare.UI.Shared.Features.FeatureFlags>();
             services.AddSingleton<ISearchAndCompareUrlService>(x => new SearchAndCompareUrlService(Configuration.GetValue("SearchAndCompare:UiBaseUrl", "")));
+            services.AddSingleton<IFrontendUrlService, FrontendUrlService>();
             services.AddSingleton<IHttpClient>(serviceProvider => {
                 var httpContextAccessor = serviceProvider.GetService<IHttpContextAccessor>();
 
