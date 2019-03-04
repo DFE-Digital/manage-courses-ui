@@ -1,15 +1,23 @@
 using System;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 
 namespace GovUk.Education.ManageCourses.Ui.Services
 {
     public class FrontendUrlService : IFrontendUrlService
     {
         private string frontendBaseUrl;
+        private readonly IConfiguration _configuration;
 
-        public FrontendUrlService(string frontendBaseUrl)
+        public FrontendUrlService(IConfiguration configuration)
         {
-            this.frontendBaseUrl = frontendBaseUrl;
+            _configuration = configuration;
+            this.frontendBaseUrl = _configuration["url:frontend"];
+        }
+
+        public bool ShouldRedirectOrganisationShow()
+        {
+            return _configuration["FEATURE_FRONTEND_ORGANISATION_SHOW"] == "true";
         }
 
         public RedirectResult RedirectToFrontend(string path)
