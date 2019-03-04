@@ -7,6 +7,7 @@ using GovUk.Education.ManageCourses.Api.Model;
 using GovUk.Education.ManageCourses.Domain.Models;
 using GovUk.Education.ManageCourses.Ui;
 using GovUk.Education.ManageCourses.Ui.Controllers;
+using GovUk.Education.ManageCourses.Ui.Services;
 using GovUk.Education.ManageCourses.Ui.ViewModels;
 using ManageCoursesUi.Tests.Mocks;
 using Microsoft.AspNetCore.Mvc;
@@ -51,7 +52,9 @@ namespace ManageCoursesUi.Tests
 
             apiMock.Setup(x => x.GetProviderSummary(It.IsAny<string>())).ReturnsAsync(orgs[1]);
 
-            var controller = new OrganisationController(apiMock.Object);
+            var frontendUrlMock = new Mock<IFrontendUrlService>();
+
+            var controller = new OrganisationController(apiMock.Object, frontendUrlMock.Object);
 
             var result = await controller.Show(providerCode);
 
@@ -85,7 +88,9 @@ namespace ManageCoursesUi.Tests
             apiMock.Setup(x => x.GetProviderSummaries())
                 .ReturnsAsync(orgs);
 
-            var controller = new OrganisationController(apiMock.Object);
+            var frontendUrlMock = new Mock<IFrontendUrlService>();
+
+            var controller = new OrganisationController(apiMock.Object, frontendUrlMock.Object);
 
             var result = controller.RequestAccess(providerCode);
 
@@ -117,7 +122,9 @@ namespace ManageCoursesUi.Tests
             apiMock.Setup(x => x.GetProviderSummaries())
                 .ReturnsAsync(orgs);
 
-            var controller = new OrganisationController(apiMock.Object);
+            var frontendUrlMock = new Mock<IFrontendUrlService>();
+
+            var controller = new OrganisationController(apiMock.Object, frontendUrlMock.Object);
             controller.ModelState.AddModelError("you", "failed");
             var result = await controller.RequestAccessPost(providerCode, new RequestAccessViewModel());
 
@@ -140,7 +147,9 @@ namespace ManageCoursesUi.Tests
 
             var tempDataMock = new Mock<ITempDataDictionary>();
 
-            var controller = new OrganisationController(apiMock.Object);
+            var frontendUrlMock = new Mock<IFrontendUrlService>();
+
+            var controller = new OrganisationController(apiMock.Object, frontendUrlMock.Object);
             controller.TempData = tempDataMock.Object;
 
             var result = await controller.RequestAccessPost(providerCode, viewModel);
@@ -216,7 +225,9 @@ namespace ManageCoursesUi.Tests
             apiMock.Setup(x => x.GetProviderEnrichment(providerCode))
                 .ReturnsAsync(ucasProviderEnrichmentGetModel);
 
-            var controller = new OrganisationController(apiMock.Object);
+            var frontendUrlMock = new Mock<IFrontendUrlService>();
+
+            var controller = new OrganisationController(apiMock.Object, frontendUrlMock.Object);
 
             var result = await controller.About(providerCode);
 
@@ -276,7 +287,9 @@ namespace ManageCoursesUi.Tests
                 It.IsAny<string>(),
                 It.IsAny<Object>()));
 
-            var controller = new OrganisationController(apiMock.Object);
+            var frontendUrlMock = new Mock<IFrontendUrlService>();
+
+            var controller = new OrganisationController(apiMock.Object, frontendUrlMock.Object);
 
             controller.ObjectValidator = objectValidator.Object;
 
@@ -339,7 +352,9 @@ namespace ManageCoursesUi.Tests
                 It.IsAny<string>(),
                 It.IsAny<Object>()));
 
-            var controller = new OrganisationController(apiMock.Object);
+            var frontendUrlMock = new Mock<IFrontendUrlService>();
+
+            var controller = new OrganisationController(apiMock.Object, frontendUrlMock.Object);
             controller.ObjectValidator = objectValidator.Object;
 
             controller.TempData = new Mock<ITempDataDictionary>().Object;
@@ -393,7 +408,8 @@ namespace ManageCoursesUi.Tests
 
             apiMock.Setup(x => x.PublishAllCoursesOfProviderToSearchAndCompare(providerCode))
                 .ReturnsAsync(true);
-            var controller = new OrganisationController(apiMock.Object);
+            var frontendUrlMock = new Mock<IFrontendUrlService>();
+            var controller = new OrganisationController(apiMock.Object, frontendUrlMock.Object);
             controller.ObjectValidator = objectValidator.Object;
 
             controller.TempData = new Mock<ITempDataDictionary>().Object;
@@ -475,7 +491,8 @@ namespace ManageCoursesUi.Tests
 
             apiMock.Setup(x => x.PublishAllCoursesOfProviderToSearchAndCompare(providerCode))
                 .ReturnsAsync(true);
-            var controller = new OrganisationControllerMockedValidation(apiMock.Object);
+            var frontendUrlMock = new Mock<IFrontendUrlService>();
+            var controller = new OrganisationControllerMockedValidation(apiMock.Object, frontendUrlMock.Object);
 
             var result = await controller.DetailsPost(providerCode, viewModel);
 
@@ -529,7 +546,9 @@ namespace ManageCoursesUi.Tests
                 It.IsAny<string>(),
                 It.IsAny<Object>()));
 
-            var controller = new OrganisationController(apiMock.Object);
+            var frontendUrlMock = new Mock<IFrontendUrlService>();
+
+            var controller = new OrganisationController(apiMock.Object, frontendUrlMock.Object);
             controller.ObjectValidator = objectValidator.Object;
             controller.TempData = new Mock<ITempDataDictionary>().Object;
 
@@ -604,7 +623,9 @@ namespace ManageCoursesUi.Tests
                 It.IsAny<string>(),
                 It.IsAny<Object>()));
 
-            var controller = new OrganisationController(apiMock.Object);
+            var frontendUrlMock = new Mock<IFrontendUrlService>();
+
+            var controller = new OrganisationController(apiMock.Object, frontendUrlMock.Object);
 
             controller.ObjectValidator = objectValidator.Object;
 
