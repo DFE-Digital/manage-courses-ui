@@ -15,7 +15,7 @@ namespace ManageCoursesUi.Tests.Services
         public void ReturnsRedirectResultToFrontend()
         {
             var configMock = new Mock<IConfiguration>();
-            configMock.SetupGet(c => c["url:frontend"]).Returns("http://frontend:123");
+            configMock.SetupGet(c => c["ManageCourses:FrontendBaseUrl"]).Returns("http://frontend:123");
 
             var searchAndCompareUrlService = new FrontendUrlService(configMock.Object);
 

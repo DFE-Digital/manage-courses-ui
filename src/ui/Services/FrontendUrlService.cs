@@ -12,7 +12,7 @@ namespace GovUk.Education.ManageCourses.Ui.Services
         public FrontendUrlService(IConfiguration configuration)
         {
             _configuration = configuration;
-            this.frontendBaseUrl = _configuration["url:frontend"];
+            this.frontendBaseUrl = _configuration["ManageCourses:FrontendBaseUrl"];
         }
 
         public bool ShouldRedirectOrganisationShow()
