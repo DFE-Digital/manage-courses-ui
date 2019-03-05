@@ -55,6 +55,12 @@
                 "description": "The location of the search and compare UI, avoid trailing slash."
             }
         },
+        "manageCoursesFrontendBaseUrl": {
+            "type": "string",
+            "metadata": {
+                "description": "The location of manage courses frontend, avoid trailing slash."
+            }
+        },
         "manageCoursesApiUrl": {
             "type": "string",
             "metadata": {
@@ -167,6 +173,10 @@
                             {
                                 "name": "SearchAndCompare__UiBaseUrl",
                                 "value": "[parameters('searchAndCompareUiBaseUrl')]"
+                            },
+                            {
+                                "name": "ManageCourses__FrontendBaseUrl",
+                                "value": "[parameters('manageCoursesFrontendBaseUrl')]"
                             },
                             {
                                 "name": "ASPNETCORE_ENVIRONMENT",
