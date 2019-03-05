@@ -8,8 +8,10 @@ using GovUk.Education.ManageCourses.Api.Model;
 using GovUk.Education.ManageCourses.Domain.Models;
 using GovUk.Education.ManageCourses.Ui;
 using GovUk.Education.ManageCourses.Ui.Helpers;
+using GovUk.Education.ManageCourses.Ui.Services;
 using GovUk.Education.ManageCourses.Ui.Utilities;
 using GovUk.Education.ManageCourses.Ui.ViewModels;
+using GovUk.Education.SearchAndCompare.UI.Shared.Features;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -20,10 +22,12 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
     public class OrganisationController : CommonAttributesControllerBase
     {
         private readonly IManageApi _manageApi;
+        private readonly IFrontendUrlService frontendUrlService;
 
-        public OrganisationController(IManageApi manageApi)
+        public OrganisationController(IManageApi manageApi, IFrontendUrlService frontendUrlService)
         {
             _manageApi = manageApi;
+            this.frontendUrlService = frontendUrlService;
         }
 
         [Route("/organisations")]
@@ -40,6 +44,10 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
         [Route("{providerCode}")]
         public async Task<IActionResult> Show(string providerCode)
         {
+            if (frontendUrlService.ShouldRedirectOrganisationShow())
+            {
+                return frontendUrlService.RedirectToFrontend("/organisation/" + providerCode);
+            }
             var ucasProviderEnrichmentGetModel = await _manageApi.GetProviderEnrichment(providerCode);
             var providerCourses = await _manageApi.GetCoursesOfProvider(providerCode);
             var summary = await _manageApi.GetProviderSummary(providerCode);
