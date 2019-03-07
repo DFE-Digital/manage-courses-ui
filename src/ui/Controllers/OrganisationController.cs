@@ -33,6 +33,11 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
         [Route("/organisations")]
         public async Task<IActionResult> Index()
         {
+            if (frontendUrlService.ShouldRedirectOrganisationShow())
+            {
+                return frontendUrlService.RedirectToFrontend("/organisations");
+            }
+
             var orgs = await _manageApi.GetProviderSummaries();
             var model = new OrganisationListViewModel
             {
