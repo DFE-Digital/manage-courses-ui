@@ -21,6 +21,35 @@ namespace ManageCoursesUi.Tests
     [TestFixture]
     public class OrganisationControllerTests
     {
+
+        [Test]
+        public async Task Show_Redirects_To_FrontEnd()
+        {
+            var providerCode = "PROVIDERCODE";
+
+            var frontendUrlMock = new Mock<IFrontendUrlService>();
+            frontendUrlMock.Setup(x => x.ShouldRedirectOrganisationShow()).Returns(true);
+            frontendUrlMock.Setup(x => x.RedirectToFrontend("/organisation/" + providerCode)).Returns(new RedirectResult("frontend"));
+            var controller = new OrganisationController(null, frontendUrlMock.Object);
+
+            var result = await controller.Show(providerCode);
+
+            Assert.IsTrue(result is RedirectResult);
+        }
+
+        [Test]
+        public async Task Index_Redirects_To_FrontEnd()
+        {
+            var frontendUrlMock = new Mock<IFrontendUrlService>();
+            frontendUrlMock.Setup(x => x.ShouldRedirectOrganisationShow()).Returns(true);
+            frontendUrlMock.Setup(x => x.RedirectToFrontend("/organisations" )).Returns(new RedirectResult("frontend"));
+            var controller = new OrganisationController(null, frontendUrlMock.Object);
+
+            var result = await controller.Index();
+
+            Assert.IsTrue(result is RedirectResult);
+        }
+
         [Test]
         public async Task Show()
         {
