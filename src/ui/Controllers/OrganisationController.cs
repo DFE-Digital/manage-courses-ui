@@ -51,7 +51,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
         {
             if (frontendUrlService.ShouldRedirectOrganisationShow())
             {
-                return frontendUrlService.RedirectToFrontend("/organisation/" + providerCode);
+                return frontendUrlService.RedirectToFrontend("/organisations/" + providerCode);
             }
             var ucasProviderEnrichmentGetModel = await _manageApi.GetProviderEnrichment(providerCode);
             var providerCourses = await _manageApi.GetCoursesOfProvider(providerCode);
