@@ -29,7 +29,7 @@ namespace ManageCoursesUi.Tests
 
             var frontendUrlMock = new Mock<IFrontendUrlService>();
             frontendUrlMock.Setup(x => x.ShouldRedirectOrganisationShow()).Returns(true);
-            frontendUrlMock.Setup(x => x.RedirectToFrontend("/organisation/" + providerCode)).Returns(new RedirectResult("frontend"));
+            frontendUrlMock.Setup(x => x.RedirectToFrontend("/organisations/" + providerCode)).Returns(new RedirectResult("frontend"));
             var controller = new OrganisationController(null, frontendUrlMock.Object);
 
             var result = await controller.Show(providerCode);
