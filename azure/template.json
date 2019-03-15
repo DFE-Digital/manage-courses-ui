@@ -90,6 +90,12 @@
             "metadata": {
                 "description": "The Client ID to be used with Signin"
             }
+        },
+        "sentryDSN": {
+            "type": "string",
+            "metadata": {
+                "description": "Connection string for Sentry monitoring."
+            }
         }
     },
     "variables": {
@@ -201,6 +207,10 @@
                             {
                                 "name": "auth__oidc__clientId",
                                 "value": "[parameters('signinClientId')]"
+                            },
+                            {
+                                "name": "SENTRY_DSN",
+                                "value": "[parameters('sentryDSN')]"
                             }
                         ]
                     },
