@@ -58,7 +58,9 @@ namespace GovUk.Education.ManageCourses.Ui.ViewModels
         [Required(ErrorMessage = "Enter your county")]
         public string Addr4 { get; set; }
 
-        [Required(ErrorMessage = "Enter postcode")]
+        [MinLength(7, ErrorMessage = "Postcode is too short. Enter a postcode in the format ‘SW10 1AA’")]
+        [MaxLength(8, ErrorMessage = "Postcode is too long. Enter a postcode in the format ‘SW10 1AA’")]
+        [Required(ErrorMessage = "Enter a postcode in the format ‘SW10 1AA’")]
         public string Postcode { get; set; }
 
         public DateTime? LastPublishedTimestampUtc { get; set; }
