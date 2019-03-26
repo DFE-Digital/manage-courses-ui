@@ -58,6 +58,7 @@ namespace GovUk.Education.ManageCourses.Ui.ViewModels
         [Required(ErrorMessage = "Enter your county")]
         public string Addr4 { get; set; }
 
+        [RegularExpression(@"^[a-zA-Z0-9]+$", ErrorMessage = "Enter a postcode in the format ‘SW10 1AA‘")]
         [MinLength(7, ErrorMessage = "Postcode is too short. Enter a postcode in the format ‘SW10 1AA’")]
         [MaxLength(8, ErrorMessage = "Postcode is too long. Enter a postcode in the format ‘SW10 1AA’")]
         [Required(ErrorMessage = "Enter a postcode in the format ‘SW10 1AA’")]
