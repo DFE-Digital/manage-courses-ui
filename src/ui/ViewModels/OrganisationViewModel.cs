@@ -61,7 +61,15 @@ namespace GovUk.Education.ManageCourses.Ui.ViewModels
         [MinLength(7, ErrorMessage = "Postcode is too short. Enter a postcode in the format ‘SW10 1AA’")]
         [MaxLength(8, ErrorMessage = "Postcode is too long. Enter a postcode in the format ‘SW10 1AA’")]
         [Required(ErrorMessage = "Enter a postcode in the format ‘SW10 1AA’")]
-        public string Postcode { get; set; }
+        private string _postcode;
+        public string Postcode
+        {
+          get { return _postcode; }
+          set
+          {
+            _postcode = !string.IsNullOrEmpty( value ) ? value.Trim().ToUpper() : value;
+          }
+        }
 
         public DateTime? LastPublishedTimestampUtc { get; set; }
 
