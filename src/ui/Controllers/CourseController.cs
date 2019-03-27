@@ -22,11 +22,13 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
     {
         private readonly IManageApi _manageApi;
         private readonly ISearchAndCompareUrlService searchAndCompareUrlService;
+        private readonly IFrontendUrlService frontendUrlService;
 
-        public CourseController(IManageApi manageApi, ISearchAndCompareUrlService searchAndCompareUrlHelper)
+        public CourseController(IManageApi manageApi, ISearchAndCompareUrlService searchAndCompareUrlHelper, IFrontendUrlService frontendUrlService)
         {
             _manageApi = manageApi;
             this.searchAndCompareUrlService = searchAndCompareUrlHelper;
+            this.frontendUrlService = frontendUrlService;
         }
 
         [Route("{providerCode}/course/{accreditingProviderCode=self}/{courseCode}")]
@@ -360,6 +362,12 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
                 CourseSavedMessage();
             }
             return RedirectToAction("Show", new { providerCode = providerCode, accreditingProviderCode = accreditingProviderCode, courseCode });
+        }
+
+        [Route("{providerCode}/course/{accreditingProviderCode=self}/{courseCode}/vacancies")]
+        public async Task<IActionResult> Vacancies(string providerCode, string accreditingProviderCode, string courseCode)
+        {
+          return frontendUrlService.RedirectToFrontend("/organisations/" + providerCode + "/courses/" + courseCode + "/vacancies");
         }
 
         private async Task<bool> SaveEnrichment(string providerCode, string courseCode, ICourseEnrichmentViewModel viewModel)
