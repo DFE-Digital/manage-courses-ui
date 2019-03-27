@@ -16,6 +16,23 @@ namespace ManageCoursesUi.Tests.ViewModels
     [TestFixture]
     public class OrganisationViewModelValidationTests
     {
+
+        [TestCase("SW10 1AA")]
+        [TestCase("SW101AA")]
+        [TestCase("Sw101Aa")]
+        [TestCase("sw101aa")]
+        [TestCase("sw10 1aa")]
+        [TestCase("s1 1aa")]
+        [TestCase("S1 1AA")]
+        [TestCase("S11AA")]
+        public void PostCode_Valid(string postcode)
+        {
+            var ovm = GetMissingPostCodeModel();
+            ovm.Postcode = postcode;
+            var validationResults = ValidateModel(ovm);
+            validationResults.Should().HaveCount(0);
+        }
+
         [Test]
         public void PostCode_RegularExpression()
         {
