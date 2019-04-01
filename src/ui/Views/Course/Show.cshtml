@@ -1,5 +1,5 @@
 ﻿@model CourseViewModel
-
+@using WorkflowStatus = GovUk.Education.ManageCourses.Ui.ViewModels.Enums.WorkflowStatus
 @{
   Layout = "_Layout";
   ViewBag.Title = Model.Course.CourseTitle;
@@ -236,6 +236,9 @@
             break;
           case WorkflowStatus.Published:
             <div class="govuk-tag govuk-tag--published">published</div>
+            break;
+          case WorkflowStatus.InitialDraft:
+            <div class="govuk-tag govuk-tag--draft">draft</div>
             break;
         }
 
