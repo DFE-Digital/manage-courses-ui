@@ -433,7 +433,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
 
                         return new SiteViewModel
                         {
-                            ApplicationsAcceptedFrom = courseSite.ApplicationsAcceptedFrom,
+                            ApplicationsAcceptedFrom = courseSite.ApplicationsAcceptedFrom.ToString(),
                             Code = courseSite.Site.Code,
                             LocationName = courseSite.Site.LocationName,
                             Address = address,
