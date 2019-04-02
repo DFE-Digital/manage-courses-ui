@@ -23,7 +23,7 @@ namespace GovUk.Education.ManageCourses.Ui.Helpers
                 .Select(x => {
                     DateTime? dateResult = null;
                     DateTime date;
-                    if(DateTime.TryParse(x.ApplicationsAcceptedFrom, out date)){
+                    if(DateTime.TryParse(x.ApplicationsAcceptedFrom.ToString(), out date)){
                         dateResult = date;
                     }
                     return dateResult;

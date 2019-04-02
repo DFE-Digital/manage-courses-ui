@@ -105,7 +105,7 @@ namespace ManageCoursesUi.Tests.Helpers
                         {
                             new CourseSite {
                                 Status = "R",
-                                ApplicationsAcceptedFrom = "2018-10-16 00:00:00",
+                                ApplicationsAcceptedFrom = DateTime.Parse("2018-10-16 00:00:00"),
 
                                 Site = new Site
                                 {
