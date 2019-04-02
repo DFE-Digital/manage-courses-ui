@@ -56,7 +56,8 @@ namespace ManageCoursesUi.Tests
 
             manageApi.Setup(x => x.GetCourseEnrichment(TestHelper.ProviderCode, TestHelper.TargetedProviderCode)).ReturnsAsync(ucasCourseEnrichmentGetModel);
 
-            var controller = new CourseController(manageApi.Object, new SearchAndCompareUrlService("http://www.example.com"));
+            var frontendUrlMock = new Mock<IFrontendUrlService>();
+            var controller = new CourseController(manageApi.Object, new SearchAndCompareUrlService("http://www.example.com"), frontendUrlMock.Object);
             var result = await controller.Show(TestHelper.ProviderCode, TestHelper.AccreditingProviderCode, TestHelper.TargetedProviderCode);
 
             var viewResult = result as ViewResult;
@@ -99,7 +100,8 @@ namespace ManageCoursesUi.Tests
             manageApi.Setup(x => x.GetProviderSummaries()).ReturnsAsync(testOrgs);
             manageApi.Setup(x => x.GetCourse(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(testCourse);
 
-            var controller = new CourseController(manageApi.Object, new SearchAndCompareUrlService("http://www.example.com"));
+            var frontendUrlMock = new Mock<IFrontendUrlService>();
+            var controller = new CourseController(manageApi.Object, new SearchAndCompareUrlService("http://www.example.com"), frontendUrlMock.Object);
 
             var res = controller.Show(TestHelper.ProviderCode, TestHelper.AccreditingProviderCode, TestHelper.TargetedProviderCode).Result;
 
@@ -128,7 +130,8 @@ namespace ManageCoursesUi.Tests
             manageApi.Setup(x => x.GetProviderSummaries()).ReturnsAsync(testOrgs);
             manageApi.Setup(x => x.GetCourse(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync((Course) null);
 
-            var controller = new CourseController(manageApi.Object, new SearchAndCompareUrlService("http://www.example.com"));
+            var frontendUrlMock = new Mock<IFrontendUrlService>();
+            var controller = new CourseController(manageApi.Object, new SearchAndCompareUrlService("http://www.example.com"), frontendUrlMock.Object);
 
             var result = await controller.Show(TestHelper.ProviderCode, TestHelper.AccreditingProviderCode, TestHelper.TargetedProviderCode);
 
@@ -160,7 +163,8 @@ namespace ManageCoursesUi.Tests
             manageApi.Setup(x => x.GetProviderSummaries()).ReturnsAsync(testOrgs);
             manageApi.Setup(x => x.GetCourse(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(testCourse);
 
-            var controller = new CourseController(manageApi.Object, new SearchAndCompareUrlService("http://www.example.com"));
+            var frontendUrlMock = new Mock<IFrontendUrlService>();
+            var controller = new CourseController(manageApi.Object, new SearchAndCompareUrlService("http://www.example.com"), frontendUrlMock.Object);
             Assert.ThrowsAsync<ArgumentNullException>(async() => await controller.Show(providerCode, accreditingProviderCode, courseCode));
         }
 
@@ -171,7 +175,8 @@ namespace ManageCoursesUi.Tests
 
             manageApi.Setup(x => x.GetProviderSummaries()).ThrowsAsync(new Exception());
 
-            var controller = new CourseController(manageApi.Object, new SearchAndCompareUrlService("http://www.example.com"));
+            var frontendUrlMock = new Mock<IFrontendUrlService>();
+            var controller = new CourseController(manageApi.Object, new SearchAndCompareUrlService("http://www.example.com"), frontendUrlMock.Object);
 
             Assert.ThrowsAsync<Exception>(async() => await controller.Show(TestHelper.ProviderCode, TestHelper.AccreditingProviderCode, TestHelper.TargetedProviderCode));
         }
@@ -195,7 +200,8 @@ namespace ManageCoursesUi.Tests
             manageApi.Setup(x => x.GetProviderSummaries()).ReturnsAsync(testOrgs);
             manageApi.Setup(x => x.GetCourse(It.IsAny<string>(), It.IsAny<string>())).ThrowsAsync(new Exception());
 
-            var controller = new CourseController(manageApi.Object, new SearchAndCompareUrlService("http://www.example.com"));
+            var frontendUrlMock = new Mock<IFrontendUrlService>();
+            var controller = new CourseController(manageApi.Object, new SearchAndCompareUrlService("http://www.example.com"), frontendUrlMock.Object);
 
             Assert.ThrowsAsync<Exception>(async() => await controller.Show(TestHelper.ProviderCode, TestHelper.AccreditingProviderCode, TestHelper.TargetedProviderCode));
         }
@@ -231,7 +237,8 @@ namespace ManageCoursesUi.Tests
                 })
                 .Verifiable();
 
-            var courseController = new CourseController(mockApi.Object, new Mock<ISearchAndCompareUrlService>().Object);
+            var frontendUrlMock = new Mock<IFrontendUrlService>();
+            var courseController = new CourseController(mockApi.Object, new Mock<ISearchAndCompareUrlService>().Object, frontendUrlMock.Object);
             courseController.ObjectValidator = objectValidator.Object;
             courseController.TempData = new TempDataDictionary(new DefaultHttpContext(), Mock.Of<ITempDataProvider>());
 
@@ -263,7 +270,8 @@ namespace ManageCoursesUi.Tests
 
             manageApi.Setup(x => x.GetCourse(TestHelper.ProviderCode, TestHelper.TargetedProviderCode)).ReturnsAsync(testCourse);
 
-            var controller = new CourseController(manageApi.Object, new SearchAndCompareUrlService("http://www.example.com"));
+            var frontendUrlMock = new Mock<IFrontendUrlService>();
+            var controller = new CourseController(manageApi.Object, new SearchAndCompareUrlService("http://www.example.com"), frontendUrlMock.Object);
             var result = await controller.About(TestHelper.ProviderCode, TestHelper.AccreditingProviderCode, TestHelper.TargetedProviderCode);
 
             var viewResult = result as ViewResult;
@@ -291,7 +299,8 @@ namespace ManageCoursesUi.Tests
 
             manageApi.Setup(x => x.GetCourse(TestHelper.ProviderCode, TestHelper.TargetedProviderCode)).ReturnsAsync(testCourse);
 
-            var controller = new CourseController(manageApi.Object, new SearchAndCompareUrlService("http://www.example.com"));
+            var frontendUrlMock = new Mock<IFrontendUrlService>();
+            var controller = new CourseController(manageApi.Object, new SearchAndCompareUrlService("http://www.example.com"), frontendUrlMock.Object);
 
             controller.ModelState.AddModelError("you", "failed");
 
@@ -333,7 +342,8 @@ namespace ManageCoursesUi.Tests
             Expression<Func<IUrlHelper, string>> urlSetup = url => url.Action(It.Is<UrlActionContext>(uac => uac.Action == "Preview"));
             urlHelperMock.Setup(urlSetup).Returns(previewLink);
 
-            var controller = new CourseController(manageApi.Object, new SearchAndCompareUrlService("http://www.example.com"));
+            var frontendUrlMock = new Mock<IFrontendUrlService>();
+            var controller = new CourseController(manageApi.Object, new SearchAndCompareUrlService("http://www.example.com"), frontendUrlMock.Object);
             controller.TempData = tempDataMock.Object;
             controller.Url = urlHelperMock.Object;
             var result = await controller.AboutPost(TestHelper.ProviderCode, TestHelper.AccreditingProviderCode, TestHelper.TargetedProviderCode, viewModel);
@@ -369,7 +379,8 @@ namespace ManageCoursesUi.Tests
 
             manageApi.Setup(x => x.GetCourse(TestHelper.ProviderCode, TestHelper.TargetedProviderCode)).ReturnsAsync(testCourse);
 
-            var controller = new CourseController(manageApi.Object, new SearchAndCompareUrlService("http://www.example.com"));
+            var frontendUrlMock = new Mock<IFrontendUrlService>();
+            var controller = new CourseController(manageApi.Object, new SearchAndCompareUrlService("http://www.example.com"), frontendUrlMock.Object);
             var result = await controller.Requirements(TestHelper.ProviderCode, TestHelper.AccreditingProviderCode, TestHelper.TargetedProviderCode);
 
             var viewResult = result as ViewResult;
@@ -398,7 +409,8 @@ namespace ManageCoursesUi.Tests
 
             manageApi.Setup(x => x.GetCourse(TestHelper.ProviderCode, TestHelper.TargetedProviderCode)).ReturnsAsync(testCourse);
 
-            var controller = new CourseController(manageApi.Object, new SearchAndCompareUrlService("http://www.example.com"));
+            var frontendUrlMock = new Mock<IFrontendUrlService>();
+            var controller = new CourseController(manageApi.Object, new SearchAndCompareUrlService("http://www.example.com"), frontendUrlMock.Object);
 
             controller.ModelState.AddModelError("you", "failed");
 
@@ -440,7 +452,8 @@ namespace ManageCoursesUi.Tests
             Expression<Func<IUrlHelper, string>> urlSetup = url => url.Action(It.Is<UrlActionContext>(uac => uac.Action == "Preview"));
             urlHelperMock.Setup(urlSetup).Returns(previewLink);
 
-            var controller = new CourseController(manageApi.Object, new SearchAndCompareUrlService("http://www.example.com"));
+            var frontendUrlMock = new Mock<IFrontendUrlService>();
+            var controller = new CourseController(manageApi.Object, new SearchAndCompareUrlService("http://www.example.com"), frontendUrlMock.Object);
 
             controller.TempData = tempDataMock.Object;
             controller.Url = urlHelperMock.Object;
@@ -481,7 +494,8 @@ namespace ManageCoursesUi.Tests
 
             manageApi.Setup(x => x.GetCourse(TestHelper.ProviderCode, TestHelper.TargetedProviderCode)).ReturnsAsync(testCourse);
 
-            var controller = new CourseController(manageApi.Object, new SearchAndCompareUrlService("http://www.example.com"));
+            var frontendUrlMock = new Mock<IFrontendUrlService>();
+            var controller = new CourseController(manageApi.Object, new SearchAndCompareUrlService("http://www.example.com"), frontendUrlMock.Object);
             var result = await controller.Salary(TestHelper.ProviderCode, TestHelper.AccreditingProviderCode, TestHelper.TargetedProviderCode);
 
             var viewResult = result as ViewResult;
@@ -509,7 +523,8 @@ namespace ManageCoursesUi.Tests
 
             manageApi.Setup(x => x.GetCourse(TestHelper.ProviderCode, TestHelper.TargetedProviderCode)).ReturnsAsync(testCourse);
 
-            var controller = new CourseController(manageApi.Object, new SearchAndCompareUrlService("http://www.example.com"));
+            var frontendUrlMock = new Mock<IFrontendUrlService>();
+            var controller = new CourseController(manageApi.Object, new SearchAndCompareUrlService("http://www.example.com"), frontendUrlMock.Object);
 
             controller.ModelState.AddModelError("you", "failed");
 
@@ -551,7 +566,8 @@ namespace ManageCoursesUi.Tests
             Expression<Func<IUrlHelper, string>> urlSetup = url => url.Action(It.Is<UrlActionContext>(uac => uac.Action == "Preview"));
             urlHelperMock.Setup(urlSetup).Returns(previewLink);
 
-            var controller = new CourseController(manageApi.Object, new SearchAndCompareUrlService("http://www.example.com"));
+            var frontendUrlMock = new Mock<IFrontendUrlService>();
+            var controller = new CourseController(manageApi.Object, new SearchAndCompareUrlService("http://www.example.com"), frontendUrlMock.Object);
 
             controller.TempData = tempDataMock.Object;
             controller.Url = urlHelperMock.Object;
@@ -592,7 +608,8 @@ namespace ManageCoursesUi.Tests
 
             manageApi.Setup(x => x.GetCourse(TestHelper.ProviderCode, TestHelper.TargetedProviderCode)).ReturnsAsync(testCourse);
 
-            var controller = new CourseController(manageApi.Object, new SearchAndCompareUrlService("http://www.example.com"));
+            var frontendUrlMock = new Mock<IFrontendUrlService>();
+            var controller = new CourseController(manageApi.Object, new SearchAndCompareUrlService("http://www.example.com"), frontendUrlMock.Object);
             var result = await controller.Fees(TestHelper.ProviderCode, TestHelper.AccreditingProviderCode, TestHelper.TargetedProviderCode);
 
             var viewResult = result as ViewResult;
@@ -623,7 +640,8 @@ namespace ManageCoursesUi.Tests
 
             manageApi.Setup(x => x.GetCourse(TestHelper.ProviderCode, TestHelper.TargetedProviderCode)).ReturnsAsync(testCourse);
 
-            var controller = new CourseController(manageApi.Object, new SearchAndCompareUrlService("http://www.example.com"));
+            var frontendUrlMock = new Mock<IFrontendUrlService>();
+            var controller = new CourseController(manageApi.Object, new SearchAndCompareUrlService("http://www.example.com"), frontendUrlMock.Object);
 
             controller.ModelState.AddModelError("you", "failed");
 
@@ -668,7 +686,8 @@ namespace ManageCoursesUi.Tests
             Expression<Func<IUrlHelper, string>> urlSetup = url => url.Action(It.Is<UrlActionContext>(uac => uac.Action == "Preview"));
             urlHelperMock.Setup(urlSetup).Returns(previewLink);
 
-            var controller = new CourseController(manageApi.Object, new SearchAndCompareUrlService("http://www.example.com"));
+            var frontendUrlMock = new Mock<IFrontendUrlService>();
+            var controller = new CourseController(manageApi.Object, new SearchAndCompareUrlService("http://www.example.com"), frontendUrlMock.Object);
 
             controller.TempData = tempDataMock.Object;
             controller.Url = urlHelperMock.Object;

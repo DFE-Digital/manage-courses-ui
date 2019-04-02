@@ -100,7 +100,16 @@
               }
           </td>
           <td class="govuk-table__cell">@(course.IsRunning() ? course.GetApplicationStatus() : "")</td>
-          <td class="govuk-table__cell">@(course.IsRunning() ? course.GetHasVacancies() : "")</td>
+          <td class="govuk-table__cell">
+            @if(course.IsRunning())
+            {
+              @course.GetHasVacancies()
+            }
+            @if(course.IsRunning() && Model.ProviderOptedIn)
+            {
+              <a href="@Url.Action("vacancies", "course", new {providerCode = Model.ProviderCode, accreditingInstCode = course.AccreditingProvider?.ProviderCode, courseCode = course.CourseCode})" class="govuk-link">(Edit)</a>
+            }
+          </td>
         </tr>
       }
       </tbody>
