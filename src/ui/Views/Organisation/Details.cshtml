@@ -1,5 +1,5 @@
 @model OrganisationViewModel
-
+@using WorkflowStatus = GovUk.Education.ManageCourses.Ui.ViewModels.Enums.WorkflowStatus
 @{
   ViewBag.Title = "About your organisation";
   var train_with_us = ViewData.ModelState["TrainWithUs"] != null && ViewData.ModelState["TrainWithUs"].Errors.Any();

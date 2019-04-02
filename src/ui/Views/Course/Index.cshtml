@@ -1,5 +1,5 @@
 @model CourseListViewModel;
-
+@using WorkflowStatus = GovUk.Education.ManageCourses.Domain.Models.WorkflowStatus;
 @inject GovUk.Education.ManageCourses.Ui.Services.ISearchAndCompareUrlService searchAndCompareUrlService;
 
 @{
@@ -76,19 +76,18 @@
             {
               @switch(course.EnrichmentWorkflowStatus)
               {
-                case EnumStatus.Draft:
-                  @if(course.IsRunning()){
-                    <div class="govuk-tag govuk-tag--inline govuk-tag--published">published *</div>
-                    <div class="govuk-body govuk-body-s govuk-!-margin-0">* Unpublished changes</div>
-                  } else {
-                    <div class="govuk-tag govuk-tag--inline govuk-tag--draft">draft</div>
-                  }
+                case WorkflowStatus.Blank:
+                  <div class="govuk-tag govuk-tag--inline govuk-tag--empty">empty</div>
                   break;
-                case EnumStatus.Published:
+                case WorkflowStatus.InitialDraft:
+                  <div class="govuk-tag govuk-tag--inline govuk-tag--draft">draft</div>
+                  break;
+                case WorkflowStatus.Published:
                   <div class="govuk-tag govuk-tag--inline govuk-tag--published">published</div>
                   break;
-                default:
-                  <div class="govuk-tag govuk-tag--inline govuk-tag--empty">empty</div>
+                case WorkflowStatus.SubsequentDraft:
+                  <div class="govuk-tag govuk-tag--inline govuk-tag--published">published *</div>
+                  <div class="govuk-body govuk-body-s govuk-!-margin-0">* Unpublished changes</div>
                   break;
               }
             }

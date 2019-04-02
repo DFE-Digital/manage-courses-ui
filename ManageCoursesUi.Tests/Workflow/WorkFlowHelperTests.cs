@@ -28,7 +28,7 @@ namespace ManageCoursesUi.Workflow
 
             var status = model.GetWorkflowStatus();
 
-            Assert.AreEqual(status, WorkflowStatus.Blank);
+            Assert.AreEqual(status, GovUk.Education.ManageCourses.Ui.ViewModels.Enums.WorkflowStatus.Blank);
         }
 
         [Test]
@@ -42,7 +42,7 @@ namespace ManageCoursesUi.Workflow
 
             var status = model.GetWorkflowStatus();
 
-            Assert.AreEqual(status, WorkflowStatus.InitialDraft);
+            Assert.AreEqual(status, GovUk.Education.ManageCourses.Ui.ViewModels.Enums.WorkflowStatus.InitialDraft);
         }
 
         [Test]
@@ -58,7 +58,7 @@ namespace ManageCoursesUi.Workflow
 
             var status = model.GetWorkflowStatus();
 
-            Assert.AreEqual(status, WorkflowStatus.Published);
+            Assert.AreEqual(status, GovUk.Education.ManageCourses.Ui.ViewModels.Enums.WorkflowStatus.Published);
         }
 
         [Test]
@@ -74,7 +74,7 @@ namespace ManageCoursesUi.Workflow
 
             var status = model.GetWorkflowStatus();
 
-            Assert.AreEqual(status, WorkflowStatus.SubsequentDraft);
+            Assert.AreEqual(status, GovUk.Education.ManageCourses.Ui.ViewModels.Enums.WorkflowStatus.SubsequentDraft);
         }
 
                 [Test]
@@ -90,7 +90,7 @@ namespace ManageCoursesUi.Workflow
 
             var status = model.GetWorkflowStatus();
 
-            Assert.AreEqual(status, WorkflowStatus.BlankSubsequentDraft);
+            Assert.AreEqual(status, GovUk.Education.ManageCourses.Ui.ViewModels.Enums.WorkflowStatus.BlankSubsequentDraft);
         }
     }
 }

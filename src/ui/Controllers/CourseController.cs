@@ -154,7 +154,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             courseCode = courseCode.ToUpper();
 
             var copyable = await _manageApi.GetCoursesOfProvider(providerCode);
-            ViewBag.CopyableCourses = copyable != null ? copyable.Where(x => x.EnrichmentWorkflowStatus != null && x.CourseCode != courseCode) : new List<Domain.Models.Course>();
+            ViewBag.CopyableCourses = copyable != null ? copyable.Where(x => x.EnrichmentWorkflowStatus != Domain.Models.WorkflowStatus.Blank && x.CourseCode != courseCode) : new List<Domain.Models.Course>();
         }
 
         [HttpPost]

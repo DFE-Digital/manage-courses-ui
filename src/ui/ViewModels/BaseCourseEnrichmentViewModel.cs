@@ -52,6 +52,9 @@ namespace GovUk.Education.ManageCourses.Ui.ViewModels
             {
                 return WorkflowStatus.Blank;
             }
+            if (DraftLastUpdatedUtc.HasValue && !LastPublishedUtc.HasValue) {
+                return WorkflowStatus.InitialDraft;
+            }
             if (!LastPublishedUtc.HasValue || LastPublishedUtc.Value < DraftLastUpdatedUtc.Value)
             {
                 return WorkflowStatus.SubsequentDraft;
