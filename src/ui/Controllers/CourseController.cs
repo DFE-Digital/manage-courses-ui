@@ -534,6 +534,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             {
                 ProviderName = summary.ProviderName,
                 ProviderCode = summary.ProviderCode,
+                ProviderOptedIn = summary.OptedIn,
                 Providers = providers,
                 MultipleOrganisations = multipleOrganisations
             };
