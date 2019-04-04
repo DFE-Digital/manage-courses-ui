@@ -458,6 +458,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             {
                 ProviderName = org.ProviderName,
                 ProviderCode = org.ProviderCode,
+                OptedIn = org.OptedIn,
                 CourseTitle = course.Name,
                 AccreditingProviderCode = course.AccreditingProvider?.ProviderCode,
                 MultipleOrganisations = multipleOrganisations,
