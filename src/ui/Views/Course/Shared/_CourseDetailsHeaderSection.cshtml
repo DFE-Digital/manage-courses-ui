@@ -1,7 +1,23 @@
 @model CourseViewModel
+@{
+    var link = $"mailto:becomingateacher@digital.education.gov.uk?subject=Help%20with%20course%20{Model.Course.ProviderCode}%20{Model.Course.CourseCode}";
+}
 
 @if(@Model.OptedIn) {
     <h2 class="govuk-heading-m govuk-!-font-size-27">Course details</h2>
+    @if (Model.Course.StatusAsEnum == CourseRunningStatus.NotRunning)
+    {
+        <div class="govuk-warning-text govuk-warning-text--inline">
+            <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
+            <strong class="govuk-warning-text__text">
+                <text>This course is not running.</text>
+            </strong>
+        </div>
+        <p class="govuk-body">
+            <text>It won&#8217;t appear online. To publish it you&#8217;ll need to contact the <a href="@link">Becoming a Teacher team</a>.</text>
+        </p>
+    }
+
 } else {
     <h2 class="govuk-heading-m govuk-!-font-size-27">Information from UCAS</h2>
 
