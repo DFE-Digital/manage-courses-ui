@@ -6,6 +6,7 @@ namespace GovUk.Education.ManageCourses.Ui.ViewModels
     {
         public string ProviderName { get; set; }
         public string ProviderCode { get; set; }
+        public bool OptedIn { get; set; }
         public bool MultipleOrganisations { get; set; }
         public string CourseTitle { get; set; }
         public string AccreditingProviderCode { get; set; }
