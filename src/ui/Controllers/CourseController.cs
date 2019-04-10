@@ -531,25 +531,13 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
                 CourseCode = courseCode
             };
         }
+
         [Route("{providerCode}/courses")]
         public async Task<IActionResult> Index(string providerCode)
         {
-            var providerCourses = await _manageApi.GetCoursesOfProvider(providerCode);
-            var summary = await _manageApi.GetProviderSummary(providerCode);
-            var multipleOrganisations = (await _manageApi.GetProviderSummaries()).Count() > 1;
-            var providers = GetProviders(providerCourses);
-
-            var model = new CourseListViewModel
-            {
-                ProviderName = summary.ProviderName,
-                ProviderCode = summary.ProviderCode,
-                ProviderOptedIn = summary.OptedIn,
-                Providers = providers,
-                MultipleOrganisations = multipleOrganisations
-            };
-
-            return View(model);
+            return frontendUrlService.RedirectToFrontend("/organisations/" + providerCode + "/courses");
         }
+
         private List<ViewModels.Provider> GetProviders(List<Domain.Models.Course> providerCourses)
         {
             var uniqueAccreditingProviderCodes = providerCourses.Select(c => c.AccreditingProvider?.ProviderCode).Distinct();
