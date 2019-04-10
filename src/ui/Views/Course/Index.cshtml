@@ -94,9 +94,9 @@
           </td>
           <td class="govuk-table__cell">
               @if(course.IsRunning()) {
-                  <a href="@searchAndCompareUrlService.GetCoursePageUri(course.Provider.ProviderCode, course.CourseCode)">Yes - view online</a>
+                <a href="@searchAndCompareUrlService.GetCoursePageUri(course.Provider.ProviderCode, course.CourseCode)">Yes - view online</a>
               } else {
-                <p class="govuk-body govuk-!-margin-0">@(course.IsNotRunning() ? "No" : "No – must be published on UCAS")</p>
+                <p class="govuk-body govuk-!-margin-0">@((course.IsNotRunning() && Model.ProviderOptedIn) ? "No - still in draft" : "No - must be published on UCAS")</p>
               }
           </td>
           <td class="govuk-table__cell">@(course.IsRunning() ? course.GetApplicationStatus() : "")</td>
