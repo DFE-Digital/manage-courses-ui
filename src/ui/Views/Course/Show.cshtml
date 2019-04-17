@@ -62,15 +62,12 @@
       <div class="govuk-grid-row govuk-!-margin-top-4">
         <div class="govuk-grid-column-two-thirds">
           <div class="course-parts">
-            @if(Model.Course.StatusAsEnum != CourseRunningStatus.NotRunning)
-            {
-              @await Html.PartialAsync("shared/_AboutCourseOverview", Model.CourseEnrichment)
+            @await Html.PartialAsync("shared/_AboutCourseOverview", Model.CourseEnrichment)
 
-              var partialName = Model.IsSalary ? "shared/_SalaryBasedCourseOverview" : "shared/_FeeBasedCourseOverview";
-              @await Html.PartialAsync(partialName, Model.CourseEnrichment)
+            @{ var partialName = Model.IsSalary ? "shared/_SalaryBasedCourseOverview" : "shared/_FeeBasedCourseOverview"; }
+            @await Html.PartialAsync(partialName, Model.CourseEnrichment)
 
-              @await Html.PartialAsync("shared/_RequirementsCourseOverview", Model.CourseEnrichment)
-            }
+            @await Html.PartialAsync("shared/_RequirementsCourseOverview", Model.CourseEnrichment)
           </div>
           <p class="govuk-body">
             <a href="@link" class="govuk-link">Contact the Becoming a Teacher team to report a problem</a>
@@ -78,8 +75,6 @@
         </div>
 
         <div class="govuk-grid-column-one-third">
-        @if(Model.Course.StatusAsEnum != CourseRunningStatus.NotRunning)
-        {
           <aside class="related">
             @switch(courseEnrichment.DeterminePublicationState())
             {
@@ -151,7 +146,6 @@
               </div>
             }
           </aside>
-        }
         </div>
       </div>
     </section>
