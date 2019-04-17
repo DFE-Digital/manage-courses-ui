@@ -12,6 +12,7 @@ $success-green: #00823b;
 @import "components/character-count";
 @import "components/publish-tags";
 @import "patterns/course-parts";
+@import "patterns/course-tabs";
 @import "patterns/success-summary";
 @import "patterns/notice-summary";
 @import "patterns/warning-summary";
@@ -105,4 +106,8 @@ $success-green: #00823b;
 .govuk-footer__content {
   @include govuk-font($size: 16, $line-height: 1.5);
   color: $govuk-text-colour;
+}
+
+.pointer-events-none {
+  pointer-events: none;
 }
