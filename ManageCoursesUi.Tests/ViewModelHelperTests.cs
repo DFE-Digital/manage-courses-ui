@@ -52,15 +52,15 @@ namespace ManageCoursesUi.Tests
         [TestCase("s", "s", "d", "s", "Not running")]
         [TestCase("s", "s", "s", "d", "Not running")]
         [TestCase("S", "", "", "S", "Not running")]
-        [TestCase("", "", "", "", "")]
+        [TestCase("", "", "", "", "Not running")]
         public void TestGetCourseStatus(string status1, string status2, string status3, string status4, string expectedResult)
         {
             var schools = new List<CourseSite>
             {
-                new CourseSite {Status = status1},
-                new CourseSite {Status = status2},
-                new CourseSite {Status = status3},
-                new CourseSite {Status = status4}
+                new CourseSite {Publish = "Y", Status = status1},
+                new CourseSite {Publish = "Y", Status = status2},
+                new CourseSite {Publish = "Y", Status = status3},
+                new CourseSite {Publish = "Y", Status = status4}
             };
             var course = new Course
             {
