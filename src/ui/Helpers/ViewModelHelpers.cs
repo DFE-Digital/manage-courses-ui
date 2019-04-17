@@ -11,6 +11,7 @@ namespace GovUk.Education.ManageCourses.Ui.Helpers
     public static class ViewModelHelpers
     {
         private const string Running = "Running";
+        private const string NewNotRunning = "New – not yet running";
         private const string NotRunning = "Not running";
 
         public static bool IsRunning (this Course course) => course.GetCourseStatus() == Running;
@@ -37,15 +38,19 @@ namespace GovUk.Education.ManageCourses.Ui.Helpers
         public static string GetCourseStatus(this Course course)
         {
             var result = "";
-            if (course.CourseSites.Any(s => String.Equals(s.Status, "r", StringComparison.InvariantCultureIgnoreCase)))
+            var statusRunningAndPublishedOnUcas = course.CourseSites.Any(s =>
+                String.Equals(s.Status, "r", StringComparison.InvariantCultureIgnoreCase) &&
+                String.Equals(s.Publish, "y", StringComparison.InvariantCultureIgnoreCase)
+            );
+            if (statusRunningAndPublishedOnUcas)
             {
                 result = Running;
             }
             else if (course.CourseSites.Any(s => String.Equals(s.Status, "n", StringComparison.InvariantCultureIgnoreCase)))
             {
-                result = "New – not yet running";
+                result = NewNotRunning;
             }
-            else if (course.CourseSites.Any(s => String.Equals(s.Status, "d", StringComparison.InvariantCultureIgnoreCase)) || course.CourseSites.Any(s => String.Equals(s.Status, "s", StringComparison.InvariantCultureIgnoreCase)))
+            else
             {
                 result = NotRunning;
             }
