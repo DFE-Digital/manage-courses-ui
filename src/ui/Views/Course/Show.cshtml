@@ -62,6 +62,8 @@
       <div class="govuk-grid-row govuk-!-margin-top-4">
         <div class="govuk-grid-column-two-thirds">
           <div class="course-parts">
+            @await Html.PartialAsync("shared/_CourseDetailsHeaderSection")
+
             @await Html.PartialAsync("shared/_AboutCourseOverview", Model.CourseEnrichment)
 
             @{ var partialName = Model.IsSalary ? "shared/_SalaryBasedCourseOverview" : "shared/_FeeBasedCourseOverview"; }
