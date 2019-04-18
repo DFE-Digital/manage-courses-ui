@@ -37,238 +37,122 @@
     @Model.Course.CourseTitle (@Model.Course.CourseCode)
   </h1>
 
-  <div class="govuk-grid-row">
-    <div class="govuk-grid-column-two-thirds">
-      <div class="course-parts">
-        <div class="course-parts__item course-parts__item--borderless">
 
-          @await Html.PartialAsync("shared/_CourseDetailsHeaderSection")
+  @{ /* Intentionally omitting `data-module="tabs"`, as we don't need the real tabs functionality, just the styling. */ }
+  <div class="course-tabs govuk-tabs">
+    <h2 class="govuk-tabs__title">Contents</h2>
 
-          <dl class="govuk-summary-list">
-            @if (!string.IsNullOrEmpty(@Model.Course.Status))
-            {
-              <div class="govuk-summary-list__row">
-                <dt class="govuk-summary-list__key">Status</dt>
-                <dd class="govuk-summary-list__value">@Model.Course.Status</dd>
-              </div>
-            }
-            @if (!string.IsNullOrEmpty(@Model.Course.CourseTitle))
-            {
-              <div class="govuk-summary-list__row">
-                <dt class="govuk-summary-list__key">Name</dt>
-                <dd class="govuk-summary-list__value">@Model.Course.CourseTitle</dd>
-              </div>
-            }
-            @if (!string.IsNullOrEmpty(@Model.Course.ProviderCode))
-            {
-              <div class="govuk-summary-list__row">
-                <dt class="govuk-summary-list__key">Training provider code</dt>
-                <dd class="govuk-summary-list__value">@Model.Course.ProviderCode</dd>
-              </div>
-            }
-            @if (!string.IsNullOrEmpty(@Model.Course.CourseCode))
-            {
-              <div class="govuk-summary-list__row">
-                <dt class="govuk-summary-list__key">Training programme code</dt>
-                <dd class="govuk-summary-list__value">@Model.Course.CourseCode</dd>
-              </div>
-            }
-            @if (!string.IsNullOrEmpty(@Model.Course.AccreditingProviderName))
-            {
-              <div class="govuk-summary-list__row">
-                <dt class="govuk-summary-list__key">Accredited body</dt>
-                <dd class="govuk-summary-list__value">@Model.Course.AccreditingProviderName</dd>
-              </div>
-            }
-            @if (!string.IsNullOrEmpty(@Model.Course.GetRoute()))
-            {
-              <div class="govuk-summary-list__row">
-                <dt class="govuk-summary-list__key">Route</dt>
-                <dd class="govuk-summary-list__value">@Model.Course.GetRoute()</dd>
-              </div>
-            }
-            @if (!string.IsNullOrEmpty(@Model.Course.Subjects))
-            {
-              <div class="govuk-summary-list__row">
-                <dt class="govuk-summary-list__key">Subjects</dt>
-                <dd class="govuk-summary-list__value">@Model.Course.Subjects</dd>
-              </div>
-            }
-            @if (!string.IsNullOrEmpty(@Model.Course.GetStudyMode()))
-            {
-              <div class="govuk-summary-list__row">
-                <dt class="govuk-summary-list__key">Mode of study</dt>
-                <dd class="govuk-summary-list__value">@Model.Course.GetStudyMode()</dd>
-              </div>
-            }
-            @if (!string.IsNullOrEmpty(@Model.Course.GetQualification()))
-            {
-              <div class="govuk-summary-list__row">
-                <dt class="govuk-summary-list__key">Qualification</dt>
-                <dd class="govuk-summary-list__value">@Model.Course.GetQualification()</dd>
-              </div>
-            }
-          </dl>
+    <ul class="govuk-tabs__list" role="tablist">
+      <li class="govuk-tabs__list-item" role="presentation">
+        <a class="govuk-tabs__tab govuk-tabs__tab--selected" href="#description" id="tab_description" role="tab" aria-controls="description" tabindex="0" aria-selected="true">
+          Description<br>
+          <span class="govuk-body-s govuk-!-font-weight-regular pointer-events-none">Content, fees and eligibility</span>
+        </a>
+      </li>
+
+      <li class="govuk-tabs__list-item" role="presentation">
+        <a class="govuk-tabs__tab" href="@Url.Action("Details", "Course", new {providerCode = Model.Course.ProviderCode, courseCode = Model.Course.CourseCode})" role="tab" tabindex="-1" aria-selected="false">
+          Basic details<br>
+          <span class="govuk-body-s govuk-!-font-weight-regular pointer-events-none">Locations, outcome, subject</span>
+        </a>
+      </li>
+    </ul>
+
+    <section class="govuk-tabs__panel" id="description" role="tabpanel" aria-labelledby="tab_description">
+      <div class="govuk-grid-row govuk-!-margin-top-4">
+        <div class="govuk-grid-column-two-thirds">
+          <div class="course-parts">
+            @await Html.PartialAsync("shared/_CourseDetailsHeaderSection")
+
+            @await Html.PartialAsync("shared/_AboutCourseOverview", Model.CourseEnrichment)
+
+            @{ var partialName = Model.IsSalary ? "shared/_SalaryBasedCourseOverview" : "shared/_FeeBasedCourseOverview"; }
+            @await Html.PartialAsync(partialName, Model.CourseEnrichment)
+
+            @await Html.PartialAsync("shared/_RequirementsCourseOverview", Model.CourseEnrichment)
+          </div>
+          <p class="govuk-body">
+            <a href="@link" class="govuk-link">Contact the Becoming a Teacher team to report a problem</a>
+          </p>
         </div>
 
-      @if(Model.Course.StatusAsEnum != CourseRunningStatus.NotRunning)
-      {
-        @await Html.PartialAsync("shared/_AboutCourseOverview", Model.CourseEnrichment)
-
-        var partialName = Model.IsSalary ? "shared/_SalaryBasedCourseOverview" : "shared/_FeeBasedCourseOverview";
-        @await Html.PartialAsync(partialName, Model.CourseEnrichment)
-
-        @await Html.PartialAsync("shared/_RequirementsCourseOverview", Model.CourseEnrichment)
-      }
-
-        <div class="course-parts__item course-parts__item--borderless">
-          <h2 class="govuk-heading-m govuk-!-font-size-27">Training locations</h2>
-          @foreach (var site in Model.Course.Sites.Where(x => x.Status != "S"))
-          {
-            <h3 class="govuk-heading-m">@site.LocationName (Code: @site.Code)</h3>
-            <dl class="govuk-summary-list">
-              @if (!string.IsNullOrEmpty(@site.Address))
+        <div class="govuk-grid-column-one-third">
+          @if(Model.Course.StatusAsEnum != CourseRunningStatus.NotRunning)
+	        {
+            <aside class="related">
+              @switch(courseEnrichment.DeterminePublicationState())
               {
-                <div class="govuk-summary-list__row">
-                  <dt class="govuk-summary-list__key">Address</dt>
-                  <dd class="govuk-summary-list__value">@site.Address</dd>
+                case WorkflowStatus.Blank:
+                  <div class="govuk-tag govuk-tag--empty">empty</div>
+                  break;
+                case WorkflowStatus.SubsequentDraft:
+                  <div class="govuk-tag govuk-tag--published">published *</div>
+                  break;
+                case WorkflowStatus.Published:
+                  <div class="govuk-tag govuk-tag--published">published</div>
+                  break;
+                case WorkflowStatus.InitialDraft:
+                  <div class="govuk-tag govuk-tag--draft">draft</div>
+                  break;
+              }
+
+              @if (courseEnrichment.DeterminePublicationState() == WorkflowStatus.Blank)
+              {
+                <div class="related__block">
+                  <p class="govuk-body">You need to complete and publish this information.</p>
                 </div>
               }
-              @if (!string.IsNullOrEmpty(@site.Status))
+
+              @if (courseEnrichment.DeterminePublicationState() == WorkflowStatus.SubsequentDraft)
               {
-                <div class="govuk-summary-list__row">
-                  <dt class="govuk-summary-list__key">Status</dt>
-                  <dd class="govuk-summary-list__value">@site.GetSiteStatus()</dd>
+                <div class="related__block">
+                  <p class="govuk-body">* You have unpublished changes.</p>
+                  <p class="govuk-body">Last saved:<br />@courseEnrichment.DraftLastUpdatedUtc.DateString()</p>
+                  @if (courseEnrichment.LastPublishedUtc.HasValue)
+                  {
+                    <p class="govuk-body">Last published:<br />@courseEnrichment.LastPublishedUtc.DateString()</p>
+                  }
                 </div>
               }
-              <div class="govuk-summary-list__row">
-                <dt class="govuk-summary-list__key">Vacancies</dt>
-                <dd class="govuk-summary-list__value">@site.GetVacancyStatus()</dd>
-              </div>
-              @if (!string.IsNullOrEmpty(@site.ApplicationsAcceptedFrom))
+
+              @if ((courseEnrichment.LastPublishedUtc.HasValue) && !(courseEnrichment.DeterminePublicationState() == WorkflowStatus.SubsequentDraft))
               {
-                <div class="govuk-summary-list__row">
-                  <dt class="govuk-summary-list__key">Apply from:</dt>
-                  <dd class="govuk-summary-list__value">@site.ApplicationsAcceptedFrom</dd>
+                <div class="related__block">
+                  <p class="govuk-body">Last published:<br />@courseEnrichment.LastPublishedUtc.DateString()</p>
                 </div>
               }
-            </dl>
+
+              @if (courseEnrichment.DeterminePublicationState() != WorkflowStatus.Published)
+              {
+                <div class="related__block">
+                  <h4 class="govuk-heading-m">Preview</h4>
+                  <p class="govuk-body">See how this course looks with your changes.</p>
+                  <p class="govuk-body">Preview your course to check for mistakes before publishing.</p>
+                  <p class="govuk-body"><a asp-action="Preview">Preview course</a></p>
+                </div>
+
+                <div class="related__block">
+                  <h4 class="govuk-heading-m">Publish</h4>
+                  <p class="govuk-body">Publish your changes.</p>
+                  <p class="govuk-body">You can make changes to this course after publishing it.</p>
+                  <form asp-route="publish" method="post" class="govuk-!-margin-bottom-5">
+                    <input type="submit" class="govuk-button" value="Publish" />
+                  </form>
+                </div>
+              }
+
+              @if (Model.Course.StatusAsEnum == CourseRunningStatus.Running)
+              {
+                <div class="related__block">
+                  <h4 class="govuk-heading-m">View on website</h4>
+                  <p class="govuk-body">See how this course currently looks to applicants:</p>
+                  <p class="govuk-body"><a href="@Model.LiveSearchUrl">View on website</a></p>
+                </div>
+              }
+            </aside>
           }
-
-          @if(Model.Course.Sites.Where(x => x.Status == "S").Any()) {
-            <details class="govuk-details">
-              <summary class="govuk-details__summary">
-                <span class="govuk-details__summary-text">
-                  There are @(Model.Course.Sites.Where(x => x.Status == "S").Count()) suspended or discontinued training locations for this course
-                </span>
-              </summary>
-              <div class="govuk-details__text">
-                @foreach (var site in Model.Course.Sites.Where(x => x.Status == "S"))
-                {
-                  <h3 class="govuk-heading-m">@site.LocationName (Code: @site.Code)</h3>
-                  <dl class="govuk-summary-list">
-                    @if (!string.IsNullOrEmpty(@site.Address))
-                    {
-                      <div class="govuk-summary-list__row">
-                        <dt class="govuk-summary-list__key">Address:</dt>
-                        <dd class="govuk-summary-list__value">@site.Address</dd>
-                      </div>
-                    }
-                    @if (!string.IsNullOrEmpty(@site.Status))
-                    {
-                      <div class="govuk-summary-list__row">
-                        <dt class="govuk-summary-list__key">Status:</dt>
-                        <dd class="govuk-summary-list__value">@site.GetSiteStatus()</dd>
-                      </div>
-                    }
-                  </dl>
-                }
-              </div>
-            </details>
-          }
-
         </div>
       </div>
-      <p class="govuk-body">
-        <a href="@link" class="govuk-link">Contact the Becoming a Teacher team to report a problem</a>
-      </p>
-    </div>
-
-    <div class="govuk-grid-column-one-third">
-    @if(Model.Course.StatusAsEnum != CourseRunningStatus.NotRunning)
-    {
-      <aside class="related">
-        @switch(courseEnrichment.DeterminePublicationState())
-        {
-          case WorkflowStatus.Blank:
-            <div class="govuk-tag govuk-tag--empty">empty</div>
-            break;
-          case WorkflowStatus.SubsequentDraft:
-            <div class="govuk-tag govuk-tag--published">published *</div>
-            break;
-          case WorkflowStatus.Published:
-            <div class="govuk-tag govuk-tag--published">published</div>
-            break;
-          case WorkflowStatus.InitialDraft:
-            <div class="govuk-tag govuk-tag--draft">draft</div>
-            break;
-        }
-
-        @if (courseEnrichment.DeterminePublicationState() == WorkflowStatus.Blank)
-        {
-          <div class="related__block">
-            <p class="govuk-body">You need to complete and publish this information.</p>
-          </div>
-        }
-
-        @if (courseEnrichment.DeterminePublicationState() == WorkflowStatus.SubsequentDraft)
-        {
-          <div class="related__block">
-            <p class="govuk-body">* You have unpublished changes.</p>
-            <p class="govuk-body">Last saved:<br />@courseEnrichment.DraftLastUpdatedUtc.DateString()</p>
-            @if (courseEnrichment.LastPublishedUtc.HasValue)
-            {
-              <p class="govuk-body">Last published:<br />@courseEnrichment.LastPublishedUtc.DateString()</p>
-            }
-          </div>
-        }
-
-        @if ((courseEnrichment.LastPublishedUtc.HasValue) && !(courseEnrichment.DeterminePublicationState() == WorkflowStatus.SubsequentDraft))
-        {
-          <div class="related__block">
-            <p class="govuk-body">Last published:<br />@courseEnrichment.LastPublishedUtc.DateString()</p>
-          </div>
-        }
-
-        @if (courseEnrichment.DeterminePublicationState() != WorkflowStatus.Published)
-        {
-          <div class="related__block">
-            <h4 class="govuk-heading-m">Preview</h4>
-            <p class="govuk-body">See how this course looks with your changes.</p>
-            <p class="govuk-body">Preview your course to check for mistakes before publishing.</p>
-            <p class="govuk-body"><a asp-action="Preview">Preview course</a></p>
-          </div>
-
-          <div class="related__block">
-            <h4 class="govuk-heading-m">Publish</h4>
-            <p class="govuk-body">Publish your changes.</p>
-            <p class="govuk-body">You can make changes to this course after publishing it.</p>
-            <form asp-route="publish" method="post" class="govuk-!-margin-bottom-5">
-              <input type="submit" class="govuk-button" value="Publish" />
-            </form>
-          </div>
-        }
-
-        @if (Model.Course.StatusAsEnum == CourseRunningStatus.Running)
-        {
-          <div class="related__block">
-            <h4 class="govuk-heading-m">View on website</h4>
-            <p class="govuk-body">See how this course currently looks to applicants:</p>
-            <p class="govuk-body"><a href="@Model.LiveSearchUrl">View on website</a></p>
-          </div>
-        }
-      </aside>
-    }
-    </div>
+    </section>
   </div>
 </main>

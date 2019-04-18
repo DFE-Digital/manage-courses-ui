@@ -538,6 +538,12 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
             return frontendUrlService.RedirectToFrontend("/organisations/" + providerCode + "/courses");
         }
 
+        [Route("{providerCode}/courses/{courseCode}/details")]
+        public async Task<IActionResult> Details(string providerCode, string courseCode)
+        {
+            return frontendUrlService.RedirectToFrontend("/organisations/" + providerCode + "/courses/" + courseCode);
+        }
+
         private List<ViewModels.Provider> GetProviders(List<Domain.Models.Course> providerCourses)
         {
             var uniqueAccreditingProviderCodes = providerCourses.Select(c => c.AccreditingProvider?.ProviderCode).Distinct();
