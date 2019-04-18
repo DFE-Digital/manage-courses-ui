@@ -75,77 +75,80 @@
         </div>
 
         <div class="govuk-grid-column-one-third">
-          <aside class="related">
-            @switch(courseEnrichment.DeterminePublicationState())
-            {
-              case WorkflowStatus.Blank:
-                <div class="govuk-tag govuk-tag--empty">empty</div>
-                break;
-              case WorkflowStatus.SubsequentDraft:
-                <div class="govuk-tag govuk-tag--published">published *</div>
-                break;
-              case WorkflowStatus.Published:
-                <div class="govuk-tag govuk-tag--published">published</div>
-                break;
-              case WorkflowStatus.InitialDraft:
-                <div class="govuk-tag govuk-tag--draft">draft</div>
-                break;
-            }
+          @if(Model.Course.StatusAsEnum != CourseRunningStatus.NotRunning)
+	        {
+            <aside class="related">
+              @switch(courseEnrichment.DeterminePublicationState())
+              {
+                case WorkflowStatus.Blank:
+                  <div class="govuk-tag govuk-tag--empty">empty</div>
+                  break;
+                case WorkflowStatus.SubsequentDraft:
+                  <div class="govuk-tag govuk-tag--published">published *</div>
+                  break;
+                case WorkflowStatus.Published:
+                  <div class="govuk-tag govuk-tag--published">published</div>
+                  break;
+                case WorkflowStatus.InitialDraft:
+                  <div class="govuk-tag govuk-tag--draft">draft</div>
+                  break;
+              }
 
-            @if (courseEnrichment.DeterminePublicationState() == WorkflowStatus.Blank)
-            {
-              <div class="related__block">
-                <p class="govuk-body">You need to complete and publish this information.</p>
-              </div>
-            }
+              @if (courseEnrichment.DeterminePublicationState() == WorkflowStatus.Blank)
+              {
+                <div class="related__block">
+                  <p class="govuk-body">You need to complete and publish this information.</p>
+                </div>
+              }
 
-            @if (courseEnrichment.DeterminePublicationState() == WorkflowStatus.SubsequentDraft)
-            {
-              <div class="related__block">
-                <p class="govuk-body">* You have unpublished changes.</p>
-                <p class="govuk-body">Last saved:<br />@courseEnrichment.DraftLastUpdatedUtc.DateString()</p>
-                @if (courseEnrichment.LastPublishedUtc.HasValue)
-                {
+              @if (courseEnrichment.DeterminePublicationState() == WorkflowStatus.SubsequentDraft)
+              {
+                <div class="related__block">
+                  <p class="govuk-body">* You have unpublished changes.</p>
+                  <p class="govuk-body">Last saved:<br />@courseEnrichment.DraftLastUpdatedUtc.DateString()</p>
+                  @if (courseEnrichment.LastPublishedUtc.HasValue)
+                  {
+                    <p class="govuk-body">Last published:<br />@courseEnrichment.LastPublishedUtc.DateString()</p>
+                  }
+                </div>
+              }
+
+              @if ((courseEnrichment.LastPublishedUtc.HasValue) && !(courseEnrichment.DeterminePublicationState() == WorkflowStatus.SubsequentDraft))
+              {
+                <div class="related__block">
                   <p class="govuk-body">Last published:<br />@courseEnrichment.LastPublishedUtc.DateString()</p>
-                }
-              </div>
-            }
+                </div>
+              }
 
-            @if ((courseEnrichment.LastPublishedUtc.HasValue) && !(courseEnrichment.DeterminePublicationState() == WorkflowStatus.SubsequentDraft))
-            {
-              <div class="related__block">
-                <p class="govuk-body">Last published:<br />@courseEnrichment.LastPublishedUtc.DateString()</p>
-              </div>
-            }
+              @if (courseEnrichment.DeterminePublicationState() != WorkflowStatus.Published)
+              {
+                <div class="related__block">
+                  <h4 class="govuk-heading-m">Preview</h4>
+                  <p class="govuk-body">See how this course looks with your changes.</p>
+                  <p class="govuk-body">Preview your course to check for mistakes before publishing.</p>
+                  <p class="govuk-body"><a asp-action="Preview">Preview course</a></p>
+                </div>
 
-            @if (courseEnrichment.DeterminePublicationState() != WorkflowStatus.Published)
-            {
-              <div class="related__block">
-                <h4 class="govuk-heading-m">Preview</h4>
-                <p class="govuk-body">See how this course looks with your changes.</p>
-                <p class="govuk-body">Preview your course to check for mistakes before publishing.</p>
-                <p class="govuk-body"><a asp-action="Preview">Preview course</a></p>
-              </div>
+                <div class="related__block">
+                  <h4 class="govuk-heading-m">Publish</h4>
+                  <p class="govuk-body">Publish your changes.</p>
+                  <p class="govuk-body">You can make changes to this course after publishing it.</p>
+                  <form asp-route="publish" method="post" class="govuk-!-margin-bottom-5">
+                    <input type="submit" class="govuk-button" value="Publish" />
+                  </form>
+                </div>
+              }
 
-              <div class="related__block">
-                <h4 class="govuk-heading-m">Publish</h4>
-                <p class="govuk-body">Publish your changes.</p>
-                <p class="govuk-body">You can make changes to this course after publishing it.</p>
-                <form asp-route="publish" method="post" class="govuk-!-margin-bottom-5">
-                  <input type="submit" class="govuk-button" value="Publish" />
-                </form>
-              </div>
-            }
-
-            @if (Model.Course.StatusAsEnum == CourseRunningStatus.Running)
-            {
-              <div class="related__block">
-                <h4 class="govuk-heading-m">View on website</h4>
-                <p class="govuk-body">See how this course currently looks to applicants:</p>
-                <p class="govuk-body"><a href="@Model.LiveSearchUrl">View on website</a></p>
-              </div>
-            }
-          </aside>
+              @if (Model.Course.StatusAsEnum == CourseRunningStatus.Running)
+              {
+                <div class="related__block">
+                  <h4 class="govuk-heading-m">View on website</h4>
+                  <p class="govuk-body">See how this course currently looks to applicants:</p>
+                  <p class="govuk-body"><a href="@Model.LiveSearchUrl">View on website</a></p>
+                </div>
+              }
+            </aside>
+          }
         </div>
       </div>
     </section>
