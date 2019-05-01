@@ -219,7 +219,8 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
                 Reason = model.Reason,
             });
 
-            this.TempData.Add("RequestAccess_To_Name", $"{model.FirstName} {model.LastName}");
+            TempData.Remove("RequestAccess_To_Name"); // clear out any stale requests to avoid stale TempData causing dupe key error
+            TempData.Add("RequestAccess_To_Name", $"{model.FirstName} {model.LastName}");
 
             return new RedirectToActionResult("Show", "Organisation", new { providerCode = providerCode });
         }
