@@ -11,7 +11,6 @@ namespace GovUk.Education.ManageCourses.Ui.ViewModels
     {
         public string ProviderName { get; set; }
         public string ProviderCode { get; set; }
-        public bool ProviderOptedIn { get; set; }
 
         public List<Provider> Providers { get; set; }
 

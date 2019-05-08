@@ -105,7 +105,7 @@
             {
               @course.GetHasVacancies()
             }
-            @if(course.IsRunning() && Model.ProviderOptedIn)
+            @if(course.IsRunning())
             {
               <a href="@Url.Action("vacancies", "course", new {providerCode = Model.ProviderCode, accreditingInstCode = course.AccreditingProvider?.ProviderCode, courseCode = course.CourseCode})" class="govuk-link">(Edit)</a>
             }
