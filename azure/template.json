@@ -96,6 +96,12 @@
             "metadata": {
                 "description": "Connection string for Sentry monitoring."
             }
+        },
+        "urlProfile": {
+            "type": "string",
+            "metadata": {
+                "description": "DfE sign-in root URL for redirect to profile page."
+            }
         }
     },
     "variables": {
@@ -211,6 +217,18 @@
                             {
                                 "name": "SENTRY_DSN",
                                 "value": "[parameters('sentryDSN')]"
+                            },
+                            {
+                                "name": "API_URI",
+                                "value": "[concat(parameters('manageCoursesApiUrl'),'/api')]"
+                            },
+                            {
+                                "name": "ApiConnection_url",
+                                "value": "[parameters('manageCoursesApiUrl')]"
+                            },
+                            {
+                                "name": "url_profile",
+                                "value": "[parameters('urlProfile')]"
                             }
                         ]
                     },
