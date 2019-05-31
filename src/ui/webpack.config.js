@@ -20,8 +20,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
         sourceMap: true,
         uglifyOptions: {
           compress: {
-            ie8: true,
-            warnings: false
+            ie8: true
           },
           mangle: {
             ie8: true
