@@ -223,11 +223,11 @@
                                 "value": "[concat(parameters('manageCoursesApiUrl'),'/api')]"
                             },
                             {
-                                "name": "ApiConnection_url",
+                                "name": "ApiConnection__url",
                                 "value": "[parameters('manageCoursesApiUrl')]"
                             },
                             {
-                                "name": "url_profile",
+                                "name": "url__profile",
                                 "value": "[parameters('urlProfile')]"
                             }
                         ]
