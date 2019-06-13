@@ -102,6 +102,19 @@
             "metadata": {
                 "description": "DfE sign-in root URL for redirect to profile page."
             }
+        },
+        "appServicePlanSize": {
+            "type": "string",
+            "allowedValues": [
+                "1",
+                "2",
+                "3"
+            ],
+            "defaultValue": "1"
+        },
+        "appServicePlanInstances": {
+            "type": "int",
+            "defaultValue": 1
         }
     },
     "variables": {
@@ -152,6 +165,12 @@
                     },
                     "appServicePlanOS": {
                         "value": "Windows"
+                    },
+                    "appServicePlanSize": {
+                        "value": "[parameters('appServicePlanSize')]"
+                    },
+                    "appServicePlanInstances": {
+                        "value": "[parameters('appServicePlanInstances')]"
                     }
                 }
             }
