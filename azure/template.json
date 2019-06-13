@@ -70,25 +70,25 @@
         "signinClientSecret": {
             "type": "string",
             "metadata": {
-                "description": "The client secret for Signin"
+                "description": "The client secret for Signin."
             }
         },
         "signinMetadataAddress": {
             "type": "string",
             "metadata": {
-                "description": "The .well-known config URL for Signin"
+                "description": "The .well-known config URL for Signin."
             }
         },
         "signinTokenEndpoint": {
             "type": "string",
             "metadata": {
-                "description": "The /token endpoint as specified in the .well-known config URL for Signin"
+                "description": "The /token endpoint as specified in the .well-known config URL for Signin."
             }
         },
         "signinClientId": {
             "type": "string",
             "metadata": {
-                "description": "The Client ID to be used with Signin"
+                "description": "The Client ID to be used with Signin."
             }
         },
         "sentryDSN": {
