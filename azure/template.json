@@ -118,7 +118,7 @@
         }
     },
     "variables": {
-        "deploymentUrlBase": "https://raw.githubusercontent.com/DFE-Digital/bat-platform-building-blocks/master/templates/",
+        "deploymentUrlBase": "https://raw.githubusercontent.com/DFE-Digital/bat-platform-building-blocks/80-enable-app-service-logs/templates/",
         "resourceNamePrefix": "[toLower(concat('bat-', parameters('resourceEnvironmentName'),'-', parameters('serviceName')))]",
         "keyvaultCertificateName": "[if(greater(length(parameters('certificateName')),0), parameters('certificateName'), replace(parameters('customHostName'), '.', '-'))]",
         "appServiceName": "[concat(variables('resourceNamePrefix'), '-as')]",
@@ -194,6 +194,15 @@
                     },
                     "appServicePlanName": {
                         "value": "[variables('appServicePlanName')]"
+                    },
+                    "httpLoggingEnabled": {
+                        "value": true
+                    },
+                    "requestTracingEnabled": {
+                        "value": true
+                    },
+                    "detailedErrorLoggingEnabled": {
+                        "value": true
                     },
                     "appServiceAppSettings": {
                         "value": [
