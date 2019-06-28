@@ -257,39 +257,6 @@ namespace ManageCoursesUi.Tests
         }
 
         [Test]
-        public async Task About()
-        {
-            var manageApi = new Mock<IManageApi>();
-
-            var enrichmentModel = new CourseEnrichmentModel { AboutCourse = "AboutCourse", InterviewProcess = "InterviewProcess", HowSchoolPlacementsWork = "HowSchoolPlacementsWork" };
-            var ucasCourseEnrichmentGetModel = new UcasCourseEnrichmentGetModel { EnrichmentModel = enrichmentModel };
-
-            manageApi.Setup(x => x.GetCourseEnrichment(TestHelper.ProviderCode, TestHelper.TargetedProviderCode)).ReturnsAsync(ucasCourseEnrichmentGetModel);
-
-            var testCourse = new Course() { Name = "Name", CourseCode = "CourseCode" };
-
-            manageApi.Setup(x => x.GetCourse(TestHelper.ProviderCode, TestHelper.TargetedProviderCode)).ReturnsAsync(testCourse);
-
-            var frontendUrlMock = new Mock<IFrontendUrlService>();
-            var controller = new CourseController(manageApi.Object, new SearchAndCompareUrlService("http://www.example.com"), frontendUrlMock.Object);
-            var result = await controller.About(TestHelper.ProviderCode, TestHelper.AccreditingProviderCode, TestHelper.TargetedProviderCode);
-
-            var viewResult = result as ViewResult;
-            Assert.IsNotNull(viewResult);
-
-            var model = viewResult.Model as AboutCourseEnrichmentViewModel;
-
-            Assert.IsNotNull(model);
-
-            Assert.AreEqual(TestHelper.ProviderCode, model.RouteData.ProviderCode);
-            Assert.AreEqual(TestHelper.TargetedProviderCode, model.RouteData.CourseCode);
-
-            Assert.AreEqual(enrichmentModel.AboutCourse, model.AboutCourse);
-            Assert.AreEqual(enrichmentModel.InterviewProcess, model.InterviewProcess);
-            Assert.AreEqual(enrichmentModel.HowSchoolPlacementsWork, model.HowSchoolPlacementsWork);
-        }
-
-        [Test]
         public async Task AboutPost_Invalid()
         {
             var manageApi = new Mock<IManageApi>();
@@ -363,39 +330,6 @@ namespace ManageCoursesUi.Tests
             Assert.AreEqual(TestHelper.TargetedProviderCode, routeValues["courseCode"]);
 
             manageApi.Verify(x => x.SaveCourseEnrichment(TestHelper.ProviderCode, TestHelper.TargetedProviderCode, It.Is<CourseEnrichmentModel>(c => Check(c, viewModel))), Times.Once());
-        }
-
-        [Test]
-        public async Task Requirements()
-        {
-            var manageApi = new Mock<IManageApi>();
-
-            var enrichmentModel = new CourseEnrichmentModel { Qualifications = "Qualifications", PersonalQualities = "PersonalQualities", OtherRequirements = "OtherRequirements" };
-            var ucasCourseEnrichmentGetModel = new UcasCourseEnrichmentGetModel { EnrichmentModel = enrichmentModel };
-
-            manageApi.Setup(x => x.GetCourseEnrichment(TestHelper.ProviderCode, TestHelper.TargetedProviderCode)).ReturnsAsync(ucasCourseEnrichmentGetModel);
-
-            var testCourse = new Course() { Name = "Name", CourseCode = "CourseCode" };
-
-            manageApi.Setup(x => x.GetCourse(TestHelper.ProviderCode, TestHelper.TargetedProviderCode)).ReturnsAsync(testCourse);
-
-            var frontendUrlMock = new Mock<IFrontendUrlService>();
-            var controller = new CourseController(manageApi.Object, new SearchAndCompareUrlService("http://www.example.com"), frontendUrlMock.Object);
-            var result = await controller.Requirements(TestHelper.ProviderCode, TestHelper.AccreditingProviderCode, TestHelper.TargetedProviderCode);
-
-            var viewResult = result as ViewResult;
-            Assert.IsNotNull(viewResult);
-
-            var model = viewResult.Model as CourseRequirementsEnrichmentViewModel;
-
-            Assert.IsNotNull(model);
-
-            Assert.AreEqual(TestHelper.ProviderCode, model.RouteData.ProviderCode);
-            Assert.AreEqual(TestHelper.TargetedProviderCode, model.RouteData.CourseCode);
-
-            Assert.AreEqual(enrichmentModel.Qualifications, model.Qualifications);
-            Assert.AreEqual(enrichmentModel.PersonalQualities, model.PersonalQualities);
-            Assert.AreEqual(enrichmentModel.OtherRequirements, model.OtherRequirements);
         }
 
         [Test]
@@ -478,41 +412,6 @@ namespace ManageCoursesUi.Tests
         }
 
         [Test]
-        public async Task Salary()
-        {
-            var manageApi = new Mock<IManageApi>();
-
-            var enrichmentModel = new CourseEnrichmentModel
-            {
-                CourseLength = null, SalaryDetails = "SalaryDetails"
-            };
-            var ucasCourseEnrichmentGetModel = new UcasCourseEnrichmentGetModel { EnrichmentModel = enrichmentModel };
-
-            manageApi.Setup(x => x.GetCourseEnrichment(TestHelper.ProviderCode, TestHelper.TargetedProviderCode)).ReturnsAsync(ucasCourseEnrichmentGetModel);
-
-            var testCourse = new Course() { Name = "Name", CourseCode = "CourseCode" };
-
-            manageApi.Setup(x => x.GetCourse(TestHelper.ProviderCode, TestHelper.TargetedProviderCode)).ReturnsAsync(testCourse);
-
-            var frontendUrlMock = new Mock<IFrontendUrlService>();
-            var controller = new CourseController(manageApi.Object, new SearchAndCompareUrlService("http://www.example.com"), frontendUrlMock.Object);
-            var result = await controller.Salary(TestHelper.ProviderCode, TestHelper.AccreditingProviderCode, TestHelper.TargetedProviderCode);
-
-            var viewResult = result as ViewResult;
-            Assert.IsNotNull(viewResult);
-
-            var model = viewResult.Model as CourseSalaryEnrichmentViewModel;
-
-            Assert.IsNotNull(model);
-
-            Assert.AreEqual(TestHelper.ProviderCode, model.RouteData.ProviderCode);
-            Assert.AreEqual(TestHelper.TargetedProviderCode, model.RouteData.CourseCode);
-
-            Assert.AreEqual(enrichmentModel.CourseLength, model.CourseLength);
-            Assert.AreEqual(enrichmentModel.SalaryDetails, model.SalaryDetails);
-        }
-
-        [Test]
         public async Task SalaryPost_Invalid()
         {
             var manageApi = new Mock<IManageApi>();
@@ -589,44 +488,6 @@ namespace ManageCoursesUi.Tests
             Assert.AreEqual(TestHelper.TargetedProviderCode, routeValues["courseCode"]);
 
             manageApi.Verify(x => x.SaveCourseEnrichment(TestHelper.ProviderCode, TestHelper.TargetedProviderCode, It.Is<CourseEnrichmentModel>(c => Check(c, viewModel))), Times.Once());
-        }
-
-        [Test]
-        public async Task Fees()
-        {
-            var manageApi = new Mock<IManageApi>();
-
-            var enrichmentModel = new CourseEnrichmentModel
-            {
-                FeeUkEu = 123.45m, FeeInternational = 543.21m, FeeDetails = "FeeDetails", CourseLength = null, FinancialSupport = "FinancialSupport"
-            };
-            var ucasCourseEnrichmentGetModel = new UcasCourseEnrichmentGetModel { EnrichmentModel = enrichmentModel };
-
-            manageApi.Setup(x => x.GetCourseEnrichment(TestHelper.ProviderCode, TestHelper.TargetedProviderCode)).ReturnsAsync(ucasCourseEnrichmentGetModel);
-
-            var testCourse = new Course() { Name = "Name", CourseCode = "CourseCode" };
-
-            manageApi.Setup(x => x.GetCourse(TestHelper.ProviderCode, TestHelper.TargetedProviderCode)).ReturnsAsync(testCourse);
-
-            var frontendUrlMock = new Mock<IFrontendUrlService>();
-            var controller = new CourseController(manageApi.Object, new SearchAndCompareUrlService("http://www.example.com"), frontendUrlMock.Object);
-            var result = await controller.Fees(TestHelper.ProviderCode, TestHelper.AccreditingProviderCode, TestHelper.TargetedProviderCode);
-
-            var viewResult = result as ViewResult;
-            Assert.IsNotNull(viewResult);
-
-            var model = viewResult.Model as CourseFeesEnrichmentViewModel;
-
-            Assert.IsNotNull(model);
-
-            Assert.AreEqual(TestHelper.ProviderCode, model.RouteData.ProviderCode);
-            Assert.AreEqual(TestHelper.TargetedProviderCode, model.RouteData.CourseCode);
-
-            Assert.AreEqual(enrichmentModel.CourseLength, model.CourseLength);
-            Assert.AreEqual(enrichmentModel.FeeDetails, model.FeeDetails);
-            Assert.AreEqual(enrichmentModel.FeeInternational.GetFeeValue(), model.FeeInternational);
-            Assert.AreEqual(enrichmentModel.FeeUkEu.GetFeeValue(), model.FeeUkEu);
-            Assert.AreEqual(enrichmentModel.FinancialSupport, model.FinancialSupport);
         }
 
         [Test]

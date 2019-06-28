@@ -34,26 +34,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
         [Route("{providerCode}/course/{accreditingProviderCode=self}/{courseCode}")]
         public async Task<IActionResult> Show(string providerCode, string accreditingProviderCode, string courseCode)
         {
-            Validate(providerCode, accreditingProviderCode, courseCode);
-
-            var orgsList = await _manageApi.GetProviderSummaries();
-            var userOrganisations = orgsList.ToList();
-            var multipleOrganisations = userOrganisations.Count() > 1;
-            var org = userOrganisations.ToList().FirstOrDefault(x => providerCode.ToLower() == x.ProviderCode.ToLower());
-
-            if (org == null) { return NotFound(); }
-
-            var course = await _manageApi.GetCourse(providerCode, courseCode);
-
-            if (course == null) return NotFound();
-
-            var ucasCourseEnrichmentGetModel = await _manageApi.GetCourseEnrichment(providerCode, courseCode);
-
-            var routeData = GetCourseRouteDataViewModel(providerCode, courseCode);
-
-            var viewModel = LoadViewModel(org, course, multipleOrganisations, ucasCourseEnrichmentGetModel, routeData);
-
-            return View("Show", viewModel);
+          return frontendUrlService.RedirectToFrontend("/organisations/" + providerCode + "/courses/" + courseCode);
         }
 
         [HttpPost]
@@ -95,59 +76,14 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
         [Route("{providerCode}/course/{accreditingProviderCode=self}/{courseCode}/preview")]
         public IActionResult Preview(string providerCode, string accreditingProviderCode, string courseCode)
         {
-            var course = _manageApi.GetSearchAndCompareCourse(providerCode, courseCode).Result;
-            if (course == null)
-            {
-                return NotFound();
-            }
-
-            return View(new SearchAndCompare.UI.Shared.ViewModels.CourseDetailsViewModel
-            {
-                AboutYourOrgLink = Url.Action("About", "Organisation", new { providerCode = providerCode }),
-                PreviewMode = true,
-                Course = course,
-                Finance = new FinanceViewModel(course, new FeeCaps())
-            });
+          return frontendUrlService.RedirectToFrontend("/organisations/" + providerCode + "/courses/" + courseCode + "/preview");
         }
 
         [HttpGet]
         [Route("{providerCode}/course/{accreditingProviderCode=self}/{courseCode}/about")]
         public async Task<IActionResult> About(string providerCode, string accreditingProviderCode, string courseCode, string copyFrom = null)
         {
-            var courseDetails = await _manageApi.GetCourse(providerCode, courseCode);
-            var ucasCourseEnrichmentGetModel = await _manageApi.GetCourseEnrichment(providerCode, courseCode);
-
-            var routeData = GetCourseRouteDataViewModel(providerCode, courseCode);
-            var courseInfo = new CourseInfoViewModel { ProgrammeCode = courseDetails.CourseCode, Name = courseDetails.Name };
-
-            var enrichmentModel = ucasCourseEnrichmentGetModel?.EnrichmentModel ?? new CourseEnrichmentModel();
-
-            var model = new AboutCourseEnrichmentViewModel
-            {
-                AboutCourse = enrichmentModel?.AboutCourse,
-                InterviewProcess = enrichmentModel?.InterviewProcess,
-                HowSchoolPlacementsWork = enrichmentModel?.HowSchoolPlacementsWork,
-                RouteData = routeData,
-                CourseInfo = courseInfo
-            };
-
-            await LoadCopyableCoursesIntoViewBag(providerCode, courseCode);
-
-            if (!string.IsNullOrEmpty(copyFrom))
-            {
-                copyFrom = copyFrom.ToUpper();
-                var copiedEnrichment = await _manageApi.GetCourseEnrichment(providerCode, copyFrom);
-                ViewBag.CopiedFrom = new CourseInfoViewModel
-                {
-                    ProgrammeCode = copyFrom,
-                    Name = (ViewBag.CopyableCourses as IEnumerable<Domain.Models.Course>).SingleOrDefault(x => x.CourseCode == copyFrom)?.Name
-                };
-
-                ViewBag.CopiedFields = model.CopyFrom(copiedEnrichment?.EnrichmentModel);
-            }
-
-
-            return View(model);
+          return frontendUrlService.RedirectToFrontend("/organisations/" + providerCode + "/courses/" + courseCode + "/about");
         }
 
         private async Task LoadCopyableCoursesIntoViewBag(string providerCode, string courseCode)
@@ -186,38 +122,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
         [Route("{providerCode}/course/{accreditingProviderCode=self}/{courseCode}/requirements")]
         public async Task<IActionResult> Requirements(string providerCode, string accreditingProviderCode, string courseCode, string copyFrom = null)
         {
-            var courseDetails = await _manageApi.GetCourse(providerCode, courseCode);
-            var ucasCourseEnrichmentGetModel = await _manageApi.GetCourseEnrichment(providerCode, courseCode);
-            var routeData = GetCourseRouteDataViewModel(providerCode, courseCode);
-            var courseInfo = new CourseInfoViewModel { ProgrammeCode = courseDetails.CourseCode, Name = courseDetails.Name };
-
-            var enrichmentModel = ucasCourseEnrichmentGetModel?.EnrichmentModel ?? new CourseEnrichmentModel();
-
-            var model = new CourseRequirementsEnrichmentViewModel
-            {
-                Qualifications = enrichmentModel?.Qualifications,
-                PersonalQualities = enrichmentModel?.PersonalQualities,
-                OtherRequirements = enrichmentModel?.OtherRequirements,
-                RouteData = routeData,
-                CourseInfo = courseInfo
-            };
-
-            await LoadCopyableCoursesIntoViewBag(providerCode, courseCode);
-
-            if (!string.IsNullOrEmpty(copyFrom))
-            {
-                copyFrom = copyFrom.ToUpper();
-                var copiedEnrichment = await _manageApi.GetCourseEnrichment(providerCode, copyFrom);
-                ViewBag.CopiedFrom = new CourseInfoViewModel
-                {
-                    ProgrammeCode = copyFrom,
-                    Name = (ViewBag.CopyableCourses as IEnumerable<Domain.Models.Course>).SingleOrDefault(x => x.CourseCode == copyFrom)?.Name
-                };
-
-                ViewBag.CopiedFields = model.CopyFrom(copiedEnrichment?.EnrichmentModel);
-            }
-
-            return View(model);
+          return frontendUrlService.RedirectToFrontend("/organisations/" + providerCode + "/courses/" + courseCode + "/requirements");
         }
 
         [HttpPost]
@@ -247,38 +152,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
         [Route("{providerCode}/course/{accreditingProviderCode=self}/{courseCode}/salary")]
         public async Task<IActionResult> Salary(string providerCode, string accreditingProviderCode, string courseCode, string copyFrom = null)
         {
-            var courseDetails = await _manageApi.GetCourse(providerCode, courseCode);
-            var ucasCourseEnrichmentGetModel = await _manageApi.GetCourseEnrichment(providerCode, courseCode);
-            var routeData = GetCourseRouteDataViewModel(providerCode, courseCode);
-            var courseInfo = new CourseInfoViewModel { ProgrammeCode = courseDetails.CourseCode, Name = courseDetails.Name };
-
-            var enrichmentModel = ucasCourseEnrichmentGetModel?.EnrichmentModel ?? new CourseEnrichmentModel();
-
-            var model = new CourseSalaryEnrichmentViewModel
-            {
-                CourseLength = enrichmentModel?.CourseLength.GetCourseLength(),
-                CourseLengthInput = enrichmentModel.CourseLength.GetCourseLengthInput(),
-                SalaryDetails = enrichmentModel?.SalaryDetails,
-                RouteData = routeData,
-                CourseInfo = courseInfo
-            };
-
-            await LoadCopyableCoursesIntoViewBag(providerCode, courseCode);
-
-            if (!string.IsNullOrEmpty(copyFrom))
-            {
-                copyFrom = copyFrom.ToUpper();
-                var copiedEnrichment = await _manageApi.GetCourseEnrichment(providerCode, copyFrom);
-                ViewBag.CopiedFrom = new CourseInfoViewModel
-                {
-                    ProgrammeCode = copyFrom,
-                    Name = (ViewBag.CopyableCourses as IEnumerable<Domain.Models.Course>).SingleOrDefault(x => x.CourseCode == copyFrom)?.Name
-                };
-
-                ViewBag.CopiedFields = model.CopyFrom(copiedEnrichment?.EnrichmentModel);
-            }
-
-            return View(model);
+          return frontendUrlService.RedirectToFrontend("/organisations/" + providerCode + "/courses/" + courseCode + "/salary");
         }
 
         [HttpPost]
@@ -306,41 +180,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
         [Route("{providerCode}/course/{accreditingProviderCode=self}/{courseCode}/fees-and-length")]
         public async Task<IActionResult> Fees(string providerCode, string accreditingProviderCode, string courseCode, string copyFrom = null)
         {
-            var courseDetails = await _manageApi.GetCourse(providerCode, courseCode);
-            var ucasCourseEnrichmentGetModel = await _manageApi.GetCourseEnrichment(providerCode, courseCode);
-            var routeData = GetCourseRouteDataViewModel(providerCode, courseCode);
-            var courseInfo = new CourseInfoViewModel { ProgrammeCode = courseDetails.CourseCode, Name = courseDetails.Name };
-
-            var enrichmentModel = ucasCourseEnrichmentGetModel?.EnrichmentModel ?? new CourseEnrichmentModel();
-
-            var model = new CourseFeesEnrichmentViewModel
-            {
-                CourseLength = enrichmentModel?.CourseLength.GetCourseLength(),
-                CourseLengthInput = enrichmentModel.CourseLength.GetCourseLengthInput(),
-                FeeUkEu = enrichmentModel?.FeeUkEu.GetFeeValue(),
-                FeeInternational = enrichmentModel?.FeeInternational.GetFeeValue(),
-                FeeDetails = enrichmentModel?.FeeDetails,
-                FinancialSupport = enrichmentModel?.FinancialSupport,
-                RouteData = routeData,
-                CourseInfo = courseInfo
-            };
-
-            await LoadCopyableCoursesIntoViewBag(providerCode, courseCode);
-
-            if (!string.IsNullOrEmpty(copyFrom))
-            {
-                copyFrom = copyFrom.ToUpper();
-                var copiedEnrichment = await _manageApi.GetCourseEnrichment(providerCode, copyFrom);
-                ViewBag.CopiedFrom = new CourseInfoViewModel
-                {
-                    ProgrammeCode = copyFrom,
-                    Name = (ViewBag.CopyableCourses as IEnumerable<Domain.Models.Course>).SingleOrDefault(x => x.CourseCode == copyFrom)?.Name
-                };
-
-                ViewBag.CopiedFields = model.CopyFrom(copiedEnrichment?.EnrichmentModel);
-            }
-
-            return View(model);
+          return frontendUrlService.RedirectToFrontend("/organisations/" + providerCode + "/courses/" + courseCode + "/fees");
         }
 
         [HttpPost]
