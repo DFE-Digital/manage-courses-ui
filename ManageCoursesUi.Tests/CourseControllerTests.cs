@@ -30,181 +30,18 @@ namespace ManageCoursesUi.Tests
         [Test]
         [TestCase(EnumDataType.SingleVariantOneMatch)]
         [TestCase(EnumDataType.MultiVariantOneMatch)]
-        public async Task TestController_Show_should_return_matched_model(EnumDataType type)
+        public async Task TestController_Show_should_be_redirected(EnumDataType type)
         {
             var manageApi = new Mock<IManageApi>();
-            var testData = TestHelper.GetTestData(type);
-            var testOrgs = new List<ProviderSummary>
-            {
-                new ProviderSummary
-                {
-                    ProviderCode = TestHelper.ProviderCode,
-                    ProviderName = TestHelper.ProviderName,
-                    TotalCourses = testData.Count
-                }
-            };
-
-            var testCourse = testData.FirstOrDefault(x => x.Name == TestHelper.TargetedCourseTitle);
-
-            var enrichmentModel = new CourseEnrichmentModel { AboutCourse = "AboutCourse", InterviewProcess = "InterviewProcess", HowSchoolPlacementsWork = "HowSchoolPlacementsWork" };
-            var ucasCourseEnrichmentGetModel = new UcasCourseEnrichmentGetModel { EnrichmentModel = enrichmentModel };
-
-            manageApi.Setup(x => x.GetProviderSummaries()).ReturnsAsync(testOrgs);
-            manageApi.Setup(x => x.GetCourse(TestHelper.ProviderCode, TestHelper.TargetedProviderCode)).ReturnsAsync(testCourse);
-
-            manageApi.Setup(x => x.GetCourseEnrichment(TestHelper.ProviderCode, TestHelper.TargetedProviderCode)).ReturnsAsync(ucasCourseEnrichmentGetModel);
-
-            manageApi.Setup(x => x.GetCourseEnrichment(TestHelper.ProviderCode, TestHelper.TargetedProviderCode)).ReturnsAsync(ucasCourseEnrichmentGetModel);
-
             var frontendUrlMock = new Mock<IFrontendUrlService>();
+            frontendUrlMock.Setup(x => x.RedirectToFrontend("/organisations/" + TestHelper.ProviderCode + "/courses/" + TestHelper.TargetedProviderCode)).Returns(new RedirectResult("frontend"));
+
             var controller = new CourseController(manageApi.Object, new SearchAndCompareUrlService("http://www.example.com"), frontendUrlMock.Object);
             var result = await controller.Show(TestHelper.ProviderCode, TestHelper.AccreditingProviderCode, TestHelper.TargetedProviderCode);
 
-            var viewResult = result as ViewResult;
-            Assert.IsNotNull(viewResult);
-
-            var model = viewResult.Model as CourseViewModel;
-            var routeData = model.CourseEnrichment.RouteData;
-            Assert.IsNotNull(model);
-            Assert.AreEqual(TestHelper.TargetedCourseTitle, model.CourseTitle);
-            Assert.AreEqual(TestHelper.ProviderCode, model.ProviderCode);
-
-            Assert.AreEqual(TestHelper.ProviderName, model.ProviderName);
-
-            Assert.AreEqual(TestHelper.ProviderCode, routeData.ProviderCode);
-            Assert.AreEqual(TestHelper.TargetedProviderCode, routeData.CourseCode);
-
-            Assert.AreEqual(enrichmentModel.AboutCourse, model.CourseEnrichment.AboutCourse);
-            Assert.AreEqual(enrichmentModel.InterviewProcess, model.CourseEnrichment.InterviewProcess);
-            Assert.AreEqual(enrichmentModel.HowSchoolPlacementsWork, model.CourseEnrichment.HowSchoolPlacementsWork);
+            Assert.IsTrue(result is RedirectResult);
         }
 
-        [Test]
-        [TestCase(EnumDataType.SingleVariantNoMatch)]
-        [TestCase(EnumDataType.MultiVariantNoMatch)]
-        public void TestController_Show_should_return_not_found(EnumDataType type)
-        {
-            var manageApi = new Mock<IManageApi>();
-            var testData = TestHelper.GetTestData(type);
-
-            var testOrgs = new List<ProviderSummary>
-            {
-                new ProviderSummary
-                {
-                    ProviderCode = "123",
-                    TotalCourses = testData.Count
-                }
-            };
-
-            var testCourse = testData.FirstOrDefault(x => x.Name == TestHelper.TargetedCourseTitle);
-            manageApi.Setup(x => x.GetProviderSummaries()).ReturnsAsync(testOrgs);
-            manageApi.Setup(x => x.GetCourse(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(testCourse);
-
-            var frontendUrlMock = new Mock<IFrontendUrlService>();
-            var controller = new CourseController(manageApi.Object, new SearchAndCompareUrlService("http://www.example.com"), frontendUrlMock.Object);
-
-            var res = controller.Show(TestHelper.ProviderCode, TestHelper.AccreditingProviderCode, TestHelper.TargetedProviderCode).Result;
-
-            Assert.That(res is NotFoundResult);
-            Assert.AreEqual(404, (res as NotFoundResult).StatusCode);
-        }
-
-        [Test]
-        public async Task TestController_should_return_not_found_status()
-        {
-            var manageApi = new Mock<IManageApi>();
-            const string providerCode = "123";
-            const string providerName = "provider Name";
-            var testData = TestHelper.GetTestData(EnumDataType.SingleVariantOneMatch);
-
-            var testOrgs = new List<ProviderSummary>
-            {
-                new ProviderSummary
-                {
-                    ProviderName = providerName,
-                    ProviderCode = providerCode,
-                    TotalCourses = testData.Count
-                }
-            };
-
-            manageApi.Setup(x => x.GetProviderSummaries()).ReturnsAsync(testOrgs);
-            manageApi.Setup(x => x.GetCourse(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync((Course) null);
-
-            var frontendUrlMock = new Mock<IFrontendUrlService>();
-            var controller = new CourseController(manageApi.Object, new SearchAndCompareUrlService("http://www.example.com"), frontendUrlMock.Object);
-
-            var result = await controller.Show(TestHelper.ProviderCode, TestHelper.AccreditingProviderCode, TestHelper.TargetedProviderCode);
-
-            Assert.NotNull(result);
-            Assert.IsInstanceOf(typeof(NotFoundResult), result);
-        }
-
-        [Test]
-        [TestCase("", "xxx", "xxx")]
-        [TestCase(null, "self", "35L6")]
-        [TestCase("2AT", "", "35L6")]
-        [TestCase("2AT", null, "35L6")]
-        [TestCase("2AT", "self", "")]
-        [TestCase("2AT", "self", null)]
-        public void TestController_Show_with_null_or_empty_parameters_should_return_exception(string providerCode, string accreditingProviderCode, string courseCode)
-        {
-            var manageApi = new Mock<IManageApi>();
-            var testData = TestHelper.GetTestData(EnumDataType.SingleVariantOneMatch);
-
-            var testOrgs = new List<ProviderSummary>
-            {
-                new ProviderSummary
-                {
-                    TotalCourses = testData.Count
-                }
-            };
-
-            var testCourse = testData.FirstOrDefault(x => x.Name == TestHelper.TargetedCourseTitle);
-            manageApi.Setup(x => x.GetProviderSummaries()).ReturnsAsync(testOrgs);
-            manageApi.Setup(x => x.GetCourse(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(testCourse);
-
-            var frontendUrlMock = new Mock<IFrontendUrlService>();
-            var controller = new CourseController(manageApi.Object, new SearchAndCompareUrlService("http://www.example.com"), frontendUrlMock.Object);
-            Assert.ThrowsAsync<ArgumentNullException>(async() => await controller.Show(providerCode, accreditingProviderCode, courseCode));
-        }
-
-        [Test]
-        public void TestController_with_api_exception_on_first_call_should_return_exception()
-        {
-            var manageApi = new Mock<IManageApi>();
-
-            manageApi.Setup(x => x.GetProviderSummaries()).ThrowsAsync(new Exception());
-
-            var frontendUrlMock = new Mock<IFrontendUrlService>();
-            var controller = new CourseController(manageApi.Object, new SearchAndCompareUrlService("http://www.example.com"), frontendUrlMock.Object);
-
-            Assert.ThrowsAsync<Exception>(async() => await controller.Show(TestHelper.ProviderCode, TestHelper.AccreditingProviderCode, TestHelper.TargetedProviderCode));
-        }
-
-        [Test]
-        [TestCase(EnumDataType.SingleVariantOneMatch)]
-        [TestCase(EnumDataType.MultiVariantOneMatch)]
-        public void TestController_with_api_exception_on_second_call_should_return_exception(EnumDataType type)
-        {
-            var manageApi = new Mock<IManageApi>();
-            var testData = TestHelper.GetTestData(type);
-            var testOrgs = new List<ProviderSummary>
-            {
-                new ProviderSummary
-                {
-                    ProviderCode = TestHelper.ProviderCode,
-                    TotalCourses = testData.Count
-                }
-            };
-
-            manageApi.Setup(x => x.GetProviderSummaries()).ReturnsAsync(testOrgs);
-            manageApi.Setup(x => x.GetCourse(It.IsAny<string>(), It.IsAny<string>())).ThrowsAsync(new Exception());
-
-            var frontendUrlMock = new Mock<IFrontendUrlService>();
-            var controller = new CourseController(manageApi.Object, new SearchAndCompareUrlService("http://www.example.com"), frontendUrlMock.Object);
-
-            Assert.ThrowsAsync<Exception>(async() => await controller.Show(TestHelper.ProviderCode, TestHelper.AccreditingProviderCode, TestHelper.TargetedProviderCode));
-        }
 
         [Test]
         public void ShowPublish()
