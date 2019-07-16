@@ -112,6 +112,10 @@
             ],
             "defaultValue": "1"
         },
+        "featureFrontendOrganisationShow": {
+            "type": "string",
+            "defaultValue": "true"
+        },
         "appServicePlanInstances": {
             "type": "int",
             "defaultValue": 1
@@ -244,6 +248,10 @@
                             {
                                 "name": "ApiConnection__url",
                                 "value": "[parameters('manageCoursesApiUrl')]"
+                            },
+                            {
+                                "name": "FEATURE_FRONTEND_ORGANISATION_SHOW",
+                                "value": "[parameters('featureFrontendOrganisationShow')]"
                             },
                             {
                                 "name": "url__profile",
