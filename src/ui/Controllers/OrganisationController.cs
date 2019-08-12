@@ -74,18 +74,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
         [Route("{providerCode}/details")]
         public async Task<IActionResult> Details(string providerCode)
         {
-            var ucasProviderEnrichmentGetModel = await _manageApi.GetProviderEnrichment(providerCode);
-
-            ucasProviderEnrichmentGetModel = ucasProviderEnrichmentGetModel ?? new UcasProviderEnrichmentGetModel { EnrichmentModel = new ProviderEnrichmentModel() { AccreditingProviderEnrichments = new List<AccreditingProviderEnrichment>() } };
-
-            var enrichmentModel = ucasProviderEnrichmentGetModel.EnrichmentModel;
-            var aboutAccreditingTrainingProviders = await MergeTrainingProviderViewModels(providerCode, enrichmentModel);
-            var providerSummary = await _manageApi.GetProviderSummary(providerCode);
-
-            var model = OrganisationViewModel.FromEnrichmentModel(
-                ucasProviderEnrichmentGetModel, aboutAccreditingTrainingProviders, providerSummary);
-
-            return View(model);
+            return frontendUrlService.RedirectToFrontend("/organisations/" + $"{providerCode}/2019/details");
         }
 
         [HttpPost]
@@ -101,19 +90,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
         [Route("{providerCode}/about")]
         public async Task<IActionResult> About(string providerCode)
         {
-            var ucasProviderEnrichmentGetModel = await _manageApi.GetProviderEnrichment(providerCode);
-
-            ucasProviderEnrichmentGetModel = ucasProviderEnrichmentGetModel ?? new UcasProviderEnrichmentGetModel { EnrichmentModel = new ProviderEnrichmentModel() { AccreditingProviderEnrichments = new List<AccreditingProviderEnrichment>() } };
-
-            var enrichmentModel = ucasProviderEnrichmentGetModel.EnrichmentModel;
-            var aboutAccreditingTrainingProviders = await MergeTrainingProviderViewModels(providerCode, enrichmentModel);
-            var providerSummary = await _manageApi.GetProviderSummary(providerCode);
-
-            var model = OrganisationViewModel.FromEnrichmentModel(ucasProviderEnrichmentGetModel, aboutAccreditingTrainingProviders, providerSummary);
-
-            var aboutModel = OrganisationViewModelForAbout.FromGeneralViewModel(model);
-
-            return View(aboutModel);
+            return frontendUrlService.RedirectToFrontend("/organisations/" + $"{providerCode}/2019/about");
         }
 
         [HttpPost]
@@ -151,18 +128,7 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
         [Route("{providerCode}/contact")]
         public async Task<IActionResult> Contact(string providerCode)
         {
-            var ucasProviderEnrichmentGetModel = await _manageApi.GetProviderEnrichment(providerCode);
-
-            ucasProviderEnrichmentGetModel = ucasProviderEnrichmentGetModel ?? new UcasProviderEnrichmentGetModel { EnrichmentModel = new ProviderEnrichmentModel() { AccreditingProviderEnrichments = new List<AccreditingProviderEnrichment>() } };
-
-            var enrichmentModel = ucasProviderEnrichmentGetModel.EnrichmentModel;
-            var providerSummary = await _manageApi.GetProviderSummary(providerCode);
-
-            var model = OrganisationViewModel.FromEnrichmentModel(ucasProviderEnrichmentGetModel, null, providerSummary);
-
-            var contactModel = OrganisationViewModelForContact.FromGeneralViewModel(model);
-
-            return View(contactModel);
+            return frontendUrlService.RedirectToFrontend("/organisations/" + $"{providerCode}/2019/contact");
         }
 
         // TODO: Ensure this actually persists the contact data correctly
@@ -194,10 +160,9 @@ namespace GovUk.Education.ManageCourses.Ui.Controllers
 
         [HttpGet]
         [Route("{providerCode}/request-access")]
-        public ViewResult RequestAccess(string providerCode)
+        public ActionResult RequestAccess(string providerCode)
         {
-            ViewBag.ProviderCode = providerCode;
-            return View(new RequestAccessViewModel() );
+            return frontendUrlService.RedirectToFrontend("/organisations/" + $"{providerCode}/request-access");
         }
 
         [HttpPost]
