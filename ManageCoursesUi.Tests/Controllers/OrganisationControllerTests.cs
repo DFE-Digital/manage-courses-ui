@@ -101,34 +101,15 @@ namespace ManageCoursesUi.Tests
         public void RequestAccess()
         {
             var providerCode = "PROVIDERCODE";
-            var organisationName = "organisationName";
-
-            var orgs = new List<ProviderSummary>
-            {
-                new ProviderSummary
-                {
-                ProviderCode = providerCode,
-                ProviderName = organisationName
-                }
-            };
-
-            var apiMock = new Mock<IManageApi>();
-
-            apiMock.Setup(x => x.GetProviderSummaries())
-                .ReturnsAsync(orgs);
 
             var frontendUrlMock = new Mock<IFrontendUrlService>();
-
-            var controller = new OrganisationController(apiMock.Object, frontendUrlMock.Object);
+            frontendUrlMock.Setup(x => x.ShouldRedirectOrganisationShow()).Returns(true);
+            frontendUrlMock.Setup(x => x.RedirectToFrontend("/organisations/" + $"{providerCode}/request-access")).Returns(new RedirectResult("frontend"));
+            var controller = new OrganisationController(null, frontendUrlMock.Object);
 
             var result = controller.RequestAccess(providerCode);
 
-            var viewResult = result as ViewResult;
-
-            Assert.IsNotNull(viewResult);
-            var model = viewResult.ViewData.Model as RequestAccessViewModel;
-
-            Assert.AreEqual(providerCode, controller.ViewBag.ProviderCode);
+            Assert.IsTrue(result is RedirectResult);
         }
 
         [Test]
@@ -197,82 +178,33 @@ namespace ManageCoursesUi.Tests
         }
 
         [Test]
+        public async Task Details()
+        {
+            var providerCode = "PROVIDERCODE";
+
+            var frontendUrlMock = new Mock<IFrontendUrlService>();
+            frontendUrlMock.Setup(x => x.ShouldRedirectOrganisationShow()).Returns(true);
+            frontendUrlMock.Setup(x => x.RedirectToFrontend("/organisations/" + $"{providerCode}/2019/details")).Returns(new RedirectResult("frontend"));
+            var controller = new OrganisationController(null, frontendUrlMock.Object);
+
+            var result = await controller.Details(providerCode);
+
+            Assert.IsTrue(result is RedirectResult);
+        }
+
+        [Test]
         public async Task About()
         {
             var providerCode = "PROVIDERCODE";
-            var organisationName = "OrganisationName";
-
-            var providerSummaries = new List<ProviderSummary>
-            {
-                new ProviderSummary
-                {
-                ProviderCode = providerCode,
-                ProviderName = organisationName
-                }
-            };
-
-            var trainWithUs = "TrainWithUs";
-            var trainWithDisability = "TrainWithDisability";
-
-            var description = "Description";
-            var providerName = "ProviderName";
-            var providerCourses =  new List<Course>
-                {
-                    new Course { },
-                    new Course { AccreditingProvider = new GovUk.Education.ManageCourses.Domain.Models.Provider { ProviderCode = providerCode.ToUpperInvariant() }},
-                    new Course { AccreditingProvider = new GovUk.Education.ManageCourses.Domain.Models.Provider { ProviderCode = providerCode.ToLowerInvariant() }},
-                    new Course { AccreditingProvider = new GovUk.Education.ManageCourses.Domain.Models.Provider { ProviderCode = providerCode }},
-                    new Course { AccreditingProvider = new GovUk.Education.ManageCourses.Domain.Models.Provider { ProviderCode = providerCode + 1, ProviderName = providerName }},
-                    new Course { AccreditingProvider = new GovUk.Education.ManageCourses.Domain.Models.Provider { ProviderCode = providerCode + 2 }},
-                };
-
-            var now = DateTime.Now;
-            var ucasProviderEnrichmentGetModel = new UcasProviderEnrichmentGetModel()
-            {
-                LastPublishedTimestampUtc = now,
-                Status = EnumStatus.Published,
-                EnrichmentModel = new ProviderEnrichmentModel
-                {
-                AccreditingProviderEnrichments = new List<AccreditingProviderEnrichment>
-                {
-                new AccreditingProviderEnrichment { UcasProviderCode = providerCode + 2, Description = description }
-                },
-                TrainWithUs = trainWithUs,
-                TrainWithDisability = trainWithDisability
-                }
-            };
-
-            var apiMock = new Mock<IManageApi>();
-
-            apiMock.Setup(x => x.GetProviderSummary(providerCode)).ReturnsAsync(
-                new ProviderSummary { ProviderCode = providerCode, ProviderName = organisationName }
-            );
-
-            apiMock.Setup(x => x.GetCoursesOfProvider(providerCode))
-                .ReturnsAsync(providerCourses);
-
-            apiMock.Setup(x => x.GetProviderEnrichment(providerCode))
-                .ReturnsAsync(ucasProviderEnrichmentGetModel);
 
             var frontendUrlMock = new Mock<IFrontendUrlService>();
-
-            var controller = new OrganisationController(apiMock.Object, frontendUrlMock.Object);
+            frontendUrlMock.Setup(x => x.ShouldRedirectOrganisationShow()).Returns(true);
+            frontendUrlMock.Setup(x => x.RedirectToFrontend("/organisations/" + $"{providerCode}/2019/about")).Returns(new RedirectResult("frontend"));
+            var controller = new OrganisationController(null, frontendUrlMock.Object);
 
             var result = await controller.About(providerCode);
 
-            var viewResult = result as ViewResult;
-
-            Assert.IsNotNull(viewResult);
-            var organisationViewModel = viewResult.ViewData.Model as OrganisationViewModelForAbout;
-
-            Assert.AreEqual(organisationName, organisationViewModel.ProviderName);
-            Assert.AreEqual(trainWithUs, organisationViewModel.TrainWithUs);
-            Assert.AreEqual(2, organisationViewModel.AboutTrainingProviders.Count);
-            Assert.AreEqual(description, organisationViewModel.AboutTrainingProviders.First(x => x.ProviderCode == providerCode + 2).Description);
-            Assert.AreEqual(providerName, organisationViewModel.AboutTrainingProviders.First(x => x.ProviderCode == providerCode + 1).ProviderName);
-            Assert.AreEqual(trainWithDisability, organisationViewModel.TrainWithDisability);
-            Assert.AreEqual(now, organisationViewModel.LastPublishedTimestampUtc);
-            Assert.AreEqual(EnumStatus.Published, organisationViewModel.Status);
+            Assert.IsTrue(result is RedirectResult);
         }
 
         [Test]
