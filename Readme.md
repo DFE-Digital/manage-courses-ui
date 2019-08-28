@@ -1,6 +1,6 @@
 # Manage Courses UI project
 
-[<img src="https://api.travis-ci.org/DFE-Digital/manage-courses-ui.svg?branch=master">](https://travis-ci.org/DFE-Digital/manage-courses-ui/branches)
+[![Build Status](https://dfe-ssp.visualstudio.com/Become-A-Teacher/_apis/build/status/Find/manage-courses-ui?branchName=master)](https://dfe-ssp.visualstudio.com/Become-A-Teacher/_build/latest?definitionId=52&branchName=master)
 
 ## About
 
