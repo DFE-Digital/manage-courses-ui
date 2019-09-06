@@ -1,6 +1,8 @@
 # Manage Courses UI project
 
-[![Build Status](https://dfe-ssp.visualstudio.com/Become-A-Teacher/_apis/build/status/Find/manage-courses-ui?branchName=master)](https://dfe-ssp.visualstudio.com/Become-A-Teacher/_build/latest?definitionId=52&branchName=master)
+# Deprecated
+
+Please refer to [manage-courses-frontend](https://github.com/DFE-Digital/manage-courses-frontend)
 
 ## About
 
@@ -162,5 +164,5 @@ If you want to use a version of ManageCourses.ApiClient/SearchAndCompareUi.Share
   here is always 15 mins out of date as its on an event stream (its more realtime in prod envs.)
 
 ## Shutting down the service and showing the off line page.
-Rename the file "app_offline.htm.example" in the root folder to "app_offline.htm"
 
+Rename the file "app_offline.htm.example" in the root folder to "app_offline.htm"
